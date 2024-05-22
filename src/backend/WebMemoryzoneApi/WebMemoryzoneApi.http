@@ -1,0 +1,6 @@
+@WebMemoryzoneApi_HostAddress = http://localhost:5083
+
+GET {{WebMemoryzoneApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
