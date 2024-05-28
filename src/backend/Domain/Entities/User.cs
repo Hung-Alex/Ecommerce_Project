@@ -3,23 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using Domain.Common;
+using Domain.Entities;
+
 
 namespace Domain.Entities
 {
-    public class User:IdentityUser<Guid>
+    public class User : BaseEntity, IDatedModification
     {
-        public string Address { get; set; }
-        public string? City { get; set; }
-        public string ?Region { get; set; }
-        public string? PostalCode { get; set; }
-        public string? Country { get; set; }
-        public string ? ImageUrl {  get; set; }
-        //mapping cart
+        public string City { get; set; }
+        public string Region { get; set; }
+        public string PostalCode { get; set; }
+        public string Country { get; set; }
+        public string ImageUrl { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+        public ICollection<WishList> WishList { get; set; }
+        public ICollection<Order> Orders { get; set; }
+        public ICollection<Address> Addresses { get; set; }
         public Cart Cart { get; set; }
-        //mapping order 
-        public IList<Order> Orders { get; set; }
-
     }
 }

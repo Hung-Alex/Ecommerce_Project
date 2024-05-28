@@ -22,9 +22,9 @@ namespace Domain.Entities
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         // mapping voucher
-        public IList<Voucher> Vouchers { get;set; }
+        public IList<Coupon> Vouchers { get;set; }
         //mapping Payment
-        public virtual Payment Payment { get; set; }
+        public virtual Payments Payment { get; set; }
         //mapping orderItemsMap
         public IList<OrderItems> OrderItemsMaps { get; set; }
         //mapping user

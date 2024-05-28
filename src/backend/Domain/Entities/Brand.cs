@@ -9,18 +9,13 @@ namespace Domain.Entities
 {
     public class Brand : BaseEntity, IDatedModification
     {
-        private Brand():base()
-        {
-            
-        }
-        
+        private Brand() : base() { }
         public string Name { get; set; }
         public string UrlSlug { get; set; }
         public string LogoImageUrl { get; set; }
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-
         public IList<Product> Products { get; set; }
     }
 }

@@ -7,27 +7,24 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Voucher : BaseEntity, IDatedModification
+    public class Coupon : BaseEntity, IDatedModification
     {
-        private Voucher() : base()
-        {
-           
-        }
-       
+        private Coupon() : base() { }
         public string Name { get; set; }
         public string ShortDescription { get; set; }
         public string Description { get; set; }
-        public int Discountt { get; set; }
+        public int DiscountValue { get; set; }
+        public string DiscountType { get; set; }
+        public DateTime CouponStartDate { get; set; }
+        public DateTime CouponEndDate { get; set; }
+        public int UsedTime {  get; set; }
         public DateTime? CreateAt { get; set; }
         public DateTime? UpdateAt { get; set; }
-        public string CreateBy { get; set; }
-        public string UpdateBy { get; set; }
-        //mapping ProductVouchersMap
-        public IList<ProductVouchers> ProductVouchersMaps { get; set; }
+        public IList<CouponProduct> CouponProducts { get; set; }
         //mapping Order
         public Guid OrderId { get; set; }
         public Order Order { get; set; }
-        //mapping categoryvoucher map
-        public IList<CategoryVouchers> CategoryVouchersMaps { get; set; }
+        public DateTime CreatedAt {  get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }

@@ -9,13 +9,9 @@ namespace Domain.Entities
 {
     public class Cart : BaseEntity,IDatedModification
     {
-        private Cart() : base()
-        {
-           
-        }
-      
+        private Cart() : base() { }
         //mapping CartItemsMap
-        public IList<CartItem> CartItemMaps { get; set; }
+        public IList<CartItem> CartItems { get; set; }
         //mapping user
         public Guid UserId { get ; set; }
         public User User { get; set; }

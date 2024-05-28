@@ -1,10 +1,4 @@
 ﻿using Domain.Common;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
@@ -22,7 +16,7 @@ namespace Domain.Entities
 
         //mapping category
         public Guid CategoryId { get; set; }
-        public Category Category { get; set; }
+        public Categories Category { get; set; }
 
         //mapping brand
         public Guid BrandId { get; set; }
@@ -34,11 +28,11 @@ namespace Domain.Entities
         //mapping  Comments
         public IList<Comments> Comments { get; set; }
         //mapping options
-        public IList<Options> Options { get; set; }
+        public IList<ProductSkus> ProductSkus { get; set; }
         //mapping CartItemsMap
         public IList<CartItem> CartItemMaps { get; set; }
         //mapping ProductVouchersMap
-        public IList<ProductVouchers> ProductVouchersMaps { get; set; }
+        public IList<CouponProduct> ProductVouchersMaps { get; set; }
         //mapping Rattings
         public IList<Ratting> Rattings { get; set; }
         //mapping orderItemsMap
