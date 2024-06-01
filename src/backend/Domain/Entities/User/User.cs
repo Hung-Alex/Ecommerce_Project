@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Common;
-using Domain.Entities;
+﻿using Domain.Common;
+using Domain.Shared;
 
 
 namespace Domain.Entities
 {
-    public class User : BaseEntity, IDatedModification
+    public class User : BaseEntity, IDatedModification, IAggregateRoot
     {
         public string City { get; set; }
         public string Region { get; set; }

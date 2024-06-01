@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Post : BaseEntity, IDatedModification
+    public class Post : BaseEntity, IDatedModification, IAggregateRoot
     {
         private Post() : base() { }
         public string Title { get; set; }

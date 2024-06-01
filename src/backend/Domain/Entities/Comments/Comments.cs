@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using Domain.Entities.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,17 +8,19 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Images : BaseEntity, IDatedModification
+    public class Comments : BaseEntity, IDatedModification, IAggregateRoot
     {
-        private Images() : base()
-        {
-           
-        }
-        public string ImageUrl {  get; set; }
+        private Comments() : base() { }
+        
+       
+        public string Message {  get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         //mapping product
         public Guid ProductId { get; set; }
         public Product Product { get; set; }
+        //mapping Post
+        public Guid PostId { get; set; }
+        public Post Post { get; set; }
     }
 }

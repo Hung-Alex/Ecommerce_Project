@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using Domain.Entities.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,15 +8,16 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Brand : BaseEntity, IDatedModification
+    public class ProductSkus : BaseEntity, IDatedModification
     {
-        private Brand() : base() { }
         public string Name { get; set; }
-        public string UrlSlug { get; set; }
-        public string LogoImageUrl { get; set; }
         public string Description { get; set; }
+        public Decimal Price { get; set; }
+        public int Quantity {  get; set; }
+        //mapping product
+        public Guid ProductId { get; set; }
+        public Product Product { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public IList<Product> Products { get; set; }
     }
 }

@@ -1,13 +1,9 @@
 ﻿using Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Domain.Shared;
 
 namespace Domain.Entities
 {
-    public class Tags : BaseEntity, IDatedModification
+    public class Tags : BaseEntity, IDatedModification, IAggregateRoot
     {
         private Tags() : base() { } 
         public string Name { get; set; }

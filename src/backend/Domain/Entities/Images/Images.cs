@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Properties: BaseEntity, IDatedModification
+    public class Images : BaseEntity, IDatedModification, IAggregateRoot
     {
-        private Properties() : base() { }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        private Images() : base()
+        {
+           
+        }
+        public string ImageUrl {  get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         //mapping product

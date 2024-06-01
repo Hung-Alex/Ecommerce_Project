@@ -9,8 +9,6 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Media\" />
-    <Folder Include="Repositories\GenericRepository\" />
-    <Folder Include="Repositories\UnitOfWork\" />
   </ItemGroup>
 
   <ItemGroup>

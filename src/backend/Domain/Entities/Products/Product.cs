@@ -1,8 +1,7 @@
 ﻿using Domain.Common;
-
 namespace Domain.Entities
 {
-    public class Product : BaseEntity, IDatedModification
+    public class Product : BaseEntity, IDatedModification, IAggregateRoot
     {
         private Product() : base() { }
         public string Name { get; set; }
@@ -21,8 +20,6 @@ namespace Domain.Entities
         //mapping brand
         public Guid BrandId { get; set; }
         public Brand Brand { get; set; }
-        //mapping  specifition
-        public IList<Properties> Specifitions { get; set; }
         //mapping  Images
         public IList<Images> Images { get; set; }
         //mapping  Comments

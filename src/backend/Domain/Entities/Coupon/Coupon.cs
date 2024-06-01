@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Coupon : BaseEntity, IDatedModification
+    public class Coupon : BaseEntity, IDatedModification, IAggregateRoot
     {
         private Coupon() : base() { }
         public string Name { get; set; }

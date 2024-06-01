@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Domain.Shared;
+using Domain.Specifications;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Interface
 {
-    public interface IRepository<T>
+    public interface IRepository<T> where T : BaseEntity,IAggregateRoot
     {
-        void Add(T Entity);
-        void Delete(T Entity);
-        void Update(T Entity);
-        Task<T> GetByIdAsync(object id);
-        Task<IEnumerable<T>> GetAllAsync(Expression<Func<T,bool>> cretial);
+        void Add(T entity);
+        void Delete(T entity);
+        void Update(T entity);
+        Task<T> FindOneAsync(BaseSpecification<T> spec,CancellationToken cancellationToken=default); 
+        Task<T> GetByIdAsync(object id, CancellationToken cancellationToken = default);
+        Task<IEnumerable<T>> GetAllAsync(BaseSpecification<T> spec, CancellationToken cancellationToken = default);
     }
 }

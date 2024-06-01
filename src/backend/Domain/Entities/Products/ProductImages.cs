@@ -4,13 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Enums
+namespace Domain.Entities.Products
 {
-    public static class OrderEnum
+    internal class ProductImages
     {
-        public enum OrderStatus
-        {
-            Unknown = 0,
-        }
     }
 }

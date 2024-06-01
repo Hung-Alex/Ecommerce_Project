@@ -1,8 +1,9 @@
 ﻿using Domain.Common;
+using Domain.Shared;
 
 namespace Domain.Entities
 {
-    public class Categories : BaseEntity, IDatedModification
+    public class Categories : BaseEntity, IDatedModification, IAggregateRoot
     {
         private Categories() : base() { }
         public string Name { get; set; }

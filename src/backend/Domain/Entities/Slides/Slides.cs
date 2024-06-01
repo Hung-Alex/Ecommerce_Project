@@ -1,8 +1,9 @@
 ﻿using Domain.Common;
+using Domain.Shared;
 
 namespace Domain.Entities
 {
-    public class Banner:BaseEntity,IDatedModification
+    public class Banner: BaseEntity, IDatedModification, IAggregateRoot
     {
         private Banner() : base() { }
         public string Title { get; set; }

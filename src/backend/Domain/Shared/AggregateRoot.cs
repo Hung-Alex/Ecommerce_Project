@@ -4,13 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Enums
+namespace Domain.Shared
 {
-    public static class OrderEnum
+    public interface IAggregateRoot
     {
-        public enum OrderStatus
-        {
-            Unknown = 0,
-        }
     }
 }

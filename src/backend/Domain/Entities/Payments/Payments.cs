@@ -7,14 +7,11 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class CartItem:BaseEntity,IDatedModification
+    public class Payments : BaseEntity, IDatedModification, IAggregateRoot
     {
-        public Guid CartId { get; set; }
-        public Cart Cart { get; set; }
-        public Guid ProductId { get; set; }
-        public Product Product { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-
+        public Guid OrderId { get; set; }
+        public virtual Order Order { get; set; }
     }
 }

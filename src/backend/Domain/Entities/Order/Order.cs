@@ -9,7 +9,7 @@ using static Domain.Enums.OrderEnum;
 
 namespace Domain.Entities
 {
-    public class Order : BaseEntity, IDatedModification
+    public class Order : BaseEntity, IDatedModification, IAggregateRoot
     {
         private Order() : base() { }
         public string Name { get; set; }
