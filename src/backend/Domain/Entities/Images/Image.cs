@@ -1,19 +1,19 @@
-﻿using Domain.Common;
+﻿using Domain.Entities.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities
+namespace Domain.Entities.Images
 {
-    public class Images : BaseEntity, IDatedModification, IAggregateRoot
+    public class Image : BaseEntity, IDatedModification, IAggregateRoot
     {
-        private Images() : base()
+        public Image() : base()
         {
-           
+
         }
-        public string ImageUrl {  get; set; }
+        public string ImageUrl { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         //mapping product

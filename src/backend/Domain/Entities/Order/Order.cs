@@ -6,8 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Enums;
 using static Domain.Enums.OrderEnum;
+using Domain.Entities.Coupons;
+using Domain.Entities.Payments;
+using Domain.Entities.Users;
 
-namespace Domain.Entities
+namespace Domain.Entities.Orders
 {
     public class Order : BaseEntity, IDatedModification, IAggregateRoot
     {
@@ -24,7 +27,7 @@ namespace Domain.Entities
         // mapping voucher
         public IList<Coupon> Vouchers { get;set; }
         //mapping Payment
-        public virtual Payments Payment { get; set; }
+        public virtual Payment Payment { get; set; }
         //mapping orderItemsMap
         public IList<OrderItems> OrderItemsMaps { get; set; }
         //mapping user

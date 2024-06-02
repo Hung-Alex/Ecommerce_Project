@@ -1,7 +1,7 @@
 ﻿using Domain.Common;
 using Domain.Shared;
 
-namespace Domain.Entities
+namespace Domain.Entities.WishLists
 {
     public class WishList : BaseEntity, IDatedModification, IAggregateRoot
     {

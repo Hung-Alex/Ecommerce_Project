@@ -1,8 +1,11 @@
 ﻿using Domain.Common;
+using Domain.Entities.Carts;
+using Domain.Entities.Orders;
+using Domain.Entities.WishLists;
 using Domain.Shared;
 
 
-namespace Domain.Entities
+namespace Domain.Entities.Users
 {
     public class User : BaseEntity, IDatedModification, IAggregateRoot
     {

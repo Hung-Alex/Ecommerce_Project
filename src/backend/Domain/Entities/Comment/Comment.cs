@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using Domain.Entities.Posts;
 using Domain.Entities.Products;
 using System;
 using System.Collections.Generic;
@@ -6,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities
+namespace Domain.Entities.Comments
 {
-    public class Comments : BaseEntity, IDatedModification, IAggregateRoot
+    public class Comment : BaseEntity, IDatedModification, IAggregateRoot
     {
-        private Comments() : base() { }
+        private Comment() : base() { }
         
        
         public string Message {  get; set; }

@@ -1,6 +1,8 @@
 ﻿
 
-namespace Domain.Entities
+using Domain.Entities.Products;
+
+namespace Domain.Entities.Brands
 {
     public class Brand : BaseEntity, IDatedModification,IAggregateRoot
     {

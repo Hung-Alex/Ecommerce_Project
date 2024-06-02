@@ -1,5 +1,12 @@
 ﻿using Domain.Common;
-namespace Domain.Entities
+using Domain.Entities.Brands;
+using Domain.Entities.Carts;
+using Domain.Entities.Category;
+using Domain.Entities.Comments;
+using Domain.Entities.Coupons;
+using Domain.Entities.Images;
+using Domain.Entities.Orders;
+namespace Domain.Entities.Products
 {
     public class Product : BaseEntity, IDatedModification, IAggregateRoot
     {
@@ -21,9 +28,9 @@ namespace Domain.Entities
         public Guid BrandId { get; set; }
         public Brand Brand { get; set; }
         //mapping  Images
-        public IList<Images> Images { get; set; }
+        public IList<Image> Images { get; set; }
         //mapping  Comments
-        public IList<Comments> Comments { get; set; }
+        public IList<Comment> Comments { get; set; }
         //mapping options
         public IList<ProductSkus> ProductSkus { get; set; }
         //mapping CartItemsMap

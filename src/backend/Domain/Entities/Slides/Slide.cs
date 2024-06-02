@@ -1,11 +1,11 @@
 ﻿using Domain.Common;
 using Domain.Shared;
 
-namespace Domain.Entities
+namespace Domain.Entities.Slides
 {
-    public class Banner: BaseEntity, IDatedModification, IAggregateRoot
+    public class Slide: BaseEntity, IDatedModification, IAggregateRoot
     {
-        private Banner() : base() { }
+        private Slide() : base() { }
         public string Title { get; set; }
         public string Image { get; set; }
         public string Description { get; set; }

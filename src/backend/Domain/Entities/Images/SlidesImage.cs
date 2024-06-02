@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities
+namespace Domain.Entities.Images
 {
-    public class BannerImage : BaseEntity, IDatedModification
+    public class SlidesImage : BaseEntity, IDatedModification
     {
         public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt {  get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }

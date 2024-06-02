@@ -1,11 +1,12 @@
 ﻿using Domain.Common;
+using Domain.Entities.Posts;
 using Domain.Shared;
 
-namespace Domain.Entities
+namespace Domain.Entities.Tags
 {
-    public class Tags : BaseEntity, IDatedModification, IAggregateRoot
+    public class Tag : BaseEntity, IDatedModification, IAggregateRoot
     {
-        private Tags() : base() { } 
+        private Tag() : base() { } 
         public string Name { get; set; }
         public string Description { get; set; }
         public string UrlSlug {  get; set; }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities.Products
+namespace Domain.Entities.Images
 {
-    internal class ProductImages
+    public class ProductImages
     {
     }
 }

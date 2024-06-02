@@ -1,11 +1,12 @@
 ﻿using Domain.Common;
+using Domain.Entities.Comments;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities
+namespace Domain.Entities.Posts
 {
     public class Post : BaseEntity, IDatedModification, IAggregateRoot
     {
@@ -22,7 +23,7 @@ namespace Domain.Entities
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         //mapping Comments
-        public IList<Comments> Comments { get; set; }
+        public IList<Comment> Comments { get; set; }
         //mapping Tags
         public IList<PostTags> PostTags { get; set; }
     }

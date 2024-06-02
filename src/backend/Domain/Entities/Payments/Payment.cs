@@ -1,13 +1,14 @@
 ﻿using Domain.Common;
+using Domain.Entities.Orders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities
+namespace Domain.Entities.Payments
 {
-    public class Payments : BaseEntity, IDatedModification, IAggregateRoot
+    public class Payment : BaseEntity, IDatedModification, IAggregateRoot
     {
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
