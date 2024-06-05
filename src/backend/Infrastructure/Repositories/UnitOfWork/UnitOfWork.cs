@@ -27,7 +27,6 @@ namespace Infrastructure.Repositories.UnitOfWork
                 throw new Exception("error with save changes");
             }
         }
-
         public void Dispose()
         {
             _dbContext?.Dispose();
