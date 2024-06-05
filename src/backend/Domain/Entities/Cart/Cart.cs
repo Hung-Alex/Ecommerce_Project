@@ -1,9 +1,10 @@
 ﻿using Domain.Common;
+using Domain.Entities.Users;
 using Domain.Exceptions;
 using Domain.Shared;
 
 
-namespace Domain.Entities
+namespace Domain.Entities.Carts
 {
     public class Cart : BaseEntity, IDatedModification, IAggregateRoot
     {

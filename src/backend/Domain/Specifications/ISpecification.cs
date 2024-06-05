@@ -1,4 +1,6 @@
 ﻿using System.Linq.Expressions;
+using Domain.Common;
+using Domain.Shared;
 
 namespace Domain.Specifications
 {

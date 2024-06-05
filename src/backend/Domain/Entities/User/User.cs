@@ -1,8 +1,11 @@
 ﻿using Domain.Common;
+using Domain.Entities.Carts;
+using Domain.Entities.Orders;
+using Domain.Entities.WishLists;
 using Domain.Shared;
 
 
-namespace Domain.Entities
+namespace Domain.Entities.Users
 {
     public class User : BaseEntity, IDatedModification, IAggregateRoot
     {
@@ -10,7 +13,7 @@ namespace Domain.Entities
         public string Region { get; set; }
         public string PostalCode { get; set; }
         public string Country { get; set; }
-        public string ImageUrl { get; set; }
+        public string ImageUrl { get; set; }//base 64
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public ICollection<WishList> WishList { get; set; }

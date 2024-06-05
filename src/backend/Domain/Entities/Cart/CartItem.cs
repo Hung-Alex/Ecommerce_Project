@@ -1,15 +1,15 @@
 ﻿using Domain.Common;
+using Domain.Entities.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities
+namespace Domain.Entities.Carts
 {
     public class CartItem : BaseEntity, IDatedModification
     {
-        public CartItem() : base() { }
         public CartItem(Guid cartId, Guid productId, Guid ProductSkudId, int quantity) : base()
         {
             CartId = cartId;
@@ -27,11 +27,16 @@ namespace Domain.Entities
         public DateTime UpdatedAt { get; set; }
         public override bool Equals(object? obj)
         {
-            var other = obj as CartItem;
             if (obj == null) return false;
+            var other = obj as CartItem;
             return CartId == other.CartId
                 && ProductId == other.ProductId
                 && ProductSkusId == other.ProductSkusId;
+        }
+
+        public override int GetHashCode()
+        {
+            throw new NotImplementedException();
         }
     }
 }
