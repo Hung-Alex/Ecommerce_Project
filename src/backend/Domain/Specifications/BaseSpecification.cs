@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
+using Domain.Common;
+using Domain.Shared;
 
 namespace Domain.Specifications
 {
     public abstract class BaseSpecification<T> : ISpecification<T> where T : BaseEntity, IAggregateRoot
     {
-        protected BaseSpecification(Expression<Func<T, bool>> criteria)
-        {
-            Criteria = criteria;
-        }
-        public Expression<Func<T, bool>> Criteria { get; }
+        public abstract Expression<Func<T, bool>> Criteria { get; }
         public IList<Expression<Func<T, object>>> Includes { get; } = new List<Expression<Func<T, object>>>();
         public IList<string> IncludeStrings { get; } = new List<string>();
         public Expression<Func<T, object>> OrderBy { get; private set; }

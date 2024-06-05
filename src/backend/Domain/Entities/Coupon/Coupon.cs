@@ -1,10 +1,8 @@
 ﻿using Domain.Common;
 using Domain.Entities.Orders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Domain.Shared;
+using System.Collections.ObjectModel;
+
 
 namespace Domain.Entities.Coupons
 {
@@ -21,7 +19,8 @@ namespace Domain.Entities.Coupons
         public int UsedTime {  get; set; }
         public DateTime? CreateAt { get; set; }
         public DateTime? UpdateAt { get; set; }
-        public IList<CouponProduct> CouponProducts { get; set; }
+        private Collection<CouponProduct> _couponProducts=new Collection<CouponProduct>();
+        public IReadOnlyCollection<CouponProduct> CouponProducts => _couponProducts.AsReadOnly();
         //mapping Order
         public Guid OrderId { get; set; }
         public Order Order { get; set; }

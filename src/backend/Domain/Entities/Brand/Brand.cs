@@ -1,5 +1,6 @@
 ﻿
-
+using Domain.Common;
+using Domain.Shared;
 using Domain.Entities.Products;
 
 namespace Domain.Entities.Brands

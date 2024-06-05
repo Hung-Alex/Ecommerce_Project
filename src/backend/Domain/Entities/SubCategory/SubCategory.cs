@@ -1,5 +1,6 @@
 ﻿using Domain.Common;
 using Domain.Entities.Category;
+using Domain.Shared;
 
 namespace Domain.Entities.SubCategories
 {

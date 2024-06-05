@@ -1,6 +1,7 @@
 ﻿using Domain.Shared;
 using Domain.Specifications;
 using System.Linq.Expressions;
+using Domain.Common;
 
 namespace Domain.Interface
 {
