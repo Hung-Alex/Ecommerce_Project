@@ -23,7 +23,6 @@ namespace Infrastructure.Repositories.UnitOfWork
             }
             catch (Exception)
             {
-
                 throw new Exception("error with save changes");
             }
         }
