@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +13,9 @@ namespace Infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructureServices(this  IServiceCollection services)
+        public static IServiceCollection AddInfrastructureServices(this  IServiceCollection services,IConfiguration configuration)
         {
+            services.AddDbContext<StoreDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("StoreDb")));
             return services;
         }
     }
