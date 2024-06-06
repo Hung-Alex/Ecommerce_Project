@@ -8,6 +8,7 @@ namespace Domain.Entities.Orders
 {
     public class Order : BaseEntity, IDatedModification, IAggregateRoot
     {
+        public Order():base() { }
         public Order(ShipAddress shipAddress,List<OrderItems> items,string note,Guid userId) : base()
         {
             ShipAddress = shipAddress;
@@ -26,6 +27,6 @@ namespace Domain.Entities.Orders
         public IList<OrderItems> OrderItems { get; set; }
         //mapping user
         public Guid UserId { get; set; }
-        public User User { get; set; }
+        public IUser User { get; set; }
     }
 }

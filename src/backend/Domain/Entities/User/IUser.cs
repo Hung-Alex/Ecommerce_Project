@@ -7,7 +7,7 @@ using Domain.Shared;
 
 namespace Domain.Entities.Users
 {
-    public class User : BaseEntity, IDatedModification, IAggregateRoot
+    public interface IUser : IDatedModification, IAggregateRoot
     {
         public string City { get; set; }
         public string Region { get; set; }
