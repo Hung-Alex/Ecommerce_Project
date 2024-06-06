@@ -34,13 +34,13 @@ namespace Domain.Entities.Products
         //mapping options
         public virtual ICollection<ProductSkus> ProductSkus { get; set; }
         //mapping CartItemsMap
-        public virtual ICollection<CartItem> CartItemMaps { get; set; }
+        public virtual ICollection<CartItem> CartItems { get; set; }
         //mapping ProductVouchersMap
-        public virtual ICollection<CouponProduct> ProductVouchersMaps { get; set; }
+        public virtual ICollection<CouponProduct> ProductCoupons { get; set; }
         //mapping Rattings
         public virtual ICollection<Ratting> Rattings { get; set; }
         //mapping orderItemsMap
-        public virtual ICollection<OrderItems> OrderItemsMaps { get; set; }
+        public virtual ICollection<OrderItems> OrderItems { get; set; }
 
 
     }

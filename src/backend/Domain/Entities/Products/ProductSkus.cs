@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using Domain.Entities.Carts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace Domain.Entities.Products
         //mapping product
         public Guid ProductId { get; set; }
         public Product Product { get; set; }
+        public ICollection<CartItem> CartItems { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
