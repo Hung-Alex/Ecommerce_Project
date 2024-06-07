@@ -12,8 +12,8 @@ namespace Domain.Entities.Orders
     {
         public Guid OrderId { get; set; }
         public Order Order { get; set; }
-        public Guid ProductId { get; set; }
-        public Product Product { get; set; }
+        public Guid ProductSkusId { get; set; }
+        public ProductSkus ProductSkus { get; set; }
         public int Quantity { get; set; }
         public Decimal Price {  get; set; } //inital Price 
         public string ? UnitPrice {  get; set; }

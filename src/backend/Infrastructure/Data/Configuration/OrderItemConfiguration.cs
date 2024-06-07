@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Entities.Orders;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Data.Configuration
 {
-    public class OrderItemConfiguration
+    public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItems>
     {
+        public void Configure(EntityTypeBuilder<OrderItems> builder)
+        {
+            builder.HasKey(x => x.OrderId);
+        }
     }
 }

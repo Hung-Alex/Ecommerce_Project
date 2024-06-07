@@ -9,12 +9,13 @@ namespace Infrastructure.Data.Configuration
         public void Configure(EntityTypeBuilder<CartItem> builder)
         {
             builder.HasKey(x => x.Id);
-            //mapping productSkus, Product
-            builder.HasOne(x=>x.Product)
-                .WithMany(x=>x.CartItems)
+            builder.HasOne(x => x.Product)
+                .WithMany(x => x.CartItems)
+                .HasForeignKey(x => x.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
             builder.HasOne(x => x.ProductSkus)
                .WithMany(x => x.CartItems)
+               .HasForeignKey(x => x.ProductSkusId)
                .OnDelete(DeleteBehavior.Restrict);
         }
     }

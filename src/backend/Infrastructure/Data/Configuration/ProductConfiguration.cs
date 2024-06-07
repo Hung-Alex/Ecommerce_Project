@@ -1,11 +1,6 @@
 ﻿using Domain.Entities.Products;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Data.Configuration
 {
@@ -13,7 +8,21 @@ namespace Infrastructure.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
-            throw new NotImplementedException();
+            builder.HasKey(x => x.Id);
+            builder.HasMany(x => x.ProductSubCategories)
+                .WithOne(x => x.Product)
+                .HasForeignKey(x => x.ProductId);
+            builder.HasMany(x => x.Images)
+                .WithOne(x => x.Product)
+                .HasForeignKey(x => x.ProductId);
+
+            builder.HasMany(x => x.ProductCoupons)
+                .WithOne(x => x.Product)
+                .HasForeignKey(x => x.ProductId);
+
+            builder.HasMany(x => x.Rattings)
+                .WithOne(x => x.Product)
+                .HasForeignKey(x => x.ProductId);
         }
     }
 }

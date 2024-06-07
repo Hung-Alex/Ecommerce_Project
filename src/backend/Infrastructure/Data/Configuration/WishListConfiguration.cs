@@ -8,7 +8,7 @@ namespace Infrastructure.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<WishList> builder)
         {
-            throw new NotImplementedException();
+            builder.HasKey(x => x.Id);
         }
     }
 }

@@ -15,6 +15,7 @@ namespace Infrastructure.Data.Configuration
                     .OnDelete(DeleteBehavior.Cascade);
             builder.Property(x => x.OrderStatus)
                 .HasConversion<int>();
+            builder.OwnsOne(o => o.ShipAddress);
         }
     }
 }

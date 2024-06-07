@@ -1,5 +1,6 @@
 ﻿using Domain.Common;
 using Domain.Entities.Carts;
+using Domain.Entities.Orders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,11 @@ namespace Domain.Entities.Products
         public string Name { get; set; }
         public string Description { get; set; }
         public Decimal Price { get; set; }
-        public int Quantity {  get; set; }
-        //mapping product
+        public int Quantity { get; set; }
         public Guid ProductId { get; set; }
         public Product Product { get; set; }
-        public ICollection<CartItem> CartItems { get; set; }
+        public virtual ICollection<CartItem> CartItems { get; set; }
+        public virtual ICollection<OrderItems> OrderItems { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

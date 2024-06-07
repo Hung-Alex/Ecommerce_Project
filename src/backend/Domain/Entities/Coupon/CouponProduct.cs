@@ -12,8 +12,8 @@ namespace Domain.Entities.Coupons
     {
         public Guid ProductId { get; set; }
         public Product Product { get; set; }
-        public Guid VoucherId { get; set; }
-        public Coupon Voucher { get; set; }
+        public Guid CouponId { get; set; }
+        public Coupon Coupon { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
