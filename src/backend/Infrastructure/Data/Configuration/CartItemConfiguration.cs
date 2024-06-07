@@ -16,7 +16,6 @@ namespace Infrastructure.Data.Configuration
             builder.HasOne(x => x.ProductSkus)
                .WithMany(x => x.CartItems)
                .OnDelete(DeleteBehavior.Restrict);
-
         }
     }
 }

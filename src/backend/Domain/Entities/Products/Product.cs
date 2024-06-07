@@ -41,7 +41,5 @@ namespace Domain.Entities.Products
         public virtual ICollection<Ratting> Rattings { get; set; }
         //mapping orderItemsMap
         public virtual ICollection<OrderItems> OrderItems { get; set; }
-
-
     }
 }

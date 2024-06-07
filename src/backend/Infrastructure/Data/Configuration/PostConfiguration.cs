@@ -13,7 +13,15 @@ namespace Infrastructure.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<Post> builder)
         {
-            throw new NotImplementedException();
+            builder.HasKey(x => x.Id);
+            builder.HasMany(x => x._postTags)
+                .WithOne(x => x.Post)
+                .HasForeignKey(x => x.PostId)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(x=>x.Comments)
+                .WithOne(x=>x.Post)
+                .HasForeignKey(x=>x.PostId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

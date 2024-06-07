@@ -1,11 +1,6 @@
 ﻿using Domain.Entities.Brands;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Data.Configuration
 {
@@ -13,7 +8,11 @@ namespace Infrastructure.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<Brand> builder)
         {
-            throw new NotImplementedException();
+            builder.HasKey(x => x.Id);
+            builder.HasMany(x => x.Products)
+                .WithOne(b=>b.Brand)
+                .HasForeignKey(b => b.Id)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

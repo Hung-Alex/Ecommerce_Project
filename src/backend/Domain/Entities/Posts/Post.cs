@@ -35,6 +35,5 @@ namespace Domain.Entities.Posts
         public Collection<PostTags> _postTags { get; set; } = new Collection<PostTags>();
         public IReadOnlyCollection<Comment> Comments => _comments.AsReadOnly();
         public IReadOnlyCollection<PostTags> PostTags => _postTags.AsReadOnly();
-
     }
 }

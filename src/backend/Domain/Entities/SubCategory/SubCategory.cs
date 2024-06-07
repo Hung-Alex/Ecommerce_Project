@@ -19,6 +19,6 @@ namespace Domain.Entities.SubCategories
         public DateTime UpdatedAt { get; set; }
         public Categories Category { get; set; }
         public Guid CategoryId { get; set; }
-
+        public ICollection<ProductSubCategory> productSubCategories { get; set; }
     }
 }

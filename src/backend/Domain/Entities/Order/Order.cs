@@ -8,8 +8,8 @@ namespace Domain.Entities.Orders
 {
     public class Order : BaseEntity, IDatedModification, IAggregateRoot
     {
-        public Order():base() { }
-        public Order(ShipAddress shipAddress,List<OrderItems> items,string note,Guid userId) : base()
+        public Order() : base() { }
+        public Order(ShipAddress shipAddress, List<OrderItems> items, string note, Guid userId) : base()
         {
             ShipAddress = shipAddress;
             OrderItems = items;
@@ -21,11 +21,9 @@ namespace Domain.Entities.Orders
         public OrderStatus OrderStatus { get; set; }//enum 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        // mapping voucher
-        public IList<Coupon> Coupons { get; set; }      
-        //mapping orderItemsMap
+        public Guid? CouponId { get; set; }
+        public virtual Coupon Coupons { get; set; }
         public IList<OrderItems> OrderItems { get; set; }
-        //mapping user
         public Guid UserId { get; set; }
         public IUser User { get; set; }
     }

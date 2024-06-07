@@ -6,8 +6,11 @@ namespace Domain.Entities.Comments
 {
     public class Comment : BaseEntity, IDatedModification, IAggregateRoot
     {
-        private Comment() : base() { }
+        public Comment() : base() { }
+        public Guid? ParentId {  get; set; }
         public string Content {  get; set; }
+        public virtual Comment Parent { get; set; }
+        public virtual ICollection<Comment> Replies { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public Guid PostId { get; set; }
