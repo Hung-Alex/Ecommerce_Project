@@ -1,19 +1,21 @@
 ﻿using Domain.Common;
 using Domain.Entities.Products;
+using Domain.Entities.SubCategories;
+using Domain.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities.Coupons
+namespace Domain.Entities
 {
-    public class CouponProduct:BaseEntity,IDatedModification
+    public class ProductSubCategory : BaseEntity, IAggregateRoot, IDatedModification
     {
-        public Guid ProductId { get; set; }
+        public SubCategory SubCategory { get; set; }
+        public Guid SubCategoryId { get; set; }
         public Product Product { get; set; }
-        public Guid CouponId { get; set; }
-        public Coupon Coupon { get; set; }
+        public Guid ProductId { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

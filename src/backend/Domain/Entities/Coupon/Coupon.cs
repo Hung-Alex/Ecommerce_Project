@@ -22,8 +22,7 @@ namespace Domain.Entities.Coupons
         private Collection<CouponProduct> _couponProducts=new Collection<CouponProduct>();
         public IReadOnlyCollection<CouponProduct> CouponProducts => _couponProducts.AsReadOnly();
         //mapping Order
-        public Guid OrderId { get; set; }
-        public Order Order { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
         public DateTime CreatedAt {  get; set; }
         public DateTime UpdatedAt { get; set; }
     }

@@ -18,6 +18,7 @@ namespace Domain.Entities.Slides
         public string Image { get; set; }
         public string Description { get; set; }
         public bool? Status { get; set; } //hide or show banner at homepage
+        public ICollection<SlidesImage> SlidesImages { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

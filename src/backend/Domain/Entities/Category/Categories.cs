@@ -8,6 +8,7 @@ namespace Domain.Entities.Category
 {
     public class Categories : BaseEntity, IDatedModification, IAggregateRoot
     {
+        public Categories() : base() { }
         private Categories(string name, string descripton, string urlSlug, string image) : base()
         {
             Name = name ?? throw new ArgumentNullException();

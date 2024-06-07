@@ -2,20 +2,18 @@
 using Domain.Interface;
 using Domain.Shared;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Repositories.UnitOfWork
 {
     public class UnitOfWork<TDbContext> : IUnitOfWork where TDbContext : DbContext
     {
         private readonly TDbContext _dbContext;
-        public UnitOfWork(TDbContext dbContext)
+        private readonly IServiceProvider _serviceProvider;
+        public UnitOfWork(TDbContext dbContext, IServiceProvider serviceProvider)
         {
             _dbContext = dbContext;
+            _serviceProvider = serviceProvider;
         }
         public async Task Commit()
         {
@@ -25,19 +23,17 @@ namespace Infrastructure.Repositories.UnitOfWork
             }
             catch (Exception)
             {
-
                 throw new Exception("error with save changes");
             }
         }
-
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _dbContext?.Dispose();
         }
 
         public IRepository<T> GetRepository<T>() where T : BaseEntity, IAggregateRoot
         {
-            throw new NotImplementedException();
+            return _serviceProvider.GetService<IRepository<T>>() ?? throw new ArgumentNullException();
         }
     }
 }

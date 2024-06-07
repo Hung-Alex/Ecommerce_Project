@@ -2,6 +2,7 @@
 using Domain.Entities.Users;
 using Domain.Exceptions;
 using Domain.Shared;
+using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace Domain.Entities.Carts
@@ -11,7 +12,7 @@ namespace Domain.Entities.Carts
         public Cart() : base() { }
         public required ICollection<CartItem> CartItems { get; set; }
         public Guid UserId { get; set; }
-        public User User { get; set; }
+        public IUser User { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public CartItem CreateCartItem(Guid productId, Guid productSkusId, int quantity)

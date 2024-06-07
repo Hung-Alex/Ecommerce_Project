@@ -1,5 +1,6 @@
 ﻿using Domain.Common;
 using Domain.Entities.Products;
+using Domain.Entities.Slides;
 using Domain.Shared;
 
 
@@ -9,10 +10,10 @@ namespace Domain.Entities.Images
     {
         public Image() : base() { }
         public string ImageUrl { get; set; }
-        public string ImageExtension {  get; set; }
+        public string ImageExtension { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public Guid ProductId { get; set; }
-        public Product Product { get; set; }
+        public virtual ICollection<ProductImages> ProductImages { get; set; }
+        public virtual ICollection<SlidesImage> SlidesImages { get; }
     }
 }
