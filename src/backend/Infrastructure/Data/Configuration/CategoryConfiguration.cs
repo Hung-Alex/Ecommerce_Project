@@ -11,7 +11,7 @@ namespace Infrastructure.Data.Configuration
             builder.HasKey(c => c.Id);
             builder.HasMany(c => c.SubCategories)
                 .WithOne(c => c.Category)
-                .HasForeignKey(c => c.Id)
+                .HasForeignKey(c => c.CategoryId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

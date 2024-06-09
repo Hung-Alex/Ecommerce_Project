@@ -11,7 +11,7 @@ namespace Infrastructure.Data.Configuration
             builder.HasKey(x => x.Id);
             builder.HasMany(x => x.Products)
                 .WithOne(b=>b.Brand)
-                .HasForeignKey(b => b.Id)
+                .HasForeignKey(b => b.BrandId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

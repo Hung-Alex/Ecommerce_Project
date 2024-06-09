@@ -165,9 +165,6 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("PostId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -176,8 +173,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("ParentId");
 
                     b.HasIndex("PostId");
-
-                    b.HasIndex("PostId1");
 
                     b.ToTable("Comments");
                 });
@@ -437,9 +432,6 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("PostId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("TagId")
                         .HasColumnType("uniqueidentifier");
 
@@ -449,8 +441,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PostId");
-
-                    b.HasIndex("PostId1");
 
                     b.HasIndex("TagId");
 
@@ -487,12 +477,10 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Products.Product", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("BrandId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("CategoriesId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
@@ -521,7 +509,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoriesId");
+                    b.HasIndex("BrandId");
 
                     b.ToTable("Products");
                 });
@@ -683,6 +671,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.SubCategories.SubCategory", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CategoryId")
@@ -707,6 +696,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("SubCategories");
                 });
@@ -1110,17 +1101,14 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.Comments.Comment", "Parent")
                         .WithMany("Replies")
-                        .HasForeignKey("ParentId");
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Domain.Entities.Posts.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Domain.Entities.Posts.Post", null)
-                        .WithMany("_comments")
-                        .HasForeignKey("PostId1");
 
                     b.Navigation("Parent");
 
@@ -1229,14 +1217,10 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Posts.PostTags", b =>
                 {
                     b.HasOne("Domain.Entities.Posts.Post", "Post")
-                        .WithMany("_postTags")
+                        .WithMany("PostTags")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Domain.Entities.Posts.Post", null)
-                        .WithMany("PostTags")
-                        .HasForeignKey("PostId1");
 
                     b.HasOne("Domain.Entities.Tags.Tag", "Tag")
                         .WithMany("PostTags")
@@ -1270,13 +1254,9 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Products.Product", b =>
                 {
-                    b.HasOne("Domain.Entities.Category.Categories", null)
-                        .WithMany("Products")
-                        .HasForeignKey("CategoriesId");
-
                     b.HasOne("Domain.Entities.Brands.Brand", "Brand")
                         .WithMany("Products")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1347,7 +1327,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.Category.Categories", "Category")
                         .WithMany("SubCategories")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1447,8 +1427,6 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Category.Categories", b =>
                 {
-                    b.Navigation("Products");
-
                     b.Navigation("SubCategories");
                 });
 
@@ -1481,10 +1459,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("PostTags");
-
-                    b.Navigation("_comments");
-
-                    b.Navigation("_postTags");
                 });
 
             modelBuilder.Entity("Domain.Entities.Products.Product", b =>

@@ -10,11 +10,8 @@ namespace Domain.Entities.Posts
 {
     public class PostTags : BaseEntity, IDatedModification
     {
-        public PostTags(Guid postId, Guid tagId):base()
-        {
-            PostId = postId;
-            TagId = tagId;
-        }
+        public PostTags() : base() { }
+      
         public Guid PostId { get; set; }
         public Post Post { get; set; }
         public Guid TagId { get; set; }

@@ -23,7 +23,7 @@ namespace Domain.Entities.Orders
         public DateTime UpdatedAt { get; set; }
         public Guid? CouponId { get; set; }
         public virtual Coupon Coupons { get; set; }
-        public IList<OrderItems> OrderItems { get; set; }
+        public ICollection<OrderItems> OrderItems { get; set; }
         public Guid UserId { get; set; }
         public IUser User { get; set; }
     }

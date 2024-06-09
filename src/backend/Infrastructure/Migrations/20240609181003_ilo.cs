@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class ilo : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -356,23 +356,17 @@ namespace Infrastructure.Migrations
                     Discount = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    BrandId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CategoriesId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    BrandId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_Brands_Id",
-                        column: x => x.Id,
+                        name: "FK_Products_Brands_BrandId",
+                        column: x => x.BrandId,
                         principalTable: "Brands",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Products_Categories_CategoriesId",
-                        column: x => x.CategoriesId,
-                        principalTable: "Categories",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -391,8 +385,8 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_SubCategories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SubCategories_Categories_Id",
-                        column: x => x.Id,
+                        name: "FK_SubCategories_Categories_CategoryId",
+                        column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -440,8 +434,7 @@ namespace Infrastructure.Migrations
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PostId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -450,18 +443,14 @@ namespace Infrastructure.Migrations
                         name: "FK_Comments_Comments_ParentId",
                         column: x => x.ParentId,
                         principalTable: "Comments",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Comments_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Comments_Posts_PostId1",
-                        column: x => x.PostId1,
-                        principalTable: "Posts",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -499,8 +488,7 @@ namespace Infrastructure.Migrations
                     PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TagId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PostId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -511,11 +499,6 @@ namespace Infrastructure.Migrations
                         principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PostTags_Posts_PostId1",
-                        column: x => x.PostId1,
-                        principalTable: "Posts",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_PostTags_Tags_TagId",
                         column: x => x.TagId,
@@ -840,11 +823,6 @@ namespace Infrastructure.Migrations
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_PostId1",
-                table: "Comments",
-                column: "PostId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CouponProducts_CouponId",
                 table: "CouponProducts",
                 column: "CouponId");
@@ -880,11 +858,6 @@ namespace Infrastructure.Migrations
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostTags_PostId1",
-                table: "PostTags",
-                column: "PostId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_PostTags_TagId",
                 table: "PostTags",
                 column: "TagId");
@@ -900,9 +873,9 @@ namespace Infrastructure.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_CategoriesId",
+                name: "IX_Products_BrandId",
                 table: "Products",
-                column: "CategoriesId");
+                column: "BrandId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductSkus_ProductId1",
@@ -933,6 +906,11 @@ namespace Infrastructure.Migrations
                 name: "IX_SlidesImages_SlideId",
                 table: "SlidesImages",
                 column: "SlideId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SubCategories_CategoryId",
+                table: "SubCategories",
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WishLists_ProductId",
@@ -1036,10 +1014,10 @@ namespace Infrastructure.Migrations
                 name: "Coupons");
 
             migrationBuilder.DropTable(
-                name: "Brands");
+                name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "Brands");
         }
     }
 }

@@ -9,9 +9,16 @@ namespace Infrastructure.Data.Configuration
         public void Configure(EntityTypeBuilder<Comment> builder)
         {
             builder.HasKey(x => x.Id);
+
             builder.HasMany(x => x.Replies)
                 .WithOne(x => x.Parent)
-                .HasForeignKey(x => x.ParentId);
+                .HasForeignKey(x => x.ParentId)
+                .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(x => x.Post)
+                .WithMany(p => p.Comments)
+                .HasForeignKey(x => x.PostId)
+                .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

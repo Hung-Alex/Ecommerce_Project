@@ -2,14 +2,15 @@
 using Domain.Entities.Comments;
 using System.Collections.ObjectModel;
 using Domain.Shared;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities.Posts
 {
     public class Post : BaseEntity, IDatedModification, IAggregateRoot
     {
-        public Post(string title, string name, string urlSlug, string shortDescription, string description, string meta, string imageUrl, bool? pulished, int viewCount):base()
+        public Post(string title, string name, string urlSlug, string shortDescription, string description, string meta, string imageUrl, bool? pulished, int viewCount) : base()
         {
-            Title = title??throw new ArgumentNullException();
+            Title = title ?? throw new ArgumentNullException();
             Name = name ?? throw new ArgumentNullException();
             UrlSlug = urlSlug ?? throw new ArgumentNullException();
             ShortDescription = shortDescription ?? throw new ArgumentNullException();
@@ -29,11 +30,7 @@ namespace Domain.Entities.Posts
         public int ViewCount { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        //mapping Comments
-        public Collection<Comment> _comments { get; set; } = new Collection<Comment>();
-        //mapping Tags
-        public Collection<PostTags> _postTags { get; set; } = new Collection<PostTags>();
-        public IReadOnlyCollection<Comment> Comments => _comments.AsReadOnly();
-        public IReadOnlyCollection<PostTags> PostTags => _postTags.AsReadOnly();
+        public ICollection<Comment> Comments { get; set; }
+        public ICollection<PostTags> PostTags { get; set; }
     }
 }
