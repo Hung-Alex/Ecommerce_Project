@@ -4,9 +4,9 @@ using Domain.Shared;
 
 namespace Domain.Interface
 {
-    public interface IUnitOfWork: IDisposable
+    public interface IUnitOfWork<DBContext>: IDisposable
     {
-        IRepository<T> GetRepository<T>() where T : BaseEntity, IAggregateRoot;
+        IRepository<DBContext, T> GetRepository<T>() where T : BaseEntity, IAggregateRoot;
         Task Commit();
     }
 }

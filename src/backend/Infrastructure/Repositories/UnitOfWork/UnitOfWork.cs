@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Repositories.UnitOfWork
 {
-    public class UnitOfWork<TDbContext> : IUnitOfWork where TDbContext : DbContext
+    public class UnitOfWork<TDbContext> : IUnitOfWork<TDbContext> where TDbContext : DbContext
     {
         private readonly TDbContext _dbContext;
         private readonly IServiceProvider _serviceProvider;
@@ -31,9 +31,9 @@ namespace Infrastructure.Repositories.UnitOfWork
             _dbContext?.Dispose();
         }
 
-        public IRepository<T> GetRepository<T>() where T : BaseEntity, IAggregateRoot
+        public IRepository<TDbContext, T> GetRepository<T>() where T : BaseEntity, IAggregateRoot
         {
-            return _serviceProvider.GetService<IRepository<T>>() ?? throw new ArgumentNullException();
+            return _serviceProvider.GetService<IRepository<TDbContext, T>>() ?? throw new ArgumentNullException();
         }
     }
 }

@@ -8,10 +8,11 @@ namespace Infrastructure.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<ProductSkus> builder)
         {
-            builder.HasKey(x => x.ProductId);
+            builder.HasKey(x => x.Id);
             builder.HasMany(x => x.OrderItems)
                 .WithOne(x => x.ProductSkus)
                 .HasForeignKey(x => x.ProductSkusId);
+           
         }
     }
 }

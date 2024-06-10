@@ -7,7 +7,7 @@ namespace Domain.Entities.Brands
 {
     public class Brand : BaseEntity, IDatedModification,IAggregateRoot
     {
-        private Brand() : base() { }
+        public Brand() : base() { }
         public string Name { get; set; }
         public string UrlSlug { get; set; }
         public string LogoImageUrl { get; set; } //upload Base 64

@@ -12,10 +12,10 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories.GenericRepository
 {
-    public abstract class BaseRepository<TContext, T> : IRepository<T> where T : BaseEntity, IAggregateRoot where TContext : DbContext
+    public class BaseRepository<TContext, T> : IRepository<TContext, T> where T : BaseEntity, IAggregateRoot where TContext : DbContext
     {
         protected readonly TContext _context;
-        protected BaseRepository(TContext context)
+        public BaseRepository(TContext context)
         {
             _context = context;
         }

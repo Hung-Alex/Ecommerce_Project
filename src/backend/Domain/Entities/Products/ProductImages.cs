@@ -11,7 +11,7 @@ namespace Domain.Entities.Products
 {
     public class ProductImages : BaseEntity, IDatedModification
     {
-        public ProductImages() { }
+        public ProductImages():base() { }
         public Product Product { get; set; }
         public Guid ProductId { get; set; }
         public Image Image { get; set; }

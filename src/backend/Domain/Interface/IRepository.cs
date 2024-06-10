@@ -5,7 +5,7 @@ using Domain.Common;
 
 namespace Domain.Interface
 {
-    public interface IRepository<T> where T : BaseEntity,IAggregateRoot
+    public interface IRepository<TContext, T> where T : BaseEntity,IAggregateRoot
     {
         void Add(T entity);
         void Delete(T entity);
