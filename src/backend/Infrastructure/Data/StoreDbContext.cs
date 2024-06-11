@@ -25,7 +25,9 @@ namespace Infrastructure.Data
     {
         public StoreDbContext(DbContextOptions options) : base(options)
         {
+            Database.EnsureCreated();
         }
+        #region DbSet Entities
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Categories> Categories { get; set; }
@@ -49,6 +51,7 @@ namespace Infrastructure.Data
         public DbSet<Coupon> Coupons { get; set; }
         public DbSet<CouponProduct> CouponProducts { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        #endregion
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
