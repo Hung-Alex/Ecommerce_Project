@@ -1,4 +1,5 @@
 ﻿using Application.Common.Behavior;
+using Application.Common.Interface;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System;

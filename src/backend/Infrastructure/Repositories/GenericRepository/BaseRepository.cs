@@ -2,20 +2,15 @@
 using Domain.Interface;
 using Domain.Shared;
 using Domain.Specifications;
+using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories.GenericRepository
 {
-    public class BaseRepository<TContext, T> : IRepository<TContext, T> where T : BaseEntity, IAggregateRoot where TContext : DbContext
+    public class BaseRepository<T> : IRepository<T> where T : BaseEntity, IAggregateRoot
     {
-        protected readonly TContext _context;
-        public BaseRepository(TContext context)
+        protected readonly StoreDbContext _context;
+        public BaseRepository(StoreDbContext context)
         {
             _context = context;
         }
@@ -31,7 +26,7 @@ namespace Infrastructure.Repositories.GenericRepository
 
         public async Task<T> FindOneAsync(BaseSpecification<T> spec, CancellationToken cancellationToken = default)
         {
-            var result=GetQuery(_context.Set<T>(),spec);
+            var result = GetQuery(_context.Set<T>(), spec);
             return await result.FirstOrDefaultAsync(cancellationToken);
         }
 
@@ -43,7 +38,7 @@ namespace Infrastructure.Repositories.GenericRepository
 
         public async Task<T> GetByIdAsync(object id, CancellationToken cancellationToken = default)
         {
-            return await _context.Set<T>().FindAsync(new object[] { id },cancellationToken);
+            return await _context.Set<T>().FindAsync(new object[] { id }, cancellationToken);
         }
 
         public void Update(T entity)
@@ -77,6 +72,6 @@ namespace Infrastructure.Repositories.GenericRepository
                     .Take(spec.Take);
             }
             return query;
-        }
+        }   
     }
 }

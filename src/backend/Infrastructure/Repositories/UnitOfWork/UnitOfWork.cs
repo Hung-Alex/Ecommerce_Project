@@ -1,16 +1,17 @@
-﻿using Domain.Common;
+﻿using Application.Common.Interface;
+using Domain.Common;
 using Domain.Interface;
 using Domain.Shared;
-using Microsoft.EntityFrameworkCore;
+using Infrastructure.Data;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Repositories.UnitOfWork
 {
-    public class UnitOfWork<TDbContext> : IUnitOfWork<TDbContext> where TDbContext : DbContext
+    public class UnitOfWork : IUnitOfWork
     {
-        private readonly TDbContext _dbContext;
+        private readonly StoreDbContext _dbContext;
         private readonly IServiceProvider _serviceProvider;
-        public UnitOfWork(TDbContext dbContext, IServiceProvider serviceProvider)
+        public UnitOfWork(StoreDbContext dbContext, IServiceProvider serviceProvider)
         {
             _dbContext = dbContext;
             _serviceProvider = serviceProvider;
@@ -31,9 +32,9 @@ namespace Infrastructure.Repositories.UnitOfWork
             _dbContext?.Dispose();
         }
 
-        public IRepository<TDbContext, T> GetRepository<T>() where T : BaseEntity, IAggregateRoot
+        public IRepository<T> GetRepository<T>() where T : BaseEntity, IAggregateRoot
         {
-            return _serviceProvider.GetService<IRepository<TDbContext, T>>() ?? throw new ArgumentNullException();
+            return _serviceProvider.GetService<IRepository<T>>() ?? throw new ArgumentNullException();
         }
     }
 }

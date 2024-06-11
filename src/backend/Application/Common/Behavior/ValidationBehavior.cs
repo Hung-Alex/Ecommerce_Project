@@ -1,7 +1,6 @@
 ﻿using Domain.Behavior;
 using FluentValidation;
 using MediatR;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Application.Common.Behavior
 {

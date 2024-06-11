@@ -1,44 +1,56 @@
-﻿using Domain.Entities.Brands;
-using Domain.Entities.Products;
-using Domain.Interface;
-using Infrastructure.Data;
-using Infrastructure.Repositories.GenericRepository;
-using Infrastructure.Repositories.UnitOfWork;
+﻿using Application.Common.Interface;
+using Application.CQRS.Brands.Commands.CreateBrand;
+using Domain.Entities.Brands;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
+using WebMemoryzoneApi.Filters;
+using WebMemoryzoneApi.Model.Brand;
+using WebMemoryzoneApi.Shared;
 
 namespace WebMemoryzoneApi.Controllers
 {
     [ApiController]
-    [Route("Controller")]
-    public class HomeController:ControllerBase
+    [Route("api/brands")]
+    public class BrandController : ControllerBase
     {
-
-
-        private readonly IUnitOfWork<StoreDbContext> _unitOfWork;
-
-        public HomeController(IUnitOfWork<StoreDbContext> unitOfWork)
+        private readonly IMediator _mediator;
+        public BrandController(IMediator mediator)
         {
-            _unitOfWork = unitOfWork;
+            _mediator = mediator;
         }
-
-        [HttpPost]
-        public async Task<IActionResult> Get()
+        [HttpGet("{Id:Guid}")]
+        public async Task<ActionResult> GetById(Guid Id)
         {
-            // Sử dụng UnitOfWork và IRepository ở đây
-            try
-            {
-                
-                var repository = _unitOfWork.GetRepository<Brand>();
-                 repository.Add(new Brand() {Name="Apple" ,Description="đá",LogoImageUrl="asdas",UrlSlug="dasd"});
-                await _unitOfWork.Commit();
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                // Xử lý ngoại lệ
-                return StatusCode(500, ex.Message);
-            }
+            return Ok();
+        }
+        [HttpGet]
+        public async Task<ActionResult> GetBrands([FromQuery] PagingModel pagingModel, [FromQuery] BrandFilters brandFilters)
+        {
+
+            return Ok();
+        }
+        [HttpPut("{Id:Guid}")]
+        public async Task<ActionResult> UpadateBrand(Guid Id)
+        {
+            return Ok();
+        }
+        [HttpDelete("{Id:Guid}")]
+        public async Task<ActionResult> DeleteBrand(Guid Id)
+        {
+            return Ok();
+        }
+        [HttpGet("{slug}")]
+        public async Task<ActionResult> GetBrandByUrlSlug(string slug)
+        {
+            return Ok();
+        }
+        [HttpPost]
+        [FileValidatorFilter<CreateBrandCommand>([".png",".jpg"], 1024 * 1024)]
+        public async Task<IActionResult> AddBrand([FromForm]CreateBrandCommand createBrandCommand)
+        {
+            await _mediator.Send(createBrandCommand);
+            return Ok();
         }
     }
 }
