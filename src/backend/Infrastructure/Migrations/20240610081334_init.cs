@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class ilo : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -565,22 +565,21 @@ namespace Infrastructure.Migrations
                 name: "ProductSkus",
                 columns: table => new
                 {
-                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    ProductId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductSkus", x => x.ProductId);
+                    table.PrimaryKey("PK_ProductSkus", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductSkus_Products_ProductId1",
-                        column: x => x.ProductId1,
+                        name: "FK_ProductSkus_Products_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -707,7 +706,7 @@ namespace Infrastructure.Migrations
                         name: "FK_CartItems_ProductSkus_ProductSkusId",
                         column: x => x.ProductSkusId,
                         principalTable: "ProductSkus",
-                        principalColumn: "ProductId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CartItems_Products_ProductId",
@@ -743,7 +742,7 @@ namespace Infrastructure.Migrations
                         name: "FK_OrderItems_ProductSkus_ProductSkusId",
                         column: x => x.ProductSkusId,
                         principalTable: "ProductSkus",
-                        principalColumn: "ProductId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -878,9 +877,9 @@ namespace Infrastructure.Migrations
                 column: "BrandId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductSkus_ProductId1",
+                name: "IX_ProductSkus_ProductId",
                 table: "ProductSkus",
-                column: "ProductId1");
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductSubCategories_ProductId",

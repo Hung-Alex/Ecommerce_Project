@@ -5,9 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.CQRS.Brand.Commands.CreateBrand
+namespace Application.CQRS.Brands.Commands.DeleteBrand
 {
-    public record CreateBrandCommand:IRequest
-    {
-    }
+    public record DeleteBrandCommand(Guid Id) : IRequest;
 }

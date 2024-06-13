@@ -11,6 +11,7 @@ namespace Domain.Entities.Images
         public Image() : base() { }
         public string ImageUrl { get; set; }
         public string ImageExtension { get; set; }
+        public string PublicId { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public virtual ICollection<ProductImages> ProductImages { get; set; }

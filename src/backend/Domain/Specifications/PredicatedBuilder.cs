@@ -20,6 +20,7 @@ namespace Domain.Specifications
             var expressionBody = replace.Visit(expression.Body);
             return Expression.Lambda<Func<T, bool>>(Expression.OrElse(sourc.Body, expressionBody), parameterSourc);
         }
+
     }
     public class ReplaceParameterExpressionVisistor : ExpressionVisitor
     {

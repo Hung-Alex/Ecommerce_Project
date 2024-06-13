@@ -11,6 +11,7 @@ namespace Domain.Entities.Products
 {
     public class ProductSkus : BaseEntity, IDatedModification
     {
+        public ProductSkus():base() { }
         public string Name { get; set; }
         public string Description { get; set; }
         public Decimal Price { get; set; }
