@@ -24,15 +24,13 @@ namespace WebMemoryzoneApi.Filters
                 context.Result = new BadRequestObjectResult("No file data provided.");
                 return;
             }
-
             var properties = param.Value.GetType().GetProperties();
-
             foreach (var property in properties)
             {
                 if (property.PropertyType == typeof(IFormFile))
                 {
                     var file = property.GetValue(param.Value) as IFormFile;
-                    if (!ValidateFile(context, file)) return;
+                    if (!(file is null) && !ValidateFile(context, file)) return;
                 }
                 else if (property.PropertyType == typeof(IFormFile[]))
                 {
@@ -41,7 +39,7 @@ namespace WebMemoryzoneApi.Filters
                     {
                         foreach (var file in files)
                         {
-                            if (!ValidateFile(context, file)) return;
+                            if (!(file is null) && !ValidateFile(context, file)) return;
                         }
                     }
                 }

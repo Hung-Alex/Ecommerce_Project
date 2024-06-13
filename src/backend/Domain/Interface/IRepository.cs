@@ -12,5 +12,6 @@ namespace Domain.Interface
         Task<T> FindOneAsync(BaseSpecification<T> spec, CancellationToken cancellationToken = default);
         Task<T> GetByIdAsync(object id, CancellationToken cancellationToken = default);
         Task<IEnumerable<T>> GetAllAsync(BaseSpecification<T> spec, CancellationToken cancellationToken = default);
+        Task<long> CountAsync(BaseSpecification<T> spec, CancellationToken cancellationToken = default);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Application.Common.Interface;
-using Application.DTOs;
 using CloudinaryDotNet.Actions;
 using CloudinaryDotNet;
 using Microsoft.AspNetCore.Http;
@@ -9,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.DTOs.Internal;
 
 namespace Infrastructure.Services.CloudinaryUpload
 {
@@ -29,7 +29,6 @@ namespace Infrastructure.Services.CloudinaryUpload
         {
             throw new NotImplementedException();
         }
-
         public async Task<ImageUpload> UploadLoadImageAsync(IFormFile file, CancellationToken cancellationToken = default)
         {
             var uploadResult = new ImageUploadResult();

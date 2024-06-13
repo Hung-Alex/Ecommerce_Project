@@ -3,6 +3,8 @@ using Domain.Common;
 using Domain.Interface;
 using Domain.Shared;
 using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Repositories.UnitOfWork
@@ -20,6 +22,7 @@ namespace Infrastructure.Repositories.UnitOfWork
         {
             try
             {
+                //ChangeModified();
                 await _dbContext.SaveChangesAsync();
             }
             catch (Exception)
@@ -31,7 +34,20 @@ namespace Infrastructure.Repositories.UnitOfWork
         {
             _dbContext?.Dispose();
         }
+        //private void ChangeModified()
+        //{
+        //    var trackerEntity = _dbContext.ChangeTracker.Entries().Where(x => x is IDatedModification).ToList();
+        //    trackerEntity.ForEach(x =>
+        //    {
+        //        ((IDatedModification)x.Entity).UpdatedAt = DateTime.Now;
+        //        if (x.State == EntityState.Added)
+        //        {
+        //            ((IDatedModification)x.Entity).CreatedAt = DateTime.Now;
+        //        }
+        //    }
+        //    );
 
+        //}
         public IRepository<T> GetRepository<T>() where T : BaseEntity, IAggregateRoot
         {
             return _serviceProvider.GetService<IRepository<T>>() ?? throw new ArgumentNullException();

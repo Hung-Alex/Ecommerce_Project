@@ -1,4 +1,4 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.Internal;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;

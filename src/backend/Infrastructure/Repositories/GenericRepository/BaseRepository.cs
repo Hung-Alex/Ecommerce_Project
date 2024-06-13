@@ -40,7 +40,12 @@ namespace Infrastructure.Repositories.GenericRepository
         {
             return await _context.Set<T>().FindAsync(new object[] { id }, cancellationToken);
         }
-
+        public async Task<long> CountAsync(BaseSpecification<T> spec, CancellationToken cancellationToken = default)
+        {
+            spec.IsPagingEnabled = false;
+            var result = GetQuery(_context.Set<T>(), spec);
+            return await result.LongCountAsync(cancellationToken);
+        }
         public void Update(T entity)
         {
             _context.Update(entity);
@@ -72,6 +77,6 @@ namespace Infrastructure.Repositories.GenericRepository
                     .Take(spec.Take);
             }
             return query;
-        }   
+        }
     }
 }
