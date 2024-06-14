@@ -1,4 +1,4 @@
-﻿using Application.DTOs.Responses;
+﻿using Application.DTOs.Responses.Brand;
 using MediatR;
 
 namespace Application.CQRS.Brands.Queries.GetById

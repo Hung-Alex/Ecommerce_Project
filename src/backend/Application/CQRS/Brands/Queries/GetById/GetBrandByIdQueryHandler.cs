@@ -1,6 +1,6 @@
 ﻿using Application.Common.Interface;
 using Application.CQRS.Brands.Specification;
-using Application.DTOs.Responses;
+using Application.DTOs.Responses.Brand;
 using AutoMapper;
 using Domain.Entities.Brands;
 using MediatR;
