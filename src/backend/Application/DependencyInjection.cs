@@ -32,9 +32,9 @@ namespace Application
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = "",
-                    ValidAudience = "",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("")),
+                    ValidIssuer = "dfgdfgdfgdfgdfg",
+                    ValidAudience = "dfgdfgdfgdfgdfg",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("dfgdfgdfgdfgdfg")),
                     ClockSkew = TimeSpan.FromHours(1),
                 };
                 options.SaveToken = true;

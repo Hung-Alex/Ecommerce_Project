@@ -21,9 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CQRS\Brands\Queries\GetByUrlSlug\" />
+    <Folder Include="Features\Brands\Queries\GetByUrlSlug\" />
     <Folder Include="DTOs\Filters\Categories\" />
-    <Folder Include="DTOs\Request\" />
   </ItemGroup>
 
 </Project>

@@ -10,6 +10,5 @@ namespace Application.Common.Exceptions
     {
         public NotFoundException() : base() { }
         public NotFoundException(string message) : base(message) { }
-
     }
 }

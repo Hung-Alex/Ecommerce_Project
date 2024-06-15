@@ -1,8 +1,8 @@
-﻿using Application.CQRS.Brands.Commands.CreateBrand;
-using Application.CQRS.Brands.Commands.DeleteBrand;
-using Application.CQRS.Brands.Commands.UpdateBrand;
-using Application.CQRS.Brands.Queries.Get;
-using Application.CQRS.Brands.Queries.GetById;
+﻿using Application.Features.Brands.Commands.CreateBrand;
+using Application.Features.Brands.Commands.DeleteBrand;
+using Application.Features.Brands.Commands.UpdateBrand;
+using Application.Features.Brands.Queries.Get;
+using Application.Features.Brands.Queries.GetById;
 using Application.DTOs.Filters.Brand;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

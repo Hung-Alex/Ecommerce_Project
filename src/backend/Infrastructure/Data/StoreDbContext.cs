@@ -21,7 +21,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
 {
-    public class StoreDbContext : IdentityDbContext<CustomUser,IdentityRole<Guid>,Guid>
+    public class StoreDbContext : IdentityDbContext<ApplicationUser,IdentityRole<Guid>,Guid>
     {
         public StoreDbContext(DbContextOptions options) : base(options)
         {
