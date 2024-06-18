@@ -1,4 +1,4 @@
-﻿using Application.DTOs.Responses;
+﻿using Application.DTOs.Responses.Brand;
 using AutoMapper;
 using Domain.Entities.Brands;
 using System;

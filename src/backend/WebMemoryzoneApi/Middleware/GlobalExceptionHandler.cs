@@ -23,6 +23,12 @@ namespace WebMemoryzoneApi.Middleware
                     IEnumerable<string> validationErrors = fluentException.Errors.Select(x => x.ErrorMessage).ToList();
                     problemDetails.Extensions.Add("errors", validationErrors);
                     break;
+                case ValidationException validationException:
+                    problemDetails.Title = validationException.Message;
+                    problemDetails.Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1";
+                    httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                    problemDetails.Extensions.Add("error", validationException.Error);
+                    break;
                 case ConflictException conflictException:
                     problemDetails.Title = "Conflict error occurred.";
                     problemDetails.Type = "https://tools.ietf.org/html/rfc7231#section-6.5.8";

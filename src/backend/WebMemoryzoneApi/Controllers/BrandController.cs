@@ -1,8 +1,8 @@
-﻿using Application.CQRS.Brands.Commands.CreateBrand;
-using Application.CQRS.Brands.Commands.DeleteBrand;
-using Application.CQRS.Brands.Commands.UpdateBrand;
-using Application.CQRS.Brands.Queries.Get;
-using Application.CQRS.Brands.Queries.GetById;
+﻿using Application.Features.Brands.Commands.CreateBrand;
+using Application.Features.Brands.Commands.DeleteBrand;
+using Application.Features.Brands.Commands.UpdateBrand;
+using Application.Features.Brands.Queries.Get;
+using Application.Features.Brands.Queries.GetById;
 using Application.DTOs.Filters.Brand;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -11,6 +11,7 @@ using WebMemoryzoneApi.Filters;
 
 namespace WebMemoryzoneApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/brands")]
     public class BrandController : ControllerBase
@@ -53,6 +54,11 @@ namespace WebMemoryzoneApi.Controllers
         [HttpGet("{slug}")]
         public async Task<ActionResult> GetBrandByUrlSlug(string slug)
         {
+            foreach (var item in HttpContext.User.Claims)
+            {
+                await Console.Out.WriteLineAsync(item.Value.ToString());
+            }
+
             return Ok();
         }
         [HttpPost]
