@@ -57,13 +57,12 @@ namespace Infrastructure
                     ValidIssuer = jwtSettings.GetValue<string>("Issuer"),
                     ValidAudience = jwtSettings.GetValue<string>("Audience"),
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.GetValue<string>("SecretKey"))),
-                    ClockSkew = TimeSpan.FromMinutes(60),
+                    ClockSkew = TimeSpan.FromSeconds(30),
                 };
                 options.SaveToken = true;
                 options.Events = new JwtBearerEvents();
                 options.Events = new JwtBearerEvents
                 {
-
                     OnMessageReceived = context =>
                     {
                         // Kiểm tra nếu token có trong cookie

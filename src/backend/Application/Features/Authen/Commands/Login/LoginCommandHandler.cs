@@ -1,9 +1,12 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interface;
 using Application.Common.Interface.IdentityService;
+using Application.DTOs.Internal.Authen;
 using Application.DTOs.Responses.Auth;
 using Application.Helper;
+using Domain.Constants;
 using MediatR;
+using System.Text.Json;
 
 namespace Application.Features.Authen.Commands.Login
 {
@@ -23,7 +26,9 @@ namespace Application.Features.Authen.Commands.Login
             var user = await _identityService.GetUserAsync(request.UserName);
             var token = await _jwtProvider.GenerateTokenAsync(user.Id);
             var refreshToken = JWTHelper.GenerateRefreshToken(DateTime.Now.AddDays(7));
-            return new AuthencationResponse( token, refreshToken.Token, "bear", DateTime.Now, DateTime.Now, Guid.NewGuid());
+            var convertRefreshIntoJson=JsonSerializer.Serialize<RefreshToken>(refreshToken);
+            await _identityService.SaveRefreshTokenAsync(user.Id, UserToken.Provider, UserToken.RefreshToken, convertRefreshIntoJson);
+            return new AuthencationResponse(token, refreshToken.Token, "Bearer", Guid.NewGuid());
         }
     }
 }
