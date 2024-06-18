@@ -12,11 +12,7 @@ namespace Application.Features.Authen.Commands.Register
             _identityService = identityService;
         }
         public async Task Handle(RegisterCommand request, CancellationToken cancellationToken)
-        {
-            if (request.Password != request.ConfirmPassword)
-            {
-                throw new ValidationException();
-            }
+        {    
             await _identityService.CreateUserAsync(request.Email, request.Password, request.userName);
         }
     }

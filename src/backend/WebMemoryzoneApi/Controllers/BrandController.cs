@@ -11,6 +11,7 @@ using WebMemoryzoneApi.Filters;
 
 namespace WebMemoryzoneApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/brands")]
     public class BrandController : ControllerBase
@@ -53,6 +54,11 @@ namespace WebMemoryzoneApi.Controllers
         [HttpGet("{slug}")]
         public async Task<ActionResult> GetBrandByUrlSlug(string slug)
         {
+            foreach (var item in HttpContext.User.Claims)
+            {
+                await Console.Out.WriteLineAsync(item.Value.ToString());
+            }
+
             return Ok();
         }
         [HttpPost]

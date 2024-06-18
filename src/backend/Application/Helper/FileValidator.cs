@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace Application.Utils
+namespace Application.Helper
 {
     public static class FileValidator
     {
@@ -11,7 +11,7 @@ namespace Application.Utils
         }
         public static bool IsFileSizeWithinLimit(IFormFile file, long limit)
         {
-            return file.Length<=limit;
+            return file.Length <= limit;
         }
     }
 }

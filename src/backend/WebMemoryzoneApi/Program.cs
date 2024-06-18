@@ -1,5 +1,6 @@
 using Application;
 using Infrastructure;
+using Microsoft.Extensions.Logging;
 using WebMemoryzoneApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,11 +25,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseExceptionHandler();
-
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
+app.UseAuthorization();
 app.MapControllers();
-
 app.Run();
