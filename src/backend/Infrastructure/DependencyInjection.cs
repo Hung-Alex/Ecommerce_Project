@@ -44,6 +44,9 @@ namespace Infrastructure
             services.AddAuthentication(cfg =>
             {
                 cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                cfg.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+                cfg.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
             }).AddJwtBearer(options =>
             {
                 options.IncludeErrorDetails = true;
@@ -64,14 +67,14 @@ namespace Infrastructure
                 options.Events = new JwtBearerEvents
                 {
                     OnMessageReceived = context =>
-                    {
-                        // Kiểm tra nếu token có trong cookie
-                        if (context.Request.Cookies.ContainsKey("X-Access-Token"))
                         {
-                            context.Token = context.Request.Cookies["X-Access-Token"];
+                            // Kiểm tra nếu token có trong cookie
+                            if (context.Request.Cookies.ContainsKey("X-Access-Token"))
+                            {
+                                context.Token = context.Request.Cookies["X-Access-Token"];
+                            }
+                            return Task.CompletedTask;
                         }
-                        return Task.CompletedTask;
-                    }
                 };
             });
 
