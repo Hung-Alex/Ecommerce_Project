@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 
 namespace Infrastructure.Services.Auth
@@ -17,17 +18,15 @@ namespace Infrastructure.Services.Auth
         public JwtProvider(UserManager<ApplicationUser> userManager, IConfiguration configuration)
         {
             _userManager = userManager;
-            _configuration = configuration ?? throw new NotImplementedException("jwt configuration not found");
+            _configuration = configuration ?? throw new NotImplementedException("configuration not found");
         }
         public async Task<string> GenerateTokenAsync(Guid userId)
         {
-            // Lấy JwtSetting từ cấu hình
             var jwtSettings = _configuration.GetSection("JwtSetting");
             var issuer = jwtSettings.GetValue<string>("Issuer");
             var audience = jwtSettings.GetValue<string>("Audience");
             var expiredTokenMinutes = jwtSettings.GetValue<int>("ExpiredToken");
             var secretKey = jwtSettings.GetValue<string>("SecretKey");
-            // Tạo signing credentials
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var user = await _userManager.FindByIdAsync(userId.ToString());
@@ -48,11 +47,59 @@ namespace Infrastructure.Services.Auth
                 issuer: issuer,
                 audience: audience,
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(expiredTokenMinutes),
+                expires: DateTime.Now.AddSeconds(expiredTokenMinutes),
                 signingCredentials: signingCredentials);
 
             var encode = new JwtSecurityTokenHandler().WriteToken(token);
             return encode;
+        }
+
+        public async Task<IEnumerable<Claim>> GetClaimsFromTokenAsync(string token)
+        {
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var validationParameter = GetValidationParameter();
+            SecurityToken validateToken;
+            IPrincipal principals = tokenHandler.ValidateToken(token, validationParameter, out validateToken);
+            var jwt = (JwtSecurityToken)validateToken;
+            var securityToken = tokenHandler.ReadJwtToken(token);
+            return securityToken.Claims.ToList();
+        }
+
+        public async Task<bool> ValidateTokenAsync(string token)
+        {
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var validationParameter = GetValidationParameter();
+                SecurityToken validateToken;
+                IPrincipal principals = tokenHandler.ValidateToken(token, validationParameter, out validateToken);
+                var jwt = (JwtSecurityToken)validateToken;
+                return true;
+            }
+            catch (SecurityTokenValidationException ex)
+            {
+                return false;
+            }
+        }
+        private TokenValidationParameters GetValidationParameter()
+        {
+            var jwtSettings = _configuration.GetSection("JwtSetting");
+            var issuer = jwtSettings.GetValue<string>("Issuer");
+            var audience = jwtSettings.GetValue<string>("Audience");
+            var expiredTokenMinutes = jwtSettings.GetValue<int>("ExpiredToken");
+            var secretKey = jwtSettings.GetValue<string>("SecretKey");
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+            var parameters = new TokenValidationParameters()
+            {
+                ValidateLifetime = false,
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidAudience = audience,
+                ValidIssuer = issuer,
+                IssuerSigningKey = key
+            };
+            return parameters;
         }
     }
 }

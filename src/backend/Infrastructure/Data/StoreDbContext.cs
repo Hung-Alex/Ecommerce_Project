@@ -52,7 +52,6 @@ namespace Infrastructure.Data
         public DbSet<CouponProduct> CouponProducts { get; set; }
         public DbSet<Comment> Comments { get; set; }
         #endregion
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfigurationsFromAssembly(typeof(StoreDbContext).Assembly);

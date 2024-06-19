@@ -1,6 +1,6 @@
 using Application;
 using Infrastructure;
-using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using WebMemoryzoneApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +13,7 @@ builder.Services.AddInfrastructureServices(configuration);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
