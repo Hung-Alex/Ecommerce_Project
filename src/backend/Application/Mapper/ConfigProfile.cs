@@ -1,19 +1,17 @@
 ﻿using Application.DTOs.Responses.Brand;
+using Application.DTOs.Responses.Category;
 using AutoMapper;
 using Domain.Entities.Brands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Domain.Entities.Category;
 
 namespace Application.Mapper
 {
-    public class ConfigProfile:Profile
+    public class ConfigProfile : Profile
     {
-        public ConfigProfile() 
+        public ConfigProfile()
         {
-            CreateMap<Brand,BrandDTOs>().ReverseMap();
-        }  
+            CreateMap<Brand, BrandDTOs>().ReverseMap();
+            CreateMap<Categories, CategoryDTO>().ReverseMap();
+        }
     }
 }

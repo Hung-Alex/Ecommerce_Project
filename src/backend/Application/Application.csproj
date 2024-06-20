@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <Folder Include="Features\Brands\Queries\GetByUrlSlug\" />
-    <Folder Include="DTOs\Filters\Categories\" />
+    <Folder Include="Features\Category\Queries\GetByUrlSlug\" />
   </ItemGroup>
 
 </Project>
