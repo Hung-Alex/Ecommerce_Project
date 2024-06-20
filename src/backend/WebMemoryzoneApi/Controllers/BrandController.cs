@@ -54,11 +54,6 @@ namespace WebMemoryzoneApi.Controllers
         [HttpGet("{slug}")]
         public async Task<ActionResult> GetBrandByUrlSlug(string slug)
         {
-            foreach (var item in HttpContext.User.Claims)
-            {
-                await Console.Out.WriteLineAsync(item.Value.ToString());
-            }
-
             return Ok();
         }
         [HttpPost]

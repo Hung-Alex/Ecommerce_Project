@@ -32,9 +32,10 @@ namespace Infrastructure
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             // Register Services
             services.AddScoped<IMedia, Media>();
-            services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<StoreDbContext>()
                 .AddUserManager<UserManager<ApplicationUser>>()
+                .AddRoleManager<RoleManager<ApplicationRole>>()
                 .AddSignInManager<SignInManager<ApplicationUser>>()
                 .AddDefaultTokenProviders();
             var jwtSettings = configuration.GetSection("JwtSetting");
@@ -44,6 +45,9 @@ namespace Infrastructure
             services.AddAuthentication(cfg =>
             {
                 cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                cfg.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+                cfg.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
             }).AddJwtBearer(options =>
             {
                 options.IncludeErrorDetails = true;
@@ -64,14 +68,14 @@ namespace Infrastructure
                 options.Events = new JwtBearerEvents
                 {
                     OnMessageReceived = context =>
-                    {
-                        // Kiểm tra nếu token có trong cookie
-                        if (context.Request.Cookies.ContainsKey("X-Access-Token"))
                         {
-                            context.Token = context.Request.Cookies["X-Access-Token"];
+                            // Kiểm tra nếu token có trong cookie
+                            if (context.Request.Cookies.ContainsKey("X-Access-Token"))
+                            {
+                                context.Token = context.Request.Cookies["X-Access-Token"];
+                            }
+                            return Task.CompletedTask;
                         }
-                        return Task.CompletedTask;
-                    }
                 };
             });
 

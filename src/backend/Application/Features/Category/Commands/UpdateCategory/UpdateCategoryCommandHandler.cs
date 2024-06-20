@@ -1,20 +1,20 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interface;
-using Application.Features.Brands.Specification;
 using Application.DTOs.Internal;
-using Application.DTOs.Responses.Brand;
 using AutoMapper;
-using Domain.Entities.Brands;
 using MediatR;
 using FluentValidation;
+using Application.DTOs.Responses.Category;
+using Domain.Entities.Category;
+using Domain.Constants;
 
-namespace Application.Features.Brands.Commands.UpdateBrand
+namespace Application.Features.Category.Commands.UpdateCategory
 {
-    public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, BrandDTOs>
+    public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, CategoryDTO>
     {
-        internal class UpdateBrandCommandValidator : AbstractValidator<UpdateBrandCommand>
+        internal class UpdateCategoryCommandValidator : AbstractValidator<UpdateCategoryCommand>
         {
-            public UpdateBrandCommandValidator()
+            public UpdateCategoryCommandValidator()
             {
                 RuleFor(x => x.Id).NotEmpty().WithMessage("Not Null");
                 RuleFor(b => b.Name).NotEmpty().WithMessage("Not Null");
@@ -25,31 +25,31 @@ namespace Application.Features.Brands.Commands.UpdateBrand
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMedia _media;
         private readonly IMapper _mapper;
-        public UpdateBrandCommandHandler(IUnitOfWork unitOfWork, IMedia media, IMapper mapper)
+        public UpdateCategoryCommandHandler(IUnitOfWork unitOfWork, IMedia media, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _media = media;
             _mapper = mapper;
         }
-        public async Task<BrandDTOs> Handle(UpdateBrandCommand request, CancellationToken cancellationToken)
+        public async Task<CategoryDTO> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
         {
-            var brandRepo = _unitOfWork.GetRepository<Brand>();
-            var brand = await brandRepo.GetByIdAsync(request.Id);
-            if (brand == null) throw new NotFoundException("");
+            var repoCategory = _unitOfWork.GetRepository<Categories>();
+            var category = await repoCategory.GetByIdAsync(request.Id);
+            if (category == null) throw new NotFoundException(ErrorConstants.NotFound + request.Id);
             ImageUpload uploadResult = null;
             if (!(request.Image is null))
             {
                 uploadResult = await _media.UploadLoadImageAsync(request.Image, cancellationToken);
             }
-            brand.UrlSlug = request.UrlSlug;
-            brand.Name = request.Name;
-            brand.Description = request.Description;
+            category.UrlSlug = request.UrlSlug;
+            category.Name = request.Name;
+            category.Description = request.Description;
             if (!(uploadResult is null))
             {
-                brand.LogoImageUrl = uploadResult.Url;
+                category.Image = uploadResult.Url;
             }
             await _unitOfWork.Commit();
-            return _mapper.Map<BrandDTOs>(brand);
+            return _mapper.Map<CategoryDTO>(category);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interface.IdentityService;
+﻿using Application.Common.Interface.IdentityService;
 using MediatR;
 
 namespace Application.Features.Authen.Commands.Register

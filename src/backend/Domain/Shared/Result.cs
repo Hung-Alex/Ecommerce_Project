@@ -9,8 +9,8 @@ namespace Domain.Shared
     public class Result<T>
     {
         public T Data { get; set; }
-        public Result(T data) 
-        { 
+        public Result(T data)
+        {
             Data = data;
         }
     }

@@ -10,6 +10,6 @@ namespace Application.Common.Interface.IdentityService
         Task<bool> SignInAsync(string userName, string password, CancellationToken cancellationToken = default);
         Task<bool> SaveRefreshTokenAsync(Guid userId, string provider, string tokenName, string value);
         Task<bool> DeleteRefreshTokenAsync(Guid userId, string provider, string tokenName);
-        Task<string> GetRefreshTokenAsync(Guid userId,string provider,string tokenName);
+        Task<string> GetRefreshTokenAsync(Guid userId, string provider, string tokenName);
     }
 }

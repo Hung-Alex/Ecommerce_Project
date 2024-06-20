@@ -43,7 +43,6 @@ namespace WebMemoryzoneApi.Middleware
                     break;
                 default:
                     problemDetails.Title = exception.Message;
-                    httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
                     break;
             }
             _logger.LogError("{ProblemDetailsTitle}", problemDetails.Title);
