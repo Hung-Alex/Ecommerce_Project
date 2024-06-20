@@ -32,9 +32,10 @@ namespace Infrastructure
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             // Register Services
             services.AddScoped<IMedia, Media>();
-            services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<StoreDbContext>()
                 .AddUserManager<UserManager<ApplicationUser>>()
+                .AddRoleManager<RoleManager<ApplicationRole>>()
                 .AddSignInManager<SignInManager<ApplicationUser>>()
                 .AddDefaultTokenProviders();
             var jwtSettings = configuration.GetSection("JwtSetting");

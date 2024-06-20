@@ -6,11 +6,22 @@ using Application.DTOs.Responses.Brand;
 using AutoMapper;
 using Domain.Entities.Brands;
 using MediatR;
+using FluentValidation;
 
 namespace Application.Features.Brands.Commands.UpdateBrand
 {
     public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, BrandDTOs>
     {
+        internal class UpdateBrandCommandValidator : AbstractValidator<UpdateBrandCommand>
+        {
+            public UpdateBrandCommandValidator()
+            {
+                RuleFor(x => x.Id).NotEmpty().WithMessage("Not Null");
+                RuleFor(b => b.Name).NotEmpty().WithMessage("Not Null");
+                RuleFor(b => b.Description).NotEmpty().WithMessage("Not Null");
+                RuleFor(b => b.UrlSlug).NotEmpty().WithMessage("Not Null");
+            }
+        }
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMedia _media;
         private readonly IMapper _mapper;

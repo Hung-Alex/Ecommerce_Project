@@ -3,6 +3,11 @@ namespace Domain.Constants
 {
     public static class UserRoleConstants
     {
-        public const string RoleDefault = "User";
+        public enum Roles
+        {
+            SupperAdmin,
+            Employee,
+            User
+        }
     }
 }

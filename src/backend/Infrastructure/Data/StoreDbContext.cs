@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Domain.Constants;
+using Domain.Entities;
 using Domain.Entities.Brands;
 using Domain.Entities.Carts;
 using Domain.Entities.Category;
@@ -21,11 +22,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
 {
-    public class StoreDbContext : IdentityDbContext<ApplicationUser,IdentityRole<Guid>,Guid>
+    public class StoreDbContext : IdentityDbContext<ApplicationUser,ApplicationRole,Guid>
     {
         public StoreDbContext(DbContextOptions options) : base(options)
         {
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
         #region DbSet Entities
         public DbSet<Brand> Brands { get; set; }
@@ -54,8 +55,15 @@ namespace Infrastructure.Data
         #endregion
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<ApplicationRole>().HasData(
+                new ApplicationRole() { Id = new Guid("911B0CBD-4EED-4EB0-8488-1B2CDD915C02"), Name = nameof(UserRoleConstants.Roles.User) },
+                new ApplicationRole() { Id = new Guid("911B0CBD-4EED-4EB0-8488-1B2CDD915C01"), Name = nameof(UserRoleConstants.Roles.SupperAdmin) },
+                new ApplicationRole() { Id = new Guid("911B0CBD-4EED-4EB0-8488-1B2CDD915C03"), Name = nameof(UserRoleConstants.Roles.Employee) }
+                );
+
             builder.ApplyConfigurationsFromAssembly(typeof(StoreDbContext).Assembly);
             base.OnModelCreating(builder);
+
         }
     }
 }
