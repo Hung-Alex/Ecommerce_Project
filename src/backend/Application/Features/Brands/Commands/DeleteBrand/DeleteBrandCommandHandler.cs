@@ -1,7 +1,7 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interface;
 using Domain.Constants;
-using Domain.Entities.Category;
+using Domain.Entities.Brands;
 using MediatR;
 
 namespace Application.Features.Brands.Commands.DeleteBrand
@@ -15,7 +15,7 @@ namespace Application.Features.Brands.Commands.DeleteBrand
         }
         public async Task Handle(DeleteBrandCommand request, CancellationToken cancellationToken)
         {
-            var repoBrand = _unitOfWork.GetRepository<Categories>();
+            var repoBrand = _unitOfWork.GetRepository<Brand>();
             var brand = await repoBrand.GetByIdAsync(request.Id);
             if (brand == null)
             {

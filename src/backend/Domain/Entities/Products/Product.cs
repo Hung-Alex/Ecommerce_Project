@@ -8,10 +8,11 @@ namespace Domain.Entities.Products
 {
     public class Product : BaseEntity, IDatedModification, IAggregateRoot
     {
-        private Product() : base() { }
+        public Product() : base() { }
         public string Name { get; set; }
         public string Description { get; set; }
         public Decimal Price { get; set; }
+        public string UrlSlug { get; set; }
         public string UnitPrice { get; set; }
         public int? Discount { get; set; }
         public DateTime CreatedAt { get; set; }
