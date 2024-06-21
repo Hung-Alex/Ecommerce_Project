@@ -1,14 +1,9 @@
 ﻿using Domain.Entities.Brands;
 using Domain.Entities.Carts;
-using Domain.Entities.Category;
-using Domain.Entities.Comments;
 using Domain.Entities.Coupons;
-using Domain.Entities.Images;
-using Domain.Entities.Orders;
 using Domain.Entities.Rattings;
 using Domain.Common;
 using Domain.Shared;
-using Domain.Entities.SubCategories;
 namespace Domain.Entities.Products
 {
     public class Product : BaseEntity, IDatedModification, IAggregateRoot
