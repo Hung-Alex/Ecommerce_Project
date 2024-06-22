@@ -1,5 +1,4 @@
-﻿using Domain.Entities.Brands;
-using Domain.Entities.Products;
+﻿using Domain.Entities.Products;
 using Domain.Specifications;
 using System.Linq.Expressions;
 

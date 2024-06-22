@@ -1,30 +1,40 @@
 ﻿using Application.Common.Interface;
-using Application.Features.Brands.Specification;
-using Application.DTOs.Responses.Brand;
-using AutoMapper;
-using Domain.Entities.Brands;
 using Domain.Shared;
 using MediatR;
+using Application.Features.Products.Specification;
+using Domain.Entities.Products;
+using Application.DTOs.Responses.Product;
 
 
 namespace Application.Features.Products.Queries.Get
 {
-    public class GetListProductQueriesHandler : IRequestHandler<GetListProductQuery, Result<IEnumerable<BrandDTOs>>>
+    public class GetListProductQueriesHandler : IRequestHandler<GetListProductQuery, Result<IEnumerable<ProductDTO>>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private IMapper _mapper;
-        public GetListProductQueriesHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public GetListProductQueriesHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
-        public async Task<Result<IEnumerable<BrandDTOs>>> Handle(GetListProductQuery request, CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<ProductDTO>>> Handle(GetListProductQuery request, CancellationToken cancellationToken)
         {
-            var brandRepo = _unitOfWork.GetRepository<Brand>();
-            var getProductSpecification = new GetBrandsSpecification(request.ProductFilter);
-            var brands = await brandRepo.GetAllAsync(getProductSpecification);
-            var totalItems = await brandRepo.CountAsync(getProductSpecification);
-            return new PagingResult<IEnumerable<BrandDTOs>>(_mapper.Map<IEnumerable<BrandDTOs>>(brands), request.ProductFilter.PageNumber, request.ProductFilter.PageSize, totalItems);
+            var productRepo = _unitOfWork.GetRepository<Product>();
+            var getProductSpecification = new GetProductsSpecification(request.ProductFilter);
+            var products = await productRepo.GetAllAsync(getProductSpecification);
+            var totalItems = await productRepo.CountAsync(getProductSpecification);
+            return new PagingResult<IEnumerable<ProductDTO>>(products.Select(x => new ProductDTO()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description,
+                UnitPrice = x.UnitPrice,
+                Discount = x.Discount,
+                BrandId = x.BrandId,
+                Price = x.Price,
+                Images = x.Images.Select(x => x.Image.ImageUrl)
+            })
+                , request.ProductFilter.PageNumber
+                , request.ProductFilter.PageSize
+                , totalItems);
         }
     }
 }

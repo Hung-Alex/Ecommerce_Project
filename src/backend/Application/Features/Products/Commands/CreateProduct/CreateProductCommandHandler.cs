@@ -32,12 +32,12 @@ namespace Application.Features.Products.Commands.CreateProduct
             {
                 throw new ConflictException(ErrorConstants.UrlSlugIsExisted);
             }
-            ImageUpload image = new ImageUpload(null, null);
-            if (request.FormFile is not null)
-            {
-                image = await _media.UploadLoadImageAsync(request.FormFile);
-            }
-            repoProduct.Add(new Product() { Name = request.Name, Description = request.Description });
+            //ImageUpload image = new ImageUpload(null, null);
+            //if (request.FormFile is not null)
+            //{
+            //    image = await _media.UploadLoadImageAsync(request.FormFile);
+            //}
+            repoProduct.Add(new Product() { Name = request.Name, Description = request.Description, UrlSlug = request.UrlSlug, Price = request.Price, UnitPrice = request.UnitPrice, BrandId = request.BrandId });
             await _unitOfWork.Commit();
         }
     }

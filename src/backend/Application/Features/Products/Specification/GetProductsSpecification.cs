@@ -1,8 +1,6 @@
-﻿using Domain.Entities.Brands;
-using Domain.Specifications;
+﻿using Domain.Specifications;
 using System.Linq.Expressions;
 using Application.Utils;
-using Application.DTOs.Filters.Brand;
 using Domain.Entities.Products;
 using Application.DTOs.Filters.Product;
 
@@ -44,6 +42,7 @@ namespace Application.Features.Products.Specification
             {
                 ApplyOrderBy(b => b.Id);
             }
+            AddInclude(p => p.Images);
             base.Handler();
         }
     }
