@@ -1,16 +1,16 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interface;
+﻿using Application.Common.Interface;
 using Application.DTOs.Internal;
 using Application.Features.Category.Specification;
 using Domain.Constants;
 using Domain.Entities.Category;
+using Domain.Shared;
 using FluentValidation;
 using MediatR;
 
 
 namespace Application.Features.Category.Commands.CreateCategory
 {
-    public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand>
+    public sealed class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, Result<bool>>
     {
         internal class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCommandValidator>
         {
@@ -24,13 +24,13 @@ namespace Application.Features.Category.Commands.CreateCategory
             _media = media;
             _unitOfWork = unitOfWork;
         }
-        public async Task Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<Result<bool>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
             var repoCategory = _unitOfWork.GetRepository<Categories>();
             var isExisted = await repoCategory.FindOneAsync(new UrlSlugIsExistedSpecification(Guid.Empty, request.UrlSlug));
             if (isExisted != null)
             {
-                throw new ConflictException(ErrorConstants.UrlSlugIsExisted);
+                return Result<bool>.ResultFailures(ErrorConstants.UrlSlugIsExisted(request.UrlSlug));
             }
             ImageUpload image = new ImageUpload(null, null);
             if (request.FormFile is not null)
@@ -39,6 +39,7 @@ namespace Application.Features.Category.Commands.CreateCategory
             }
             repoCategory.Add(new Categories() { Name = request.Name, Description = request.Description, UrlSlug = request.UrlSlug, Image = image.Url });
             await _unitOfWork.Commit();
+            return Result<bool>.ResultSuccess(true);
         }
     }
 }

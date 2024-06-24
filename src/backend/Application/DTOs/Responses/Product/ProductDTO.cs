@@ -8,6 +8,7 @@
         public int? Discount { get; set; }
         public Guid BrandId { get; set; }
         public Decimal Price { get; set; }
+        public string UrlSlug{get; set;}    
         public IEnumerable<string> Images { get; set; }
     }
 }

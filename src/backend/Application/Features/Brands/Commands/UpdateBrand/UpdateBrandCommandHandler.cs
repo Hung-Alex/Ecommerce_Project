@@ -1,16 +1,16 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interface;
-using Application.Features.Brands.Specification;
+﻿using Application.Common.Interface;
 using Application.DTOs.Internal;
 using Application.DTOs.Responses.Brand;
 using AutoMapper;
 using Domain.Entities.Brands;
 using MediatR;
 using FluentValidation;
+using Domain.Shared;
+using Domain.Constants;
 
 namespace Application.Features.Brands.Commands.UpdateBrand
 {
-    public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, BrandDTOs>
+    public sealed class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, Result<BrandDTOs>>
     {
         internal class UpdateBrandCommandValidator : AbstractValidator<UpdateBrandCommand>
         {
@@ -31,11 +31,11 @@ namespace Application.Features.Brands.Commands.UpdateBrand
             _media = media;
             _mapper = mapper;
         }
-        public async Task<BrandDTOs> Handle(UpdateBrandCommand request, CancellationToken cancellationToken)
+        public async Task<Result<BrandDTOs>> Handle(UpdateBrandCommand request, CancellationToken cancellationToken)
         {
             var brandRepo = _unitOfWork.GetRepository<Brand>();
             var brand = await brandRepo.GetByIdAsync(request.Id);
-            if (brand == null) throw new NotFoundException("");
+            if (brand == null) return Result<BrandDTOs>.ResultFailures(ErrorConstants.NotFoundWithId(request.Id)); ;
             ImageUpload uploadResult = null;
             if (!(request.Image is null))
             {
@@ -49,7 +49,8 @@ namespace Application.Features.Brands.Commands.UpdateBrand
                 brand.LogoImageUrl = uploadResult.Url;
             }
             await _unitOfWork.Commit();
-            return _mapper.Map<BrandDTOs>(brand);
+            var brandDTO = _mapper.Map<BrandDTOs>(brand);
+            return Result<BrandDTOs>.ResultSuccess(brandDTO);
         }
     }
 }

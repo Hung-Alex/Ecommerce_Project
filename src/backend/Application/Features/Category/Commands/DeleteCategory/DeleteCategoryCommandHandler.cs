@@ -1,28 +1,29 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interface;
+﻿using Application.Common.Interface;
 using Domain.Constants;
 using Domain.Entities.Category;
+using Domain.Shared;
 using MediatR;
 
 namespace Application.Features.Category.Commands.DeleteCategory
 {
-    public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand>
+    public sealed class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, Result<bool>>
     {
         private readonly IUnitOfWork _unitOfWork;
         public DeleteCategoryCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<Result<bool>> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
         {
             var repoCategory = _unitOfWork.GetRepository<Categories>();
             var category = await repoCategory.GetByIdAsync(request.Id);
             if (category == null)
             {
-                throw new NotFoundException($"{ErrorConstants.NotFound}{request.Id}");
+                return Result<bool>.ResultFailures(ErrorConstants.NotFoundWithId(request.Id));
             }
             repoCategory.Delete(category);
             await _unitOfWork.Commit();
+            return Result<bool>.ResultSuccess(true);
         }
     }
 }

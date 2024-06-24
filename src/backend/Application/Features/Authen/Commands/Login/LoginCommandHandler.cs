@@ -6,13 +6,14 @@ using Application.DTOs.Internal.Authen;
 using Application.DTOs.Responses.Auth;
 using Application.Helper;
 using Domain.Constants;
+using Domain.Shared;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json;
 
 namespace Application.Features.Authen.Commands.Login
 {
-    public class LoginCommandHandler : IRequestHandler<LoginCommand, AuthencationResponse>
+    public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<AuthencationResponse>>
     {
         private readonly IIdentityService _identityService;
         private readonly IJwtProvider _jwtProvider;
@@ -25,13 +26,13 @@ namespace Application.Features.Authen.Commands.Login
             _configuration = configuration;
             _jwtSetting = _configuration.GetSection("JwtSetting").Get<JwtSetting>() ?? throw new ArgumentNullException();
         }
-        public async Task<AuthencationResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<Result<AuthencationResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             //check login
             var result = await _identityService.SignInAsync(request.UserName, request.Password);
             if (!result)
             {
-                throw new ValidationException(ErrorConstants.AuthUsernamePasswordInvalid);
+                return Result<AuthencationResponse>.ResultFailures(null, ErrorConstants.AuthUsernamePasswordInvalid);
             }
             //get infomation to generate token
             var user = await _identityService.GetUserAsync(request.UserName);
@@ -41,7 +42,8 @@ namespace Application.Features.Authen.Commands.Login
             //convert the refresh token to json containing the expiration time, Token. After saving it
             var convertRefreshIntoJson = JsonSerializer.Serialize<RefreshToken>(refreshToken);
             await _identityService.SaveRefreshTokenAsync(user.Id, UserToken.Provider, UserToken.RefreshToken, convertRefreshIntoJson);
-            return new AuthencationResponse(token, refreshToken.Token, "Bearer", Guid.NewGuid());
+            return Result<AuthencationResponse>.ResultSuccess(new AuthencationResponse(token, refreshToken.Token, "Bearer", user.Id));
+
         }
     }
 }

@@ -1,17 +1,15 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interface;
-using Application.Features.Brands.Specification;
-using Application.DTOs.Internal;
-using Application.DTOs.Responses.Brand;
+﻿using Application.Common.Interface;
 using AutoMapper;
-using Domain.Entities.Brands;
 using MediatR;
 using FluentValidation;
 using Application.DTOs.Responses.Product;
+using Domain.Shared;
+using Domain.Constants;
+using Domain.Entities.Products;
 
 namespace Application.Features.Products.Commands.UpdateProduct
 {
-    public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, ProductDTO>
+    public sealed class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, Result<ProductDTO>>
     {
         internal class UpdateBrandCommandValidator : AbstractValidator<UpdateProductCommand>
         {
@@ -24,33 +22,27 @@ namespace Application.Features.Products.Commands.UpdateProduct
             }
         }
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMedia _media;
         private readonly IMapper _mapper;
-        public UpdateProductCommandHandler(IUnitOfWork unitOfWork, IMedia media, IMapper mapper)
+        public UpdateProductCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
-            _media = media;
             _mapper = mapper;
         }
-        public async Task<ProductDTO> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+        public async Task<Result<ProductDTO>> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            var productRepo = _unitOfWork.GetRepository<Brand>();
-            var brand = await productRepo.GetByIdAsync(request.Id);
-            if (brand == null) throw new NotFoundException("");
-            ImageUpload uploadResult = null;
-            if (!(request.Image is null))
-            {
-                uploadResult = await _media.UploadLoadImageAsync(request.Image, cancellationToken);
-            }
-            brand.UrlSlug = request.UrlSlug;
-            brand.Name = request.Name;
-            brand.Description = request.Description;
-            if (!(uploadResult is null))
-            {
-                brand.LogoImageUrl = uploadResult.Url;
-            }
+            var productRepo = _unitOfWork.GetRepository<Product>();
+            var product = await productRepo.GetByIdAsync(request.Id);
+            if (product == null) return Result<ProductDTO>.ResultFailures(ErrorConstants.NotFoundWithId(request.Id));
+            product.UrlSlug = request.UrlSlug;
+            product.Name = request.Name;
+            product.Description = request.Description;
+            product.UnitPrice = request.UnitPrice;
+            product.Price = request.Price;
+            product.BrandId = request.BrandId;
+            product.Discount = request.Discount;
             await _unitOfWork.Commit();
-            return _mapper.Map<ProductDTO>(brand);
+            var productDTO = _mapper.Map<ProductDTO>(product);
+            return Result<ProductDTO>.ResultSuccess(productDTO);
         }
     }
 }

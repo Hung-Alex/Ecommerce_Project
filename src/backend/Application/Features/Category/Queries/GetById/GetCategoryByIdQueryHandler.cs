@@ -4,10 +4,12 @@ using MediatR;
 using Application.DTOs.Responses.Category;
 using Domain.Entities.Category;
 using Application.Features.Category.Specification;
+using Domain.Shared;
+using Domain.Constants;
 
 namespace Application.Features.Category.Queries.GetById
 {
-    public class GetCategoryByIdQueryHandler : IRequestHandler<GetCategoryByIdQuery, CategoryDTO>
+    public class GetCategoryByIdQueryHandler : IRequestHandler<GetCategoryByIdQuery, Result<CategoryDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private IMapper _mapper;
@@ -17,13 +19,14 @@ namespace Application.Features.Category.Queries.GetById
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public async Task<CategoryDTO> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<CategoryDTO>> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
         {
             var repo = _unitOfWork.GetRepository<Categories>();
             var getCategoryByIdSpecification = new GetCategoryByIdSepecification(request.Id);
             var category = await repo.FindOneAsync(getCategoryByIdSpecification);
-            if (category == null) return null;
-            return _mapper.Map<CategoryDTO>(category);
+            if (category == null) return Result<CategoryDTO>.ResultFailures(ErrorConstants.NotFoundWithId(request.Id));
+            var categoryDTO = _mapper.Map<CategoryDTO>(category);
+            return Result<CategoryDTO>.ResultSuccess(categoryDTO);
         }
     }
 }

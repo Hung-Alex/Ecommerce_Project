@@ -1,16 +1,18 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interface;
 using Application.DTOs.Internal;
+using Application.DTOs.Responses.Product;
 using Application.Features.Products.Specification;
 using Domain.Constants;
 using Domain.Entities.Products;
+using Domain.Shared;
 using FluentValidation;
 using MediatR;
 
 
 namespace Application.Features.Products.Commands.CreateProduct
 {
-    public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand>
+    public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Result<bool>>
     {
         internal class CreateBrandCommandValidator : AbstractValidator<CreateBrandCommandValidator>
         {
@@ -24,21 +26,32 @@ namespace Application.Features.Products.Commands.CreateProduct
             _media = media;
             _unitOfWork = unitOfWork;
         }
-        public async Task Handle(CreateProductCommand request, CancellationToken cancellationToken)
+        public async Task<Result<bool>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
             var repoProduct = _unitOfWork.GetRepository<Product>();
             var isExisted = await repoProduct.FindOneAsync(new UrlSlugIsExistedSpecification(Guid.Empty, request.UrlSlug));
             if (isExisted != null)
             {
-                throw new ConflictException(ErrorConstants.UrlSlugIsExisted);
+                return Result<bool>.ResultFailures(ErrorConstants.UrlSlugIsExisted(request.UrlSlug));
             }
-            //ImageUpload image = new ImageUpload(null, null);
-            //if (request.FormFile is not null)
-            //{
-            //    image = await _media.UploadLoadImageAsync(request.FormFile);
-            //}
-            repoProduct.Add(new Product() { Name = request.Name, Description = request.Description, UrlSlug = request.UrlSlug, Price = request.Price, UnitPrice = request.UnitPrice, BrandId = request.BrandId });
+            repoProduct.Add(new Product()
+            {
+                Name = request.Name
+            ,
+                Description = request.Description
+            ,
+                UrlSlug = request.UrlSlug
+            ,
+                Price = request.Price
+            ,
+                UnitPrice = request.UnitPrice
+            ,
+                BrandId = request.BrandId
+            ,
+                Discount = request.Discount
+            });
             await _unitOfWork.Commit();
+            return Result<bool>.ResultSuccess(true);
         }
     }
 }

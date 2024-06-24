@@ -1,13 +1,15 @@
 ﻿using Application.Common.Interface;
-using Application.Features.Brands.Specification;
-using Application.DTOs.Responses.Brand;
 using AutoMapper;
-using Domain.Entities.Brands;
 using MediatR;
+using Domain.Shared;
+using Application.DTOs.Responses.Product;
+using Domain.Constants;
+using Application.Features.Products.Specification;
+using Domain.Entities.Products;
 
 namespace Application.Features.Products.Queries.GetById
 {
-    public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, BrandDTOs>
+    public sealed class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, Result<ProductDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private IMapper _mapper;
@@ -17,13 +19,14 @@ namespace Application.Features.Products.Queries.GetById
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public async Task<BrandDTOs> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<ProductDTO>> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
         {
-            var repo = _unitOfWork.GetRepository<Brand>();
-            var getProductByIdSpecification = new GetBrandByIdSepecification(request.Id);
-            var brand = await repo.FindOneAsync(getProductByIdSpecification);
-            if (brand == null) return null;
-            return _mapper.Map<BrandDTOs>(brand);
+            var repo = _unitOfWork.GetRepository<Product>();
+            var getProductByIdSpecification = new GetProductByIdSepecification(request.Id);
+            var product = await repo.FindOneAsync(getProductByIdSpecification);
+            if (product == null) return Result<ProductDTO>.ResultFailures(ErrorConstants.NotFoundWithId(request.Id));
+            var productDTO = _mapper.Map<ProductDTO>(product);
+            return Result<ProductDTO>.ResultSuccess(productDTO);
         }
     }
 }

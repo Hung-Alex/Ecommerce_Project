@@ -1,12 +1,8 @@
-﻿using Application.DTOs.Internal.Authen;
-using Application.Features.Authen.Commands.Login;
+﻿using Application.Features.Authen.Commands.Login;
 using Application.Features.Authen.Commands.Refresh;
 using Application.Features.Authen.Commands.Register;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
-using System.Net;
-using System.Runtime.InteropServices;
 
 namespace WebMemoryzoneApi.Controllers
 {
@@ -22,14 +18,22 @@ namespace WebMemoryzoneApi.Controllers
         [HttpPost("register")]
         public async Task<ActionResult> Register([FromBody] RegisterCommand command)
         {
-            await _mediator.Send(command);
-            return NoContent();
+            var result = await _mediator.Send(command);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
         }
         [HttpPost("login")]
         public async Task<ActionResult> Login([FromBody] LoginCommand command)
         {
             var result = await _mediator.Send(command);
-            SetCookies(result.AccessToken, result.RefreshToken);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result);
+            }
+            SetCookies(result.Data.AccessToken, result.Data.RefreshToken);
             return Ok(result);
         }
         [HttpPost("refresh")]
@@ -40,7 +44,11 @@ namespace WebMemoryzoneApi.Controllers
             var refreshToken = Request.Cookies.FirstOrDefault(x => x.Key == "X-Refresh-Token");
             var accessToken = Request.Cookies.FirstOrDefault(x => x.Key == "X-Access-Token");
             var result = await _mediator.Send(new RefreshTokenCommand(accessToken.Value, refreshToken.Value));
-            SetCookies(result.AccessToken, result.RefreshToken);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result);
+            }
+            SetCookies(result.Data.AccessToken, result.Data.RefreshToken);
             return Ok(result);
 
         }
