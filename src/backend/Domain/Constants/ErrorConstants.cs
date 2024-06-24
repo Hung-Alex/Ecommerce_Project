@@ -1,23 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Shared;
 
 namespace Domain.Constants
 {
     public static class ErrorConstants
     {
-        public const string UrlSlugIsExisted = "Url slug is existed ";
-        public const string NotFound = "Not found with id ";
+
+        public static Error UrlSlugIsExisted(string url) => new Error("Url Slug Is Existed", $"Url slug is existed {url}");
+        public static Error NotFound(string url) => new Error("NotFound", $"Url slug is existed {url}");
+        public static Error NotFoundWithId(Guid id) => new Error("NotFound", $"Not Found With Id {id}");
+
         //Users
-        public const string UserNotFoundWithID = "Not found user with id ";
-        public const string UserNotFoundWithName = "Not found user with name ";
-        public const string UserExistedWithName = "User existed  with name ";
-        public const string UserHaveBeenSameRole = "User've been same role";
+        public static Error UserNotFoundWithID(Guid userId) => new Error("User.NotFound", $"Not found user with id {userId}");
+        public static Error UserNotFoundWithName(string name) => new Error("User.UserNotFoundWithName", $"Not found with name {name}");
+        public static Error UserExistedWithName(string name) => new Error("User.ExistedWithName", $"User existed with name {name}");
+        public static Error UserHaveBeenSameRole(string role) => new Error("User.HaveBeenSameRole", $"User have been same role {role}");
         //authencation
-        public const string AuthUsernamePasswordInvalid = "Username or password is invalid";
-        public const string AuthAccessTokenInvalid = "AccessToken is invalid";
-        public const string AuthRefreshTokenDoesNotMatchOrExpired = "Refresh token doesn't match with refresh token is saved or it was expired, you must be login again";
+        public static readonly Error AuthUsernamePasswordInvalid = new Error("Authencation.UsernamePasswordInvalid", "Username and Password Invalid");
+        public static readonly Error AuthAccessTokenInvalid = new Error("Authencation.AccessTokenInvalid", "AccessToken invalid");
+        public static readonly Error AuthRefreshTokenDoesNotMatchOrExpired
+            = new Error("Authencation.RefreshTokenDoesNotMatchOrExpired"
+                , "Refresh token doesn't match with refresh token is saved or it was expired, you must be login again");
     }
 }

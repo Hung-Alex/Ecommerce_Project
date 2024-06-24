@@ -1,5 +1,8 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interface;
+using Application.DTOs.Internal.Authen;
+using Azure.Core;
+using Domain.Constants;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -8,6 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
+using System.Text.Json;
 
 namespace Infrastructure.Services.Auth
 {
@@ -64,6 +68,23 @@ namespace Infrastructure.Services.Auth
             var jwt = (JwtSecurityToken)validateToken;
             var securityToken = tokenHandler.ReadJwtToken(token);
             return securityToken.Claims.ToList();
+        }
+
+        public async Task<bool> ValidateRefreshTokenAsync(Guid userId, string refreshToken)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            if (user is null)
+            {
+                return false;
+            }
+            var getRefreshToken = await _userManager.GetAuthenticationTokenAsync(user, UserToken.Provider, UserToken.RefreshToken);
+            var userToken = JsonSerializer.Deserialize<RefreshToken>(getRefreshToken);
+            if (getRefreshToken is null || !(refreshToken == userToken.Token && userToken.ExpriedTime >= DateTime.Now))
+            {
+                return false;
+            }
+            return true;
         }
 
         public async Task<bool> ValidateTokenAsync(string token)

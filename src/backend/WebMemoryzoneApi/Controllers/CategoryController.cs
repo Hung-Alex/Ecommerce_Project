@@ -4,6 +4,7 @@ using Application.Features.Category.Commands.DeleteCategory;
 using Application.Features.Category.Commands.UpdateCategory;
 using Application.Features.Category.Queries.Get;
 using Application.Features.Category.Queries.GetById;
+using Domain.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +26,7 @@ namespace WebMemoryzoneApi.Controllers
         public async Task<ActionResult> GetById(Guid Id)
         {
             var result = await _mediator.Send(new GetCategoryByIdQuery(Id));
-            if (result == null) return NotFound();
+            if (!result.IsSuccess) return NotFound(result);
             return Ok(result);
         }
         [HttpGet]
@@ -43,12 +44,14 @@ namespace WebMemoryzoneApi.Controllers
                 return BadRequest();
             }
             var result = await _mediator.Send(command);
+            if (!result.IsSuccess) return BadRequest(result);
             return Ok(result);
         }
         [HttpDelete("{Id:Guid}")]
         public async Task<ActionResult> DeleteCategory(Guid Id)
         {
-            await _mediator.Send(new DeleteCategoryCommand(Id));
+            var result = await _mediator.Send(new DeleteCategoryCommand(Id));
+            if (!result.IsSuccess) return NotFound(result);
             return Ok();
         }
         [HttpGet("{slug}")]
@@ -60,7 +63,8 @@ namespace WebMemoryzoneApi.Controllers
         [FileValidatorFilter<CreateCategoryCommand>([".png", ".jpg"], 1024 * 1024)]
         public async Task<IActionResult> AddCategory([FromForm] CreateCategoryCommand command)
         {
-            await _mediator.Send(command);
+            var result = await _mediator.Send(command);
+            if (!result.IsSuccess) return BadRequest(result);
             return Ok();
         }
     }

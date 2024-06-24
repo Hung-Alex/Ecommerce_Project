@@ -1,5 +1,4 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interface;
+﻿using Application.Common.Interface;
 using Application.DTOs.Internal;
 using AutoMapper;
 using MediatR;
@@ -7,10 +6,11 @@ using FluentValidation;
 using Application.DTOs.Responses.Category;
 using Domain.Entities.Category;
 using Domain.Constants;
+using Domain.Shared;
 
 namespace Application.Features.Category.Commands.UpdateCategory
 {
-    public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, CategoryDTO>
+    public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, Result<CategoryDTO>>
     {
         internal class UpdateCategoryCommandValidator : AbstractValidator<UpdateCategoryCommand>
         {
@@ -31,11 +31,11 @@ namespace Application.Features.Category.Commands.UpdateCategory
             _media = media;
             _mapper = mapper;
         }
-        public async Task<CategoryDTO> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<Result<CategoryDTO>> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
         {
             var repoCategory = _unitOfWork.GetRepository<Categories>();
             var category = await repoCategory.GetByIdAsync(request.Id);
-            if (category == null) throw new NotFoundException(ErrorConstants.NotFound + request.Id);
+            if (category == null) return Result<CategoryDTO>.ResultFailures(ErrorConstants.UserNotFoundWithID(request.Id));
             ImageUpload uploadResult = null;
             if (!(request.Image is null))
             {
@@ -49,7 +49,8 @@ namespace Application.Features.Category.Commands.UpdateCategory
                 category.Image = uploadResult.Url;
             }
             await _unitOfWork.Commit();
-            return _mapper.Map<CategoryDTO>(category);
+            var CategoryDTO = _mapper.Map<CategoryDTO>(category);
+            return Result<CategoryDTO>.ResultSuccess(CategoryDTO);
         }
     }
 }

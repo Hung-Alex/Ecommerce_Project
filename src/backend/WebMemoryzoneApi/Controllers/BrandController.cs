@@ -25,7 +25,7 @@ namespace WebMemoryzoneApi.Controllers
         public async Task<ActionResult> GetById(Guid Id)
         {
             var result = await _mediator.Send(new GetBrandByIdQuery(Id));
-            if (result == null) return NotFound();
+            if (!result.IsSuccess) return NotFound(result);
             return Ok(result);
         }
         [HttpGet]
@@ -43,12 +43,14 @@ namespace WebMemoryzoneApi.Controllers
                 return BadRequest();
             }
             var result = await _mediator.Send(command);
+            if (!result.IsSuccess) return BadRequest(result);
             return Ok(result);
         }
         [HttpDelete("{Id:Guid}")]
         public async Task<ActionResult> DeleteBrand(Guid Id)
         {
-            await _mediator.Send(new DeleteBrandCommand(Id));
+            var result = await _mediator.Send(new DeleteBrandCommand(Id));
+            if (!result.IsSuccess) return NotFound(result);
             return Ok();
         }
         [HttpGet("{slug}")]
@@ -60,7 +62,8 @@ namespace WebMemoryzoneApi.Controllers
         [FileValidatorFilter<CreateBrandCommand>([".png", ".jpg"], 1024 * 1024)]
         public async Task<IActionResult> AddBrand([FromForm] CreateBrandCommand command)
         {
-            await _mediator.Send(command);
+            var result = await _mediator.Send(command);
+            if (!result.IsSuccess) return BadRequest(result);
             return Ok();
         }
     }

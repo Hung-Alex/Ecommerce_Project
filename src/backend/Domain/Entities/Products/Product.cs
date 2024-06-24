@@ -1,22 +1,18 @@
 ﻿using Domain.Entities.Brands;
 using Domain.Entities.Carts;
-using Domain.Entities.Category;
-using Domain.Entities.Comments;
 using Domain.Entities.Coupons;
-using Domain.Entities.Images;
-using Domain.Entities.Orders;
 using Domain.Entities.Rattings;
 using Domain.Common;
 using Domain.Shared;
-using Domain.Entities.SubCategories;
 namespace Domain.Entities.Products
 {
     public class Product : BaseEntity, IDatedModification, IAggregateRoot
     {
-        private Product() : base() { }
+        public Product() : base() { }
         public string Name { get; set; }
         public string Description { get; set; }
         public Decimal Price { get; set; }
+        public string UrlSlug { get; set; }
         public string UnitPrice { get; set; }
         public int? Discount { get; set; }
         public DateTime CreatedAt { get; set; }

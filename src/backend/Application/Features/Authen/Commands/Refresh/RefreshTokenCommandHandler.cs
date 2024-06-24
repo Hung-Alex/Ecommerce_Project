@@ -10,10 +10,12 @@ using System.Text.Json;
 using Application.DTOs.Internal.Authen;
 using Application.DTOs.Internal;
 using Microsoft.Extensions.Configuration;
+using Domain.Shared;
+using Domain.Entities.Users;
 
 namespace Application.Features.Authen.Commands.Refresh
 {
-    public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, AuthencationResponse>
+    public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, Result<AuthencationResponse>>
     {
         private readonly IIdentityService _identityService;
         private readonly IJwtProvider _jwtProvider;
@@ -26,13 +28,13 @@ namespace Application.Features.Authen.Commands.Refresh
             _configuration = configuration;
             _jwtSetting = _configuration.GetSection("JwtSetting").Get<JwtSetting>() ?? throw new ArgumentNullException();
         }
-        public async Task<AuthencationResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+        public async Task<Result<AuthencationResponse>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
             //validate Accesstoken
             var validateToken = await _jwtProvider.ValidateTokenAsync(request.Token);
-            if (validateToken == false)
+            if (validateToken is false)
             {
-                throw new ValidationException(ErrorConstants.AuthAccessTokenInvalid);
+                return Result<AuthencationResponse>.ResultFailures(null, ErrorConstants.AuthAccessTokenInvalid);
             }
             //get claim from token 
             var claims = await _jwtProvider.GetClaimsFromTokenAsync(request.Token);
@@ -40,16 +42,15 @@ namespace Application.Features.Authen.Commands.Refresh
             var claimUserId = claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
             if (claimUserId is null)
             {
-                throw new ValidationException(ErrorConstants.AuthAccessTokenInvalid);
+                return Result<AuthencationResponse>.ResultFailures(null, ErrorConstants.AuthAccessTokenInvalid);
             }
             //convert userid into Guid
             var userId = new Guid(claimUserId);
             //get refresh token from database to check it is valid
-            var refreshToken = await _identityService.GetRefreshTokenAsync(userId, UserToken.Provider, UserToken.RefreshToken);
-            var userToken = JsonSerializer.Deserialize<RefreshToken>(refreshToken);
-            if (refreshToken is null || !(request.RefreshToken == userToken.Token && userToken.ExpriedTime >= DateTime.Now))
+            var refreshTokenIsValid = await _jwtProvider.ValidateRefreshTokenAsync(userId, request.RefreshToken);
+            if (!refreshTokenIsValid)
             {
-                throw new ValidationException(ErrorConstants.AuthRefreshTokenDoesNotMatchOrExpired);
+                return Result<AuthencationResponse>.ResultFailures(null, ErrorConstants.AuthRefreshTokenDoesNotMatchOrExpired);
             }
             //generate new refresh token and access token
             var newRefreshToken = JWTHelper.GenerateRefreshToken(DateTime.Now.AddDays(_jwtSetting.ExpiredRefreshToken));
@@ -57,7 +58,7 @@ namespace Application.Features.Authen.Commands.Refresh
             //convert refresh token into json then save it
             var refreshTokenJson = JsonSerializer.Serialize<RefreshToken>(newRefreshToken);
             await _identityService.SaveRefreshTokenAsync(userId, UserToken.Provider, UserToken.RefreshToken, refreshTokenJson);
-            return new AuthencationResponse(token, newRefreshToken.Token, "Bearer", userId);
+            return Result<AuthencationResponse>.ResultSuccess(new AuthencationResponse(token, newRefreshToken.Token, "Bearer", userId));
         }
     }
 }

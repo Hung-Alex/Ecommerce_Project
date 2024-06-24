@@ -1,17 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Domain.Shared
 {
     public class Result<T>
     {
         public T Data { get; set; }
-        public Result(T data)
+        protected Result(T data)
         {
             Data = data;
+        }
+        protected Result() { }
+        public IEnumerable<Error>? Errors { get; set; }
+        public bool IsSuccess { get; private set; }
+        public static Result<T> ResultSuccess(T data)
+        {
+            return new Result<T>(data) { IsSuccess = true };
+        }
+        public static Result<T> ResultFailures(params Error[] errors)
+        {
+            return new Result<T>() { IsSuccess = false, Errors = errors };
         }
     }
 }
