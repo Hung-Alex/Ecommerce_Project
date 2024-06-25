@@ -1,4 +1,5 @@
 ﻿using Application.DTOs.Internal;
+using Domain.Shared;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,8 @@ namespace Application.Common.Interface
 {
     public interface IMedia
     {
-        Task<ImageUpload> UploadLoadImageAsync(IFormFile file, CancellationToken cancellationToken = default);
-        Task<IEnumerable<ImageUpload>> UploadLoadImagesAsync(IFormFileCollection file, CancellationToken cancellationToken = default);
-        Task<bool> DeleteImageAsync(string id, CancellationToken cancellationToken = default);
+        Task<Result<ImageUpload>> UploadLoadImageAsync(IFormFile file, CancellationToken cancellationToken = default);
+        Task<Result<IEnumerable<ImageUpload>>> UploadLoadImagesAsync(IFormFileCollection file, CancellationToken cancellationToken = default);
+        Task<Result<bool>> DeleteImageAsync(string id, CancellationToken cancellationToken = default);
     }
 }

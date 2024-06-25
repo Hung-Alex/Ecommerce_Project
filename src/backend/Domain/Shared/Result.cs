@@ -19,5 +19,9 @@ namespace Domain.Shared
         {
             return new Result<T>() { IsSuccess = false, Errors = errors };
         }
+        public static Result<T> ResultFailures(IEnumerable<Error> errors)
+        {
+            return new Result<T>() { IsSuccess = false, Errors = errors };
+        }
     }
 }

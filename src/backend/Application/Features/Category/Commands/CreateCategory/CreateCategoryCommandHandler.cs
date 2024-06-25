@@ -32,12 +32,12 @@ namespace Application.Features.Category.Commands.CreateCategory
             {
                 return Result<bool>.ResultFailures(ErrorConstants.UrlSlugIsExisted(request.UrlSlug));
             }
-            ImageUpload image = new ImageUpload(null, null);
+            Result<ImageUpload> image = null;
             if (request.FormFile is not null)
             {
                 image = await _media.UploadLoadImageAsync(request.FormFile);
             }
-            repoCategory.Add(new Categories() { Name = request.Name, Description = request.Description, UrlSlug = request.UrlSlug, Image = image.Url });
+            repoCategory.Add(new Categories() { Name = request.Name, Description = request.Description, UrlSlug = request.UrlSlug, Image = image.Data.Url });
             await _unitOfWork.Commit();
             return Result<bool>.ResultSuccess(true);
         }

@@ -1,4 +1,5 @@
 ﻿using Application.DTOs.Filters.Product;
+using Application.Features.Products.Commands.AddProductImage;
 using Application.Features.Products.Commands.CreateProduct;
 using Application.Features.Products.Commands.DeleteProduct;
 using Application.Features.Products.Commands.UpdateProduct;
@@ -34,7 +35,7 @@ namespace WebMemoryzoneApi.Controllers
             return Ok(result);
         }
         [HttpPut("{Id:Guid}")]
-        public async Task<ActionResult> UpadateProduct(Guid Id, [FromForm] UpdateProductCommand command)
+        public async Task<ActionResult> UpadateProduct(Guid Id, [FromBody] UpdateProductCommand command)
         {
             if (Id != command.Id)
             {
@@ -57,8 +58,16 @@ namespace WebMemoryzoneApi.Controllers
             return Ok();
         }
         [HttpPost]
-        public async Task<IActionResult> AddProduct([FromForm] CreateProductCommand command)
+        public async Task<IActionResult> AddProduct([FromBody] CreateProductCommand command)
         {
+            var result = await _mediator.Send(command);
+            if (!result.IsSuccess) return BadRequest(result);
+            return Ok();
+        }
+        [HttpPost("AddProductImage")]
+        public async Task<IActionResult> AddProductImage([FromForm] AddProductImageCommand command)
+        {
+           
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result);
             return Ok();
