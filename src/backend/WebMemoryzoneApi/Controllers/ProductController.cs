@@ -2,6 +2,7 @@
 using Application.Features.Products.Commands.AddProductImage;
 using Application.Features.Products.Commands.CreateProduct;
 using Application.Features.Products.Commands.DeleteProduct;
+using Application.Features.Products.Commands.DeleteProductImage;
 using Application.Features.Products.Commands.UpdateProduct;
 using Application.Features.Products.Queries.Get;
 using Application.Features.Products.Queries.GetById;
@@ -21,10 +22,10 @@ namespace WebMemoryzoneApi.Controllers
         {
             _mediator = mediator;
         }
-        [HttpGet("{Id:Guid}")]
-        public async Task<ActionResult> GetById(Guid Id)
+        [HttpGet("{id:Guid}")]
+        public async Task<ActionResult> GetById(Guid id)
         {
-            var result = await _mediator.Send(new GetProductByIdQuery(Id));
+            var result = await _mediator.Send(new GetProductByIdQuery(id));
             if (result.IsSuccess is false) return NotFound(result);
             return Ok(result);
         }
@@ -34,10 +35,10 @@ namespace WebMemoryzoneApi.Controllers
             var result = await _mediator.Send(new GetListProductQuery(productFilter));
             return Ok(result);
         }
-        [HttpPut("{Id:Guid}")]
-        public async Task<ActionResult> UpadateProduct(Guid Id, [FromBody] UpdateProductCommand command)
+        [HttpPut("{id:Guid}")]
+        public async Task<ActionResult> UpadateProduct(Guid id, [FromBody] UpdateProductCommand command)
         {
-            if (Id != command.Id)
+            if (id != command.Id)
             {
                 return BadRequest();
             }
@@ -45,10 +46,10 @@ namespace WebMemoryzoneApi.Controllers
             if (result.IsSuccess is false) return BadRequest(result);
             return Ok(result);
         }
-        [HttpDelete("{Id:Guid}")]
-        public async Task<ActionResult> DeleteProduct(Guid Id)
+        [HttpDelete("{id:Guid}")]
+        public async Task<ActionResult> DeleteProduct(Guid id)
         {
-            var result = await _mediator.Send(new DeleteProductCommand(Id));
+            var result = await _mediator.Send(new DeleteProductCommand(id));
             if (result.IsSuccess is false) return NotFound(result);
             return Ok(result);
         }
@@ -64,11 +65,18 @@ namespace WebMemoryzoneApi.Controllers
             if (!result.IsSuccess) return BadRequest(result);
             return Ok();
         }
-        [HttpPost("AddProductImage")]
+        [HttpPost("addimage")]
         public async Task<IActionResult> AddProductImage([FromForm] AddProductImageCommand command)
         {
-           
+
             var result = await _mediator.Send(command);
+            if (!result.IsSuccess) return BadRequest(result);
+            return Ok();
+        }
+        [HttpDelete("{productId:Guid}/{imageId:Guid}")]
+        public async Task<IActionResult> DeleteProductImage(Guid productId, Guid imageId)
+        {
+            var result = await _mediator.Send(new DeleteProductImageCommand(productId, imageId));
             if (!result.IsSuccess) return BadRequest(result);
             return Ok();
         }
