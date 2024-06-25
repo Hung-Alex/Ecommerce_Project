@@ -3,10 +3,9 @@ using AutoMapper;
 using MediatR;
 using Domain.Shared;
 using Domain.Constants;
-using Application.DTOs.Responses.Tags;
-using Application.Features.Tags.Specification;
-using Domain.Entities.Tags;
 using Application.DTOs.Responses.Rattings;
+using Domain.Entities.Rattings;
+using Application.Features.Rattings.Specification;
 
 namespace Application.Features.Rattings.Queries.GetById
 {
@@ -22,12 +21,12 @@ namespace Application.Features.Rattings.Queries.GetById
         }
         public async Task<Result<RattingDTO>> Handle(GetRattingByIdQuery request, CancellationToken cancellationToken)
         {
-            var repo = _unitOfWork.GetRepository<Tag>();
-            var getTagByIdSpecification = new GetTagByIdSepecification(request.Id);
-            var tag = await repo.FindOneAsync(getTagByIdSpecification);
-            if (tag == null) return Result<TagDTO>.ResultFailures(ErrorConstants.NotFoundWithId(request.Id));
-            var categoryDTO = _mapper.Map<TagDTO>(tag);
-            return Result<TagDTO>.ResultSuccess(categoryDTO);
+            var repo = _unitOfWork.GetRepository<Ratting>();
+            var getRattingByIdSpecification = new GetRattingByIdSepecification(request.Id);
+            var ratting = await repo.FindOneAsync(getRattingByIdSpecification);
+            if (ratting == null) return Result<RattingDTO>.ResultFailures(ErrorConstants.NotFoundWithId(request.Id));
+            var rattingDTO = _mapper.Map<RattingDTO>(ratting);
+            return Result<RattingDTO>.ResultSuccess(rattingDTO);
         }
     }
 }

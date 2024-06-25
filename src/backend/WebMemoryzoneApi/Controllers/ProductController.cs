@@ -7,12 +7,10 @@ using Application.Features.Products.Commands.UpdateProduct;
 using Application.Features.Products.Queries.Get;
 using Application.Features.Products.Queries.GetById;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebMemoryzoneApi.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("api/products")]
     public class ProductController : ControllerBase
