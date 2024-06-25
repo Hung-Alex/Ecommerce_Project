@@ -1,7 +1,8 @@
 ﻿
 namespace Application.DTOs.Responses.Product.ProductImage
 {
-    public record ProductImageDTO
+    public record ProductImageDTO:BaseDTO
     {
+        public string Image {  get; set; }  
     }
 }

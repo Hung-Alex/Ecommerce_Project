@@ -25,9 +25,10 @@ namespace Infrastructure.Repositories.UnitOfWork
                 //ChangeModified();
                 await _dbContext.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new Exception("error with save changes");
+                throw new Exception(ex.Message);
+
             }
         }
         public void Dispose()

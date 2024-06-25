@@ -22,10 +22,10 @@ namespace WebMemoryzoneApi.Controllers
         {
             _mediator = mediator;
         }
-        [HttpGet("{Id:Guid}")]
-        public async Task<ActionResult> GetById(Guid Id)
+        [HttpGet("{id:Guid}")]
+        public async Task<ActionResult> GetById(Guid id)
         {
-            var result = await _mediator.Send(new GetCategoryByIdQuery(Id));
+            var result = await _mediator.Send(new GetCategoryByIdQuery(id));
             if (!result.IsSuccess) return NotFound(result);
             return Ok(result);
         }
@@ -35,11 +35,11 @@ namespace WebMemoryzoneApi.Controllers
             var result = await _mediator.Send(new GetListCategoriesQuery(categoryFilter));
             return Ok(result);
         }
-        [HttpPut("{Id:Guid}")]
+        [HttpPut("{id:Guid}")]
         [FileValidatorFilter<UpdateCategoryCommand>([".png", ".jpg"], 1 * 1024)]
-        public async Task<ActionResult> UpadateBrand(Guid Id, [FromForm] UpdateCategoryCommand command)
+        public async Task<ActionResult> UpadateBrand(Guid id, [FromForm] UpdateCategoryCommand command)
         {
-            if (Id != command.Id)
+            if (id != command.Id)
             {
                 return BadRequest();
             }
@@ -47,10 +47,10 @@ namespace WebMemoryzoneApi.Controllers
             if (!result.IsSuccess) return BadRequest(result);
             return Ok(result);
         }
-        [HttpDelete("{Id:Guid}")]
-        public async Task<ActionResult> DeleteCategory(Guid Id)
+        [HttpDelete("{id:Guid}")]
+        public async Task<ActionResult> DeleteCategory(Guid id)
         {
-            var result = await _mediator.Send(new DeleteCategoryCommand(Id));
+            var result = await _mediator.Send(new DeleteCategoryCommand(id));
             if (!result.IsSuccess) return NotFound(result);
             return Ok();
         }

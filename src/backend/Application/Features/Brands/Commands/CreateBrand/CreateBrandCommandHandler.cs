@@ -33,12 +33,12 @@ namespace Application.Features.Brands.Commands.CreateBrand
             {
                 return Result<bool>.ResultFailures(ErrorConstants.UrlSlugIsExisted(request.UrlSlug));
             }
-            ImageUpload image = new ImageUpload(null, null);
+            Result<ImageUpload> image=null;
             if (request.FormFile is not null)
             {
                 image = await _media.UploadLoadImageAsync(request.FormFile);
             }
-            repoBranch.Add(new Brand() { Name = request.Name, Description = request.Description, UrlSlug = request.UrlSlug, LogoImageUrl = image.Url });
+            repoBranch.Add(new Brand() { Name = request.Name, Description = request.Description, UrlSlug = request.UrlSlug, LogoImageUrl = image.Data.Url });
             await _unitOfWork.Commit();
             return Result<bool>.ResultSuccess(true);
         }

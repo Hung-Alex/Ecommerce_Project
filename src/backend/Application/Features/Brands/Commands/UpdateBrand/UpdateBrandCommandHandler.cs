@@ -36,7 +36,7 @@ namespace Application.Features.Brands.Commands.UpdateBrand
             var brandRepo = _unitOfWork.GetRepository<Brand>();
             var brand = await brandRepo.GetByIdAsync(request.Id);
             if (brand == null) return Result<BrandDTOs>.ResultFailures(ErrorConstants.NotFoundWithId(request.Id)); ;
-            ImageUpload uploadResult = null;
+            Result<ImageUpload> uploadResult = null;
             if (!(request.Image is null))
             {
                 uploadResult = await _media.UploadLoadImageAsync(request.Image, cancellationToken);
@@ -46,7 +46,7 @@ namespace Application.Features.Brands.Commands.UpdateBrand
             brand.Description = request.Description;
             if (!(uploadResult is null))
             {
-                brand.LogoImageUrl = uploadResult.Url;
+                brand.LogoImageUrl = uploadResult.Data.Url;
             }
             await _unitOfWork.Commit();
             var brandDTO = _mapper.Map<BrandDTOs>(brand);

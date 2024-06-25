@@ -36,7 +36,7 @@ namespace Application.Features.Category.Commands.UpdateCategory
             var repoCategory = _unitOfWork.GetRepository<Categories>();
             var category = await repoCategory.GetByIdAsync(request.Id);
             if (category == null) return Result<CategoryDTO>.ResultFailures(ErrorConstants.UserNotFoundWithID(request.Id));
-            ImageUpload uploadResult = null;
+            Result<ImageUpload> uploadResult = null;
             if (!(request.Image is null))
             {
                 uploadResult = await _media.UploadLoadImageAsync(request.Image, cancellationToken);
@@ -46,7 +46,7 @@ namespace Application.Features.Category.Commands.UpdateCategory
             category.Description = request.Description;
             if (!(uploadResult is null))
             {
-                category.Image = uploadResult.Url;
+                category.Image = uploadResult.Data.Url;
             }
             await _unitOfWork.Commit();
             var CategoryDTO = _mapper.Map<CategoryDTO>(category);

@@ -3,12 +3,10 @@ using CloudinaryDotNet.Actions;
 using CloudinaryDotNet;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Application.DTOs.Internal;
+using Domain.Shared;
+using System.Net;
+using Error = Domain.Shared.Error;
 
 namespace Infrastructure.Services.CloudinaryUpload
 {
@@ -25,11 +23,11 @@ namespace Infrastructure.Services.CloudinaryUpload
             Account account = new Account(_settings.CloudName, _settings.ApiKey, _settings.ApiSecret);
             _cloudinary = new Cloudinary(account);
         }
-        public Task<bool> DeleteImageAsync(string id, CancellationToken cancellationToken = default)
+        public Task<Result<bool>> DeleteImageAsync(string id, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
-        public async Task<ImageUpload> UploadLoadImageAsync(IFormFile file, CancellationToken cancellationToken = default)
+        public async Task<Result<ImageUpload>> UploadLoadImageAsync(IFormFile file, CancellationToken cancellationToken = default)
         {
             var uploadResult = new ImageUploadResult();
             if (file.Length > 0)
@@ -43,10 +41,16 @@ namespace Infrastructure.Services.CloudinaryUpload
                     uploadResult = _cloudinary.Upload(uploadParams);
                 }
             }
-            return await Task.FromResult(new ImageUpload(uploadResult.PublicId, uploadResult.Url.ToString()));
+            if (uploadResult.StatusCode == HttpStatusCode.OK)
+            {
+                return Result<ImageUpload>.ResultSuccess(new ImageUpload(uploadResult.PublicId, uploadResult.SecureUrl.ToString()));
+            }
+
+
+            return Result<ImageUpload>.ResultFailures(new Error("ImageUpload", uploadResult.Error.Message));
         }
 
-        public Task<IEnumerable<ImageUpload>> UploadLoadImagesAsync(IFormFileCollection file, CancellationToken cancellationToken = default)
+        public Task<Result<IEnumerable<ImageUpload>>> UploadLoadImagesAsync(IFormFileCollection file, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }

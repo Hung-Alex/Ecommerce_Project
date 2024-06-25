@@ -10,6 +10,7 @@ namespace Application.Features.Products.Specification
         public GetProductByIdSepecification(Guid id)
         {
             _id = id;
+            AddInclude(p => p.Images);
         }
         public override Expression<Func<Product, bool>> Criteria => x => x.Id == _id;
     }
