@@ -1,11 +1,5 @@
 ﻿using Domain.Common;
 using Domain.Entities.Images;
-using Domain.Entities.Products;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Entities.Slides
 {
@@ -18,6 +12,7 @@ namespace Domain.Entities.Slides
         }
         public Slide Slide { get; set; }
         public Guid SlideId { get; set; }
+        public int OrderItem { get; set; }
         public Image Image { get; set; }
         public Guid ImageId { get; set; }
         public DateTime CreatedAt { get; set; }
