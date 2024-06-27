@@ -20,5 +20,7 @@ namespace Domain.Constants
         public static readonly Error AuthRefreshTokenDoesNotMatchOrExpired
             = new Error("Authencation.RefreshTokenDoesNotMatchOrExpired"
                 , "Refresh token doesn't match with refresh token is saved or it was expired, you must be login again");
+        //ProductImage
+        public static Error ProductImageDontHaveImageWithId(Guid id) => new Error("ProductImage.DontHaveImageWithId", $"Product dont have image with id {id}");
     }
 }
