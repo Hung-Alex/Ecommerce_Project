@@ -1,0 +1,105 @@
+/* Reset margin và padding cho tất cả các thẻ */
+/* Reset margin và padding cho tất cả các thẻ */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Reset font cho tất cả các thẻ */
+* {
+  font-family: sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+@media (min-width: 1440px) {
+  .container, .container-sm, .container-md, .container-lg, .container-xl {
+      max-width: 1200px;
+  }
+}
+@media (min-width: 1200px) {
+  .container, .container-sm, .container-md, .container-lg, .container-xl {
+      max-width: 1200px;
+  }
+}
+@media (min-width: 992px) {
+  .container, .container-sm, .container-md, .container-lg {
+      max-width: 100%;
+  }
+}
+@media (min-width: 768px) {
+  .container, .container-sm, .container-md {
+      max-width: 100%;
+  }
+}
+@media (min-width: 576px) {
+  .container, .container-sm {
+      max-width: 100%;
+  }
+}
+@media (min-width: 1200px) {
+  .container, .container-lg, .container-md, .container-sm, .container-xl {
+      max-width: 1140px;
+  }
+}
+@media (min-width: 992px) {
+  .container, .container-lg, .container-md, .container-sm {
+      max-width: 960px;
+  }
+}
+@media (min-width: 768px) {
+  .container, .container-md, .container-sm {
+      max-width: 720px;
+  }
+}
+@media (min-width: 576px) {
+  .container, .container-sm {
+      max-width: 540px;
+  }
+}
+.container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl {
+  width: 100%;
+  padding-right: 10px;
+  padding-left: 10px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* Loại bỏ các danh sách có dấu chấm */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Loại bỏ đường viền cho các liên kết */
+a {
+  text-decoration: none;
+}
+
+/* Reset các button */
+button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+/* Reset các hình ảnh */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Reset các bảng */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+/* Reset các ô trong bảng */
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
