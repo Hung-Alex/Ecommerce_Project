@@ -1,5 +1,6 @@
 ﻿using Domain.Constants;
 using Domain.Entities;
+using Domain.Entities.Banner;
 using Domain.Entities.Brands;
 using Domain.Entities.Carts;
 using Domain.Entities.Category;
@@ -16,20 +17,20 @@ using Domain.Entities.SubCategories;
 using Domain.Entities.Tags;
 using Domain.Entities.WishLists;
 using Infrastructure.Identity;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
 {
-    public class StoreDbContext : IdentityDbContext<ApplicationUser,ApplicationRole,Guid>
+    public class StoreDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
     {
         public StoreDbContext(DbContextOptions options) : base(options)
         {
-            //Database.EnsureCreated();
+            Database.EnsureCreated();
         }
         #region DbSet Entities
         public DbSet<Brand> Brands { get; set; }
+        public DbSet<Banner> Banners { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Categories> Categories { get; set; }
         public DbSet<Image> Images { get; set; }
