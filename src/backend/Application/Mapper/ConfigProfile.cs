@@ -1,9 +1,11 @@
-﻿using Application.DTOs.Responses.Brand;
+﻿using Application.DTOs.Responses.Banners;
+using Application.DTOs.Responses.Brand;
 using Application.DTOs.Responses.Category;
 using Application.DTOs.Responses.Product;
 using Application.DTOs.Responses.Rattings;
 using Application.DTOs.Responses.Tags;
 using AutoMapper;
+using Domain.Entities.Banner;
 using Domain.Entities.Brands;
 using Domain.Entities.Category;
 using Domain.Entities.Products;
@@ -21,7 +23,7 @@ namespace Application.Mapper
             CreateMap<Product, ProductDTO>().ReverseMap();
             CreateMap<Tag, TagDTO>().ReverseMap();
             CreateMap<Ratting, RattingDTO>().ReverseMap();
-
+            CreateMap<Banner, BannerDTO>().ReverseMap();
         }
     }
 }
