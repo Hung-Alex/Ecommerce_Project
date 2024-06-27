@@ -24,6 +24,7 @@
     <Folder Include="Features\Brands\Queries\GetByUrlSlug\" />
     <Folder Include="Features\Category\Queries\GetByUrlSlug\" />
     <Folder Include="Features\Products\Queries\GetByUrlSlug\" />
+    <Folder Include="Features\Slides\Queries\GetByUrlSlug\" />
     <Folder Include="Features\Tags\Queries\GetByUrlSlug\" />
   </ItemGroup>
 
