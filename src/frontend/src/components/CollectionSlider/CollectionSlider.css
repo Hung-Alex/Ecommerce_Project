@@ -1,0 +1,41 @@
+.collections-slide .slick-slide {
+    flex: 0 0 auto; /* Không cho phép các phần tử mở rộng */
+    max-width: 120px; /* Điều chỉnh độ rộng tối đa của mỗi item */
+    text-align: center; /* Căn giữa nội dung trong item */
+    padding: 0 10px; /* Khoảng cách giữa các item, điều chỉnh theo nhu cầu */
+    height: 400px;
+    margin-top: 20px;
+  }
+  .collections-slide .slick-track {
+    display: flex;
+    justify-content: center; /* Căn giữa các item */
+    align-items: center; /* Căn giữa theo chiều dọc */
+  }
+
+  .collections-slide a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 16px;
+  }
+
+  .collections-slide .slick-slide img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 1s ease; /* Hiệu ứng chuyển động mượt mà */
+}
+
+.collections-slide .slick-slide img:hover {
+    scale: 0.9;
+    animation: shake 0.3s infinite alternate; /* Sử dụng animation shake */
+}
+
+@keyframes shake {
+    0% {
+        transform: rotate(-6deg);
+    }
+    100% {
+        transform: rotate(6deg);/* Điều chỉnh khoảng cách shake theo ý muốn */
+    }
+}
+
