@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './CategoryBar.css'; // Tạo file CSS cho các style tùy chỉnh
 import Banner from '../Banner/Banner';
+import SubBanner from '../SubBanner/SubBanner ';
 
 const categories = [
     {

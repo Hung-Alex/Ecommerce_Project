@@ -9,6 +9,7 @@ import 'swiper/css/navigation';
 // import required modules
 import { Navigation } from 'swiper/modules';
 import "./Banner.css"
+import SubBanner from '../SubBanner/SubBanner ';
 
 const images = [
     { id: 1, topic: "Topic 1", image: "https://bizweb.dktcdn.net/100/329/122/themes/951253/assets/slider1_1.jpg?1719541902656" },
@@ -38,7 +39,7 @@ export default function Banner() {
     };
 
     return (
-        <div className="col-lg-9">
+        <div className="col-lg-9 banner-container">
             <Swiper
                 style={{
                     '--swiper-navigation-color': '#fff',
@@ -67,6 +68,9 @@ export default function Banner() {
                         </button>
                     </div>
                 ))}
+            </div>
+            <div className='sub-banner'>
+            <SubBanner />
             </div>
         </div>
     );

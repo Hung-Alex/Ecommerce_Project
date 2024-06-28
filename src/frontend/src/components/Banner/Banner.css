@@ -9,7 +9,7 @@
     width: 100%;
     display: flex;
     align-items: center; /* căn giữa theo chiều dọc */
-    top: 20px;
+    /* top: 20px; */
 }
 
 .highlight-line {
@@ -37,8 +37,9 @@
     cursor: pointer;
     transition: background-color 0.3s;
     width: 100%;
+    top: 20px;
 }
 
-.banner {
-    top: 20px;
+.col-lg-9.banner-container {
+    padding-top: 20px;
 }
