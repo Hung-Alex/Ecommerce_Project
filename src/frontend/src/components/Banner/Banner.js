@@ -1,115 +1,73 @@
-import React, { useEffect } from 'react';
-import SwiperCore, { Navigation, Thumbs, FreeMode, Autoplay } from 'swiper';
+import React, { useState, useRef } from 'react';
+// Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper-bundle.min.css';
 
-// Install Swiper modules
-SwiperCore.use([Navigation, Thumbs, FreeMode, Autoplay]);
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
 
-const SwiperComponent = () => {
-  useEffect(() => {
-    // Additional initialization if needed
-  }, []);
+// import required modules
+import { Navigation } from 'swiper/modules';
+import "./Banner.css"
 
-  return (
-    <div>
-      <Swiper
-        className="home-slider2"
-        spaceBetween={10}
-        slidesPerView={5}
-        freeMode={true}
-        watchSlidesProgress={true}
-        breakpoints={{
-          280: {
-            slidesPerView: 3,
-            spaceBetween: 10,
-          },
-          640: {
-            slidesPerView: 3,
-            spaceBetween: 10,
-          },
-          768: {
-            slidesPerView: 3,
-            spaceBetween: 10,
-          },
-          992: {
-            slidesPerView: 3,
-            spaceBetween: 10,
-          },
-          1024: {
-            slidesPerView: 5,
-            spaceBetween: 10,
-          },
-        }}
-      >
-        {/* Add SwiperSlides here */}
-        {/* Example:
-        <SwiperSlide>Slide 1</SwiperSlide>
-        <SwiperSlide>Slide 2</SwiperSlide>
-        */}
-      </Swiper>
+const images = [
+    { id: 1, topic: "Topic 1", image: "https://bizweb.dktcdn.net/100/329/122/themes/951253/assets/slider1_1.jpg?1719541902656" },
+    { id: 2, topic: "Topic 2", image: "https://bizweb.dktcdn.net/100/329/122/themes/951253/assets/slider1_2.jpg?1719494496488" },
+    { id: 3, topic: "Topic 3", image: "https://bizweb.dktcdn.net/100/329/122/themes/951253/assets/slider1_3.jpg?1719494496488" },
+    { id: 4, topic: "Topic 4", image: "https://bizweb.dktcdn.net/100/329/122/themes/951253/assets/slider1_4.jpg?1719494496488" },
+    { id: 5, topic: "Topic 5", image: "https://bizweb.dktcdn.net/100/329/122/themes/951253/assets/slider1_5.jpg?1719494496488" },
+];
 
-      <Swiper
-        className="home-slider3"
-        navigation={{
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
-        }}
-        thumbs={{ swiper: SwiperCore }}
-        autoplay={{
-          delay: 4000,
-          disableOnInteraction: true,
-        }}
-      >
-        {/* Add SwiperSlides here */}
-        {/* Example:
-        <SwiperSlide>Slide 1</SwiperSlide>
-        <SwiperSlide>Slide 2</SwiperSlide>
-        */}
-      </Swiper>
+export default function Banner() {
+    const [currentTopic, setCurrentTopic] = useState(images[0].topic);
+    const swiperRef = useRef(null);
 
-      <div className="sub_banner sub_banner--bottom d-none d-lg-flex">
-        <a className="sub_banner__item banner" href="https://go.mmz.vn/o-cung-ssd-di-dong-web" title="Ổ cứng chính hãng">
-          <picture>
-            <source media="(max-width: 480px)" srcSet="//bizweb.dktcdn.net/thumb/medium/100/329/122/themes/951253/assets/bottom_banner_1.jpg?1719463557044" />
-            <img
-              className="img-fluid"
-              src="//bizweb.dktcdn.net/100/329/122/themes/951253/assets/bottom_banner_1.jpg?1719463557044"
-              alt="Ổ cứng chính hãng"
-              width="355"
-              height="172"
-            />
-          </picture>
-        </a>
+    const handleSlideChange = () => {
+        if (swiperRef.current) {
+            const activeIndex = swiperRef.current.activeIndex;
+            const currentImage = images[activeIndex].image;
+            setCurrentTopic(images[activeIndex].topic);
+        }
+    };
 
-        <a className="sub_banner__item banner" href="https://go.mmz.vn/the-nho-luu-tru-web" title="Thẻ nhớ chính hãng">
-          <picture>
-            <source media="(max-width: 480px)" srcSet="//bizweb.dktcdn.net/thumb/medium/100/329/122/themes/951253/assets/bottom_banner_2.jpg?1719463557044" />
-            <img
-              className="img-fluid"
-              src="//bizweb.dktcdn.net/100/329/122/themes/951253/assets/bottom_banner_2.jpg?1719463557044"
-              alt="Thẻ nhớ chính hãng"
-              width="355"
-              height="172"
-            />
-          </picture>
-        </a>
+    const handleButtonClick = (index, topic) => {
+        setCurrentTopic(topic);
+        if (swiperRef.current) {
+            swiperRef.current.slideTo(index);
+        }
+    };
 
-        <a className="sub_banner__item banner" href="https://go.mmz.vn/Cate-Gear" title="Chuột - Bàn phím - Tai nghe">
-          <picture>
-            <source media="(max-width: 480px)" srcSet="//bizweb.dktcdn.net/thumb/medium/100/329/122/themes/951253/assets/bottom_banner_3.jpg?1719463557044" />
-            <img
-              className="img-fluid"
-              src="//bizweb.dktcdn.net/100/329/122/themes/951253/assets/bottom_banner_3.jpg?1719463557044"
-              alt="Chuột - Bàn phím - Tai nghe"
-              width="355"
-              height="172"
-            />
-          </picture>
-        </a>
-      </div>
-    </div>
-  );
-};
-
-export default SwiperComponent;
+    return (
+        <div className="col-lg-9">
+            <Swiper
+                style={{
+                    '--swiper-navigation-color': '#fff',
+                }}
+                loop={false}
+                navigation={true}
+                modules={[Navigation]}
+                className="banner"
+                onSlideChange={handleSlideChange}
+                onSwiper={(swiper) => (swiperRef.current = swiper)}
+            >
+                {images.map((image, index) => (
+                    <SwiperSlide key={image.id}>
+                        <img className='banner-img' src={image.image} alt={image.topic} />
+                    </SwiperSlide>
+                ))}
+            </Swiper>
+            <div className="button-container">
+                {images.map((image, index) => (
+                    <div key={image.id} className="button-wrapper" >
+                        {currentTopic === image.topic && <div className="highlight-line"></div>}
+                        <button onClick={() => handleButtonClick(index, image.topic)}
+                            className={currentTopic === image.topic ? "gray-background" : ""}
+                        >
+                            {image.topic}
+                        </button>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}

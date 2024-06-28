@@ -68,3 +68,9 @@
 .submenu-item {
     padding: 20px;
 }
+
+.subcategory-menu {
+    position: absolute;
+    right: 18%;
+    z-index: 10;
+}
