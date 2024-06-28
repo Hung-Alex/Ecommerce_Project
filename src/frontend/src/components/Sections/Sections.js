@@ -2,6 +2,7 @@ import React from 'react'
 import CategoryBar from '../CategoryBar/CategoryBar'
 import CollectionSlider from '../CollectionSlider/CollectionSlider'
 import SaleBanner from '../SaleBanner/SaleBanner'
+import AdvertisingBanner from '../AdvertisingBanner/AdvertisingBanner'
 
 const Sections = () => {
   return (
@@ -10,6 +11,7 @@ const Sections = () => {
         <CategoryBar />
         <CollectionSlider />
         <SaleBanner />
+        <AdvertisingBanner />
       </div>
     </div>
   )
