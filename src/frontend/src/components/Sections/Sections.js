@@ -1,7 +1,7 @@
 import React from 'react'
 import CategoryBar from '../CategoryBar/CategoryBar'
-import Banner from '../Banner/Banner'
 import CollectionSlider from '../CollectionSlider/CollectionSlider'
+import SaleBanner from '../SaleBanner/SaleBanner'
 
 const Sections = () => {
   return (
@@ -9,6 +9,7 @@ const Sections = () => {
       <div className='row'>
         <CategoryBar />
         <CollectionSlider />
+        <SaleBanner />
       </div>
     </div>
   )
