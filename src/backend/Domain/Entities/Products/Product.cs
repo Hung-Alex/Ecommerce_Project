@@ -4,6 +4,7 @@ using Domain.Entities.Coupons;
 using Domain.Entities.Rattings;
 using Domain.Common;
 using Domain.Shared;
+using Domain.Entities.WishLists;
 namespace Domain.Entities.Products
 {
     public class Product : BaseEntity, IDatedModification, IAggregateRoot
@@ -25,5 +26,7 @@ namespace Domain.Entities.Products
         public virtual ICollection<CouponProduct> ProductCoupons { get; set; }
         public virtual ICollection<Ratting> Rattings { get; set; }
         public virtual ICollection<ProductSubCategory> ProductSubCategories { get; set; }
+        public virtual ICollection<WishList> WishLists { get; set; }
+
     }
 }
