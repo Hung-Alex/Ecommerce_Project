@@ -13,7 +13,6 @@ using Domain.Entities.Posts;
 using Domain.Entities.Products;
 using Domain.Entities.Rattings;
 using Domain.Entities.Slides;
-using Domain.Entities.SubCategories;
 using Domain.Entities.Tags;
 using Domain.Entities.WishLists;
 using Infrastructure.Identity;
@@ -42,7 +41,6 @@ namespace Infrastructure.Data
         public DbSet<Slide> Slides { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<WishList> WishLists { get; set; }
-        public DbSet<SubCategory> SubCategories { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<SlidesImage> SlidesImages { get; set; }
         public DbSet<ProductImages> ProductImages { get; set; }

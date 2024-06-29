@@ -1,5 +1,4 @@
 ﻿using Domain.Common;
-using Domain.Entities.SubCategories;
 using Domain.Shared;
 
 
@@ -17,7 +16,7 @@ namespace Domain.Entities.Category
             ParrentId = parrentId;
         }
         public string Name { get; set; }
-        public Categories ParentCategories { get; set; }
+        public Categories ParentCategory { get; set; }
         public Guid? ParrentId { get; set; }
         public string UrlSlug { get; set; }
         public string Description { get; set; }

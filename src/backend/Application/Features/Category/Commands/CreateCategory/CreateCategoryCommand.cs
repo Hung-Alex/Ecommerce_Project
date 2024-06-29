@@ -5,5 +5,5 @@ using Microsoft.AspNetCore.Http;
 
 namespace Application.Features.Category.Commands.CreateCategory
 {
-    public record CreateCategoryCommand(string Name, string Description, string UrlSlug, IFormFile FormFile) : IRequest<Result<bool>>, IValidatableRequest;
+    public record CreateCategoryCommand(string Name, string Description, string UrlSlug,Guid ?ParrentId, IFormFile FormFile) : IRequest<Result<bool>>, IValidatableRequest;
 }

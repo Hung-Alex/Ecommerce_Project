@@ -36,6 +36,14 @@ namespace Application.Features.Category.Commands.UpdateCategory
             var repoCategory = _unitOfWork.GetRepository<Categories>();
             var category = await repoCategory.GetByIdAsync(request.Id);
             if (category == null) return Result<CategoryDTO>.ResultFailures(ErrorConstants.UserNotFoundWithID(request.Id));
+            if (request.ParrentId is not null)
+            {
+                var isExistedParrent = await repoCategory.GetByIdAsync(request.ParrentId);
+                if (isExistedParrent is null)
+                {
+                    return Result<CategoryDTO>.ResultFailures(ErrorConstants.NotFoundWithId((Guid)request.ParrentId));
+                }
+            }
             Result<ImageUpload> uploadResult = null;
             if (!(request.Image is null))
             {
@@ -44,6 +52,7 @@ namespace Application.Features.Category.Commands.UpdateCategory
             category.UrlSlug = request.UrlSlug;
             category.Name = request.Name;
             category.Description = request.Description;
+            category.ParrentId = request.ParrentId;
             if (!(uploadResult is null))
             {
                 category.Image = uploadResult.Data.Url;
