@@ -5,5 +5,5 @@ using MediatR;
 
 namespace Application.Features.WishsList.Queries.GetListFavoriteProducts
 {
-    public record GetListFavoriteProductsQuery(WishListFilter Filter,Guid UserId) : IRequest<Result<IEnumerable<ProductDTO>>>;
+    public record GetListFavoriteProductsQuery(WishListFilter Filter, Guid UserId) : IRequest<Result<IEnumerable<ProductDTO>>>;
 }

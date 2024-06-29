@@ -43,7 +43,6 @@ namespace Application.Features.Authen.Commands.Login
             var convertRefreshIntoJson = JsonSerializer.Serialize<RefreshToken>(refreshToken);
             await _identityService.SaveRefreshTokenAsync(user.Id, UserToken.Provider, UserToken.RefreshToken, convertRefreshIntoJson);
             return Result<AuthencationResponse>.ResultSuccess(new AuthencationResponse(token, refreshToken.Token, "Bearer", user.Id));
-
         }
     }
 }

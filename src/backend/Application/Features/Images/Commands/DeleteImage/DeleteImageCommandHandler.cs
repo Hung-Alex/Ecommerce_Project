@@ -13,7 +13,7 @@ namespace Application.Features.Images.Commands.DeleteImage
         public DeleteImageCommandHandler(IUnitOfWork unitOfWork, IMedia media)
         {
             _unitOfWork = unitOfWork;
-            _media = media; 
+            _media = media;
         }
         public async Task<Result<bool>> Handle(DeleteImageCommand request, CancellationToken cancellationToken)
         {

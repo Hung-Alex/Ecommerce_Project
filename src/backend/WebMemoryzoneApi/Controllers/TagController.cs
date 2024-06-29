@@ -1,5 +1,4 @@
-﻿using Application.DTOs.Filters.Categories;
-using Application.DTOs.Filters.Tags;
+﻿using Application.DTOs.Filters.Tags;
 using Application.Features.Tags.Commands.CreateTag;
 using Application.Features.Tags.Commands.DeleteTag;
 using Application.Features.Tags.Commands.UpdateTag;

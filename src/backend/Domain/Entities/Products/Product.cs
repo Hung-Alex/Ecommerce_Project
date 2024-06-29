@@ -27,6 +27,5 @@ namespace Domain.Entities.Products
         public virtual ICollection<Ratting> Rattings { get; set; }
         public virtual ICollection<ProductSubCategory> ProductSubCategories { get; set; }
         public virtual ICollection<WishList> WishLists { get; set; }
-
     }
 }

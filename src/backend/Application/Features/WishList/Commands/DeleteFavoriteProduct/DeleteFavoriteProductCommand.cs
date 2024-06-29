@@ -3,5 +3,5 @@ using MediatR;
 
 namespace Application.Features.WishsList.Commands.DeleteFavoriteProduct
 {
-    public record DeleteFavoriteProductCommand(Guid ProductId,Guid UserId) : IRequest<Result<bool>>;
+    public record DeleteFavoriteProductCommand(Guid ProductId, Guid UserId) : IRequest<Result<bool>>;
 }

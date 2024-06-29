@@ -1,6 +1,5 @@
 ﻿using Application.Common.Interface;
 using Application.DTOs.Responses.Product;
-using Application.DTOs.Responses.Tags;
 using Application.Features.WishsList.Specification;
 using Domain.Entities.WishLists;
 using Domain.Shared;
@@ -18,7 +17,6 @@ namespace Application.Features.WishsList.Queries.GetListFavoriteProducts
         }
         public async Task<Result<IEnumerable<ProductDTO>>> Handle(GetListFavoriteProductsQuery request, CancellationToken cancellationToken)
         {
-
             var repo = _unitOfWork.GetRepository<WishList>();
             var querySpecification = new GetListFavoriteProductWithImageByUserIdSepecification(request.Filter, request.UserId);
             var wishList = await repo.GetAllAsync(querySpecification);
@@ -39,7 +37,6 @@ namespace Application.Features.WishsList.Queries.GetListFavoriteProducts
                 , request.Filter.PageNumber
                 , request.Filter.PageSize
                 , totalItems);
-
         }
     }
 }

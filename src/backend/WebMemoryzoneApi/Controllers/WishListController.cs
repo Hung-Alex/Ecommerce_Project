@@ -1,6 +1,4 @@
-﻿using Application.DTOs.Filters.Tags;
-using Application.DTOs.Filters.WishList;
-using Application.Features.Tags.Queries.Get;
+﻿using Application.DTOs.Filters.WishList;
 using Application.Features.WishsList.Commands.CreateFavoriteProduct;
 using Application.Features.WishsList.Commands.DeleteFavoriteProduct;
 using Application.Features.WishsList.Queries.GetListFavoriteProducts;

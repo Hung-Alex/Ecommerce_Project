@@ -1,5 +1,4 @@
-﻿using Application.Features.Category.Commands.DeleteCategory;
-using Application.Features.Images.Commands.CreateImage;
+﻿using Application.Features.Images.Commands.CreateImage;
 using Application.Features.Images.Commands.DeleteImage;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +7,7 @@ namespace WebMemoryzoneApi.Controllers
 {
     [ApiController]
     [Route("api/images")]
-    public class ImageController:ControllerBase
+    public class ImageController : ControllerBase
     {
         private readonly IMediator _mediator;
         public ImageController(IMediator mediator)
