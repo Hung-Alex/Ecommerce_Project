@@ -37,7 +37,7 @@ namespace Application.Features.Banners.Commands.UpdateBanner
             Result<ImageUpload> uploadResult = null;
             if (!(request.FormFile is null))
             {
-                uploadResult = await _media.UploadLoadImageAsync(request.FormFile, cancellationToken);
+                uploadResult = await _media.UploadLoadImageAsync(request.FormFile,UploadFolderConstants.FolderBanner, cancellationToken);
             }
             banner.Title = request.Title;
             banner.Description = request.Description;

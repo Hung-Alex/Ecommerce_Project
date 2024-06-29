@@ -43,7 +43,7 @@ namespace Application.Features.Category.Commands.CreateCategory
             Result<ImageUpload> image = null;
             if (request.FormFile is not null)
             {
-                image = await _media.UploadLoadImageAsync(request.FormFile);
+                image = await _media.UploadLoadImageAsync(request.FormFile, UploadFolderConstants.FolderCategory);
             }
             repoCategory.Add(new Categories() { Name = request.Name, Description = request.Description, UrlSlug = request.UrlSlug, Image = image.Data.Url, ParrentId = request.ParrentId });
             await _unitOfWork.Commit();

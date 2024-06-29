@@ -39,7 +39,7 @@ namespace Application.Features.Brands.Commands.UpdateBrand
             Result<ImageUpload> uploadResult = null;
             if (!(request.Image is null))
             {
-                uploadResult = await _media.UploadLoadImageAsync(request.Image, cancellationToken);
+                uploadResult = await _media.UploadLoadImageAsync(request.Image, UploadFolderConstants.FolderBrand, cancellationToken);
             }
             brand.UrlSlug = request.UrlSlug;
             brand.Name = request.Name;

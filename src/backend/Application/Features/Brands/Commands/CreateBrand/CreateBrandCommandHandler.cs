@@ -36,7 +36,7 @@ namespace Application.Features.Brands.Commands.CreateBrand
             Result<ImageUpload> image=null;
             if (request.FormFile is not null)
             {
-                image = await _media.UploadLoadImageAsync(request.FormFile);
+                image = await _media.UploadLoadImageAsync(request.FormFile, UploadFolderConstants.FolderBrand);
             }
             repoBranch.Add(new Brand() { Name = request.Name, Description = request.Description, UrlSlug = request.UrlSlug, LogoImageUrl = image.Data.Url });
             await _unitOfWork.Commit();

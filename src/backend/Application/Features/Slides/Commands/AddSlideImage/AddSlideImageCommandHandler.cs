@@ -26,7 +26,7 @@ namespace Application.Features.Slides.Commands.AddProductSlide
                 return Result<bool>.ResultFailures(ErrorConstants.NotFoundWithId(request.SlideId));
 
             }
-            var uploadImage = await _media.UploadLoadImageAsync(request.File);
+            var uploadImage = await _media.UploadLoadImageAsync(request.File, UploadFolderConstants.FolderSlide);
             if (uploadImage.IsSuccess is false)
             {
                 return Result<bool>.ResultFailures(uploadImage.Errors);

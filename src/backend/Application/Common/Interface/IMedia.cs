@@ -11,7 +11,7 @@ namespace Application.Common.Interface
 {
     public interface IMedia
     {
-        Task<Result<ImageUpload>> UploadLoadImageAsync(IFormFile file, CancellationToken cancellationToken = default);
+        Task<Result<ImageUpload>> UploadLoadImageAsync(IFormFile file,string folder, CancellationToken cancellationToken = default);
         Task<Result<IEnumerable<ImageUpload>>> UploadLoadImagesAsync(IFormFileCollection file, CancellationToken cancellationToken = default);
         Task<Result<bool>> DeleteImageAsync(string id, CancellationToken cancellationToken = default);
     }

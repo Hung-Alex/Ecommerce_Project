@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interface;
 using Application.DTOs.Internal;
+using Domain.Constants;
 using Domain.Entities.Banner;
 using Domain.Shared;
 using FluentValidation;
@@ -28,7 +29,7 @@ namespace Application.Features.Banners.Commands.CreateBanner
             Result<ImageUpload> image=null;
             if (request.FormFile is not null)
             {
-                image = await _media.UploadLoadImageAsync(request.FormFile);
+                image = await _media.UploadLoadImageAsync(request.FormFile, UploadFolderConstants.FolderBanner);
             }
             repoBanner.Add(new Banner() { Title = request.Title, Description = request.Description, LogoImageUrl = image.Data.Url ,Left=request.left,Right=request.right});
             await _unitOfWork.Commit();

@@ -47,7 +47,7 @@ namespace Application.Features.Category.Commands.UpdateCategory
             Result<ImageUpload> uploadResult = null;
             if (!(request.Image is null))
             {
-                uploadResult = await _media.UploadLoadImageAsync(request.Image, cancellationToken);
+                uploadResult = await _media.UploadLoadImageAsync(request.Image, UploadFolderConstants.FolderCategory, cancellationToken);
             }
             category.UrlSlug = request.UrlSlug;
             category.Name = request.Name;
