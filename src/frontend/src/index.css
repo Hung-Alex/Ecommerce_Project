@@ -15,6 +15,7 @@ code {
 
 :root {
   --primary-color: #0a804a;
+  --primary-light-color: #10b96d;
   --secondary-color: #fbd947;
   --header-background: #0a804a;
   --header-color: #ffffff;

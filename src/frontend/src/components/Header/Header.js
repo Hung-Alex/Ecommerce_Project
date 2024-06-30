@@ -1,7 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react';
 import "./Header.css"
 
+import { Navbar, Nav, Container } from 'react-bootstrap';
+import AuthModals from '../Login/Login';
+
 const Header = () => {
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+    const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+
+    const openLoginModal = () => setIsLoginModalOpen(true);
+    const closeLoginModal = () => setIsLoginModalOpen(false);
+
+    const openRegisterModal = () => {
+        setIsLoginModalOpen(false); // Đóng modal đăng nhập trước khi mở modal đăng ký
+        setIsRegisterModalOpen(true);
+    };
+    const closeRegisterModal = () => setIsRegisterModalOpen(false);
+
     return (
         <div className='mid-header'>
             <div className='container'>
@@ -60,11 +75,11 @@ const Header = () => {
                                     <a rel="nofollow" href="/account/login" className="d-block" title="Tài khoản">
                                         Tài khoản
                                     </a>
-                                    <small>
-                                        <a href="/account/login" title="Đăng nhập" className="font-weight: light">
-                                            Đăng nhập
-                                        </a>
-                                    </small>
+                                    <a onClick={openLoginModal} title="Đăng nhập" className="d-block">
+                                        <Nav className="ml-auto">
+                                            <AuthModals />
+                                        </Nav>
+                                    </a>
                                 </div>
                             </li>
                             <li className="d-lg-none">

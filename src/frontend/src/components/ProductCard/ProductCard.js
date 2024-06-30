@@ -39,6 +39,7 @@ const products = [
 const ProductCard = ({ product }) => {
   const { hotGift, preOrder, giftIcon, brandLogo, productImage, promotionBanner, productName, specs, oldPrice, newPrice, discount, ratingValue, ratingCount } = product;
 
+
   return (
     <div className="product-card">
       <div className="card-header">
@@ -78,7 +79,7 @@ const ProductCard = ({ product }) => {
 
 const ProductList = () => {
   return (
-    <div>
+    <div className='row'>
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
