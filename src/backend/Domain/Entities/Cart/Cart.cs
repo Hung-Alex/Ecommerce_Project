@@ -2,7 +2,6 @@
 using Domain.Entities.Users;
 using Domain.Exceptions;
 using Domain.Shared;
-using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace Domain.Entities.Carts
@@ -45,18 +44,6 @@ namespace Domain.Entities.Carts
             var cartItem = CartItems.FirstOrDefault(c => c.CartId == cartItemId);
             if (cartItem is null) throw new CartItemNotFoundException();
             CartItems.Remove(cartItem);
-        }
-        public void UpdateQuantityItem(Guid cartItemId, int quantity)
-        {
-            if (CartItems is null || !CartItems.Any()) throw new CartNullException();
-            var cartItem = CartItems.FirstOrDefault(c => c.CartId == cartItemId);
-            if (cartItem is null) throw new CartItemNotFoundException();
-            if (quantity <= 0)
-            {
-                CartItems.Remove(cartItem);
-                return;
-            }
-            cartItem.Quantity = quantity;
-        }
+        }    
     }
 }
