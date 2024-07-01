@@ -10,7 +10,7 @@ namespace Domain.Entities.Carts
     public class Cart : BaseEntity, IDatedModification, IAggregateRoot
     {
         public Cart() : base() { }
-        public required ICollection<CartItem> CartItems { get; set; }
+        public  ICollection<CartItem> CartItems { get; set; }
         public Guid UserId { get; set; }
         public IUser User { get; set; }
         public DateTime CreatedAt { get; set; }
