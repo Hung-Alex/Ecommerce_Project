@@ -1,0 +1,1 @@
+import { delete_api, get_api, post_api, upload_image, put_api } from "./method";

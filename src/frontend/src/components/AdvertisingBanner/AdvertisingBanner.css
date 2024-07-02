@@ -1,0 +1,14 @@
+.left, .right {
+    position: fixed;
+    top: 50%; /* Điều chỉnh vị trí theo ý muốn */
+    transform: translateY(-50%);
+    z-index: 1000; /* Đảm bảo hiển thị trên các phần tử khác */
+}
+
+.left {
+    left: 140px; /* Điều chỉnh khoảng cách từ mép trái của màn hình */
+}
+
+.right {
+    right: 140px; /* Điều chỉnh khoảng cách từ mép phải của màn hình */
+}
