@@ -15,7 +15,8 @@ namespace Application.Features.Carts.Specification
         public override Expression<Func<Cart, bool>> Criteria => c => c.UserId == _userId;
         protected override void Handler()
         {
-            AddInclude(c => c.CartItems);
+            AddIncludeString("CartItems.ProductSkus");
+            AddIncludeString("CartItems.Product.Images.Image");
             base.Handler();
         }
     }
