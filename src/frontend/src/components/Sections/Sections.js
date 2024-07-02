@@ -4,19 +4,17 @@ import CollectionSlider from '../CollectionSlider/CollectionSlider'
 import SaleBanner from '../SaleBanner/SaleBanner'
 import AdvertisingBanner from '../AdvertisingBanner/AdvertisingBanner'
 import TagNav from '../TagNav/TagNav'
-import ProductCard from '../ProductCard/ProductCard'
 import ProductList from '../ProductCard/ProductCard'
 
 const Sections = () => {
   return (
     <div className='container'>
       <div className='row'>
+        <CategoryBar />
+        <CollectionSlider />
+        <SaleBanner />
+        <TagNav />
         <ProductList />
-        {/* <ProductCard /> */}
-        {/* <TagNav /> */}
-        {/* <CategoryBar /> */}
-        {/* <CollectionSlider /> */}
-        {/* <SaleBanner /> */}
         {/* <AdvertisingBanner /> */}
       </div>
     </div>
