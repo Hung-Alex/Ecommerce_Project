@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebMemoryzoneApi.Controllers
 {
     [ApiController]
-    [Route("api/authencations")]
+    [Route("api/authentications")]
     public class AuthencationController : ControllerBase
     {
         private readonly IMediator _mediator;

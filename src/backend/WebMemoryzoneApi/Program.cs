@@ -1,6 +1,5 @@
 using Application;
 using Infrastructure;
-using Microsoft.OpenApi.Models;
 using WebMemoryzoneApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
