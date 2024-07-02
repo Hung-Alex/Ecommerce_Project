@@ -22,7 +22,7 @@ namespace Infrastructure.Repositories.UnitOfWork
         {
             try
             {
-                //ChangeModified();
+                ChangeModified();
                 await _dbContext.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -35,20 +35,25 @@ namespace Infrastructure.Repositories.UnitOfWork
         {
             _dbContext?.Dispose();
         }
-        //private void ChangeModified()
-        //{
-        //    var trackerEntity = _dbContext.ChangeTracker.Entries().Where(x => x is IDatedModification).ToList();
-        //    trackerEntity.ForEach(x =>
-        //    {
-        //        ((IDatedModification)x.Entity).UpdatedAt = DateTime.Now;
-        //        if (x.State == EntityState.Added)
-        //        {
-        //            ((IDatedModification)x.Entity).CreatedAt = DateTime.Now;
-        //        }
-        //    }
-        //    );
+        private void ChangeModified()
+        {
+            var entries = _dbContext.ChangeTracker
+        .Entries()
+        .Where(e => e.Entity is IDatedModification && (
+                e.State == EntityState.Added
+                || e.State == EntityState.Modified));
 
-        //}
+            foreach (var entityEntry in entries)
+            {
+                ((IDatedModification)entityEntry.Entity).UpdatedAt = DateTime.Now;
+
+                if (entityEntry.State == EntityState.Added)
+                {
+                    ((IDatedModification)entityEntry.Entity).CreatedAt = DateTime.Now;
+                }
+            }
+
+        }
         public IRepository<T> GetRepository<T>() where T : BaseEntity, IAggregateRoot
         {
             return _serviceProvider.GetService<IRepository<T>>() ?? throw new ArgumentNullException();

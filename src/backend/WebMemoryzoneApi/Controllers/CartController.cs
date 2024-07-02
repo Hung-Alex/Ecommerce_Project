@@ -1,5 +1,4 @@
-﻿using Application.Common.Interface;
-using Application.DTOs.Request;
+﻿using Application.DTOs.Request;
 using Application.Features.Carts.Commands.AddItem;
 using Application.Features.Carts.Commands.DeleteItem;
 using Application.Features.Carts.Queries.GetItemInCart;
