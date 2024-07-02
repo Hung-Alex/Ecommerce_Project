@@ -26,7 +26,7 @@ namespace Application.Features.Products.Commands.AddProductImage
                 return Result<bool>.ResultFailures(ErrorConstants.NotFoundWithId(request.ProductId));
 
             }
-            var uploadImage = await _media.UploadLoadImageAsync(request.File);
+            var uploadImage = await _media.UploadLoadImageAsync(request.File, UploadFolderConstants.FolderImage);
             if (uploadImage.IsSuccess is false)
             {
                 return Result<bool>.ResultFailures(uploadImage.Errors);

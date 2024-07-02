@@ -11,7 +11,7 @@ using WebMemoryzoneApi.Filters;
 
 namespace WebMemoryzoneApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/brands")]
     public class BrandController : ControllerBase

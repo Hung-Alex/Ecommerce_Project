@@ -32,12 +32,20 @@ namespace Application.Features.Category.Commands.CreateCategory
             {
                 return Result<bool>.ResultFailures(ErrorConstants.UrlSlugIsExisted(request.UrlSlug));
             }
+            if (request.ParrentId is not null)
+            {
+                var isExistedParrent = await repoCategory.GetByIdAsync(request.ParrentId);
+                if (isExistedParrent is null)
+                {
+                    return Result<bool>.ResultFailures(ErrorConstants.NotFoundWithId((Guid)request.ParrentId));
+                }
+            }
             Result<ImageUpload> image = null;
             if (request.FormFile is not null)
             {
-                image = await _media.UploadLoadImageAsync(request.FormFile);
+                image = await _media.UploadLoadImageAsync(request.FormFile, UploadFolderConstants.FolderCategory);
             }
-            repoCategory.Add(new Categories() { Name = request.Name, Description = request.Description, UrlSlug = request.UrlSlug, Image = image.Data.Url });
+            repoCategory.Add(new Categories() { Name = request.Name, Description = request.Description, UrlSlug = request.UrlSlug, Image = image.Data.Url, ParrentId = request.ParrentId });
             await _unitOfWork.Commit();
             return Result<bool>.ResultSuccess(true);
         }

@@ -1,4 +1,5 @@
 ﻿using Domain.Shared;
+using System.Diagnostics;
 
 namespace Domain.Constants
 {
@@ -22,5 +23,8 @@ namespace Domain.Constants
                 , "Refresh token doesn't match with refresh token is saved or it was expired, you must be login again");
         //ProductImage
         public static Error ProductImageDontHaveImageWithId(Guid id) => new Error("ProductImage.DontHaveImageWithId", $"Product dont have image with id {id}");
+        //WishList
+        public static Error WishListDontHaveProductInWishListWithId(Guid ProductId) => new Error("WishList.Not Found Producy In Wishlist", $"Dont have product in wishlist with id {ProductId}");
+        public static Error WishListProductIsExistedInWishListWithId(Guid ProductId) => new Error("WishList.Product already Existed In Wishlist", $"Product already existed in wishlist with id {ProductId}");
     }
 }

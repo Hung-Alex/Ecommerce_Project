@@ -24,6 +24,9 @@ namespace Infrastructure.Data.Configuration
             builder.HasMany(x => x.Rattings)
                 .WithOne(x => x.Product)
                 .HasForeignKey(x => x.ProductId);
+            builder.HasMany(x => x.WishLists)
+                .WithOne(x => x.Product)
+                .HasForeignKey(x => x.ProductId);
         }
     }
 }

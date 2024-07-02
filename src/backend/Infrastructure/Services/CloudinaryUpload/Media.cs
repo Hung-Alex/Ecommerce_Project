@@ -23,11 +23,17 @@ namespace Infrastructure.Services.CloudinaryUpload
             Account account = new Account(_settings.CloudName, _settings.ApiKey, _settings.ApiSecret);
             _cloudinary = new Cloudinary(account);
         }
-        public Task<Result<bool>> DeleteImageAsync(string id, CancellationToken cancellationToken = default)
+        public async Task<Result<bool>> DeleteImageAsync(string id, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var param = new DeletionParams(id);
+            var result = await _cloudinary.DestroyAsync(param);
+            if (result.StatusCode == HttpStatusCode.OK)
+            {
+                return Result<bool>.ResultSuccess(true);
+            }
+            return Result<bool>.ResultFailures(new Error("ImageDelete", result.Error.Message));
         }
-        public async Task<Result<ImageUpload>> UploadLoadImageAsync(IFormFile file, CancellationToken cancellationToken = default)
+        public async Task<Result<ImageUpload>> UploadLoadImageAsync(IFormFile file, string folder, CancellationToken cancellationToken = default)
         {
             var uploadResult = new ImageUploadResult();
             if (file.Length > 0)
@@ -36,6 +42,7 @@ namespace Infrastructure.Services.CloudinaryUpload
                 {
                     var uploadParams = new ImageUploadParams()
                     {
+                        Folder = folder,
                         File = new FileDescription(Guid.NewGuid().ToString(), stream)
                     };
                     uploadResult = _cloudinary.Upload(uploadParams);

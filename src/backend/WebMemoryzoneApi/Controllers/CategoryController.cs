@@ -4,7 +4,6 @@ using Application.Features.Category.Commands.DeleteCategory;
 using Application.Features.Category.Commands.UpdateCategory;
 using Application.Features.Category.Queries.Get;
 using Application.Features.Category.Queries.GetById;
-using Domain.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +11,7 @@ using WebMemoryzoneApi.Filters;
 
 namespace WebMemoryzoneApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/categories")]
     public class CategoryController : ControllerBase

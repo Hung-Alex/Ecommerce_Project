@@ -22,6 +22,41 @@ namespace Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Domain.Entities.Banner.Banner", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("Left")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LogoImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("Right")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Banners");
+                });
+
             modelBuilder.Entity("Domain.Entities.Brands.Brand", b =>
                 {
                     b.Property<Guid>("Id")
@@ -134,6 +169,9 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("ParrentId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -142,6 +180,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ParrentId");
 
                     b.ToTable("Categories");
                 });
@@ -457,13 +497,13 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("SubCategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -471,9 +511,9 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("CategoryId");
 
-                    b.HasIndex("SubCategoryId");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("ProductSubCategories");
                 });
@@ -673,40 +713,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("SlideId");
 
                     b.ToTable("SlidesImages");
-                });
-
-            modelBuilder.Entity("Domain.Entities.SubCategories.SubCategory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UrlSlug")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("SubCategories");
                 });
 
             modelBuilder.Entity("Domain.Entities.Tags.Tag", b =>
@@ -1108,6 +1114,15 @@ namespace Infrastructure.Migrations
                     b.Navigation("ProductSkus");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Category.Categories", b =>
+                {
+                    b.HasOne("Domain.Entities.Category.Categories", "ParentCategory")
+                        .WithMany("SubCategories")
+                        .HasForeignKey("ParrentId");
+
+                    b.Navigation("ParentCategory");
+                });
+
             modelBuilder.Entity("Domain.Entities.Comments.Comment", b =>
                 {
                     b.HasOne("Domain.Entities.Comments.Comment", "Parent")
@@ -1246,21 +1261,21 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.ProductSubCategory", b =>
                 {
+                    b.HasOne("Domain.Entities.Category.Categories", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entities.Products.Product", "Product")
                         .WithMany("ProductSubCategories")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.SubCategories.SubCategory", "SubCategory")
-                        .WithMany("productSubCategories")
-                        .HasForeignKey("SubCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Category");
 
                     b.Navigation("Product");
-
-                    b.Navigation("SubCategory");
                 });
 
             modelBuilder.Entity("Domain.Entities.Products.Product", b =>
@@ -1332,17 +1347,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Image");
 
                     b.Navigation("Slide");
-                });
-
-            modelBuilder.Entity("Domain.Entities.SubCategories.SubCategory", b =>
-                {
-                    b.HasOne("Domain.Entities.Category.Categories", "Category")
-                        .WithMany("SubCategories")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Domain.Entities.Users.Address", b =>
@@ -1497,11 +1501,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Slides.Slide", b =>
                 {
                     b.Navigation("SlidesImages");
-                });
-
-            modelBuilder.Entity("Domain.Entities.SubCategories.SubCategory", b =>
-                {
-                    b.Navigation("productSubCategories");
                 });
 
             modelBuilder.Entity("Domain.Entities.Tags.Tag", b =>

@@ -266,6 +266,7 @@ ServiceFabricBackup/
 *.ldf
 *.ndf
 
+
 # Business Intelligence projects
 *.rdl.data
 *.bim.layout
@@ -437,3 +438,7 @@ packages/react-devtools-inline/dist
 packages/react-devtools-shell/dist
 packages/react-devtools-timeline/dist
 /src/frontend/client-app/src/pages
+
+
+#appsettingjson
+appsettings.json
