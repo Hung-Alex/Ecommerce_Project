@@ -16,7 +16,6 @@ namespace Application.Features.Products.Commands.DeleteProductImage
             _unitOfWork = unitOfWork;
             this.media = media;
         }
-
         public async Task<Result<bool>> Handle(DeleteProductImageCommand request, CancellationToken cancellationToken)
         {
             var repoProduct = _unitOfWork.GetRepository<Product>();

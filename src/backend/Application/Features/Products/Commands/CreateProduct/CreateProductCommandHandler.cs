@@ -1,7 +1,4 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interface;
-using Application.DTOs.Internal;
-using Application.DTOs.Responses.Product;
+﻿using Application.Common.Interface;
 using Application.Features.Products.Specification;
 using Domain.Constants;
 using Domain.Entities.Products;

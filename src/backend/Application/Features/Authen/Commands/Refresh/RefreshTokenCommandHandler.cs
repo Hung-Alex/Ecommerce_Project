@@ -2,7 +2,6 @@
 using Application.Common.Interface;
 using Application.DTOs.Responses.Auth;
 using MediatR;
-using Application.Common.Exceptions;
 using System.Security.Claims;
 using Domain.Constants;
 using Application.Helper;
@@ -11,7 +10,6 @@ using Application.DTOs.Internal.Authen;
 using Application.DTOs.Internal;
 using Microsoft.Extensions.Configuration;
 using Domain.Shared;
-using Domain.Entities.Users;
 
 namespace Application.Features.Authen.Commands.Refresh
 {

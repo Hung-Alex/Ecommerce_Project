@@ -9,13 +9,11 @@ using Infrastructure.Services.Auth;
 using Infrastructure.Services.CloudinaryUpload;
 using Infrastructure.Services.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using System.Text;
 
 namespace Infrastructure
@@ -53,7 +51,6 @@ namespace Infrastructure
                 options.IncludeErrorDetails = true;
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
-
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
@@ -78,8 +75,15 @@ namespace Infrastructure
                         }
                 };
             });
-
-
+            //set cors
+            services.AddCors(options => options.AddPolicy("AllowAll",
+                policies
+                => policies
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin()
+                )
+            );
             return services;
         }
     }

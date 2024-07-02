@@ -1,6 +1,4 @@
 ﻿using Application.DTOs.Filters.Slides;
-using Application.Features.Products.Commands.AddProductImage;
-using Application.Features.Products.Commands.DeleteProductImage;
 using Application.Features.Slides.Commands.AddProductSlide;
 using Application.Features.Slides.Commands.CreateSlide;
 using Application.Features.Slides.Commands.DeleteSlide;
