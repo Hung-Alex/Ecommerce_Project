@@ -1,17 +1,31 @@
+// App.js
 import './App.css';
-import CategoryBar from './components/CategoryBar/CategoryBar';
-import Footer from './components/Footer/Footer';
-import Header from './components/Header/Header';
-import Sections from './components/Sections/Sections';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Layout from './layout/Layout';
+import NotFound from './pages/NotFound/NotFound';
+import { routes, adminRoutes } from './router/Router';
 
 function App() {
-
   return (
-    <div className="App">
-      <Header />
-      <Sections />
-      <Footer />
-    </div>
+    <Router>
+      <Layout>
+        <Routes>
+          {/* Routes for regular users */}
+          {routes.map((route, index) => (
+            <Route key={index} path={route.path} element={route.element} />
+          ))}
+
+          {/* Routes for admin users */}
+          {adminRoutes.map((route, index) => (
+            <Route key={index} path={route.path} element={route.element} />
+          ))}
+
+          {/* Handle 404 error */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Layout>
+    </Router>
   );
 }
 
