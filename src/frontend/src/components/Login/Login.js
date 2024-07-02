@@ -77,23 +77,23 @@ const AuthModals = () => {
           <Form onSubmit={handleLoginSubmit}>
             <Form.Group controlId="formBasicUserName">
               <Form.Label>Username</Form.Label>
-              <Form.Control 
-                type="text" 
-                placeholder="Enter username" 
-                value={userName} 
-                onChange={(e) => setUserName(e.target.value)} 
-                required 
+              <Form.Control
+                type="text"
+                placeholder="Enter username"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+                required
               />
             </Form.Group>
 
             <Form.Group controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
-              <Form.Control 
-                type="password" 
-                placeholder="Password" 
-                value={password} 
-                onChange={(e) => setPassword(e.target.value)} 
-                required 
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
               />
             </Form.Group>
 
@@ -122,45 +122,45 @@ const AuthModals = () => {
           <Form onSubmit={handleRegisterSubmit}>
             <Form.Group controlId="formBasicUserName">
               <Form.Label>Username</Form.Label>
-              <Form.Control 
-                type="text" 
-                placeholder="Enter username" 
-                value={userName} 
-                onChange={(e) => setUserName(e.target.value)} 
-                required 
+              <Form.Control
+                type="text"
+                placeholder="Enter username"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+                required
               />
             </Form.Group>
 
             <Form.Group controlId="formBasicEmail">
               <Form.Label>Email address</Form.Label>
-              <Form.Control 
-                type="email" 
-                placeholder="Enter email" 
-                value={email} 
-                onChange={(e) => setEmail(e.target.value)} 
-                required 
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </Form.Group>
 
             <Form.Group controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
-              <Form.Control 
-                type="password" 
-                placeholder="Password" 
-                value={password} 
-                onChange={(e) => setPassword(e.target.value)} 
-                required 
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
               />
             </Form.Group>
 
             <Form.Group controlId="formBasicConfirmPassword">
               <Form.Label>Confirm Password</Form.Label>
-              <Form.Control 
-                type="password" 
-                placeholder="Confirm Password" 
-                value={confirmPassword} 
-                onChange={(e) => setConfirmPassword(e.target.value)} 
-                required 
+              <Form.Control
+                type="password"
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
               />
             </Form.Group>
 
@@ -171,6 +171,22 @@ const AuthModals = () => {
           <div className="mt-3 text-center">
             {error && <p className="text-danger">{error}</p>}
             {success && <p className="text-success">{success}</p>}
+          </div>
+          <div className="mt-3 text-center">
+            <p>
+              Don't have an account?{' '}
+              <Button
+                variant="link"
+                onClick={() => {
+                  handleRegisterClose();
+                  handleLoginShow();
+                }}
+                className="btn-link"
+              >
+                login
+              </Button>
+
+            </p>
           </div>
         </Modal.Body>
       </Modal>
