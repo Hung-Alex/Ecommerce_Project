@@ -1,5 +1,6 @@
 import React from 'react';
 import './ProductCard.css';
+import TagNav from '../TagNav/TagNav';
 
 const products = [
   {
@@ -80,6 +81,10 @@ const ProductCard = ({ product }) => {
 const ProductList = () => {
   return (
     <div className='row'>
+      <h1>
+        laptop
+      </h1>
+      <TagNav />
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}

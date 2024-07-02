@@ -1,4 +1,5 @@
 import React from 'react';
+import "./TagNav.css"
 
 const TagNav = () => {
     // Array of items for navigation
@@ -20,7 +21,7 @@ const TagNav = () => {
                 <ul className="mt-2 mt-sm-0 tabs tabs-title list-unstyled mb-0 d-flex align-items-center overflow-auto">
                     {items.map((item) => (
                         <li key={item.id} className="menu-item ega-small tab-link link mr-2 mt-2111">
-                            <a href={item.link} className="menu-item__link" title={item.title}>{item.title}</a>
+                            <a href={item.link} className="menu-item__link tag-item-link" title={item.title}>{item.title}</a>
                         </li>
                     ))}
                 </ul>

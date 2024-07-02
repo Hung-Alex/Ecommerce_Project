@@ -13,7 +13,7 @@ const Sections = () => {
         <CategoryBar />
         <CollectionSlider />
         <SaleBanner />
-        <TagNav />
+        {/* <TagNav /> */}
         <ProductList />
         {/* <AdvertisingBanner /> */}
       </div>

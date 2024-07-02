@@ -49,6 +49,11 @@
     width: 100%;
 }
 
+.header-right {
+    font-size: 14px;
+    justify-content: start;
+}
+
 .btn-primary:hover {
     background-color: var(--primary-light-color);
 }
@@ -79,4 +84,9 @@
 
 .mt-3 {
     margin-top: 1rem;
+}
+
+.nav p{
+    margin-top: 0;
+    margin-bottom: 0;
 }

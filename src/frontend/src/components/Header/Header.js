@@ -69,9 +69,9 @@ const Header = () => {
                     </div>
                     <div className="col-4 col-sm-3 col-lg-6 col-xl-3 pl-0">
                         <ul className="header-right mb-0 list-unstyled d-flex align-items-center">
-                            <li className="ml-4 mr-4 mr-md-0 ml-md-3 media d-lg-flex d-none">
+                            <li className="d-lg-flex ml-3 d-block">
                                 <img src="//bizweb.dktcdn.net/100/329/122/themes/951253/assets/account-icon.png?1717830509242" width={24} height={24} alt="account_icon" className="mr-1 align-self-center" />
-                                <div className="media-body d-md-flex flex-column d-none ">
+                                <div className="media-body d-md-flex flex-column d-block">
                                     <a rel="nofollow" href="/account/login" className="d-block" title="Tài khoản">
                                         Tài khoản
                                     </a>
@@ -82,21 +82,19 @@ const Header = () => {
                                     </a>
                                 </div>
                             </li>
-                            <li className="d-lg-none">
-                                <a href="/so-sanh" className="position-relative d-block" title="So sánh sản phẩm">
-                                    <img src="//bizweb.dktcdn.net/100/329/122/themes/951253/assets/compare-icon.png?1717830509242" width={24} height={24} className="align-self-center" alt="compare-icon" />
-                                    <span className="compare-product__header-count position-absolute d-block">0</span>
-                                </a>
-                            </li>
-                            <li className="cartgroup ml-3">
-                                <div className="mini-cart text-xs-center">
+                            <li className="cartgroup mx-auto">
+                                <div className="mini-cart text-center">
                                     <a className="img_hover_cart" href="/cart" title="Giỏ hàng">
                                         <img src="//bizweb.dktcdn.net/100/329/122/themes/951253/assets/cart-icon.png?1717830509242" width={24} height={24} alt="cart_icon" />
-                                        <span className="ml-2 d-xl-block d-none">Giỏ hàng</span>
+                                        <span className="d-block">Giỏ hàng</span>
                                         <span className="count_item count_item_pr">0</span>
                                     </a>
                                     <div className="top-cart-content-comment">
-                                        <ul id="cart-sidebar" className="mini-products-list count_li list-unstyled"><div className="no-item"><p>Không có sản phẩm nào.</p></div></ul>
+                                        <ul id="cart-sidebar" className="mini-products-list count_li list-unstyled">
+                                            <div className="no-item">
+                                                <p>Không có sản phẩm nào.</p>
+                                            </div>
+                                        </ul>
                                     </div>
                                 </div>
                             </li>
