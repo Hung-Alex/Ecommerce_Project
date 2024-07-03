@@ -17,7 +17,7 @@ namespace Domain.Entities.Users
         public string CityCode { get; set; }
         public string RegionCode { get; set; }
         public Guid UserId {  get; set; }
-        public IUser User { get; set; }
+        public User User { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
