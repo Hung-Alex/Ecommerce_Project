@@ -1,18 +1,17 @@
-import Home from "../pages/Home/Home";
-import About from "../pages/About/About";
+// Import các trang của bạn
+import HomePage from '../pages/Home/Home';
+// import AboutPage from '../pages/AboutPage/AboutPage';
+// import AdminDashboard from '../pages/AdminDashboard/AdminDashboard';
+// import UserManagement from '../pages/AdminDashboard/UserManagement';
 
-/**
- * Routes for regular users of the application.
- */
+// Định nghĩa các routes cho người dùng bình thường
 export const routes = [
-  { path: "/", element: <Home /> },
-  { path: "/home", element: <Home /> },
-  { path: "/about", element: <About /> }, // Thêm route cho trang About
+  // { path: '/home', element: <HomePage /> },
+  // { path: '/about', element: <AboutPage /> },
 ];
 
-/**
- * Routes for admin users of the application.
- */
+// Định nghĩa các routes cho quản trị viên
 export const adminRoutes = [
-  { path: "/admin", element: <Home /> },
+  // { path: '/admin', element: <AdminDashboard /> },
+  // { path: '/admin/users', element: <UserManagement /> },
 ];
