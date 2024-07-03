@@ -14,6 +14,7 @@ using Domain.Entities.Products;
 using Domain.Entities.Rattings;
 using Domain.Entities.Slides;
 using Domain.Entities.Tags;
+using Domain.Entities.Users;
 using Domain.Entities.WishLists;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -28,6 +29,7 @@ namespace Infrastructure.Data
             Database.EnsureCreated();
         }
         #region DbSet Entities
+        public DbSet<User> Users { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Banner> Banners { get; set; }
         public DbSet<Product> Products { get; set; }
