@@ -34,7 +34,7 @@ namespace Infrastructure.Services.Identity
         }
         public async Task<Guid> CreateUserAsync(string email, string password, string userName, CancellationToken cancellationToken = default)
         {
-            var user = new ApplicationUser() { UserName = userName, Email = email, City = "dalat" };
+            var user = new ApplicationUser() { UserName = userName, Email = email };
             var result = await _userManager.CreateAsync(user, password);
             if (!result.Succeeded)
             {
@@ -70,14 +70,6 @@ namespace Infrastructure.Services.Identity
             ,
                 Email = user.Email
             ,
-                City = user.City
-            ,
-                PostalCode = user.PostalCode
-            ,
-                Country = user.Country
-            ,
-                ImageUrl = user.ImageUrl
-            ,
                 Role = roles
             };
         }
@@ -93,14 +85,6 @@ namespace Infrastructure.Services.Identity
                 Name = user.UserName
             ,
                 Email = user.Email
-            ,
-                City = user.City
-            ,
-                PostalCode = user.PostalCode
-            ,
-                Country = user.Country
-            ,
-                ImageUrl = user.ImageUrl
             ,
                 Role = roles
             };
