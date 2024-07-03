@@ -4,7 +4,9 @@ namespace Domain.Shared
 {
     public interface ICreatedAndUpdatedBy
     {
-        public Guid UserId { get; set; }
-        public User User { get; set; } 
+        public Guid CreatedByUserId { get; set; }
+        public User CreatedByUser { get; set; }
+        public Guid UpdatedByUserId { get; set; }
+        public User UpdatedByUser { get; set; }
     }
 }

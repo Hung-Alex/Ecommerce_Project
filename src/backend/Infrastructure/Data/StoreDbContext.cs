@@ -1,5 +1,4 @@
-﻿using Domain.Constants;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Domain.Entities.Banners;
 using Domain.Entities.Brands;
 using Domain.Entities.Carts;
@@ -56,14 +55,13 @@ namespace Infrastructure.Data
         #endregion
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<ApplicationRole>().HasData(
-                new ApplicationRole() { Id = new Guid("911B0CBD-4EED-4EB0-8488-1B2CDD915C02"), Name = nameof(UserRoleConstants.Roles.User) },
-                new ApplicationRole() { Id = new Guid("911B0CBD-4EED-4EB0-8488-1B2CDD915C01"), Name = nameof(UserRoleConstants.Roles.SupperAdmin) },
-                new ApplicationRole() { Id = new Guid("911B0CBD-4EED-4EB0-8488-1B2CDD915C03"), Name = nameof(UserRoleConstants.Roles.Employee) }
-                );
-
-            builder.ApplyConfigurationsFromAssembly(typeof(StoreDbContext).Assembly);
+            //builder.Entity<ApplicationRole>().HasData(
+            //    new ApplicationRole() { Id = new Guid("911B0CBD-4EED-4EB0-8488-1B2CDD915C02"), Name = nameof(UserRoleConstants.Roles.User) },
+            //    new ApplicationRole() { Id = new Guid("911B0CBD-4EED-4EB0-8488-1B2CDD915C01"), Name = nameof(UserRoleConstants.Roles.SupperAdmin) },
+            //    new ApplicationRole() { Id = new Guid("911B0CBD-4EED-4EB0-8488-1B2CDD915C03"), Name = nameof(UserRoleConstants.Roles.Employee) }
+            //    );
             base.OnModelCreating(builder);
+            builder.ApplyConfigurationsFromAssembly(typeof(StoreDbContext).Assembly);
 
         }
     }

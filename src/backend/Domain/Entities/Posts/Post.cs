@@ -30,7 +30,9 @@ namespace Domain.Entities.Posts
         public DateTime UpdatedAt { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<PostTags> PostTags { get; set; }
-        public Guid UserId { get; set; }
-        public virtual User User { get; set; }
+        public Guid CreatedByUserId { get; set; }
+        public virtual User CreatedByUser { get; set; }
+        public Guid UpdatedByUserId { get; set; }
+        public virtual User UpdatedByUser { get; set; }
     }
 }

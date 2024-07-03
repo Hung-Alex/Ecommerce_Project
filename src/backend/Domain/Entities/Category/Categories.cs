@@ -25,7 +25,9 @@ namespace Domain.Entities.Category
         public ICollection<Categories> SubCategories { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public Guid UserId { get; set; }
-        public virtual User User { get; set; }
+        public Guid CreatedByUserId { get; set; }
+        public virtual User CreatedByUser { get; set; }
+        public Guid UpdatedByUserId { get; set; }
+        public virtual User UpdatedByUser { get; set; }
     }
 }

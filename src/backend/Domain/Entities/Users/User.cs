@@ -4,8 +4,10 @@ using Domain.Entities.Brands;
 using Domain.Entities.Carts;
 using Domain.Entities.Category;
 using Domain.Entities.Comments;
+using Domain.Entities.Coupons;
 using Domain.Entities.Orders;
 using Domain.Entities.Posts;
+using Domain.Entities.Products;
 using Domain.Entities.Rattings;
 using Domain.Entities.Slides;
 using Domain.Entities.Tags;
@@ -44,6 +46,10 @@ namespace Domain.Entities.Users
         public virtual ICollection<Tag> CreatedByTag { get; set; }
         public virtual ICollection<Brand> UpdatedByBrand { get; set; }
         public virtual ICollection<Brand> CreatedByBrand { get; set; }
+        public virtual ICollection<Coupon> UpdatedByCoupon { get; set; }
+        public virtual ICollection<Coupon> CreatedByCoupon { get; set; }
+        public virtual ICollection<Product> UpdatedByProduct { get; set; }
+        public virtual ICollection<Product> CreatedByProduct { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

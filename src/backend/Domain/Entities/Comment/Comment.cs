@@ -16,7 +16,9 @@ namespace Domain.Entities.Comments
         public DateTime UpdatedAt { get; set; }
         public Guid PostId { get; set; }
         public Post Post { get; set; }
-        public Guid UserId { get; set; }
-        public virtual User User { get; set; }
+        public Guid CreatedByUserId { get; set; }
+        public virtual User CreatedByUser { get; set; }
+        public Guid UpdatedByUserId { get; set; }
+        public virtual User UpdatedByUser { get; set; }
     }
 }

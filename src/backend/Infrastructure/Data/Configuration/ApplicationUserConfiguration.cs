@@ -8,6 +8,7 @@ namespace Infrastructure.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
+            builder.HasKey(t => t.Id);
             builder.HasOne(x => x.User)
                    .WithOne()
                    .HasForeignKey<ApplicationUser>(a => a.UserId);

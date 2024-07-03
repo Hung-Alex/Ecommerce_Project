@@ -15,7 +15,9 @@ namespace Domain.Entities.Tags
         public DateTime UpdatedAt { get; set; }
         //mapping Post
         public IList<PostTags> PostTags { get; set; }
-        public Guid UserId { get; set; }
-        public virtual User User { get; set; }
+        public Guid CreatedByUserId { get; set; }
+        public virtual User CreatedByUser { get; set; }
+        public Guid UpdatedByUserId { get; set; }
+        public virtual User UpdatedByUser { get; set; }
     }
 }

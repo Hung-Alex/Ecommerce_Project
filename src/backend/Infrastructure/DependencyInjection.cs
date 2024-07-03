@@ -30,6 +30,8 @@ namespace Infrastructure
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             // Register Services
             services.AddScoped<IMedia, Media>();
+
+
             services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<StoreDbContext>()
                 .AddUserManager<UserManager<ApplicationUser>>()
