@@ -1,12 +1,13 @@
 ﻿using Domain.Common;
 using Domain.Entities.Orders;
+using Domain.Entities.Users;
 using Domain.Shared;
 using System.Collections.ObjectModel;
 
 
 namespace Domain.Entities.Coupons
 {
-    public class Coupon : BaseEntity, IDatedModification, IAggregateRoot
+    public class Coupon : BaseEntity, IDatedModification, IAggregateRoot, ICreatedAndUpdatedBy
     {
         private Coupon() : base() { }
         public string Name { get; set; }
@@ -16,14 +17,16 @@ namespace Domain.Entities.Coupons
         public string DiscountType { get; set; }
         public DateTime CouponStartDate { get; set; }
         public DateTime CouponEndDate { get; set; }
-        public int UsedTime {  get; set; }
+        public int UsedTime { get; set; }
         public DateTime? CreateAt { get; set; }
         public DateTime? UpdateAt { get; set; }
-        private Collection<CouponProduct> _couponProducts=new Collection<CouponProduct>();
+        private Collection<CouponProduct> _couponProducts = new Collection<CouponProduct>();
         public IReadOnlyCollection<CouponProduct> CouponProducts => _couponProducts.AsReadOnly();
         //mapping Order
         public virtual ICollection<Order> Orders { get; set; }
-        public DateTime CreatedAt {  get; set; }
+        public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public Guid UserId { get; set; }
+        public virtual User User { get; set; }
     }
 }

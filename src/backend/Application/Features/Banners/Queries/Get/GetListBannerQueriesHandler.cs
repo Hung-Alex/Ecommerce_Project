@@ -2,7 +2,7 @@
 using AutoMapper;
 using Domain.Shared;
 using MediatR;
-using Domain.Entities.Banner;
+using Domain.Entities.Banners;
 using Application.DTOs.Responses.Banners;
 using Application.Features.Banners.Specification;
 

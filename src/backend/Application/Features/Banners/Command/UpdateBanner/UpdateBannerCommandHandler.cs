@@ -5,7 +5,7 @@ using MediatR;
 using FluentValidation;
 using Domain.Shared;
 using Domain.Constants;
-using Domain.Entities.Banner;
+using Domain.Entities.Banners;
 using Application.DTOs.Responses.Banners;
 
 namespace Application.Features.Banners.Commands.UpdateBanner

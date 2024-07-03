@@ -1,9 +1,10 @@
 ﻿using Domain.Common;
+using Domain.Entities.Users;
 using Domain.Shared;
 
 namespace Domain.Entities.Slides
 {
-    public class Slide : BaseEntity, IDatedModification, IAggregateRoot
+    public class Slide : BaseEntity, IDatedModification, IAggregateRoot, ICreatedAndUpdatedBy
     {
         public Slide(string title, string description, bool? status, int order)
         {
@@ -20,5 +21,7 @@ namespace Domain.Entities.Slides
         public virtual ICollection<SlidesImage> SlidesImages { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public Guid UserId { get; set; }
+        public virtual User User { get; set; }
     }
 }

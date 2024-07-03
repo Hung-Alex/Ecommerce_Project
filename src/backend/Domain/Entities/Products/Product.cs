@@ -5,9 +5,10 @@ using Domain.Entities.Rattings;
 using Domain.Common;
 using Domain.Shared;
 using Domain.Entities.WishLists;
+using Domain.Entities.Users;
 namespace Domain.Entities.Products
 {
-    public class Product : BaseEntity, IDatedModification, IAggregateRoot
+    public class Product : BaseEntity, IDatedModification, IAggregateRoot, ICreatedAndUpdatedBy
     {
         public Product() : base() { }
         public string Name { get; set; }
@@ -27,5 +28,7 @@ namespace Domain.Entities.Products
         public virtual ICollection<Ratting> Rattings { get; set; }
         public virtual ICollection<ProductSubCategory> ProductSubCategories { get; set; }
         public virtual ICollection<WishList> WishLists { get; set; }
+        public Guid UserId { get; set; }
+        public virtual User User { get; set; }
     }
 }

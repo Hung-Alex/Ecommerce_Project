@@ -1,7 +1,7 @@
 ﻿using Domain.Specifications;
 using System.Linq.Expressions;
 using Application.Utils;
-using Domain.Entities.Banner;
+using Domain.Entities.Banners;
 using Application.DTOs.Filters.Banner;
 
 namespace Application.Features.Banners.Specification

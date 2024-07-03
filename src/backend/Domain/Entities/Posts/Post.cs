@@ -1,10 +1,11 @@
 ﻿using Domain.Common;
 using Domain.Entities.Comments;
+using Domain.Entities.Users;
 using Domain.Shared;
 
 namespace Domain.Entities.Posts
 {
-    public class Post : BaseEntity, IDatedModification, IAggregateRoot
+    public class Post : BaseEntity, IDatedModification, IAggregateRoot, ICreatedAndUpdatedBy
     {
         public Post() : base() { }
         public Post(string title, string urlSlug, string shortDescription, string description, string meta, string imageUrl, bool? pulished, int viewCount) : base()
@@ -29,5 +30,7 @@ namespace Domain.Entities.Posts
         public DateTime UpdatedAt { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<PostTags> PostTags { get; set; }
+        public Guid UserId { get; set; }
+        public virtual User User { get; set; }
     }
 }

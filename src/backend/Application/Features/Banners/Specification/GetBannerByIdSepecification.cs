@@ -1,4 +1,4 @@
-﻿using Domain.Entities.Banner;
+﻿using Domain.Entities.Banners;
 using Domain.Specifications;
 using System.Linq.Expressions;
 

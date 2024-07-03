@@ -1,6 +1,6 @@
 ﻿using Domain.Constants;
 using Domain.Entities;
-using Domain.Entities.Banner;
+using Domain.Entities.Banners;
 using Domain.Entities.Brands;
 using Domain.Entities.Carts;
 using Domain.Entities.Category;

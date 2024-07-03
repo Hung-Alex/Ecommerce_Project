@@ -1,10 +1,11 @@
 ﻿using Domain.Common;
+using Domain.Entities.Users;
 using Domain.Shared;
 
 
 namespace Domain.Entities.Category
 {
-    public class Categories : BaseEntity, IDatedModification, IAggregateRoot
+    public class Categories : BaseEntity, IDatedModification, IAggregateRoot,ICreatedAndUpdatedBy
     {
         public Categories() { }
         private Categories(string name, string descripton, string urlSlug, string image, Guid? parrentId) : base()
@@ -24,6 +25,7 @@ namespace Domain.Entities.Category
         public ICollection<Categories> SubCategories { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-
+        public Guid UserId { get; set; }
+        public virtual User User { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using Application.DTOs.Responses.Product;
 using Application.DTOs.Responses.Rattings;
 using Application.DTOs.Responses.Tags;
 using AutoMapper;
-using Domain.Entities.Banner;
+using Domain.Entities.Banners;
 using Domain.Entities.Brands;
 using Domain.Entities.Category;
 using Domain.Entities.Posts;
