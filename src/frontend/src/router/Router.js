@@ -6,7 +6,8 @@ import HomePage from '../pages/Home/Home';
 
 // Định nghĩa các routes cho người dùng bình thường
 export const routes = [
-  // { path: '/home', element: <HomePage /> },
+  { path: '/', element: <HomePage /> },
+  { path: '/home', element: <HomePage /> },
   // { path: '/about', element: <AboutPage /> },
 ];
 
