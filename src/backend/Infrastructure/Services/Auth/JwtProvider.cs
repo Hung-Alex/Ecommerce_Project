@@ -1,10 +1,11 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interface;
+using Application.DTOs.Internal;
 using Application.DTOs.Internal.Authen;
-using Azure.Core;
 using Domain.Constants;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -17,23 +18,21 @@ namespace Infrastructure.Services.Auth
 {
     public class JwtProvider : IJwtProvider
     {
+
         public readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly JwtSetting _jwtSetting;
         public JwtProvider(UserManager<ApplicationUser> userManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _configuration = configuration ?? throw new NotImplementedException("configuration not found");
+            _jwtSetting = configuration.GetSection("JwtSetting").Get<JwtSetting>() ?? throw new NotImplementedException("configuration not found"); ;
         }
         public async Task<string> GenerateTokenAsync(Guid userId)
         {
-            var jwtSettings = _configuration.GetSection("JwtSetting");
-            var issuer = jwtSettings.GetValue<string>("Issuer");
-            var audience = jwtSettings.GetValue<string>("Audience");
-            var expiredTokenMinutes = jwtSettings.GetValue<int>("ExpiredToken");
-            var secretKey = jwtSettings.GetValue<string>("SecretKey");
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSetting.SecretKey));
             var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var user = await _userManager.Users.Include(x => x.User).FirstOrDefaultAsync(x=>x.Id==userId);
             if (user == null) { throw new NotFoundException(); }
             var roles = await _userManager.GetRolesAsync(user);
             var claims = new List<Claim>()
@@ -48,10 +47,10 @@ namespace Infrastructure.Services.Auth
             }
             // Tạo token
             var token = new JwtSecurityToken(
-                issuer: issuer,
-                audience: audience,
+                issuer: _jwtSetting.Issuer,
+                audience: _jwtSetting.Audience,
                 claims: claims,
-                expires: DateTime.Now.AddSeconds(expiredTokenMinutes),
+                expires: DateTime.Now.AddSeconds(_jwtSetting.ExpiredToken),
                 signingCredentials: signingCredentials);
 
             var encode = new JwtSecurityTokenHandler().WriteToken(token);
@@ -105,19 +104,14 @@ namespace Infrastructure.Services.Auth
         }
         private TokenValidationParameters GetValidationParameter()
         {
-            var jwtSettings = _configuration.GetSection("JwtSetting");
-            var issuer = jwtSettings.GetValue<string>("Issuer");
-            var audience = jwtSettings.GetValue<string>("Audience");
-            var expiredTokenMinutes = jwtSettings.GetValue<int>("ExpiredToken");
-            var secretKey = jwtSettings.GetValue<string>("SecretKey");
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSetting.SecretKey));
             var parameters = new TokenValidationParameters()
             {
                 ValidateLifetime = false,
                 ValidateIssuer = true,
                 ValidateAudience = true,
-                ValidAudience = audience,
-                ValidIssuer = issuer,
+                ValidAudience = _jwtSetting.Audience,
+                ValidIssuer = _jwtSetting.Issuer,
                 IssuerSigningKey = key
             };
             return parameters;

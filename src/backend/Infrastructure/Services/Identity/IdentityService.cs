@@ -1,7 +1,6 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interface.IdentityService;
 using Application.DTOs.Internal.User;
-using Azure.Core;
 using Domain.Constants;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -32,9 +31,9 @@ namespace Infrastructure.Services.Identity
             var result = await _userManager.AddToRoleAsync(user, role);
             return result.Succeeded;
         }
-        public async Task<Guid> CreateUserAsync(string email, string password, string userName, CancellationToken cancellationToken = default)
+        public async Task<Guid> CreateUserAsync(string email, string password, string userName, Guid UserDomainId, CancellationToken cancellationToken = default)
         {
-            var user = new ApplicationUser() { UserName = userName, Email = email };
+            var user = new ApplicationUser() { UserName = userName, Email = email, UserId = UserDomainId };
             var result = await _userManager.CreateAsync(user, password);
             if (!result.Succeeded)
             {

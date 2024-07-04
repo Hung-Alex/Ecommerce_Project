@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interface;
 using Application.Common.Interface.IdentityService;
 using Domain.Entities.Carts;
+using Domain.Entities.Users;
 using Domain.Shared;
 using MediatR;
 using System.Transactions;
@@ -22,13 +23,15 @@ namespace Application.Features.Authen.Commands.Register
             {
                 try
                 {
-                    var repo = _unitOfWork.GetRepository<Cart>();
-                    var userId = await _identityService.CreateUserAsync(request.Email, request.Password, request.userName);
-                    repo.Add(new Cart() { UserId = userId });
+                    var repoUser = _unitOfWork.GetRepository<User>();
+                    var repoCart = _unitOfWork.GetRepository<Cart>();
+                    var userDomain = new User() { FirstName = request.userName };
+                    repoUser.Add(userDomain);
+                    var userId = await _identityService.CreateUserAsync(request.Email, request.Password, request.userName, userDomain.Id);
+                    repoCart.Add(new Cart() { UserId = userDomain.Id });
                     await _unitOfWork.Commit();
                     transactionScope.Complete();
                     return Result<Guid>.ResultSuccess(userId);
-
                 }
                 catch (Exception)
                 {
