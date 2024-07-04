@@ -1,5 +1,4 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interface;
+﻿using Application.Common.Interface;
 using Application.Common.Interface.IdentityService;
 using Application.DTOs.Internal;
 using Application.DTOs.Internal.Authen;
@@ -10,6 +9,7 @@ using Domain.Shared;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json;
+using static Application.DTOs.Responses.Auth.AuthencationResponse;
 
 namespace Application.Features.Authen.Commands.Login
 {
@@ -42,7 +42,7 @@ namespace Application.Features.Authen.Commands.Login
             //convert the refresh token to json containing the expiration time, Token. After saving it
             var convertRefreshIntoJson = JsonSerializer.Serialize<RefreshToken>(refreshToken);
             await _identityService.SaveRefreshTokenAsync(user.Id, UserToken.Provider, UserToken.RefreshToken, convertRefreshIntoJson);
-            return Result<AuthencationResponse>.ResultSuccess(new AuthencationResponse(token, refreshToken.Token, "Bearer", user.Id));
+            return Result<AuthencationResponse>.ResultSuccess(new AuthencationResponse(token, refreshToken.Token, "Bearer",new UserAuthentication(user.Id, user.Name??"")));
         }
     }
 }

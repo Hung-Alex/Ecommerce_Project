@@ -1,17 +1,18 @@
-﻿using System.Security.Claims;
+﻿using Application.DTOs.Internal.User;
 
 namespace Application.DTOs.Responses.Auth
 {
     public record AuthencationResponse
     {
-        public AuthencationResponse(string accessToken, string refreshToken, string typeToken, Guid userId)
+        public record UserAuthentication(Guid userId,string Name);
+        public AuthencationResponse(string accessToken, string refreshToken, string typeToken, UserAuthentication user)
         {
-            UserId = userId;
+            User = user;
             AccessToken = accessToken;
             RefreshToken = refreshToken;
             TypeToken = typeToken;
         }
-        public Guid UserId { get; set; }
+        public UserAuthentication User { get; set; }
         public string TypeToken { get; private set; }
         public string AccessToken { get; private set; }
         public string RefreshToken { get; private set; }
