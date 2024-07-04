@@ -32,14 +32,14 @@ namespace Infrastructure.Services.Auth
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSetting.SecretKey));
             var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var user = await _userManager.Users.Include(x => x.User).FirstOrDefaultAsync(x=>x.Id==userId);
+            var user = await _userManager.Users.Include(x => x.User).FirstOrDefaultAsync(x => x.Id == userId);
             if (user == null) { throw new NotFoundException(); }
             var roles = await _userManager.GetRolesAsync(user);
             var claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name,user.UserName),
                 new Claim(ClaimTypes.Email,user.Email),
-                new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
+                new Claim(ClaimUser.UserId,user.User.Id.ToString())
             };
             if (roles.Count() > 0)
             {
