@@ -39,7 +39,7 @@ namespace Infrastructure
                 .AddSignInManager<SignInManager<ApplicationUser>>()
                 .AddDefaultTokenProviders();
             var jwtSettings = configuration.GetSection("JwtSetting");
-
+            services.AddHttpContextAccessor();
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IJwtProvider, JwtProvider>();
             services.AddAuthentication(cfg =>
