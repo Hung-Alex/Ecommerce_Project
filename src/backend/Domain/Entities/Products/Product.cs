@@ -17,8 +17,8 @@ namespace Domain.Entities.Products
         public string UrlSlug { get; set; }
         public string UnitPrice { get; set; }
         public int? Discount { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
         public Guid BrandId { get; set; }
         public Brand Brand { get; set; }
         public virtual ICollection<ProductImages> Images { get; set; }
@@ -28,9 +28,9 @@ namespace Domain.Entities.Products
         public virtual ICollection<Ratting> Rattings { get; set; }
         public virtual ICollection<ProductSubCategory> ProductSubCategories { get; set; }
         public virtual ICollection<WishList> WishLists { get; set; }
-        public Guid CreatedByUserId { get; set; }
+        public Guid ? CreatedByUserId { get; set; }
         public virtual User CreatedByUser { get; set; }
-        public Guid UpdatedByUserId { get; set; }
+        public Guid ? UpdatedByUserId { get; set; }
         public virtual User UpdatedByUser { get; set; }
     }
 }

@@ -11,11 +11,11 @@ namespace Domain.Entities.Banners
         public string LogoImageUrl { get; set; }
         public bool? Left { get; set; }
         public bool? Right { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-        public Guid CreatedByUserId { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
+        public Guid ? CreatedByUserId { get; set; }
         public virtual User CreatedByUser { get; set; }
-        public Guid UpdatedByUserId { get; set; }
+        public Guid ? UpdatedByUserId { get; set; }
         public virtual User UpdatedByUser { get; set; }
     }
 }

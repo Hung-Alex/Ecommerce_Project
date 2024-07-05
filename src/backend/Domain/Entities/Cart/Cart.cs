@@ -12,8 +12,8 @@ namespace Domain.Entities.Carts
         public  ICollection<CartItem> CartItems { get; set; }
         public Guid UserId { get; set; }
         public User User { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
         public CartItem CreateCartItem(Guid productId, Guid productSkusId, int quantity)
         {
             return new CartItem(Id, productId, productSkusId, quantity);

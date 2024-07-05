@@ -24,8 +24,8 @@ namespace Domain.Entities.Carts
         public ProductSkus ProductSkus { get; set; }
         public Guid ProductSkusId { get; set; }
         public int Quantity { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
         public override bool Equals(object? obj)
         {
             if (obj == null) return false;

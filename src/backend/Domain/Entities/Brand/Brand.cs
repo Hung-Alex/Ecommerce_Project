@@ -14,12 +14,12 @@ namespace Domain.Entities.Brands
         public string UrlSlug { get; set; }
         public string LogoImageUrl { get; set; } //upload Base 64
         public string Description { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
         public ICollection<Product> Products { get; set; }
-        public Guid CreatedByUserId { get; set; }
+        public Guid ? CreatedByUserId { get; set; }
         public virtual User CreatedByUser { get; set; }
-        public Guid UpdatedByUserId { get; set; }
+        public Guid ? UpdatedByUserId { get; set; }
         public virtual User UpdatedByUser { get; set; }
     }
 }

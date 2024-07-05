@@ -50,7 +50,7 @@ namespace Domain.Entities.Users
         public virtual ICollection<Coupon> CreatedByCoupon { get; set; }
         public virtual ICollection<Product> UpdatedByProduct { get; set; }
         public virtual ICollection<Product> CreatedByProduct { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
     }
 }

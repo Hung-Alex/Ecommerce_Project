@@ -24,11 +24,11 @@ namespace Domain.Entities.Coupons
         public IReadOnlyCollection<CouponProduct> CouponProducts => _couponProducts.AsReadOnly();
         //mapping Order
         public virtual ICollection<Order> Orders { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-        public Guid CreatedByUserId { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
+        public Guid ? CreatedByUserId { get; set; }
         public virtual User CreatedByUser { get; set; }
-        public Guid UpdatedByUserId { get; set; }
+        public Guid ? UpdatedByUserId { get; set; }
         public virtual User UpdatedByUser { get; set; }
     }
 }

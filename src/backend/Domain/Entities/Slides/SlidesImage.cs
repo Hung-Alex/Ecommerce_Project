@@ -15,7 +15,7 @@ namespace Domain.Entities.Slides
         public int OrderItem { get; set; }
         public Image Image { get; set; }
         public Guid ImageId { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
     }
 }

@@ -19,8 +19,8 @@ namespace Domain.Entities.Orders
         public ShipAddress ShipAddress { get; set; }
         public string Note { get; set; }
         public OrderStatus OrderStatus { get; set; }//enum 
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
         public Guid? CouponId { get; set; }
         public virtual Coupon Coupons { get; set; }
         public ICollection<OrderItems> OrderItems { get; set; }

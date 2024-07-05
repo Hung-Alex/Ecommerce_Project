@@ -26,13 +26,13 @@ namespace Domain.Entities.Posts
         public string ImageUrl { get; set; }
         public bool? Pulished { get; set; }
         public int ViewCount { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<PostTags> PostTags { get; set; }
-        public Guid CreatedByUserId { get; set; }
+        public Guid ? CreatedByUserId { get; set; }
         public virtual User CreatedByUser { get; set; }
-        public Guid UpdatedByUserId { get; set; }
+        public Guid ? UpdatedByUserId { get; set; }
         public virtual User UpdatedByUser { get; set; }
     }
 }
