@@ -8,6 +8,7 @@ using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.Auth;
 using Infrastructure.Services.CloudinaryUpload;
 using Infrastructure.Services.Identity;
+using Infrastructure.Services.UserInHttpContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,7 @@ namespace Infrastructure
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             // Register Services
             services.AddScoped<IMedia, Media>();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
@@ -38,6 +40,7 @@ namespace Infrastructure
                 .AddRoleManager<RoleManager<ApplicationRole>>()
                 .AddSignInManager<SignInManager<ApplicationUser>>()
                 .AddDefaultTokenProviders();
+
             var jwtSettings = configuration.GetSection("JwtSetting");
             services.AddHttpContextAccessor();
             services.AddScoped<IIdentityService, IdentityService>();
