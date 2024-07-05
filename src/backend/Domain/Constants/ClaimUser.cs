@@ -2,6 +2,7 @@
 {
     public static class ClaimUser
     {
-        public const string UserId = "UserId";
+        public const string UserId = "UserDomainId";
+        public const string ApplicationUserId = "ApplicationUserId";
     }
 }
