@@ -6,11 +6,13 @@ using Application.Features.Posts.Queries.Get;
 using Application.Features.Posts.Queries.GetById;
 using Application.Features.Posts.Queries.GetByUrlSlug;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebMemoryzoneApi.Filters;
 
 namespace WebMemoryzoneApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/posts")]
     public class PostController : ControllerBase
@@ -27,6 +29,7 @@ namespace WebMemoryzoneApi.Controllers
             if (!result.IsSuccess) return NotFound(result);
             return Ok(result);
         }
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> GetPosts([FromQuery] PostFilter postFilter)
         {
@@ -51,6 +54,7 @@ namespace WebMemoryzoneApi.Controllers
             if (!result.IsSuccess) return NotFound(result);
             return Ok();
         }
+        [AllowAnonymous]
         [HttpGet("{slug}")]
         public async Task<ActionResult> GetPostByUrlSlug(string slug)
         {

@@ -7,10 +7,12 @@ using Application.Features.Slides.Commands.UpdateSlide;
 using Application.Features.Slides.Queries.Get;
 using Application.Features.Slides.Queries.GetById;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebMemoryzoneApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/slides")]
     public class SlideController : ControllerBase
@@ -27,6 +29,7 @@ namespace WebMemoryzoneApi.Controllers
             if (!result.IsSuccess) return NotFound(result);
             return Ok(result);
         }
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> GetSlides([FromQuery] SlideFilter slideFilter)
         {

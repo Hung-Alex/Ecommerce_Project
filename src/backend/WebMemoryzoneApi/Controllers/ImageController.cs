@@ -1,10 +1,12 @@
 ﻿using Application.Features.Images.Commands.CreateImage;
 using Application.Features.Images.Commands.DeleteImage;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebMemoryzoneApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/images")]
     public class ImageController : ControllerBase

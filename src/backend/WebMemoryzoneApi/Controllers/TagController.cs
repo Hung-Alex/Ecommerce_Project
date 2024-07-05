@@ -5,10 +5,12 @@ using Application.Features.Tags.Commands.UpdateTag;
 using Application.Features.Tags.Queries.Get;
 using Application.Features.Tags.Queries.GetById;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebMemoryzoneApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/tags")]
     public class TagController : ControllerBase
@@ -25,6 +27,7 @@ namespace WebMemoryzoneApi.Controllers
             if (!result.IsSuccess) return NotFound(result);
             return Ok(result);
         }
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> GetTags([FromQuery] TagFilter tagFilter)
         {
@@ -49,6 +52,7 @@ namespace WebMemoryzoneApi.Controllers
             if (!result.IsSuccess) return NotFound(result);
             return Ok();
         }
+        [AllowAnonymous]
         [HttpGet("{slug}")]
         public async Task<ActionResult> GetTagByUrlSlug(string slug)
         {

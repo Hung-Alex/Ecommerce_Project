@@ -29,7 +29,6 @@ namespace Infrastructure.Repositories.UnitOfWork
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
-
             }
         }
         public void Dispose()

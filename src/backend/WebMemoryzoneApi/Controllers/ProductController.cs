@@ -7,10 +7,12 @@ using Application.Features.Products.Commands.UpdateProduct;
 using Application.Features.Products.Queries.Get;
 using Application.Features.Products.Queries.GetById;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebMemoryzoneApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/products")]
     public class ProductController : ControllerBase
@@ -27,6 +29,7 @@ namespace WebMemoryzoneApi.Controllers
             if (result.IsSuccess is false) return NotFound(result);
             return Ok(result);
         }
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> GetProducts([FromQuery] ProductFilter productFilter)
         {
@@ -51,6 +54,7 @@ namespace WebMemoryzoneApi.Controllers
             if (result.IsSuccess is false) return NotFound(result);
             return Ok(result);
         }
+        [AllowAnonymous]
         [HttpGet("{slug}")]
         public async Task<ActionResult> GetCategoryByUrlSlug(string slug)
         {
