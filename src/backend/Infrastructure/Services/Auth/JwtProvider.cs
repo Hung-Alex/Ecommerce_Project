@@ -39,7 +39,8 @@ namespace Infrastructure.Services.Auth
             {
                 new Claim(ClaimTypes.Name,user.UserName),
                 new Claim(ClaimTypes.Email,user.Email),
-                new Claim(ClaimUser.UserId,user.User.Id.ToString())
+                new Claim(ClaimUser.ApplicationUserId,user.Id.ToString()),
+                new Claim(ClaimUser.UserId, user.User.Id.ToString())
             };
             if (roles.Count() > 0)
             {

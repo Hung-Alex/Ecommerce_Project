@@ -37,25 +37,34 @@ namespace Infrastructure.Repositories.UnitOfWork
         }
         private void ChangeModified()
         {
-            var useId = _currentUserService.GetCurrentUser().Data.Id;
+            var user = _currentUserService.GetCurrentUser().Data?.Id;
             var entries = _dbContext.ChangeTracker
         .Entries()
-        .Where(e => e.Entity is IDatedModification && (
+        .Where(e => (e.Entity is IDatedModification || e.Entity is ICreatedAndUpdatedBy) && (
                 e.State == EntityState.Added
                 || e.State == EntityState.Modified));
 
             foreach (var entityEntry in entries)
             {
-                ((IDatedModification)entityEntry.Entity).UpdatedAt = DateTimeOffset.Now;
-                if (entityEntry is ICreatedAndUpdatedBy)
+                var datedEntity = entityEntry.Entity as IDatedModification;
+                var createdUpdatedEntity = entityEntry.Entity as ICreatedAndUpdatedBy;
+
+                if (datedEntity != null)
                 {
-                    ((ICreatedAndUpdatedBy)entityEntry.Entity).CreatedByUserId = useId;
+                    datedEntity.UpdatedAt = DateTimeOffset.Now;
+                    if (entityEntry.State == EntityState.Added)
+                    {
+                        datedEntity.CreatedAt = DateTimeOffset.Now;
+                    }
                 }
 
-                if (entityEntry.State == EntityState.Added)
+                if (createdUpdatedEntity != null)
                 {
-                    ((IDatedModification)entityEntry.Entity).CreatedAt = DateTimeOffset.Now;
-                    ((ICreatedAndUpdatedBy)entityEntry.Entity).UpdatedByUserId = useId;
+                    createdUpdatedEntity.UpdatedByUserId = user;
+                    if (entityEntry.State == EntityState.Added)
+                    {
+                        createdUpdatedEntity.CreatedByUserId = user;
+                    }
                 }
             }
         }

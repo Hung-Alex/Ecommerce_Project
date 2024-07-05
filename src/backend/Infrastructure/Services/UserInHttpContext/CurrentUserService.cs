@@ -17,9 +17,17 @@ namespace Infrastructure.Services.UserInHttpContext
         }
         public Result<CurrentUser> GetCurrentUser()
         {
+            CurrentUser result = null;
+            if (_contextAccessor.HttpContext.User is null)
+            {
+                return Result<CurrentUser>.ResultSuccess(null);
+            }
             var claim = _contextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimUser.UserId);
-            var userId = claim.Value;
-            var user = new CurrentUser() { Id = Guid.Parse(userId) };
+            if (claim is null)
+            {
+                return Result<CurrentUser>.ResultSuccess(null);
+            }
+            var user = new CurrentUser() { Id = Guid.Parse(claim.Value) };
             return Result<CurrentUser>.ResultSuccess(user);
         }
     }
