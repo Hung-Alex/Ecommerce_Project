@@ -4,13 +4,39 @@ namespace Infrastructure.Data.Seed
 {
     public class SeedData : ISeed
     {
-        public Task InitData()
+        private readonly StoreDbContext _dbContext;
+        public SeedData(StoreDbContext dbContext)
         {
-            throw new NotImplementedException();
+            _dbContext = dbContext;
+        }
+        public async Task InitData()
+        {
+            _dbContext.Database.EnsureCreated();
+            if (_dbContext.Categories.Any())
+            {
+                return;
+            }
+            var parrentCategory = CategoryParrents();
+            await _dbContext.AddRangeAsync(parrentCategory);
+            foreach (var category in parrentCategory)
+            {
+                foreach (var item in SubCategoryLv2())
+                {
+                    item.ParrentId = category.Id;
+                    await _dbContext.AddAsync(item);
+                    foreach (var subitem in SubCategoryLv3())
+                    {
+                        subitem.ParrentId = item.Id;
+                        await _dbContext.AddAsync(subitem);
+                    }
+                }
+            }
+
+            await _dbContext.SaveChangesAsync();
         }
         private IEnumerable<Categories> CategoryParrents()
         {
-            IEnumerable<Categories> categories = new List<Categories>()
+            IEnumerable<Categories> subCategories = new List<Categories>()
             {
                 new Categories() {Id=Guid.NewGuid(),Name="Laptop",Description="",Image="",UrlSlug=""},
                 new Categories() {Id=Guid.NewGuid(),Name="Laptop Gaming",Description="",Image="",UrlSlug=""},
@@ -29,12 +55,40 @@ namespace Infrastructure.Data.Seed
                 new Categories() {Id=Guid.NewGuid(),Name="Phụ kiện (Hub, sạc, cáp..)",Description="",Image="",UrlSlug=""},
                 new Categories() {Id=Guid.NewGuid(),Name="Thủ thuật - Giải đáp",Description="",Image="",UrlSlug=""},
             };
-            return categories;
+            return subCategories;
         }
-        private IEnumerable<Categories> SubCategoryLv2(IEnumerable<Categories> Parrent)
+        private IEnumerable<Categories> SubCategoryLv2()
         {
-            var Subcategories
-            
+            IEnumerable<Categories> Subcategories = new List<Categories>()
+            {
+                new Categories() {Id=Guid.NewGuid(),Name="Thương hiệu",Description="",Image="",UrlSlug=""},
+                new Categories() {Id=Guid.NewGuid(),Name="Giá Bán",Description="",Image="",UrlSlug=""},
+                new Categories() {Id=Guid.NewGuid(),Name="CPU-Intel-AMD",Description="",Image="",UrlSlug=""},
+                new Categories() {Id=Guid.NewGuid(),Name="Nhu cầu sử dụng",Description="",Image="",UrlSlug=""},
+                new Categories() {Id=Guid.NewGuid(),Name="Linh phụ kiện laptop ",Description="",Image="",UrlSlug=""},
+                new Categories() {Id=Guid.NewGuid(),Name="Laptop Asus",Description="",Image="",UrlSlug=""},
+                new Categories() {Id=Guid.NewGuid(),Name="Laptop Acer",Description="",Image="",UrlSlug=""},
+                new Categories() {Id=Guid.NewGuid(),Name="Laptop MSI",Description="",Image="",UrlSlug=""},
+                new Categories() {Id=Guid.NewGuid(),Name="Laptop DELL",Description="",Image="",UrlSlug=""},
+                new Categories() {Id=Guid.NewGuid(),Name="Chuột + Lót chuột",Description="",Image="",UrlSlug=""},
+            };
+            return Subcategories;
+
+        }
+        private IEnumerable<Categories> SubCategoryLv3()
+        {
+            IEnumerable<Categories> Subcategories = new List<Categories>()
+            {
+                new Categories() {Id=Guid.NewGuid(),Name="ASUS",Description="",Image="",UrlSlug=""},
+                new Categories() {Id=Guid.NewGuid(),Name="ACER",Description="",Image="",UrlSlug=""},
+                new Categories() {Id=Guid.NewGuid(),Name="MSI",Description="",Image="",UrlSlug=""},
+                new Categories() {Id=Guid.NewGuid(),Name="LENOVO",Description="",Image="",UrlSlug=""},
+                new Categories() {Id=Guid.NewGuid(),Name="DELL ",Description="",Image="",UrlSlug=""},
+                new Categories() {Id=Guid.NewGuid(),Name="HP - Pavilion",Description="",Image="",UrlSlug=""},
+                new Categories() {Id=Guid.NewGuid(),Name="LG - Gram",Description="",Image="",UrlSlug=""},
+            };
+            return Subcategories;
+
         }
     }
 }

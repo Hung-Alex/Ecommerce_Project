@@ -16,10 +16,23 @@ namespace Application.Features.Category.Specification
         }
         public override Expression<Func<Categories, bool>> Criteria
             => p
-            => (string.IsNullOrEmpty(_filter.Name) || p.Name.Contains(_filter.Name));
+            => (string.IsNullOrEmpty(_filter.Name) || p.Name.Contains(_filter.Name)) && p.ParrentId == null;
+
 
         protected override void Handler()
         {
+            var mode = _filter.Mode;
+            string include = "SubCategories";
+            while (mode > 1)
+            {
+                include = include + ".SubCategories";
+                --mode;
+            }
+            if (mode > 0)
+            {
+                AddIncludeString(include);
+
+            }
             ApplyPaging(_filter.PageSize, _filter.PageNumber);
             if (PredicatedProperty.IsExitedProperty<Categories>(_filter.SortColoumn))
             {
