@@ -22,17 +22,15 @@ namespace Application.Features.Category.Specification
         protected override void Handler()
         {
             var mode = _filter.Mode;
-            string include = "SubCategories";
+            string includeExtension = ".SubCategories";
+            string defaultInclude = "SubCategories";
             switch (mode)//(O(1))
             {
                 case 1:
-                    AddIncludeString(include);
+                    AddIncludeString(defaultInclude);
                     break;
                 case 2:
-                    AddIncludeString(include + include);
-                    break;
-                case 3:
-                    AddIncludeString(include + include + include);
+                    AddIncludeString(defaultInclude + includeExtension);
                     break;
                 default:
                     break;
