@@ -442,3 +442,5 @@ packages/react-devtools-timeline/dist
 
 #appsettingjson
 appsettings.json
+#migration in backend
+src\backend\Infrastructure\Migrations
