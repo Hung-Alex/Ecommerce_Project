@@ -38,7 +38,6 @@ namespace Application.Features.Products.Commands.UpdateProduct
             product.Description = request.Description;
             product.UnitPrice = request.UnitPrice;
             product.Price = request.Price;
-            product.BrandId = request.BrandId;
             product.Discount = request.Discount;
             await _unitOfWork.Commit();
             var productDTO = _mapper.Map<ProductDTO>(product);

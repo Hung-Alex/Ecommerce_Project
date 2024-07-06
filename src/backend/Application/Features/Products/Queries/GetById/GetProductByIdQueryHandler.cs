@@ -33,7 +33,6 @@ namespace Application.Features.Products.Queries.GetById
                 Description = product.Description,
                 UnitPrice = product.UnitPrice,
                 Discount = product.Discount,
-                BrandId = product.BrandId,
                 Price = product.Price,
                 UrlSlug = product.UrlSlug,
                 Images = product.Images.Select(x => new ProductImageDTO() { Id = x.Id, Image = x.Image.ImageUrl })

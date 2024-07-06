@@ -43,8 +43,6 @@ namespace Application.Features.Products.Commands.CreateProduct
             ,
                 UnitPrice = request.UnitPrice
             ,
-                BrandId = request.BrandId
-            ,
                 Discount = request.Discount
             });
             await _unitOfWork.Commit();

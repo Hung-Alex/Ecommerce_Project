@@ -28,7 +28,6 @@ namespace Application.Features.Products.Queries.Get
                 Description = x.Description,
                 UnitPrice = x.UnitPrice,
                 Discount = x.Discount,
-                BrandId = x.BrandId,
                 UrlSlug = x.UrlSlug,
                 Price = x.Price,
                 Images = x.Images.Select(x => x.Image.ImageUrl)

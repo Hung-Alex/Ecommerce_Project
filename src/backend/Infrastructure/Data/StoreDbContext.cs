@@ -1,6 +1,5 @@
 ﻿using Domain.Entities;
 using Domain.Entities.Banners;
-using Domain.Entities.Brands;
 using Domain.Entities.Carts;
 using Domain.Entities.Category;
 using Domain.Entities.Comments;
@@ -29,7 +28,6 @@ namespace Infrastructure.Data
         }
         #region DbSet Entities
         public DbSet<User> Users { get; set; }
-        public DbSet<Brand> Brands { get; set; }
         public DbSet<Banner> Banners { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Categories> Categories { get; set; }

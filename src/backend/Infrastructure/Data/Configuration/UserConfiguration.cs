@@ -45,14 +45,6 @@ namespace Infrastructure.Data.Configuration
                .WithOne(x => x.UpdatedByUser)
                .HasForeignKey(x => x.UpdatedByUserId)
                .OnDelete(DeleteBehavior.Restrict);
-            builder.HasMany(x => x.CreatedByBrand)
-                .WithOne(x => x.CreatedByUser)
-                .HasForeignKey(x => x.CreatedByUserId)
-                .OnDelete(DeleteBehavior.Restrict);
-            builder.HasMany(x => x.UpdatedByBrand)
-               .WithOne(x => x.UpdatedByUser)
-               .HasForeignKey(x => x.UpdatedByUserId)
-               .OnDelete(DeleteBehavior.Restrict);
             builder.HasMany(x => x.CreatedByCategory)
                 .WithOne(x => x.CreatedByUser)
                 .HasForeignKey(x => x.CreatedByUserId)
