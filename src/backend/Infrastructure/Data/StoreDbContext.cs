@@ -1,6 +1,5 @@
-﻿using Domain.Constants;
-using Domain.Entities;
-using Domain.Entities.Banner;
+﻿using Domain.Entities;
+using Domain.Entities.Banners;
 using Domain.Entities.Brands;
 using Domain.Entities.Carts;
 using Domain.Entities.Category;
@@ -14,6 +13,7 @@ using Domain.Entities.Products;
 using Domain.Entities.Rattings;
 using Domain.Entities.Slides;
 using Domain.Entities.Tags;
+using Domain.Entities.Users;
 using Domain.Entities.WishLists;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -28,6 +28,7 @@ namespace Infrastructure.Data
             Database.EnsureCreated();
         }
         #region DbSet Entities
+        public DbSet<User> Users { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Banner> Banners { get; set; }
         public DbSet<Product> Products { get; set; }
@@ -54,14 +55,13 @@ namespace Infrastructure.Data
         #endregion
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<ApplicationRole>().HasData(
-                new ApplicationRole() { Id = new Guid("911B0CBD-4EED-4EB0-8488-1B2CDD915C02"), Name = nameof(UserRoleConstants.Roles.User) },
-                new ApplicationRole() { Id = new Guid("911B0CBD-4EED-4EB0-8488-1B2CDD915C01"), Name = nameof(UserRoleConstants.Roles.SupperAdmin) },
-                new ApplicationRole() { Id = new Guid("911B0CBD-4EED-4EB0-8488-1B2CDD915C03"), Name = nameof(UserRoleConstants.Roles.Employee) }
-                );
-
-            builder.ApplyConfigurationsFromAssembly(typeof(StoreDbContext).Assembly);
+            //builder.Entity<ApplicationRole>().HasData(
+            //    new ApplicationRole() { Id = new Guid("911B0CBD-4EED-4EB0-8488-1B2CDD915C02"), Name = nameof(UserRoleConstants.Roles.User) },
+            //    new ApplicationRole() { Id = new Guid("911B0CBD-4EED-4EB0-8488-1B2CDD915C01"), Name = nameof(UserRoleConstants.Roles.SupperAdmin) },
+            //    new ApplicationRole() { Id = new Guid("911B0CBD-4EED-4EB0-8488-1B2CDD915C03"), Name = nameof(UserRoleConstants.Roles.Employee) }
+            //    );
             base.OnModelCreating(builder);
+            builder.ApplyConfigurationsFromAssembly(typeof(StoreDbContext).Assembly);
 
         }
     }

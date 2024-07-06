@@ -1,12 +1,11 @@
-﻿using Application.Common.Interface;
-using Application.DTOs.Request;
+﻿using Application.DTOs.Request;
 using Application.Features.Carts.Commands.AddItem;
 using Application.Features.Carts.Commands.DeleteItem;
 using Application.Features.Carts.Queries.GetItemInCart;
+using Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace WebMemoryzoneApi.Controllers
 {
@@ -23,7 +22,7 @@ namespace WebMemoryzoneApi.Controllers
         [HttpGet]
         public async Task<ActionResult> GetItemsInCart()
         {
-            var claimUser = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+            var claimUser = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimUser.UserId);
             var result = await _mediator.Send(new GetItemsInCartQuery(Guid.Parse(claimUser.Value)));
             if (result.IsSuccess is false) return BadRequest(result);
             return Ok(result);
@@ -31,7 +30,7 @@ namespace WebMemoryzoneApi.Controllers
         [HttpPost]
         public async Task<ActionResult> AddItemInCart([FromBody] CartItemRequest cartItem)
         {
-            var claimUser = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+            var claimUser = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimUser.UserId);
             var result = await _mediator.Send(new AddItemCommand(Guid.Parse(claimUser.Value), cartItem.ProductId, cartItem.ProductSkusId, cartItem.quantity));
             if (result.IsSuccess is false) return BadRequest(result);
             return Ok(result);
@@ -39,7 +38,7 @@ namespace WebMemoryzoneApi.Controllers
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult> DeleteItemInCart(Guid id)
         {
-            var claimUser = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+            var claimUser = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimUser.UserId);
             var result = await _mediator.Send(new DeleteItemCommand(Guid.Parse(claimUser.Value), id));
             if (result.IsSuccess is false) return BadRequest(result);
             return Ok(result);

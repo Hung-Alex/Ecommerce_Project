@@ -73,7 +73,7 @@ namespace Infrastructure.Repositories.GenericRepository
             }
             if (spec.IsPagingEnabled)
             {
-                query = query.Skip(spec.Skip)
+                query = query.Skip(spec.Skip*spec.Take)
                     .Take(spec.Take);
             }
             return query;

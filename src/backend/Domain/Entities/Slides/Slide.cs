@@ -1,9 +1,10 @@
 ﻿using Domain.Common;
+using Domain.Entities.Users;
 using Domain.Shared;
 
 namespace Domain.Entities.Slides
 {
-    public class Slide : BaseEntity, IDatedModification, IAggregateRoot
+    public class Slide : BaseEntity, IDatedModification, IAggregateRoot, ICreatedAndUpdatedBy
     {
         public Slide(string title, string description, bool? status, int order)
         {
@@ -18,7 +19,11 @@ namespace Domain.Entities.Slides
         public int Order { get; set; }
         public bool? Status { get; set; }
         public virtual ICollection<SlidesImage> SlidesImages { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
+        public Guid ? CreatedByUserId { get; set; }
+        public virtual User CreatedByUser { get; set; }
+        public Guid ? UpdatedByUserId { get; set; }
+        public virtual User UpdatedByUser { get; set; }
     }
 }

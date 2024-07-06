@@ -17,7 +17,7 @@ namespace Domain.Entities.Orders
         public int Quantity { get; set; }
         public Decimal Price {  get; set; } //inital Price 
         public string ? UnitPrice {  get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
     }
 }

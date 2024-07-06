@@ -1,5 +1,6 @@
 using Application;
 using Infrastructure;
+using Infrastructure.Data.Seed;
 using WebMemoryzoneApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,18 +13,25 @@ builder.Services.AddInfrastructureServices(configuration);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<ISeed, SeedData>();
+
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+using (var scope=app.Services.CreateScope())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    var seed=scope.ServiceProvider.GetService<ISeed>();
+    await seed.InitData();
 }
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
 app.UseExceptionHandler();
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");

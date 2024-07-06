@@ -10,9 +10,9 @@ namespace Domain.Entities.WishLists
         public WishList() { }
         public Product Product { get; set; }
         public Guid ProductId { get; set; }
-        public IUser User { get; set; }
+        public User User { get; set; }
         public Guid UserId { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
     }
 }

@@ -11,7 +11,7 @@ using WebMemoryzoneApi.Filters;
 
 namespace WebMemoryzoneApi.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/categories")]
     public class CategoryController : ControllerBase
@@ -28,6 +28,7 @@ namespace WebMemoryzoneApi.Controllers
             if (!result.IsSuccess) return NotFound(result);
             return Ok(result);
         }
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> GetCategories([FromQuery] CategoryFilter categoryFilter)
         {
@@ -53,6 +54,7 @@ namespace WebMemoryzoneApi.Controllers
             if (!result.IsSuccess) return NotFound(result);
             return Ok();
         }
+        [AllowAnonymous]
         [HttpGet("{slug}")]
         public async Task<ActionResult> GetCategoryByUrlSlug(string slug)
         {

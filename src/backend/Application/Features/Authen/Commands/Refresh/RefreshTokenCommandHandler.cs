@@ -37,7 +37,7 @@ namespace Application.Features.Authen.Commands.Refresh
             //get claim from token 
             var claims = await _jwtProvider.GetClaimsFromTokenAsync(request.Token);
             //get type is containing userId ,after check it existed in claim.
-            var claimUserId = claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            var claimUserId = claims.FirstOrDefault(x => x.Type == ClaimUser.ApplicationUserId)?.Value;
             if (claimUserId is null)
             {
                 return Result<AuthencationResponse>.ResultFailures(null, ErrorConstants.AuthAccessTokenInvalid);
@@ -55,8 +55,9 @@ namespace Application.Features.Authen.Commands.Refresh
             var token = await _jwtProvider.GenerateTokenAsync(userId);
             //convert refresh token into json then save it
             var refreshTokenJson = JsonSerializer.Serialize<RefreshToken>(newRefreshToken);
+            var user = await _identityService.GetUserByIdAsync(userId);
             await _identityService.SaveRefreshTokenAsync(userId, UserToken.Provider, UserToken.RefreshToken, refreshTokenJson);
-            return Result<AuthencationResponse>.ResultSuccess(new AuthencationResponse(token, newRefreshToken.Token, "Bearer", userId));
+            return Result<AuthencationResponse>.ResultSuccess(new AuthencationResponse(token, newRefreshToken.Token, "Bearer", new AuthencationResponse.UserAuthentication(user.Id, user.Name ?? "")));
         }
     }
 }

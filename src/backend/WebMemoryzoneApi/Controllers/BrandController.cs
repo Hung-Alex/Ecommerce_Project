@@ -11,7 +11,7 @@ using WebMemoryzoneApi.Filters;
 
 namespace WebMemoryzoneApi.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/brands")]
     public class BrandController : ControllerBase
@@ -28,6 +28,7 @@ namespace WebMemoryzoneApi.Controllers
             if (!result.IsSuccess) return NotFound(result);
             return Ok(result);
         }
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> GetBrands([FromQuery] BrandFilter productFilter)
         {

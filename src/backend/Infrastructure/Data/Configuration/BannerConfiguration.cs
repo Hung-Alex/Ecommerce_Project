@@ -1,4 +1,4 @@
-﻿using Domain.Entities.Banner;
+﻿using Domain.Entities.Banners;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

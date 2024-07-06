@@ -4,7 +4,6 @@ using Domain.Interface;
 using Domain.Shared;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Repositories.UnitOfWork
@@ -13,42 +12,62 @@ namespace Infrastructure.Repositories.UnitOfWork
     {
         private readonly StoreDbContext _dbContext;
         private readonly IServiceProvider _serviceProvider;
-        public UnitOfWork(StoreDbContext dbContext, IServiceProvider serviceProvider)
+        private readonly ICurrentUserService _currentUserService;
+        public UnitOfWork(StoreDbContext dbContext, IServiceProvider serviceProvider, ICurrentUserService currentUserService)
         {
             _dbContext = dbContext;
             _serviceProvider = serviceProvider;
+            _currentUserService = currentUserService;
         }
         public async Task Commit()
         {
             try
             {
-                //ChangeModified();
+                ChangeModified();
                 await _dbContext.SaveChangesAsync();
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
-
             }
         }
         public void Dispose()
         {
             _dbContext?.Dispose();
         }
-        //private void ChangeModified()
-        //{
-        //    var trackerEntity = _dbContext.ChangeTracker.Entries().Where(x => x is IDatedModification).ToList();
-        //    trackerEntity.ForEach(x =>
-        //    {
-        //        ((IDatedModification)x.Entity).UpdatedAt = DateTime.Now;
-        //        if (x.State == EntityState.Added)
-        //        {
-        //            ((IDatedModification)x.Entity).CreatedAt = DateTime.Now;
-        //        }
-        //    }
-        //    );
+        private void ChangeModified()
+        {
+            var user = _currentUserService.GetCurrentUser().Data?.Id;
+            var entries = _dbContext.ChangeTracker
+        .Entries()
+        .Where(e => (e.Entity is IDatedModification || e.Entity is ICreatedAndUpdatedBy) && (
+                e.State == EntityState.Added
+                || e.State == EntityState.Modified));
 
-        //}
+            foreach (var entityEntry in entries)
+            {
+                var datedEntity = entityEntry.Entity as IDatedModification;
+                var createdUpdatedEntity = entityEntry.Entity as ICreatedAndUpdatedBy;
+
+                if (datedEntity != null)
+                {
+                    datedEntity.UpdatedAt = DateTimeOffset.Now;
+                    if (entityEntry.State == EntityState.Added)
+                    {
+                        datedEntity.CreatedAt = DateTimeOffset.Now;
+                    }
+                }
+
+                if (createdUpdatedEntity != null)
+                {
+                    createdUpdatedEntity.UpdatedByUserId = user;
+                    if (entityEntry.State == EntityState.Added)
+                    {
+                        createdUpdatedEntity.CreatedByUserId = user;
+                    }
+                }
+            }
+        }
         public IRepository<T> GetRepository<T>() where T : BaseEntity, IAggregateRoot
         {
             return _serviceProvider.GetService<IRepository<T>>() ?? throw new ArgumentNullException();

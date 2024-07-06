@@ -3,10 +3,12 @@ using Application.Features.Rattings.Commands.DeleteRatting;
 using Application.Features.Rattings.Commands.UpdateRatting;
 using Application.Features.Rattings.Queries.GetById;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebMemoryzoneApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/rattings")]
     public class RattingController : ControllerBase

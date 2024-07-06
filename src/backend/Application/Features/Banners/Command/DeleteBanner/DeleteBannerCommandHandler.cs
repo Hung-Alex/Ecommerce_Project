@@ -1,6 +1,6 @@
 ﻿using Application.Common.Interface;
 using Domain.Constants;
-using Domain.Entities.Banner;
+using Domain.Entities.Banners;
 using Domain.Shared;
 using MediatR;
 

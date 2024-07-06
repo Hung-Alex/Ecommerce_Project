@@ -5,11 +5,14 @@ using Application.Features.Banners.Commands.UpdateBanner;
 using Application.Features.Banners.Queries.Get;
 using Application.Features.Banners.Queries.GetById;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebMemoryzoneApi.Filters;
 
 namespace WebMemoryzoneApi.Controllers
 {
+
+    [Authorize]
     [ApiController]
     [Route("apis/banners")]
     public class BannerController : ControllerBase
@@ -26,6 +29,7 @@ namespace WebMemoryzoneApi.Controllers
             if (!result.IsSuccess) return NotFound(result);
             return Ok(result);
         }
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> GetBanners([FromQuery] BannerFilter bannerFilter)
         {

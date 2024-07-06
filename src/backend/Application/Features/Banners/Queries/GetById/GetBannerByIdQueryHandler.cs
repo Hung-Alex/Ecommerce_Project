@@ -4,7 +4,7 @@ using MediatR;
 using Domain.Shared;
 using Domain.Constants;
 using Application.DTOs.Responses.Banners;
-using Domain.Entities.Banner;
+using Domain.Entities.Banners;
 using Application.Features.Banners.Specification;
 
 namespace Application.Features.Banners.Queries.GetById
