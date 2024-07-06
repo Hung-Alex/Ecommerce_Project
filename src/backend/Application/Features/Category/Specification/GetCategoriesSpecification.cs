@@ -23,15 +23,19 @@ namespace Application.Features.Category.Specification
         {
             var mode = _filter.Mode;
             string include = "SubCategories";
-            while (mode > 1)
+            switch (mode)//(O(1))
             {
-                include = include + ".SubCategories";
-                --mode;
-            }
-            if (mode > 0)
-            {
-                AddIncludeString(include);
-
+                case 1:
+                    AddIncludeString(include);
+                    break;
+                case 2:
+                    AddIncludeString(include + include);
+                    break;
+                case 3:
+                    AddIncludeString(include + include + include);
+                    break;
+                default:
+                    break;
             }
             ApplyPaging(_filter.PageSize, _filter.PageNumber);
             if (PredicatedProperty.IsExitedProperty<Categories>(_filter.SortColoumn))
