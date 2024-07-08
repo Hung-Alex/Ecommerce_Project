@@ -9,12 +9,12 @@ namespace Domain.Entities.Carts
     public class Cart : BaseEntity, IDatedModification, IAggregateRoot
     {
         public Cart() : base() { }
-        public  ICollection<CartItem> CartItems { get; set; }
+        public ICollection<CartItem> CartItems { get; set; }
         public Guid UserId { get; set; }
         public User User { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
-        public CartItem CreateCartItem(Guid productId, Guid productSkusId, int quantity)
+        public CartItem CreateCartItem(Guid productId, Guid? productSkusId, int quantity)
         {
             return new CartItem(Id, productId, productSkusId, quantity);
         }
@@ -44,6 +44,6 @@ namespace Domain.Entities.Carts
             var cartItem = CartItems.FirstOrDefault(c => c.CartId == cartItemId);
             if (cartItem is null) throw new CartItemNotFoundException();
             CartItems.Remove(cartItem);
-        }    
+        }
     }
 }

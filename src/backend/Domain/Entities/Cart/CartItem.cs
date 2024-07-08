@@ -11,7 +11,7 @@ namespace Domain.Entities.Carts
     public class CartItem : BaseEntity, IDatedModification
     {
         public CartItem() : base() { }
-        public CartItem(Guid cartId, Guid productId, Guid ProductSkudId, int quantity) : base()
+        public CartItem(Guid cartId, Guid productId, Guid? ProductSkudId, int quantity) : base()
         {
             CartId = cartId;
             ProductId = productId;

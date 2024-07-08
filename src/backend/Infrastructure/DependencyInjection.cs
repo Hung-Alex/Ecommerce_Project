@@ -4,6 +4,7 @@ using Domain.Interface;
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Infrastructure.Repositories.GenericRepository;
+using Infrastructure.Repositories.Repository;
 using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.Auth;
 using Infrastructure.Services.CloudinaryUpload;
@@ -32,7 +33,7 @@ namespace Infrastructure
             // Register Services
             services.AddScoped<IMedia, Media>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
-
+            services.AddScoped<ISectionService, SectionService>();
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<StoreDbContext>()

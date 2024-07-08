@@ -1,4 +1,5 @@
-﻿using Application.Features.Authen.Commands.Login;
+﻿using Application.Common.Interface;
+using Application.Features.Authen.Commands.Login;
 using Application.Features.Authen.Commands.Refresh;
 using Application.Features.Authen.Commands.Register;
 using MediatR;
@@ -10,9 +11,11 @@ namespace WebMemoryzoneApi.Controllers
     [Route("api/authentications")]
     public class AuthencationController : ControllerBase
     {
+        private readonly ISectionService _sectionService;
         private readonly IMediator _mediator;
-        public AuthencationController(IMediator mediator)
+        public AuthencationController(IMediator mediator, ISectionService sectionService)
         {
+            _sectionService = sectionService;
             _mediator = mediator;
         }
         [HttpPost("register")]
@@ -49,6 +52,13 @@ namespace WebMemoryzoneApi.Controllers
                 return BadRequest(result);
             }
             SetCookies(result.Data.AccessToken, result.Data.RefreshToken);
+            return Ok(result);
+
+        }
+        [HttpGet("testservicesection")]
+        public async Task<ActionResult> testSection()
+        {
+            var result = await _sectionService.GetSectionsAsync(4, 10);
             return Ok(result);
 
         }
