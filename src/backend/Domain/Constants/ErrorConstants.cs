@@ -9,6 +9,7 @@ namespace Domain.Constants
         public static Error UrlSlugIsExisted(string url) => new Error("Url Slug Is Existed", $"Url slug is existed {url}");
         public static Error NotFound(string url) => new Error("NotFound", $"Url slug is existed {url}");
         public static Error NotFoundWithId(Guid id) => new Error("NotFound", $"Not Found With Id {id}");
+        public static readonly Error VariantsDontHaveVariant = new Error("VariantsDontHaveVariant", "Variants Dont Have Variant");
 
         //Users
         public static Error UserNotFoundWithID(Guid userId) => new Error("User.NotFound", $"Not found user with id {userId}");

@@ -25,7 +25,6 @@ namespace Application.Features.Products.Queries.Get
             {
                 Id = x.Id,
                 Name = x.Name,
-                Description = x.Description,
                 UnitPrice = x.UnitPrice,
                 Discount = x.Discount,
                 UrlSlug = x.UrlSlug,

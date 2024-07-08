@@ -7,6 +7,7 @@ using Domain.Constants;
 using Application.Features.Products.Specification;
 using Domain.Entities.Products;
 using Application.DTOs.Responses.Product.ProductImage;
+using Application.DTOs.Responses.Product.Variants;
 
 namespace Application.Features.Products.Queries.GetById
 {
@@ -23,7 +24,7 @@ namespace Application.Features.Products.Queries.GetById
         public async Task<Result<ProductDetailsDTO>> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
         {
             var repo = _unitOfWork.GetRepository<Product>();
-            var getProductByIdSpecification = new GetProductDetailAndImageSpecification(request.Id);
+            var getProductByIdSpecification = new GetProductDetailSpecification(request.Id);
             var product = await repo.FindOneAsync(getProductByIdSpecification);
             if (product == null) return Result<ProductDetailsDTO>.ResultFailures(ErrorConstants.NotFoundWithId(request.Id));
             var productDTO = new ProductDetailsDTO()
@@ -35,7 +36,10 @@ namespace Application.Features.Products.Queries.GetById
                 Discount = product.Discount,
                 Price = product.Price,
                 UrlSlug = product.UrlSlug,
-                Images = product.Images.Select(x => new ProductImageDTO() { Id = x.Id, Image = x.Image.ImageUrl })
+                Variants = product.ProductSkus.Select(x => new VariantsDTO { Id = x.Id, VariantName = x.Name, Description = x.Description, Quantity = x.Quantity, Price = x.Price }),
+                Images = product.Images.Select(x => new ProductImageDTO() { Id = x.Id, Image = x.Image.ImageUrl }),
+                CollectionId = product.ProductSubCategories.Select(x => x.Id).ToList()
+
             };
             return Result<ProductDetailsDTO>.ResultSuccess(productDTO);
         }

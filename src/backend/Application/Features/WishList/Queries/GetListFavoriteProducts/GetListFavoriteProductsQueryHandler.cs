@@ -26,7 +26,6 @@ namespace Application.Features.WishsList.Queries.GetListFavoriteProducts
                 {
                     Id = x.Product.Id,
                     Name = x.Product.Name,
-                    Description = x.Product.Description,
                     UnitPrice = x.Product.UnitPrice,
                     Discount = x.Product.Discount,
                     UrlSlug = x.Product.UrlSlug,
