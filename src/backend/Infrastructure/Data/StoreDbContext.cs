@@ -24,7 +24,7 @@ namespace Infrastructure.Data
     {
         public StoreDbContext(DbContextOptions options) : base(options)
         {
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
         #region DbSet Entities
         public DbSet<User> Users { get; set; }
