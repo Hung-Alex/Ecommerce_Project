@@ -20,7 +20,7 @@ namespace Domain.Entities.Products
         public int? Discount { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
-        public virtual ICollection<ProductImages> Images { get; set; }
+        public virtual ICollection<ProductImages> Images { get; set; }=new List<ProductImages>();
         public virtual ICollection<ProductSkus> ProductSkus { get; set; }
         public virtual ICollection<CartItem> CartItems { get; set; }
         public virtual ICollection<CouponProduct> ProductCoupons { get; set; }

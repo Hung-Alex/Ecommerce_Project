@@ -23,6 +23,8 @@
   <ItemGroup>
     <Folder Include="Features\Banners\Queries\GetByUrlSlug\" />
     <Folder Include="Features\Category\Queries\GetByUrlSlug\" />
+    <Folder Include="Features\Products\Commands\DeleteProductVariants\" />
+    <Folder Include="Features\Products\Commands\UpdateProductVariants\" />
     <Folder Include="Features\Products\Queries\GetByUrlSlug\" />
     <Folder Include="Features\Slides\Queries\GetByUrlSlug\" />
     <Folder Include="Features\Tags\Queries\GetByUrlSlug\" />

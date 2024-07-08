@@ -1,8 +1,21 @@
 ﻿using Domain.Behavior;
 using Domain.Shared;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Features.Products.Commands.CreateProduct
 {
-    public record CreateProductCommand(string Name, string Description, string UrlSlug, decimal Price, string UnitPrice, int? Discount) : IRequest<Result<bool>>, IValidatableRequest;
+    public record CreateProductImage(int Order, IFormFile Image);
+    public record CreateProductSkus(string VariantName
+        , string description
+        , int Quantity);
+    public record CreateProductCommand(string Name
+        , string Description
+        , string UrlSlug
+        , decimal Price
+        , string UnitPrice
+        , int? Discount
+        , IEnumerable<CreateProductSkus> Variant
+        , IEnumerable<CreateProductImage> Images
+        ) : IRequest<Result<bool>>, IValidatableRequest;
 }

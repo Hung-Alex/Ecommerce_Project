@@ -26,5 +26,6 @@ namespace Domain.Constants
         //WishList
         public static Error WishListDontHaveProductInWishListWithId(Guid ProductId) => new Error("WishList.Not Found Producy In Wishlist", $"Dont have product in wishlist with id {ProductId}");
         public static Error WishListProductIsExistedInWishListWithId(Guid ProductId) => new Error("WishList.Product already Existed In Wishlist", $"Product already existed in wishlist with id {ProductId}");
+        public static Error UploadImageOccursErrorWithFileName(string fileName) => new Error("UploadImageOccursErrorWithFileName", $"Upload Image Occurs Error With FileName {fileName}");
     }
 }

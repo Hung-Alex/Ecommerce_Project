@@ -61,7 +61,7 @@ namespace WebMemoryzoneApi.Controllers
             return Ok();
         }
         [HttpPost]
-        public async Task<IActionResult> AddProduct([FromBody] CreateProductCommand command)
+        public async Task<IActionResult> AddProduct([FromForm] CreateProductCommand command)
         {
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result);

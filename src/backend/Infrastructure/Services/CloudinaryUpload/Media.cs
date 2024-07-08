@@ -52,8 +52,6 @@ namespace Infrastructure.Services.CloudinaryUpload
             {
                 return Result<ImageUpload>.ResultSuccess(new ImageUpload(uploadResult.PublicId, uploadResult.SecureUrl.ToString()));
             }
-
-
             return Result<ImageUpload>.ResultFailures(new Error("ImageUpload", uploadResult.Error.Message));
         }
 
