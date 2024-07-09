@@ -18,13 +18,13 @@ namespace Infrastructure.Data.Seed
             }
             var parrentCategory = CategoryParrents();
             await _dbContext.AddRangeAsync(parrentCategory);
-            foreach (var category in parrentCategory)
+            foreach (var category in parrentCategory)//16
             {
-                foreach (var item in SubCategoryLv2())
+                foreach (var item in SubCategoryLv2())//10
                 {
                     item.ParrentId = category.Id;
                     await _dbContext.AddAsync(item);
-                    foreach (var subitem in SubCategoryLv3())
+                    foreach (var subitem in SubCategoryLv3())//7
                     {
                         subitem.ParrentId = item.Id;
                         await _dbContext.AddAsync(subitem);

@@ -15,47 +15,43 @@ namespace Infrastructure.Repositories.Repository
         }
         public async Task<IEnumerable<SectionDTO>> GetSectionsAsync(int takeNumberCategories, int limitNumberItems, CancellationToken cancellationToken = default)
         {
-            var sections = from c in _context.Categories
-                           join p in _context.Products on c.Id equals p.Id
-                           join productImage in _context.ProductImages.Include(x => x.Image) on p.Id equals productImage.Id
-                           join image in _context.Images on productImage.ImageId equals image.Id
-                           where c.ParrentId == null
-                           group new { c, productImage, p, image } by new { c.Id, c.Name, c.UrlSlug, c.Image } into g
+            var sections = from cate in _context.Categories.Include(x => x.SubCategories)
+                           where cate.ParrentId==null
                            select new SectionDTO
                            {
-                               Category = new CategorySection()
+                               Category = new CategorySection
                                {
-                                   Id = g.Key.Id
-                                   ,
-                                   Name = g.Key.Name
-                                   ,
-                                   UrlSlug = g.Key.UrlSlug
-                                   ,
-                                   Image = g.Key.Image
-                                   ,
-                                   SubCategories = _context.Categories.Where(x => x.ParrentId == g.Key.Id).Select(sc => new CategorySection
+                                   Id = cate.Id,
+                                   Name = cate.Name,
+                                   UrlSlug = cate.UrlSlug,
+                                   Image = cate.Image,
+                                   SubCategories = cate.SubCategories.Select(x => new CategorySection
                                    {
-                                       Id = sc.Id,
-                                       Name = sc.Name,
-                                       UrlSlug = sc.UrlSlug,
-                                       Image = sc.Image
+                                       Id = x.Id,
+                                       Name = x.Name,
+                                       UrlSlug = x.UrlSlug,
+                                       Image = x.Image
                                    }).ToList(),
                                },
-                               products = g.Select(x => new ProductDTO
-                               {
-                                   Id = x.p.Id,
-                                   Name = x.p.Name,
-                                   UrlSlug = x.p.UrlSlug,
-                                   Images = x.image.ProductImages.Select(x => x.Image.ImageUrl).ToList(),
-                               }).ToList()
+                               products = (from p in _context.Products
+                                          join productCate in _context.ProductSubCategories on p.Id equals productCate.ProductId
+                                          where productCate.CategoryId == cate.Id
+                                          group p by new { p.Id, p.Name, p.UnitPrice, p.UrlSlug, p.Discount } into produc
+                                          select new ProductDTO
+                                          {
+                                              Id = produc.Key.Id
+                                              ,
+                                              Name = produc.Key.Name,
+                                              UnitPrice = produc.Key.UnitPrice,
+                                              Discount = produc.Key.Discount,
+                                              Images = _context.ProductImages
+                                              .Include(x => x.Image)
+                                              .Where(x => x.ProductId == produc.Key.Id)
+                                              .Select(x => x.Image.ImageUrl).ToList(),
+                                          }).Take(limitNumberItems).ToList()
                            };
 
-
-            var result = await sections.ToListAsync(cancellationToken);
-
-
-
-
+            var result = await sections.Take(takeNumberCategories).ToListAsync(cancellationToken);
             return result;
         }
     }
