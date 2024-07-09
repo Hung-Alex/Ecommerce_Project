@@ -15,6 +15,7 @@ namespace Application.Features.Products.Commands.CreateProduct
         , decimal Price
         , string UnitPrice
         , int? Discount
+        , Guid BrandId
         , IEnumerable<CreateProductSkus> Variant
         , IEnumerable<CreateProductImage> Images
         ) : IRequest<Result<bool>>, IValidatableRequest;

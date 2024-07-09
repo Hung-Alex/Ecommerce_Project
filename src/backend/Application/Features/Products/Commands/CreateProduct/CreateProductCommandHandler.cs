@@ -46,6 +46,8 @@ namespace Application.Features.Products.Commands.CreateProduct
                 UnitPrice = request.UnitPrice
             ,
                 Discount = request.Discount
+            ,
+                BrandId = request.BrandId
             };
             repoProduct.Add(newProduct);
             var image = new Image();
