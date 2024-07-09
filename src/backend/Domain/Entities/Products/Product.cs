@@ -5,6 +5,7 @@ using Domain.Common;
 using Domain.Shared;
 using Domain.Entities.WishLists;
 using Domain.Entities.Users;
+using Domain.Entities.Brands;
 namespace Domain.Entities.Products
 {
     public class Product : BaseEntity, IDatedModification, IAggregateRoot, ICreatedAndUpdatedBy
@@ -18,9 +19,11 @@ namespace Domain.Entities.Products
         public string? WeightUnit { get; set; }
         public int? Weight { get; set; }
         public int? Discount { get; set; }
+        public Guid BrandId { get; set; }
+        public Brand Brand { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
-        public virtual ICollection<ProductImages> Images { get; set; }=new List<ProductImages>();
+        public virtual ICollection<ProductImages> Images { get; set; } = new List<ProductImages>();
         public virtual ICollection<ProductSkus> ProductSkus { get; set; }
         public virtual ICollection<CartItem> CartItems { get; set; }
         public virtual ICollection<CouponProduct> ProductCoupons { get; set; }
