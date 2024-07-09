@@ -54,14 +54,7 @@ namespace WebMemoryzoneApi.Controllers
             SetCookies(result.Data.AccessToken, result.Data.RefreshToken);
             return Ok(result);
 
-        }
-        [HttpGet("testservicesection")]
-        public async Task<ActionResult> testSection()
-        {
-            var result = await _sectionService.GetSectionsAsync(4, 10);
-            return Ok(result);
-
-        }
+        }      
         private void SetCookies(string accessToken, string refreshToken)
         {
 
