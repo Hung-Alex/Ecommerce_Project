@@ -7,6 +7,7 @@ using Application.DTOs.Internal;
 using Domain.Shared;
 using System.Net;
 using Error = Domain.Shared.Error;
+using Domain.Constants;
 
 namespace Infrastructure.Services.CloudinaryUpload
 {
@@ -52,7 +53,7 @@ namespace Infrastructure.Services.CloudinaryUpload
             {
                 return Result<ImageUpload>.ResultSuccess(new ImageUpload(uploadResult.PublicId, uploadResult.SecureUrl.ToString()));
             }
-            return Result<ImageUpload>.ResultFailures(new Error("ImageUpload", uploadResult.Error.Message));
+            return Result<ImageUpload>.ResultFailures(ErrorConstants.UploadImageOccursErrorWithFileName(file.FileName));
         }
 
         public Task<Result<IEnumerable<ImageUpload>>> UploadLoadImagesAsync(IFormFileCollection file, CancellationToken cancellationToken = default)
