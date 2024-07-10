@@ -28,6 +28,8 @@ namespace Infrastructure.Services.Cart
                                          Id = cartItem.Id,
                                          ProductId = product.Id,
                                          ProductSkusId = variant.Id,
+                                         ProductName = product.Name,
+                                         VariantName = variant != null ? variant.Name : null,
                                          Price = variant != null ? variant.Price : product.Price,
                                          Quantity = cartItem.Quantity,
                                          Image = _context.ProductImages
@@ -36,7 +38,6 @@ namespace Infrastructure.Services.Cart
                                          .Select(x => x.Image.ImageUrl)
                                          .FirstOrDefault()
                                      }).ToList()
-
                         };
             var result = await query.FirstOrDefaultAsync(cancellationToken);
             return result;
