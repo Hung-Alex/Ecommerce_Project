@@ -64,7 +64,7 @@ namespace Infrastructure
                     ValidIssuer = jwtSettings.GetValue<string>("Issuer"),
                     ValidAudience = jwtSettings.GetValue<string>("Audience"),
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.GetValue<string>("SecretKey"))),
-                    ClockSkew = TimeSpan.FromSeconds(30),
+                    ClockSkew = TimeSpan.FromMinutes(int.Parse(jwtSettings.GetValue<string>("ExpiredToken"))),
                 };
                 options.SaveToken = true;
                 options.Events = new JwtBearerEvents();
