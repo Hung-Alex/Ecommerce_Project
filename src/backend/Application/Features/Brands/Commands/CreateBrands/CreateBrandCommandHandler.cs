@@ -1,4 +1,5 @@
-﻿using Application.Common.Interface;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interface;
 using Application.DTOs.Internal;
 using Application.Features.Brands.Specification;
 using Domain.Constants;
@@ -12,13 +13,18 @@ namespace Application.Features.Brands.Commands.CreateBrands
 {
     public sealed class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, Result<bool>>
     {
-        internal class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCommandValidator>
+        internal class CreateBrandCommandValidator : AbstractValidator<CreateBrandCommand>
         {
-
+            public CreateBrandCommandValidator()
+            {
+                RuleFor(x => x.Name).NotEmpty().WithMessage(nameof(CreateBrandCommand.Name));
+                RuleFor(x => x.Description).NotEmpty().WithMessage(nameof(CreateBrandCommand.Description));
+                RuleFor(x => x.FormFile).NotEmpty().WithMessage(nameof(CreateBrandCommand.FormFile));
+                RuleFor(x => x.UrlSlug).NotEmpty().WithMessage(nameof(CreateBrandCommand.UrlSlug));
+            }
         }
         private readonly IMedia _media;
         private readonly IUnitOfWork _unitOfWork;
-
         public CreateBrandCommandHandler(IMedia media, IUnitOfWork unitOfWork)
         {
             _media = media;
@@ -28,16 +34,16 @@ namespace Application.Features.Brands.Commands.CreateBrands
         {
             var repo = _unitOfWork.GetRepository<Brand>();
             var isExisted = await repo.FindOneAsync(new UrlSlugIsExistedSpecification(Guid.Empty, request.UrlSlug));
-            if (isExisted != null)
+            if (isExisted is not null)
             {
                 return Result<bool>.ResultFailures(ErrorConstants.UrlSlugIsExisted(request.UrlSlug));
             }
-            Result<ImageUpload> image = null;
-            if (request.FormFile is not null)
+            Result<ImageUpload> uploadResult = await _media.UploadLoadImageAsync(request.FormFile, UploadFolderConstants.FolderBrand); ;
+            if (uploadResult.IsSuccess is false)
             {
-                image = await _media.UploadLoadImageAsync(request.FormFile, UploadFolderConstants.FolderBrand);
+                throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
             }
-            repo.Add(new Brand() { Name = request.Name, Description = request.Description, UrlSlug = request.UrlSlug, Image = image.Data.Url });
+            repo.Add(new Brand() { Name = request.Name, Description = request.Description, UrlSlug = request.UrlSlug, Image = uploadResult.Data.Url });
             await _unitOfWork.Commit();
             return Result<bool>.ResultSuccess(true);
         }

@@ -7,19 +7,21 @@ using Domain.Constants;
 using Domain.Shared;
 using Application.DTOs.Responses.Brands;
 using Domain.Entities.Brands;
+using Application.Common.Exceptions;
+using Application.Features.Brands.Specification;
 
 namespace Application.Features.Brands.Commands.UpdateBrand
 {
     public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, Result<BrandDTO>>
     {
-        internal class UpdateCategoryCommandValidator : AbstractValidator<UpdateBrandCommand>
+        internal class UpdateBrandCommandValidator : AbstractValidator<UpdateBrandCommand>
         {
-            public UpdateCategoryCommandValidator()
+            public UpdateBrandCommandValidator()
             {
-                RuleFor(x => x.Id).NotEmpty().WithMessage("Not Null");
-                RuleFor(b => b.Name).NotEmpty().WithMessage("Not Null");
-                RuleFor(b => b.Description).NotEmpty().WithMessage("Not Null");
-                RuleFor(b => b.UrlSlug).NotEmpty().WithMessage("Not Null");
+                RuleFor(x => x.Id).NotEmpty().WithMessage(nameof(UpdateBrandCommand.Id));
+                RuleFor(b => b.Name).NotEmpty().WithMessage(nameof(UpdateBrandCommand.Name));
+                RuleFor(b => b.Description).NotEmpty().WithMessage(nameof(UpdateBrandCommand.Name));
+                RuleFor(b => b.UrlSlug).NotEmpty().WithMessage(nameof(UpdateBrandCommand.UrlSlug));
             }
         }
         private readonly IUnitOfWork _unitOfWork;
@@ -36,18 +38,23 @@ namespace Application.Features.Brands.Commands.UpdateBrand
             var repo = _unitOfWork.GetRepository<Brand>();
             var brand = await repo.GetByIdAsync(request.Id);
             if (brand == null) return Result<BrandDTO>.ResultFailures(ErrorConstants.UserNotFoundWithID(request.Id));
-            Result<ImageUpload> uploadResult = null;
-            if (!(request.Image is null))
+            var isExisted = await repo.FindOneAsync(new UrlSlugIsExistedSpecification(request.Id, request.UrlSlug));
+            if (isExisted is not null)
             {
-                uploadResult = await _media.UploadLoadImageAsync(request.Image, UploadFolderConstants.FolderBrand, cancellationToken);
+                return Result<BrandDTO>.ResultFailures(ErrorConstants.UrlSlugIsExisted(request.UrlSlug));
+            }
+            if (request.Image is not null)
+            {
+                Result<ImageUpload> uploadResult = await _media.UploadLoadImageAsync(request.Image, UploadFolderConstants.FolderBrand, cancellationToken);
+                if (uploadResult.IsSuccess is false)
+                {
+                    throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
+                }
+                brand.Image = uploadResult.Data.Url;
             }
             brand.UrlSlug = request.UrlSlug;
             brand.Name = request.Name;
             brand.Description = request.Description;
-            if (!(uploadResult is null))
-            {
-                brand.Image = uploadResult.Data.Url;
-            }
             await _unitOfWork.Commit();
             var brandDTO = _mapper.Map<BrandDTO>(brand);
             return Result<BrandDTO>.ResultSuccess(brandDTO);

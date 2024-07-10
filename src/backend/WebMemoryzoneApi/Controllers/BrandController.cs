@@ -36,7 +36,7 @@ namespace WebMemoryzoneApi.Controllers
             return Ok(result);
         }
         [HttpPut("{id:Guid}")]
-        [FileValidatorFilter<UpdateBrandCommand>([".png", ".jpg"], 1 * 1024)]
+        [FileValidatorFilter<UpdateBrandCommand>([".png", ".jpg"], 1024 * 1024)]
         public async Task<ActionResult> UpadateBrand(Guid id, [FromForm] UpdateBrandCommand command)
         {
             if (id != command.Id)
