@@ -26,12 +26,12 @@ namespace Application.Features.Banners.Commands.CreateBanner
         public async Task<Result<bool>> Handle(CreateBannerCommand request, CancellationToken cancellationToken)
         {
             var repoBanner = _unitOfWork.GetRepository<Banner>();
-            Result<ImageUpload> image=null;
+            Result<ImageUpload> image = null;
             if (request.FormFile is not null)
             {
                 image = await _media.UploadLoadImageAsync(request.FormFile, UploadFolderConstants.FolderBanner);
             }
-            repoBanner.Add(new Banner() { Title = request.Title, Description = request.Description, LogoImageUrl = image.Data.Url ,Left=request.left,Right=request.right});
+            repoBanner.Add(new Banner() { Title = request.Title, Description = request.Description, LogoImageUrl = image.Data.Url });
             await _unitOfWork.Commit();
             return Result<bool>.ResultSuccess(true);
         }

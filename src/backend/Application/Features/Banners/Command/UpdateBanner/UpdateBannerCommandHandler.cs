@@ -41,8 +41,6 @@ namespace Application.Features.Banners.Commands.UpdateBanner
             }
             banner.Title = request.Title;
             banner.Description = request.Description;
-            banner.Left = request.left;
-            banner.Right = request.right;
             if (!(uploadResult is null))
             {
                 banner.LogoImageUrl = uploadResult.Data.Url;
