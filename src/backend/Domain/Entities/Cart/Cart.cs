@@ -30,7 +30,7 @@ namespace Domain.Entities.Carts
                 }
                 else
                 {
-                    existItem.Quantity = cartItem.Quantity;
+                    existItem.Quantity += cartItem.Quantity;
                 }
             }
             else

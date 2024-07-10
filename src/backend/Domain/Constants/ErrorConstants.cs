@@ -30,6 +30,10 @@ namespace Domain.Constants
         public static Error WishListProductIsExistedInWishListWithId(Guid ProductId) => new Error("WishList.Product already Existed In Wishlist", $"Product already existed in wishlist with id {ProductId}");
         public static Error UploadImageOccursErrorWithFileName(string fileName) => new Error("UploadImageOccursErrorWithFileName", $"Upload Image Occurs Error With FileName {fileName}");
         //Banner
-        public static Error LocationBannerAlreadyExisted(LocationBanner? location) => new Error("LocationBannerAlreadyExisted", $"LocationBannerAlreadyExisted {location}");
+        public static Error LocationBannerAlreadyExisted(LocationBanner? location) => new Error("Banner.LocationBannerAlreadyExisted", $"LocationBannerAlreadyExisted {location}");
+
+        //cart
+        public static readonly Error CartNotFound = new Error("Cart.CartNotFound", "Cart Not Found");
+
     }
 }

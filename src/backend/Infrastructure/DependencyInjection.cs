@@ -7,6 +7,7 @@ using Infrastructure.Repositories.GenericRepository;
 using Infrastructure.Repositories.Repository;
 using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.Auth;
+using Infrastructure.Services.Cart;
 using Infrastructure.Services.CloudinaryUpload;
 using Infrastructure.Services.Identity;
 using Infrastructure.Services.UserInHttpContext;
@@ -34,6 +35,7 @@ namespace Infrastructure
             services.AddScoped<IMedia, Media>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<ISectionService, SectionService>();
+            services.AddScoped<ICartService, CartService>();
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<StoreDbContext>()

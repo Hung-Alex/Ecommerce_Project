@@ -4,5 +4,5 @@ using MediatR;
 
 namespace Application.Features.Carts.Queries.GetItemInCart
 {
-    public record GetItemsInCartQuery(Guid UserId):IRequest<Result<IEnumerable<CartItemDTO>>>;
+    public record GetItemsInCartQuery(Guid UserId):IRequest<Result<CartDTO>>;
 }

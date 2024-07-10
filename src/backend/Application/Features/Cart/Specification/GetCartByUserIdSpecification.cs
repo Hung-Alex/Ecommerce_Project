@@ -10,14 +10,8 @@ namespace Application.Features.Carts.Specification
         public GetCartByUserIdSpecification(Guid userId)
         {
             _userId = userId;
-            Handler();
         }
         public override Expression<Func<Cart, bool>> Criteria => c => c.UserId == _userId;
-        protected override void Handler()
-        {
-            AddIncludeString("CartItems.ProductSkus");
-            AddIncludeString("CartItems.Product.Images.Image");
-            base.Handler();
-        }
+        
     }
 }
