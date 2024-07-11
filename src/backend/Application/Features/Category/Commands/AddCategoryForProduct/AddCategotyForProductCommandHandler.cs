@@ -12,7 +12,8 @@ namespace Application.Features.Category.Commands.AddCategoryForProduct
         {
             public AddCategotyForProductCommandValidator()
             {
-                throw new NotImplementedException();
+                RuleFor(x => x.ProductId).NotEmpty().WithMessage(nameof(AddCategotyForProductCommand.ProductId));
+                RuleFor(x => x.ParrentCategoryId).NotEmpty().WithMessage(nameof(AddCategotyForProductCommand.ParrentCategoryId));
             }
         }
 
