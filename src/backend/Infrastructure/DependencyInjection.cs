@@ -10,6 +10,7 @@ using Infrastructure.Services.Auth;
 using Infrastructure.Services.Cart;
 using Infrastructure.Services.CloudinaryUpload;
 using Infrastructure.Services.Identity;
+using Infrastructure.Services.Search;
 using Infrastructure.Services.UserInHttpContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -36,6 +37,8 @@ namespace Infrastructure
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<ISectionService, SectionService>();
             services.AddScoped<ICartService, CartService>();
+            services.AddScoped<ISearchService, SearchService>();
+
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<StoreDbContext>()

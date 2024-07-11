@@ -1,8 +1,7 @@
-﻿using System.Text.Json.Serialization;
-
-namespace Application.DTOs.Responses.Product
+﻿
+namespace Application.DTOs.Internal.Product
 {
-    public record ProductDTO : BaseDTO
+    public record ProductInternal : BaseDTO
     {
         public string Name { get; set; }
         public string UnitPrice { get; set; }
@@ -11,5 +10,6 @@ namespace Application.DTOs.Responses.Product
         public string UrlSlug { get; set; }
         public Guid BrandId { get; init; }
         public IEnumerable<string> Images { get; set; }
+        public IEnumerable<Guid> CollectionId { get; init; }
     }
 }
