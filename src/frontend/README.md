@@ -1,70 +1,49 @@
-# Getting Started with Create React App
+# Organic Shop Web Application
+[Live link](https://adorable-rugelach-159011.netlify.app/)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Project Description
 
-## Available Scripts
+This is an organic e-commerce web application built with React.js, Express.js, Mongoose, Stripe, Nodemailer, JSON Web Tokens (JWT), and Bcrypt.js. It provides a platform for users to browse, search, and purchase organic products. Admins can manage products and view analytics. Users can sign up, log in, reset their passwords, search products by category, add products to their cart, and place orders using the Stripe payment gateway.
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- User Registration: Users can create an account by providing their details.
+- User Authentication: Secure user authentication using JWT and Bcrypt.js.
+- Password Reset: Users can request a password reset and receive an email with a reset link.
+- Product Search: Users can search for products by category.
+- Shopping Cart: Users can add products to their cart.
+- Checkout and Payment: Users can place orders using the Stripe payment gateway.
+- Admin Panel: Admins can add, update, and delete products, as well as view product analytics.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Technologies
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- React.js: Front-end development library.
+- Express.js: Back-end framework.
+- Mongoose: MongoDB object modeling.
+- Stripe: Payment gateway integration.
+- Nodemailer: Sending password reset emails.
+- JSON Web Tokens (JWT): Secure authentication.
+- Bcrypt.js: Password hashing and verification.
 
-### `npm test`
+## Installation Process
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. **Clone the Repository:**
 
-### `npm run build`
+```bash
+git clone https://github.com/Jobayer98/OrganicShop.git
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. **Install Dependencies & Run:**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+cd OrganicShop
+npm install
+npm run dev
+```
 
-### `npm run eject`
+## Author
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- Author: Jobayer98
+- GitHub: [Your GitHub Profile](https://github.com/Jobayer98)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
