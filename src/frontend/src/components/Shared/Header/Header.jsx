@@ -59,6 +59,7 @@ const Header = () => {
 
             {/* Dropdown Menu */}
             {isDropdownOpen && <UserDropdown />}
+
           </div>
         ) : (
           <div>
