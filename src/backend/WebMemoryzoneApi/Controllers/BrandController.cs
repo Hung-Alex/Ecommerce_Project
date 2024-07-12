@@ -1,9 +1,9 @@
-﻿using Application.Features.Brands.Commands.CreateBrand;
+﻿using Application.DTOs.Filters.Brands;
+using Application.Features.Brands.Commands.CreateBrands;
 using Application.Features.Brands.Commands.DeleteBrand;
 using Application.Features.Brands.Commands.UpdateBrand;
 using Application.Features.Brands.Queries.Get;
 using Application.Features.Brands.Queries.GetById;
-using Application.DTOs.Filters.Brand;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,13 +30,13 @@ namespace WebMemoryzoneApi.Controllers
         }
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult> GetBrands([FromQuery] BrandFilter productFilter)
+        public async Task<ActionResult> GetBrands([FromQuery] BrandFilter brandFilter)
         {
-            var result = await _mediator.Send(new GetListBrandQuery(productFilter));
+            var result = await _mediator.Send(new GetListBrandsQuery(brandFilter));
             return Ok(result);
         }
         [HttpPut("{id:Guid}")]
-        [FileValidatorFilter<UpdateBrandCommand>([".png", ".jpg"], 1 * 1024)]
+        [FileValidatorFilter<UpdateBrandCommand>([".png", ".jpg"], 1024 * 1024)]
         public async Task<ActionResult> UpadateBrand(Guid id, [FromForm] UpdateBrandCommand command)
         {
             if (id != command.Id)
@@ -54,6 +54,7 @@ namespace WebMemoryzoneApi.Controllers
             if (!result.IsSuccess) return NotFound(result);
             return Ok();
         }
+        [AllowAnonymous]
         [HttpGet("{slug}")]
         public async Task<ActionResult> GetBrandByUrlSlug(string slug)
         {

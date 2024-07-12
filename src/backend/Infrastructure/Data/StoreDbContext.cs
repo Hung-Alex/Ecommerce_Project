@@ -25,11 +25,11 @@ namespace Infrastructure.Data
     {
         public StoreDbContext(DbContextOptions options) : base(options)
         {
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
         #region DbSet Entities
-        public DbSet<User> Users { get; set; }
         public DbSet<Brand> Brands { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Banner> Banners { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Categories> Categories { get; set; }

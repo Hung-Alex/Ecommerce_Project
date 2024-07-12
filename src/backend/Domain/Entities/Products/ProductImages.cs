@@ -9,6 +9,7 @@ namespace Domain.Entities.Products
         public Product Product { get; set; }
         public Guid ProductId { get; set; }
         public Image Image { get; set; }
+        public int OrderItem { get; set; }
         public Guid ImageId { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }

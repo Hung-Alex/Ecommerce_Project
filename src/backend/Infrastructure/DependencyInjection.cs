@@ -4,10 +4,14 @@ using Domain.Interface;
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Infrastructure.Repositories.GenericRepository;
+using Infrastructure.Repositories.Repository;
+using Infrastructure.Repositories.Repository.Category;
 using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.Auth;
+using Infrastructure.Services.Cart;
 using Infrastructure.Services.CloudinaryUpload;
 using Infrastructure.Services.Identity;
+using Infrastructure.Services.Search;
 using Infrastructure.Services.UserInHttpContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -29,9 +33,13 @@ namespace Infrastructure
             //register Identity service
             // Register Repository
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
             // Register Services
             services.AddScoped<IMedia, Media>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<ISectionService, SectionService>();
+            services.AddScoped<ICartService, CartService>();
+            services.AddScoped<ISearchService, SearchService>();
 
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
@@ -63,7 +71,7 @@ namespace Infrastructure
                     ValidIssuer = jwtSettings.GetValue<string>("Issuer"),
                     ValidAudience = jwtSettings.GetValue<string>("Audience"),
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.GetValue<string>("SecretKey"))),
-                    ClockSkew = TimeSpan.FromSeconds(30),
+                    ClockSkew = TimeSpan.FromMinutes(int.Parse(jwtSettings.GetValue<string>("ExpiredToken"))),
                 };
                 options.SaveToken = true;
                 options.Events = new JwtBearerEvents();

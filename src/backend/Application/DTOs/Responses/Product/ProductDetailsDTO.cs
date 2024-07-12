@@ -1,6 +1,5 @@
-﻿
-
-using Application.DTOs.Responses.Product.ProductImage;
+﻿using Application.DTOs.Responses.Product.ProductImage;
+using Application.DTOs.Responses.Product.Variants;
 
 namespace Application.DTOs.Responses.Product
 {
@@ -14,5 +13,7 @@ namespace Application.DTOs.Responses.Product
         public Decimal Price { get; init; }
         public string UrlSlug { get; init; }
         public IEnumerable<ProductImageDTO> Images { get; init; }
+        public IEnumerable<VariantsDTO> Variants { get; init; }
+        public IEnumerable<Guid> CollectionId { get; init; }
     }
 }

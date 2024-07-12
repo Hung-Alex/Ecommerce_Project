@@ -1,5 +1,7 @@
-﻿using Application.Common.Interface;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interface;
 using Application.DTOs.Internal;
+using Application.Features.Brands.Commands.CreateBrands;
 using Application.Features.Category.Specification;
 using Domain.Constants;
 using Domain.Entities.Category;
@@ -12,9 +14,15 @@ namespace Application.Features.Category.Commands.CreateCategory
 {
     public sealed class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, Result<bool>>
     {
-        internal class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCommandValidator>
+        internal class CreateCategoryCommandValidator : AbstractValidator<CreateBrandCommand>
         {
-
+            public CreateCategoryCommandValidator()
+            {
+                RuleFor(x => x.Name).NotEmpty().WithMessage(nameof(CreateBrandCommand.Name));
+                RuleFor(x => x.Description).NotEmpty().WithMessage(nameof(CreateBrandCommand.Description));
+                RuleFor(x => x.FormFile).NotEmpty().WithMessage(nameof(CreateBrandCommand.FormFile));
+                RuleFor(x => x.UrlSlug).NotEmpty().WithMessage(nameof(CreateBrandCommand.UrlSlug));
+            }
         }
         private readonly IMedia _media;
         private readonly IUnitOfWork _unitOfWork;
@@ -40,12 +48,12 @@ namespace Application.Features.Category.Commands.CreateCategory
                     return Result<bool>.ResultFailures(ErrorConstants.NotFoundWithId((Guid)request.ParrentId));
                 }
             }
-            Result<ImageUpload> image = null;
-            if (request.FormFile is not null)
+            Result<ImageUpload> uploadResult = await _media.UploadLoadImageAsync(request.FormFile, UploadFolderConstants.FolderCategory);
+            if (uploadResult.IsSuccess is false)
             {
-                image = await _media.UploadLoadImageAsync(request.FormFile, UploadFolderConstants.FolderCategory);
+                throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
             }
-            repoCategory.Add(new Categories() { Name = request.Name, Description = request.Description, UrlSlug = request.UrlSlug, Image = image.Data.Url, ParrentId = request.ParrentId });
+            repoCategory.Add(new Categories() { Name = request.Name, Description = request.Description, UrlSlug = request.UrlSlug, Image = uploadResult.Data.Url, ParrentId = request.ParrentId });
             await _unitOfWork.Commit();
             return Result<bool>.ResultSuccess(true);
         }

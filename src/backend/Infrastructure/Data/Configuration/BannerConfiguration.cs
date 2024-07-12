@@ -9,6 +9,9 @@ namespace Infrastructure.Data.Configuration
         public void Configure(EntityTypeBuilder<Banner> builder)
         {
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Location).HasConversion<int>();
+            builder.HasIndex(x => x.Location);
+
         }
     }
 }

@@ -1,19 +1,56 @@
 ﻿using Application.Common.Interface;
 using Application.Features.Products.Specification;
 using Domain.Constants;
+using Domain.Entities;
+using Domain.Entities.Images;
 using Domain.Entities.Products;
+using Domain.Interface;
 using Domain.Shared;
 using FluentValidation;
 using MediatR;
+using System.Data;
 
 
 namespace Application.Features.Products.Commands.CreateProduct
 {
-    public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Result<bool>>
+    public sealed class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Result<bool>>
     {
-        internal class CreateBrandCommandValidator : AbstractValidator<CreateBrandCommandValidator>
+        public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
         {
 
+            private readonly ICategoryRepository _categoryRepository;
+            public CreateProductCommandValidator(ICategoryRepository categoryRepository)
+            {
+                _categoryRepository = categoryRepository;
+                RuleFor(x => x.Name).NotEmpty().WithMessage(nameof(CreateProductCommand.Name));
+                RuleFor(x => x.UrlSlug).NotEmpty().WithMessage(nameof(CreateProductCommand.Name));
+                RuleFor(x => x.Description).NotEmpty().WithMessage(nameof(CreateProductCommand.Description));
+                RuleFor(x => x.Price).NotEmpty().WithMessage(nameof(CreateProductCommand.Price));
+                RuleFor(x => x.UnitPrice).NotEmpty().WithMessage(nameof(CreateProductCommand.UnitPrice));
+                RuleFor(x => x.BrandId).NotEmpty().WithMessage(nameof(CreateProductCommand.BrandId));
+                RuleFor(x => x.Collections).NotNull().WithMessage(nameof(CreateProductCommand.Collections));
+                RuleForEach(x => x.Collections)
+                        .MustAsync(ValidCategoryCombination)
+                        .WithMessage("Subcategory must belong to Parent category and both must exist in the database.");
+            }
+
+            private async Task<bool> ValidCategoryCombination(AddCategories category, CancellationToken cancellationToken)
+            {
+                // Check if ParentId exists
+                var parentExists = await _categoryRepository.IsExistedAsync(category.ParrentId);
+                if (!parentExists)
+                    return false;
+
+                // If SubCategory is not null, check if it exists and belongs to ParentId
+                if (category.SubCategoryId.HasValue)
+                {
+                    var subCategoryExists = await _categoryRepository.IsExistedAsync(category.SubCategoryId.Value);
+                    var isSubCategoryValid = await _categoryRepository.IsSubCategoryOfParrentAsync(category.SubCategoryId.Value, category.ParrentId);
+                    return subCategoryExists && isSubCategoryValid;
+                }
+
+                return true;
+            }
         }
         private readonly IMedia _media;
         private readonly IUnitOfWork _unitOfWork;
@@ -26,12 +63,13 @@ namespace Application.Features.Products.Commands.CreateProduct
         public async Task<Result<bool>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
             var repoProduct = _unitOfWork.GetRepository<Product>();
+            var repoImage = _unitOfWork.GetRepository<Image>();
             var isExisted = await repoProduct.FindOneAsync(new UrlSlugIsExistedSpecification(Guid.Empty, request.UrlSlug));
             if (isExisted != null)
             {
                 return Result<bool>.ResultFailures(ErrorConstants.UrlSlugIsExisted(request.UrlSlug));
             }
-            repoProduct.Add(new Product()
+            var newProduct = new Product()
             {
                 Name = request.Name
             ,
@@ -43,10 +81,58 @@ namespace Application.Features.Products.Commands.CreateProduct
             ,
                 UnitPrice = request.UnitPrice
             ,
-                BrandId = request.BrandId
-            ,
                 Discount = request.Discount
-            });
+            ,
+                BrandId = request.BrandId
+            };
+            repoProduct.Add(newProduct);
+            #region handle Collection
+            foreach (var item in request.Collections)
+            {
+                newProduct.ProductSubCategories.Add(new ProductSubCategory() { CategoryId = item.ParrentId });
+                if (item.SubCategoryId.HasValue)
+                {
+                    newProduct.ProductSubCategories.Add(new ProductSubCategory() { CategoryId = (Guid)item.SubCategoryId });
+
+                }
+            }
+            #endregion
+            #region hanle Images
+            var image = new Image();
+
+            if (request.Images is not null)
+            {
+                int Count = 0;
+                foreach (var item in request.Images)
+                {
+                    var uploadResult = await _media.UploadLoadImageAsync(item, UploadFolderConstants.FolderProduct);
+                    if (uploadResult.IsSuccess)
+                    {
+                        image = new Image()
+                        {
+                            ImageExtension = item.ContentType
+                        ,
+                            ImageUrl = uploadResult.Data.Url
+                        ,
+                            PublicId = uploadResult.Data.PublicId
+                        };
+                        repoImage.Add(image);
+                        newProduct.Images.Add(new ProductImages() { ImageId = image.Id, ProductId = newProduct.Id, OrderItem = Count++ });
+                    }
+                    else
+                    {
+                        return Result<bool>.ResultFailures(ErrorConstants.UploadImageOccursErrorWithFileName(item.FileName));
+                    }
+                }
+            }
+            #endregion
+            if (request.Variant is not null)
+            {
+                newProduct.ProductSkus = request
+               .Variant
+               .Select(x => new ProductSkus() { Name = x.VariantName, Description = x.Description, Quantity = x.Quantity })
+               .ToList();
+            }
             await _unitOfWork.Commit();
             return Result<bool>.ResultSuccess(true);
         }

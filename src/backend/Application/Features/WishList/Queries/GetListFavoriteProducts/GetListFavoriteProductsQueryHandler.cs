@@ -26,10 +26,8 @@ namespace Application.Features.WishsList.Queries.GetListFavoriteProducts
                 {
                     Id = x.Product.Id,
                     Name = x.Product.Name,
-                    Description = x.Product.Description,
                     UnitPrice = x.Product.UnitPrice,
                     Discount = x.Product.Discount,
-                    BrandId = x.Product.BrandId,
                     UrlSlug = x.Product.UrlSlug,
                     Price = x.Product.Price,
                     Images = x.Product.Images.Select(x => x.Image.ImageUrl)

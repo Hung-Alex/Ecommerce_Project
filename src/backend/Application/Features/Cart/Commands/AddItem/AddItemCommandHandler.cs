@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interface;
 using Application.Features.Carts.Specification;
+using Domain.Constants;
 using Domain.Entities.Carts;
 using Domain.Shared;
 using MediatR;
@@ -12,6 +13,10 @@ namespace Application.Features.Carts.Commands.AddItem
         {
             var repo = unitOfWork.GetRepository<Cart>();
             var cart = await repo.FindOneAsync(new GetCartByUserIdSpecification(request.UserId));
+            if (cart is null)
+            {
+                return Result<bool>.ResultFailures(ErrorConstants.CartNotFound);
+            }
             var item = cart.CreateCartItem(request.ProductId, request.ProductSkusId, request.Quantity);
             cart.AddItems(item);
             await unitOfWork.Commit();

@@ -7,17 +7,20 @@ using Domain.Shared;
 using Domain.Constants;
 using Domain.Entities.Banners;
 using Application.DTOs.Responses.Banners;
+using Application.Features.Banners.Commands.CreateBanner;
+using Application.Common.Exceptions;
+using Application.Features.Banners.Specification;
 
 namespace Application.Features.Banners.Commands.UpdateBanner
 {
     public sealed class UpdateBannerCommandHandler : IRequestHandler<UpdateBannerCommand, Result<BannerDTO>>
     {
-        internal class UpdateBrandCommandValidator : AbstractValidator<UpdateBannerCommand>
+        internal class UpdateBannerCommandValidator : AbstractValidator<UpdateBannerCommand>
         {
-            public UpdateBrandCommandValidator()
+            public UpdateBannerCommandValidator()
             {
-                RuleFor(x => x.Id).NotEmpty().WithMessage("Not Null");
-                RuleFor(b => b.Description).NotEmpty().WithMessage("Not Null");
+                RuleFor(x => x.Title).NotEmpty().WithMessage(nameof(CreateBannerCommand.Title));
+                RuleFor(x => x.Description).NotEmpty().WithMessage(nameof(CreateBannerCommand.Description));
             }
         }
         private readonly IUnitOfWork _unitOfWork;
@@ -31,22 +34,31 @@ namespace Application.Features.Banners.Commands.UpdateBanner
         }
         public async Task<Result<BannerDTO>> Handle(UpdateBannerCommand request, CancellationToken cancellationToken)
         {
-            var bannerRepo = _unitOfWork.GetRepository<Banner>();
-            var banner = await bannerRepo.GetByIdAsync(request.Id);
-            if (banner == null) return Result<BannerDTO>.ResultFailures(ErrorConstants.NotFoundWithId(request.Id)); ;
-            Result<ImageUpload> uploadResult = null;
-            if (!(request.FormFile is null))
+            var repoBanner = _unitOfWork.GetRepository<Banner>();
+            var banner = await repoBanner.GetByIdAsync(request.Id);
+            if (banner == null) return Result<BannerDTO>.ResultFailures(ErrorConstants.NotFoundWithId(request.Id));
+            if (request.Location is not null)
             {
-                uploadResult = await _media.UploadLoadImageAsync(request.FormFile,UploadFolderConstants.FolderBanner, cancellationToken);
+                var isExistedLocationBanner = await repoBanner.FindOneAsync(new CheckLocationBannerAlreadyExistedSpecification(request.Location, banner.Id));
+                if (isExistedLocationBanner is not null)
+                {
+                    return Result<BannerDTO>.ResultFailures(ErrorConstants.LocationBannerAlreadyExisted(request.Location));
+                }
+                banner.Location = request.Location;
+            }
+            Result<ImageUpload> uploadResult = null;
+            if (request.FormFile is not null)
+            {
+                uploadResult = await _media.UploadLoadImageAsync(request.FormFile, UploadFolderConstants.FolderBanner, cancellationToken);
+                if (uploadResult.IsSuccess is false)
+                {
+                    throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
+                }
+                banner.LogoImageUrl = uploadResult?.Data.Url;
+
             }
             banner.Title = request.Title;
             banner.Description = request.Description;
-            banner.Left = request.left;
-            banner.Right = request.right;
-            if (!(uploadResult is null))
-            {
-                banner.LogoImageUrl = uploadResult.Data.Url;
-            }
             await _unitOfWork.Commit();
             var BannerDTO = _mapper.Map<BannerDTO>(banner);
             return Result<BannerDTO>.ResultSuccess(BannerDTO);

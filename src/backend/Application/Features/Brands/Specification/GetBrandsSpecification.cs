@@ -1,8 +1,8 @@
-﻿using Domain.Entities.Brands;
-using Domain.Specifications;
+﻿using Domain.Specifications;
 using System.Linq.Expressions;
 using Application.Utils;
-using Application.DTOs.Filters.Brand;
+using Domain.Entities.Brands;
+using Application.DTOs.Filters.Brands;
 
 namespace Application.Features.Brands.Specification
 {
@@ -17,6 +17,7 @@ namespace Application.Features.Brands.Specification
         public override Expression<Func<Brand, bool>> Criteria
             => p
             => (string.IsNullOrEmpty(_filter.Name) || p.Name.Contains(_filter.Name));
+
 
         protected override void Handler()
         {

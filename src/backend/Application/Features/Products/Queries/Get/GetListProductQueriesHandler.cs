@@ -25,10 +25,8 @@ namespace Application.Features.Products.Queries.Get
             {
                 Id = x.Id,
                 Name = x.Name,
-                Description = x.Description,
                 UnitPrice = x.UnitPrice,
                 Discount = x.Discount,
-                BrandId = x.BrandId,
                 UrlSlug = x.UrlSlug,
                 Price = x.Price,
                 Images = x.Images.Select(x => x.Image.ImageUrl)

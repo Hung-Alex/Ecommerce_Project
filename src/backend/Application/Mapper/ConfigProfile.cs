@@ -1,5 +1,6 @@
-﻿using Application.DTOs.Responses.Banners;
-using Application.DTOs.Responses.Brand;
+﻿using Application.DTOs.Internal.Product;
+using Application.DTOs.Responses.Banners;
+using Application.DTOs.Responses.Brands;
 using Application.DTOs.Responses.Category;
 using Application.DTOs.Responses.Post;
 using Application.DTOs.Responses.Product;
@@ -20,8 +21,9 @@ namespace Application.Mapper
     {
         public ConfigProfile()
         {
-            CreateMap<Brand, BrandDTOs>().ReverseMap();
             CreateMap<Categories, CategoryDTO>().ReverseMap();
+            CreateMap<ProductInternal, ProductDTO>().ReverseMap();
+            CreateMap<Brand, BrandDTO>().ReverseMap();
             CreateMap<Product, ProductDTO>().ReverseMap();
             CreateMap<Tag, TagDTO>().ReverseMap();
             CreateMap<Ratting, RattingDTO>().ReverseMap();

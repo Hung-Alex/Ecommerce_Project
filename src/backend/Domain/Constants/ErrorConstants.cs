@@ -1,5 +1,6 @@
 ﻿using Domain.Shared;
 using System.Diagnostics;
+using static Domain.Enums.BannerEnum;
 
 namespace Domain.Constants
 {
@@ -9,6 +10,7 @@ namespace Domain.Constants
         public static Error UrlSlugIsExisted(string url) => new Error("Url Slug Is Existed", $"Url slug is existed {url}");
         public static Error NotFound(string url) => new Error("NotFound", $"Url slug is existed {url}");
         public static Error NotFoundWithId(Guid id) => new Error("NotFound", $"Not Found With Id {id}");
+        public static readonly Error VariantsDontHaveVariant = new Error("VariantsDontHaveVariant", "Variants Dont Have Variant");
 
         //Users
         public static Error UserNotFoundWithID(Guid userId) => new Error("User.NotFound", $"Not found user with id {userId}");
@@ -26,5 +28,12 @@ namespace Domain.Constants
         //WishList
         public static Error WishListDontHaveProductInWishListWithId(Guid ProductId) => new Error("WishList.Not Found Producy In Wishlist", $"Dont have product in wishlist with id {ProductId}");
         public static Error WishListProductIsExistedInWishListWithId(Guid ProductId) => new Error("WishList.Product already Existed In Wishlist", $"Product already existed in wishlist with id {ProductId}");
+        public static Error UploadImageOccursErrorWithFileName(string fileName) => new Error("UploadImageOccursErrorWithFileName", $"Upload Image Occurs Error With FileName {fileName}");
+        //Banner
+        public static Error LocationBannerAlreadyExisted(LocationBanner? location) => new Error("Banner.LocationBannerAlreadyExisted", $"LocationBannerAlreadyExisted {location}");
+
+        //cart
+        public static readonly Error CartNotFound = new Error("Cart.CartNotFound", "Cart Not Found");
+
     }
 }

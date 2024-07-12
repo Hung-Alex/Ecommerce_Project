@@ -1,6 +1,5 @@
 ﻿using Domain.Common;
 using Domain.Entities.Banners;
-using Domain.Entities.Brands;
 using Domain.Entities.Carts;
 using Domain.Entities.Category;
 using Domain.Entities.Comments;
@@ -44,8 +43,6 @@ namespace Domain.Entities.Users
         public virtual ICollection<Slide> CreatedBySlide { get; set; }
         public virtual ICollection<Tag> UpdatedByTag { get; set; }
         public virtual ICollection<Tag> CreatedByTag { get; set; }
-        public virtual ICollection<Brand> UpdatedByBrand { get; set; }
-        public virtual ICollection<Brand> CreatedByBrand { get; set; }
         public virtual ICollection<Coupon> UpdatedByCoupon { get; set; }
         public virtual ICollection<Coupon> CreatedByCoupon { get; set; }
         public virtual ICollection<Product> UpdatedByProduct { get; set; }

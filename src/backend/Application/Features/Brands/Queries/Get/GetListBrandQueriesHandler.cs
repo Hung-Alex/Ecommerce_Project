@@ -1,15 +1,15 @@
 ﻿using Application.Common.Interface;
-using Application.Features.Brands.Specification;
-using Application.DTOs.Responses.Brand;
 using AutoMapper;
-using Domain.Entities.Brands;
 using Domain.Shared;
 using MediatR;
+using Application.DTOs.Responses.Brands;
+using Domain.Entities.Brands;
+using Application.Features.Brands.Specification;
 
 
 namespace Application.Features.Brands.Queries.Get
 {
-    public class GetListBrandQueriesHandler : IRequestHandler<GetListBrandQuery, Result<IEnumerable<BrandDTOs>>>
+    public sealed class GetListBrandQueriesHandler : IRequestHandler<GetListBrandsQuery, Result<IEnumerable<BrandDTO>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private IMapper _mapper;
@@ -18,13 +18,14 @@ namespace Application.Features.Brands.Queries.Get
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public async Task<Result<IEnumerable<BrandDTOs>>> Handle(GetListBrandQuery request, CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<BrandDTO>>> Handle(GetListBrandsQuery request, CancellationToken cancellationToken)
         {
-            var brandRepo = _unitOfWork.GetRepository<Brand>();
-            var getProductSpecification = new GetBrandsSpecification(request.ProductFilter);
-            var brands = await brandRepo.GetAllAsync(getProductSpecification);
-            var totalItems = await brandRepo.CountAsync(getProductSpecification);
-            return new PagingResult<IEnumerable<BrandDTOs>>(_mapper.Map<IEnumerable<BrandDTOs>>(brands), request.ProductFilter.PageNumber, request.ProductFilter.PageSize, totalItems);
+            var repo = _unitOfWork.GetRepository<Brand>();
+            var getBrandSpecification = new GetBrandsSpecification(request.BrandFilter);
+            var brands = await repo.GetAllAsync(getBrandSpecification);
+            var totalItems = await repo.CountAsync(getBrandSpecification);
+            return new PagingResult<IEnumerable<BrandDTO>>(_mapper.Map<IEnumerable<BrandDTO>>(brands), request.BrandFilter.PageNumber, request.BrandFilter.PageSize, totalItems);
         }
     }
 }
+
