@@ -5,6 +5,7 @@ using Infrastructure.Data;
 using Infrastructure.Identity;
 using Infrastructure.Repositories.GenericRepository;
 using Infrastructure.Repositories.Repository;
+using Infrastructure.Repositories.Repository.Category;
 using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.Auth;
 using Infrastructure.Services.Cart;
@@ -32,6 +33,7 @@ namespace Infrastructure
             //register Identity service
             // Register Repository
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
             // Register Services
             services.AddScoped<IMedia, Media>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
