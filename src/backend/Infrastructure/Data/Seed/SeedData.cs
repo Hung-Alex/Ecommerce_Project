@@ -1,4 +1,5 @@
-﻿using Domain.Entities.Category;
+﻿using Domain.Entities.Brands;
+using Domain.Entities.Category;
 
 namespace Infrastructure.Data.Seed
 {
@@ -16,23 +17,69 @@ namespace Infrastructure.Data.Seed
             {
                 return;
             }
+            var brandsData = BrandsInit();
+            await _dbContext.AddRangeAsync(brandsData);
             var parrentCategory = CategoryParrents();
             await _dbContext.AddRangeAsync(parrentCategory);
-            //foreach (var category in parrentCategory)//16
-            //{
-            //    foreach (var item in SubCategoryLv2())//10
-            //    {
-            //        item.ParrentId = category.Id;
-            //        await _dbContext.AddAsync(item);
-            //        foreach (var subitem in SubCategoryLv3())//7
-            //        {
-            //            subitem.ParrentId = item.Id;
-            //            await _dbContext.AddAsync(subitem);
-            //        }
-            //    }
-            //}
+            int count = 0;
+            foreach (var category in parrentCategory)//16
+            {
+
+                _dbContext.AddRange(SubCategories(category.Id, category.Name + count));
+                count++;
+            }
 
             await _dbContext.SaveChangesAsync();
+        }
+        private IEnumerable<Brand> BrandsInit()
+        {
+            IEnumerable<Brand> vegetableBrands = new List<Brand>()
+            {
+                new Brand
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Fresh & Green",
+                    UrlSlug = "fresh-green",
+                    Description = "Providing fresh and high-quality vegetables directly from farms to your table.",
+                    Image = "[Image of Fresh & Green vegetables]" // Replace with actual image URL
+                },
+                new Brand
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Organic Valley",
+                    UrlSlug = "organic-valley",
+                    Description = "Offering a wide range of organic vegetables grown sustainably and without harmful chemicals.",
+                    Image = "[Image of Organic Valley vegetables]" // Replace with actual image URL
+                },
+                // ... Add more brands from your sample data ...
+                new Brand
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Steamies-1",
+                    UrlSlug = "steamies-1",
+                    Description = "Steamed vegetables packed with freshness and nutrients for a healthy and tasty side dish.",
+                    Image = "[Image of Steamies vegetables]" // Replace with actual image URL
+                },
+                // ... Add more brands from your sample data ...
+                new Brand
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Steamies-2",
+                    UrlSlug = "steamies-2",
+                    Description = "Steamed vegetables packed with freshness and nutrients for a healthy and tasty side dish.",
+                    Image = "[Image of Steamies vegetables]" // Replace with actual image URL
+                },
+                // ... Add more brands from your sample data ...
+                new Brand
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Steamie-3",
+                    UrlSlug = "steamies-3",
+                    Description = "Steamed vegetables packed with freshness and nutrients for a healthy and tasty side dish.",
+                    Image = "[Image of Steamies vegetables]" // Replace with actual image URL
+                }
+            };
+            return vegetableBrands;
         }
         private IEnumerable<Categories> CategoryParrents()
         {
@@ -51,61 +98,22 @@ namespace Infrastructure.Data.Seed
             };
             return subCategories;
         }
-        //private IEnumerable<Categories> CategoryParrents()
-        //{
-        //    IEnumerable<Categories> subCategories = new List<Categories>()
-        //    {
-        //        new Categories() {Id=Guid.NewGuid(),Name="Laptop",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="Laptop Gaming",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="PC GVN",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="Main, CPU, VGA",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="Case, Nguồn, Tản",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="Ổ cứng, RAM, Thẻ nhớ",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="Loa, Micro, Webcam",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="Màn hình",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="Bàn phím",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="Chuột + Lót chuột",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="Tai Nghe",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="Ghế - Bàn",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="Phần mềm, mạng",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="Handheld, Console",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="Phụ kiện (Hub, sạc, cáp..)",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="Thủ thuật - Giải đáp",Description="",Image="",UrlSlug=""},
-        //    };
-        //    return subCategories;
-        //}
-        //private IEnumerable<Categories> SubCategoryLv2()
-        //{
-        //    IEnumerable<Categories> Subcategories = new List<Categories>()
-        //    {
-        //        new Categories() {Id=Guid.NewGuid(),Name="Thương hiệu",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="Giá Bán",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="CPU-Intel-AMD",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="Nhu cầu sử dụng",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="Linh phụ kiện laptop ",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="Laptop Asus",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="Laptop Acer",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="Laptop MSI",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="Laptop DELL",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="Chuột + Lót chuột",Description="",Image="",UrlSlug=""},
-        //    };
-        //    return Subcategories;
-
-        //}
-        //private IEnumerable<Categories> SubCategoryLv3()
-        //{
-        //    IEnumerable<Categories> Subcategories = new List<Categories>()
-        //    {
-        //        new Categories() {Id=Guid.NewGuid(),Name="ASUS",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="ACER",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="MSI",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="LENOVO",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="DELL ",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="HP - Pavilion",Description="",Image="",UrlSlug=""},
-        //        new Categories() {Id=Guid.NewGuid(),Name="LG - Gram",Description="",Image="",UrlSlug=""},
-        //    };
-        //    return Subcategories;
-
-        //}
+        private IEnumerable<Categories> SubCategories(Guid parrentID, string nameParrent)
+        {
+            IEnumerable<Categories> subCategories = new List<Categories>()
+            {
+                new Categories() { Id = Guid.NewGuid(), Name = nameParrent, Description = "Water spinach is a popular green vegetable in Vietnam.", Image = "waterspinach.jpg", UrlSlug = "water-spinach",ParrentId=parrentID },
+                new Categories() { Id = Guid.NewGuid(), Name = nameParrent, Description = "Napa cabbage is a type of Chinese cabbage, commonly used to make kimchi.", Image = "napacabbage.jpg", UrlSlug = "napa-cabbage" ,ParrentId=parrentID},
+                new Categories() { Id = Guid.NewGuid(), Name = nameParrent, Description = "Broccoli is a green vegetable that is often eaten steamed or raw.", Image = "broccoli.jpg", UrlSlug = "broccoli",ParrentId=parrentID },
+                new Categories() { Id = Guid.NewGuid(), Name = nameParrent, Description = "Spinach is a leafy green vegetable that is rich in iron.", Image = "spinach.jpg", UrlSlug = "spinach" ,ParrentId=parrentID},
+                new Categories() { Id = Guid.NewGuid(), Name = nameParrent, Description = "Carrots are root vegetables that are often orange in color.", Image = "carrot.jpg", UrlSlug = "carrot" ,ParrentId=parrentID},
+                new Categories() { Id = Guid.NewGuid(), Name = nameParrent, Description = "Tomatoes are red fruits that are commonly used in salads and cooking.", Image = "tomato.jpg", UrlSlug = "tomato",ParrentId=parrentID },
+                new Categories() { Id = Guid.NewGuid(), Name = nameParrent, Description = "Cucumbers are long, green vegetables that are often used in salads.", Image = "cucumber.jpg", UrlSlug = "cucumber",ParrentId=parrentID },
+                new Categories() { Id = Guid.NewGuid(), Name = nameParrent, Description = "Bell peppers are colorful vegetables that are often used in cooking.", Image = "bellpepper.jpg", UrlSlug = "bell-pepper",ParrentId=parrentID },
+                new Categories() { Id = Guid.NewGuid(), Name = nameParrent, Description = "Zucchini is a type of summer squash that is often used in cooking.", Image = "zucchini.jpg", UrlSlug = "zucchini" ,ParrentId=parrentID},
+                new Categories() { Id = Guid.NewGuid(), Name = nameParrent, Description = "Lettuce is a leafy green vegetable that is commonly used in salads.", Image = "lettuce.jpg", UrlSlug = "lettuce" ,ParrentId=parrentID}
+            };
+            return subCategories;
+        }
     }
 }

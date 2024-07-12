@@ -41,7 +41,7 @@ namespace Domain.Entities.Carts
         public void RemoveItem(Guid cartItemId)
         {
             if (CartItems is null || !CartItems.Any()) throw new CartNullException();
-            var cartItem = CartItems.FirstOrDefault(c => c.CartId == cartItemId);
+            var cartItem = CartItems.FirstOrDefault(c => c.Id == cartItemId);
             if (cartItem is null) throw new CartItemNotFoundException();
             CartItems.Remove(cartItem);
         }

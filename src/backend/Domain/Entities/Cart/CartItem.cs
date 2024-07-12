@@ -1,10 +1,6 @@
 ﻿using Domain.Common;
 using Domain.Entities.Products;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Domain.Entities.Carts
 {
@@ -22,7 +18,7 @@ namespace Domain.Entities.Carts
         public Guid ProductId { get; set; }
         public Product Product { get; set; }
         public ProductSkus ProductSkus { get; set; }
-        public Guid ProductSkusId { get; set; }
+        public Guid? ProductSkusId { get; set; }
         public int Quantity { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }

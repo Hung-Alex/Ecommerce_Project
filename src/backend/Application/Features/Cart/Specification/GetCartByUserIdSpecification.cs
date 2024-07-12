@@ -10,6 +10,7 @@ namespace Application.Features.Carts.Specification
         public GetCartByUserIdSpecification(Guid userId)
         {
             _userId = userId;
+            AddInclude(x => x.CartItems);
         }
         public override Expression<Func<Cart, bool>> Criteria => c => c.UserId == _userId;
         
