@@ -11,6 +11,7 @@ using Application.Features.Products.Queries.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace WebMemoryzoneApi.Controllers
 {
@@ -82,6 +83,10 @@ namespace WebMemoryzoneApi.Controllers
         [HttpPost]
         public async Task<IActionResult> AddProduct([FromForm] CreateProductCommand command)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result);
             return Ok();
@@ -89,7 +94,6 @@ namespace WebMemoryzoneApi.Controllers
         [HttpPost("addimage")]
         public async Task<IActionResult> AddProductImage([FromForm] AddProductImageCommand command)
         {
-
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result);
             return Ok();

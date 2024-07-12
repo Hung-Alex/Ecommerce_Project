@@ -24,11 +24,11 @@ namespace Domain.Entities.Products
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
         public virtual ICollection<ProductImages> Images { get; set; } = new List<ProductImages>();
-        public virtual ICollection<ProductSkus> ProductSkus { get; set; }
+        public virtual ICollection<ProductSkus> ProductSkus { get; set; } = new List<ProductSkus>();
         public virtual ICollection<CartItem> CartItems { get; set; }
         public virtual ICollection<CouponProduct> ProductCoupons { get; set; }
         public virtual ICollection<Ratting> Rattings { get; set; }
-        public virtual ICollection<ProductSubCategory> ProductSubCategories { get; set; }
+        public virtual ICollection<ProductSubCategory> ProductSubCategories { get; set; } = new List<ProductSubCategory>();
         public virtual ICollection<WishList> WishLists { get; set; }
         public Guid? CreatedByUserId { get; set; }
         public virtual User CreatedByUser { get; set; }

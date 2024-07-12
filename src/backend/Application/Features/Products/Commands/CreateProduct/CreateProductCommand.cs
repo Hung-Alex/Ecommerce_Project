@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Http;
 
 namespace Application.Features.Products.Commands.CreateProduct
 {
-    public record CreateProductImage(int Order, IFormFile Image);
     public record CreateProductSkus(string VariantName
-        , string description
+        , string Description
         , int Quantity);
+    public record AddCategories(Guid ParrentId, Guid? SubCategoryId);
     public record CreateProductCommand(string Name
         , string Description
         , string UrlSlug
@@ -17,6 +17,7 @@ namespace Application.Features.Products.Commands.CreateProduct
         , int? Discount
         , Guid BrandId
         , IEnumerable<CreateProductSkus> Variant
-        , IEnumerable<CreateProductImage> Images
+        , IEnumerable<AddCategories> Collections
+        , IFormFileCollection? Images
         ) : IRequest<Result<bool>>, IValidatableRequest;
 }
