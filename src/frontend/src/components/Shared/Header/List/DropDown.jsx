@@ -33,16 +33,6 @@ const DropDown = () => {
     setDropdownOpen(false);
   };
 
-  // const categories = [
-  //   { name: "Honey", slug: "honey" },
-  //   { name: "Ghee", slug: "ghee" },
-  //   { name: "Oil", slug: "oil" },
-  //   { name: "Fruits", slug: "fruit" },
-  //   { name: "Nuts & Seeds", slug: "nuts" },
-  //   { name: "Tea & Snacks", slug: "tea" },
-  //   { name: "Spices", slug: "spices" },
-  // ];
-
   return (
     <div
       className="relative inline-block text-left"
