@@ -5,7 +5,7 @@ import Product from "./Product/Product";
 import Testimonial from "./Testimonial/Testimonial";
 import ProductOffer from "./Offer/ProductOffer";
 import Our from "./Our/Our";
-import Categroy from "./Category/Categroy";
+import Category from "./Category/Category";
 import News from "./News/News";
 import Subscribe from "./Subscribe/Subscribe";
 
@@ -13,7 +13,7 @@ const HomePage = () => {
   return (
     <div className="max-w-screen-xl mx-auto">
       <HomeBanner />
-      <Categroy />
+      <Category />
       <Offer />
       <About />
       <Product />

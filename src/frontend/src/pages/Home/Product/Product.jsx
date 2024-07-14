@@ -7,7 +7,7 @@ import { useContext } from "react";
 import { ProductContext } from "../../../context/ProductContext";
 
 const Product = () => {
-  useFetch("/products?limit=4");
+  useFetch("/products");
   const { products, loading } = useContext(ProductContext);
 
   if (loading) {
@@ -25,7 +25,7 @@ const Product = () => {
       <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
         {products &&
           products.map((product) => (
-            <Card key={product._id} img={img} item={product} />
+            <Card key={product.id} img={img} item={product} />
           ))}
       </div>
       <div className="flex justify-center mt-8">

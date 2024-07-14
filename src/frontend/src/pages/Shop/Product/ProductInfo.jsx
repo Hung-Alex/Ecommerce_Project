@@ -28,6 +28,7 @@ const ProductInfo = () => {
       }
     })();
   }, []);
+  console.log(product);
 
   const handleDecrement = () => {
     if (qunatity > 1) {

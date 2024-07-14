@@ -16,7 +16,7 @@ function Login() {
   const onSubmit = async (data) => {
     try {
       setLoding(true);
-      const response = await axios.post("/login", data);
+      const response = await axios.post("/authentications/login", data);
       if (response.data) {
         const notify = () => toast.success("Login successfully");
         notify();
@@ -54,9 +54,9 @@ function Login() {
             </label>
             <br />
             <input
-              {...register("email", { required: true })}
+              {...register("userName", { required: true })}
               className="focus:ring-1 focus:outline-none focus:ring-[#274C5B] w-full h-12 rounded-lg pl-3 text-black border mt-2"
-              type="email"
+              type="userName"
               placeholder="try user@gmail.com or admin@gmail.com"
             />
           </div>
