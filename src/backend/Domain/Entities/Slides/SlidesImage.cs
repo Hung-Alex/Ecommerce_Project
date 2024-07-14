@@ -5,7 +5,8 @@ namespace Domain.Entities.Slides
 {
     public class SlidesImage : BaseEntity, IDatedModification
     {
-        public SlidesImage(Guid slideId, Guid imageId)
+        public SlidesImage() : base() { }
+        public SlidesImage(Guid slideId, Guid imageId) : base()
         {
             SlideId = slideId;
             ImageId = imageId;

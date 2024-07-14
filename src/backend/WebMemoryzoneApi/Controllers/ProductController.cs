@@ -8,6 +8,7 @@ using Application.Features.Products.Commands.UpdateProduct;
 using Application.Features.Products.Commands.UpdateProductVariants;
 using Application.Features.Products.Queries.Get;
 using Application.Features.Products.Queries.GetById;
+using Application.Features.Products.Queries.GetByUrlSlug;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -68,10 +69,13 @@ namespace WebMemoryzoneApi.Controllers
             if (result.IsSuccess is false) return NotFound(result);
             return Ok(result);
         }
+        [AllowAnonymous]
         [HttpGet("{slug}")]
         public async Task<ActionResult> GetCategoryByUrlSlug(string slug)
         {
-            return Ok();
+            var result = await _mediator.Send(new GetProductByUrlSlugQuery(slug));
+            if (result.IsSuccess is false) return NotFound(result);
+            return Ok(result);
         }
         [HttpDelete("{productId:Guid}/{variantId:Guid}")]
         public async Task<IActionResult> DeleteVariant(Guid productId, Guid variantId)

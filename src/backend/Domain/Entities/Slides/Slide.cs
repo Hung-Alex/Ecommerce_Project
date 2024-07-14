@@ -18,12 +18,12 @@ namespace Domain.Entities.Slides
         public string Description { get; set; }
         public int Order { get; set; }
         public bool? Status { get; set; }
-        public virtual ICollection<SlidesImage> SlidesImages { get; set; }
+        public virtual ICollection<SlidesImage> SlidesImages { get; set; } = new List<SlidesImage>();
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
-        public Guid ? CreatedByUserId { get; set; }
+        public Guid? CreatedByUserId { get; set; }
         public virtual User CreatedByUser { get; set; }
-        public Guid ? UpdatedByUserId { get; set; }
+        public Guid? UpdatedByUserId { get; set; }
         public virtual User UpdatedByUser { get; set; }
     }
 }

@@ -6,7 +6,7 @@ namespace Domain.Constants
 {
     public static class ErrorConstants
     {
-
+        public static Error ProductNotFoundWithSlug(string slug) => new Error("Product Not Found", $"Not found product with Url slug  {slug}");
         public static Error UrlSlugIsExisted(string url) => new Error("Url Slug Is Existed", $"Url slug is existed {url}");
         public static Error NotFound(string url) => new Error("NotFound", $"Url slug is existed {url}");
         public static Error NotFoundWithId(Guid id) => new Error("NotFound", $"Not Found With Id {id}");
