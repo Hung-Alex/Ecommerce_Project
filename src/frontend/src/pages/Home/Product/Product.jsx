@@ -3,12 +3,31 @@ import img from "../../../assets/Home/Product/pdc1.png";
 import { BsArrowRightShort } from "react-icons/bs";
 import useFetch from "../../../hooks/useFetch";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { ProductContext } from "../../../context/ProductContext";
 
 const Product = () => {
   useFetch("/products");
   const { products, loading } = useContext(ProductContext);
+  // const [catObj, setCategories] = useState([]);
+  // const [loading, setLoading] = useState(false);
+  // const [error, setError] = useState(false);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       setLoading(true);
+  //       const res = await axios.get(`/categories?PageSize=8`);
+  //       setCategories(res.data.data);
+  //       setLoading(false);
+  //     } catch (error) {
+  //       setLoading(false);
+  //       setError(true);
+  //     }
+  //   })();
+  // }, []);
+  // if (loading) return <p>Loading...</p>;
+  // if (error) return <p>Error loading categories</p>;
 
   if (loading) {
     return <h1 className="text-black">Loading...</h1>;

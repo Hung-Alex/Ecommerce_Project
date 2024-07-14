@@ -13,9 +13,8 @@ function SignUp() {
 
   const from = location.state?.from?.pathname || "/";
   const onSubmit = async (data) => {
-    // console.log(data)
     try {
-      const response = await axios.post("/signup", data);
+      const response = await axios.post("/authentications/register", data);
       if (response.data) {
         const notify = () => toast.success("Signup successfully");
         notify();
@@ -51,10 +50,10 @@ function SignUp() {
             </label>
             <br />
             <input
-              {...register("name", { required: true })}
+              {...register("userName", { required: true })}
               className="focus:ring-1 focus:outline-none focus:ring-[#274C5B] w-full h-12 rounded-lg pl-3 text-black border mt-2"
               type="text"
-              placeholder="Your full name"
+              placeholder="Your userName"
             />
           </div>
           <div className="my-2">
@@ -79,6 +78,18 @@ function SignUp() {
               className="focus:ring-1 focus:outline-none focus:ring-[#274C5B] w-full h-12 rounded-lg pl-3 text-black border mt-2"
               type="password"
               placeholder="Password"
+            />
+          </div>
+          <div className="my-2">
+            <label className="text-left" htmlFor="password">
+            confirmPassword
+            </label>
+            <br />
+            <input
+              {...register("confirmPassword", { required: true })}
+              className="focus:ring-1 focus:outline-none focus:ring-[#274C5B] w-full h-12 rounded-lg pl-3 text-black border mt-2"
+              type="confirmPassword"
+              placeholder="confirmPassword"
             />
           </div>
           <div className="flex justify-center mt-8">

@@ -1,9 +1,29 @@
-import React, { useState } from "react";
 import { BsChevronDown } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import React , { useState, useEffect } from "react";
+import axios from "../../../../utils/axios";
 
 const DropDown = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get(`/categories?PageSize=8`);
+        setCategories(res.data.data);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        setError(true);
+      }
+    })();
+  }, []);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error loading categories</p>;
 
   const handleMouseEnter = () => {
     setDropdownOpen(true);
@@ -13,15 +33,15 @@ const DropDown = () => {
     setDropdownOpen(false);
   };
 
-  const categories = [
-    { name: "Honey", slug: "honey" },
-    { name: "Ghee", slug: "ghee" },
-    { name: "Oil", slug: "oil" },
-    { name: "Fruits", slug: "fruit" },
-    { name: "Nuts & Seeds", slug: "nuts" },
-    { name: "Tea & Snacks", slug: "tea" },
-    { name: "Spices", slug: "spices" },
-  ];
+  // const categories = [
+  //   { name: "Honey", slug: "honey" },
+  //   { name: "Ghee", slug: "ghee" },
+  //   { name: "Oil", slug: "oil" },
+  //   { name: "Fruits", slug: "fruit" },
+  //   { name: "Nuts & Seeds", slug: "nuts" },
+  //   { name: "Tea & Snacks", slug: "tea" },
+  //   { name: "Spices", slug: "spices" },
+  // ];
 
   return (
     <div

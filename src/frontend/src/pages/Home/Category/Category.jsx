@@ -72,6 +72,7 @@ const Category = () => {
   }, []);
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading categories</p>;
+
   return (
     <div className="mt-12">
       <div className="text-center">
