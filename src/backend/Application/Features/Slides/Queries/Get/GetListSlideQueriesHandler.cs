@@ -27,7 +27,6 @@ namespace Application.Features.Slides.Queries.Get
                 Id = x.Id,
                 Title = x.Title,
                 Description = x.Description,
-                Status = x.Status,
                 Images = x.SlidesImages
                     .Select(x => new SlideImageDTO()
                     {

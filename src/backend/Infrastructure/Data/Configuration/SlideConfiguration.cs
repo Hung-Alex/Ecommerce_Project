@@ -9,6 +9,10 @@ namespace Infrastructure.Data.Configuration
         public void Configure(EntityTypeBuilder<Slide> builder)
         {
             builder.HasKey(x => x.Id);
+            builder.HasMany(x => x.SlidesImages)
+                .WithOne(x => x.Slide)
+                .HasForeignKey(x => x.SlideId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

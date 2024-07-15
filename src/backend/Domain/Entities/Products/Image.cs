@@ -1,5 +1,6 @@
 ﻿using Domain.Common;
 using Domain.Entities.Products;
+using Domain.Entities.Slides;
 using Domain.Shared;
 
 
@@ -15,5 +16,7 @@ namespace Domain.Entities.Images
         public DateTimeOffset UpdatedAt { get; set; }
         public Product Product { get; set; }
         public Guid ProductId { get; set; }
+        public Slide Slide { get; set; }
+        public Guid SlideId { get; set; }
     }
 }

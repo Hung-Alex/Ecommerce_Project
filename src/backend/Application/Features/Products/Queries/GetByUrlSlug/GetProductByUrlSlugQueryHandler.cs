@@ -30,7 +30,7 @@ namespace Application.Features.Products.Queries.GetByUrlSlug
                 BrandId = product.BrandId,
                 BrandUrlSlug = product.Brand.UrlSlug,
                 Price = product.Price,
-                Variants = product.ProductSkus.Select(x => new VariantsDTO() { Id = x.Id, VariantName = x.Name, Description = x.Description, Price = x.Price, Quantity = x.Quantity }),
+                Variants = product.ProductSkus.Select(x => new VariantsDTO() { Id = x.Id, VariantName = x.Name, Description = x.Description, Price = x.Price }),
                 Discount = product.Discount,
                 Rate = product.Rattings.Count() > 0 ? product.Rattings.Average(x => x.Rate) : 0,
                 TotalRate = product.Rattings.Count()

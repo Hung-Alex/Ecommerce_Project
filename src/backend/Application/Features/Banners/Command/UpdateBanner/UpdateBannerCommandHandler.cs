@@ -9,8 +9,6 @@ using Domain.Entities.Banners;
 using Application.DTOs.Responses.Banners;
 using Application.Features.Banners.Commands.CreateBanner;
 using Application.Common.Exceptions;
-using Application.Features.Banners.Specification;
-
 namespace Application.Features.Banners.Commands.UpdateBanner
 {
     public sealed class UpdateBannerCommandHandler : IRequestHandler<UpdateBannerCommand, Result<BannerDTO>>
@@ -37,15 +35,6 @@ namespace Application.Features.Banners.Commands.UpdateBanner
             var repoBanner = _unitOfWork.GetRepository<Banner>();
             var banner = await repoBanner.GetByIdAsync(request.Id);
             if (banner == null) return Result<BannerDTO>.ResultFailures(ErrorConstants.NotFoundWithId(request.Id));
-            if (request.Location is not null)
-            {
-                var isExistedLocationBanner = await repoBanner.FindOneAsync(new CheckLocationBannerAlreadyExistedSpecification(request.Location, banner.Id));
-                if (isExistedLocationBanner is not null)
-                {
-                    return Result<BannerDTO>.ResultFailures(ErrorConstants.LocationBannerAlreadyExisted(request.Location));
-                }
-                banner.Location = request.Location;
-            }
             Result<ImageUpload> uploadResult = null;
             if (request.FormFile is not null)
             {

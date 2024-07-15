@@ -84,7 +84,7 @@ namespace Application.Features.Products.Commands.CreateProduct
                 BrandId = request.BrandId
             };
             repoProduct.Add(newProduct);
-           
+
             #region hanle Images
             var image = new Image();
             #endregion
@@ -92,7 +92,7 @@ namespace Application.Features.Products.Commands.CreateProduct
             {
                 newProduct.ProductSkus = request
                .Variant
-               .Select(x => new ProductSkus() { Name = x.VariantName, Description = x.Description, Quantity = x.Quantity })
+               .Select(x => new ProductSkus() { Name = x.VariantName, Description = x.Description })
                .ToList();
             }
             await _unitOfWork.Commit();

@@ -29,7 +29,7 @@ namespace Application.Features.Slides.Commands.CreateSlide
         {
             var repoSlide = _unitOfWork.GetRepository<Slide>();
             var repoImage = _unitOfWork.GetRepository<Image>();
-            var slide = new Slide(request.Title, request.Description, request.Status, request.Order);
+            var slide = new Slide(request.Title, request.Description,request.IsActive, request.Order);
             #region hanle Images
             var image = new Image();
             if (request.Images is not null)

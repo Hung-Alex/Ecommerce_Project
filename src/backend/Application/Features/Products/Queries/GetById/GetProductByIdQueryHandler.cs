@@ -35,7 +35,7 @@ namespace Application.Features.Products.Queries.GetById
                 Discount = product.Discount,
                 Price = product.Price,
                 UrlSlug = product.UrlSlug,
-                Variants = product.ProductSkus.Select(x => new VariantsDTO { Id = x.Id, VariantName = x.Name, Description = x.Description, Quantity = x.Quantity, Price = x.Price }),
+                Variants = product.ProductSkus.Select(x => new VariantsDTO { Id = x.Id, VariantName = x.Name, Description = x.Description, Price = x.Price }),
             };
             return Result<ProductDetailsDTO>.ResultSuccess(productDTO);
         }

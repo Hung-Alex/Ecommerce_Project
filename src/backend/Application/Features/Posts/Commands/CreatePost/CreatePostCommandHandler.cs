@@ -43,8 +43,6 @@ namespace Application.Features.Posts.Commands.CreatePost
                 ShortDescription = request.ShortDescription,
                 Description = request.Description,
                 UrlSlug = request.UrlSlug,
-                Meta = request.Meta,
-                Pulished = request.Pulished,
                 ImageUrl = image.Data.Url
             });
             await _unitOfWork.Commit();
