@@ -29,12 +29,12 @@ namespace Application.Features.Slides.Commands.CreateSlide
         {
             var repoSlide = _unitOfWork.GetRepository<Slide>();
             var repoImage = _unitOfWork.GetRepository<Image>();
-            var slide = new Slide(request.Title, request.Description,request.IsActive, request.Order);
+            var slide = new Slide(request.Title, request.Description, request.IsActive);
             #region hanle Images
             var image = new Image();
             if (request.Images is not null)
             {
-                int Count = 0;
+                int Count = 1;
                 foreach (var item in request.Images)
                 {
                     var uploadResult = await _media.UploadLoadImageAsync(item, UploadFolderConstants.FolderProduct);
@@ -47,6 +47,10 @@ namespace Application.Features.Slides.Commands.CreateSlide
                             ImageUrl = uploadResult.Data.Url
                         ,
                             PublicId = uploadResult.Data.PublicId
+                        ,
+                            SlideId = slide.Id
+                        ,
+                            OrderItem = Count++
                         };
                         repoImage.Add(image);
                     }

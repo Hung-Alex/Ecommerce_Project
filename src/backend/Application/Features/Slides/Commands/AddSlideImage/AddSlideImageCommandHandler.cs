@@ -40,6 +40,10 @@ namespace Application.Features.Slides.Commands.AddProductSlide
                 PublicId = uploadImage.Data.PublicId
                 ,
                 ImageExtension = request.File.ContentType
+                ,
+                SlideId = slide.Id
+                ,
+                OrderItem = 3
             };
             repoImage.Add(image);
             await _unitOfWork.Commit();

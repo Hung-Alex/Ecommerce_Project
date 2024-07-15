@@ -13,6 +13,6 @@ namespace Application.DTOs.Responses.Product
         public string UrlSlug { get; init; }
         public IEnumerable<ProductImageDTO> Images { get; init; }
         public IEnumerable<VariantsDTO> Variants { get; init; }
-        public IEnumerable<Guid> CollectionId { get; init; }
+        public Guid CategoryId { get; init; }
     }
 }

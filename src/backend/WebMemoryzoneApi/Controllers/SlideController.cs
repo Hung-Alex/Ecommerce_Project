@@ -2,7 +2,6 @@
 using Application.Features.Slides.Commands.AddProductSlide;
 using Application.Features.Slides.Commands.CreateSlide;
 using Application.Features.Slides.Commands.DeleteSlide;
-using Application.Features.Slides.Commands.DeleteSlideImage;
 using Application.Features.Slides.Commands.UpdateSlide;
 using Application.Features.Slides.Queries.Get;
 using Application.Features.Slides.Queries.GetById;
@@ -66,13 +65,6 @@ namespace WebMemoryzoneApi.Controllers
         {
 
             var result = await _mediator.Send(command);
-            if (!result.IsSuccess) return BadRequest(result);
-            return Ok();
-        }
-        [HttpDelete("{slideId:Guid}/{imageId:Guid}")]
-        public async Task<IActionResult> DeleteSlideImage(Guid slideId, Guid imageId)
-        {
-            var result = await _mediator.Send(new DeleteSlideImageCommand(slideId, imageId));
             if (!result.IsSuccess) return BadRequest(result);
             return Ok();
         }

@@ -6,7 +6,6 @@ using Domain.Constants;
 using Application.DTOs.Responses.Slides;
 using Domain.Entities.Slides;
 using Application.Features.Slides.Specification;
-using Application.DTOs.Responses.Slides.SlideImages;
 
 namespace Application.Features.Slides.Queries.GetById
 {
@@ -31,11 +30,7 @@ namespace Application.Features.Slides.Queries.GetById
                 Id = slide.Id,
                 Title = slide.Title,
                 Description = slide.Description,
-                Images = slide.SlidesImages
-                    .Select(x => new SlideImageDTO()
-                    {
-                        Id = x.Id                  
-                    })
+                Images = slide.SlidesImages.Select(x => x.ImageUrl)
             };
             return Result<SlideDTO>.ResultSuccess(productDTO);
         }
