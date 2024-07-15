@@ -42,8 +42,6 @@ namespace Application.Features.Slides.Commands.AddProductSlide
                 ImageExtension = request.File.ContentType
             };
             repoImage.Add(image);
-            var slideImage = new SlidesImage(slide.Id, image.Id) { OrderItem=slide.SlidesImages.Count()};
-            slide.SlidesImages.Add(slideImage);
             await _unitOfWork.Commit();
             return Result<bool>.ResultSuccess(true);
         }

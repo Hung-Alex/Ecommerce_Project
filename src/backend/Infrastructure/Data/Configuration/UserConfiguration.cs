@@ -85,22 +85,6 @@ namespace Infrastructure.Data.Configuration
                .WithOne(x => x.UpdatedByUser)
                .HasForeignKey(x => x.UpdatedByUserId)
                .OnDelete(DeleteBehavior.Restrict);
-            builder.HasMany(x => x.CreatedByTag)
-                .WithOne(x => x.CreatedByUser)
-                .HasForeignKey(x => x.CreatedByUserId)
-                .OnDelete(DeleteBehavior.Restrict);
-            builder.HasMany(x => x.UpdatedByTag)
-               .WithOne(x => x.UpdatedByUser)
-               .HasForeignKey(x => x.UpdatedByUserId)
-               .OnDelete(DeleteBehavior.Restrict);
-            builder.HasMany(x => x.CreatedByCoupon)
-                .WithOne(x => x.CreatedByUser)
-                .HasForeignKey(x => x.CreatedByUserId)
-                .OnDelete(DeleteBehavior.Restrict);
-            builder.HasMany(x => x.UpdatedByCoupon)
-               .WithOne(x => x.UpdatedByUser)
-               .HasForeignKey(x => x.UpdatedByUserId)
-               .OnDelete(DeleteBehavior.Restrict);
             builder.HasMany(x => x.CreatedByProduct)
                .WithOne(x => x.CreatedByUser)
                .HasForeignKey(x => x.CreatedByUserId)

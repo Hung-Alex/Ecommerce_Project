@@ -29,7 +29,6 @@ namespace Domain.Entities.Posts
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
-        public virtual ICollection<PostTags> PostTags { get; set; }
         public Guid ? CreatedByUserId { get; set; }
         public virtual User CreatedByUser { get; set; }
         public Guid ? UpdatedByUserId { get; set; }

@@ -42,13 +42,7 @@ namespace Application.Features.Products.Commands.AddProductImage
                 ImageExtension = request.File.ContentType
             };
             repoImage.Add(image);
-            var productImage = new ProductImages()
-            {
-                ImageId = image.Id
-            ,
-                ProductId = product.Id
-            };
-            product.Images.Add(productImage);
+          
             await _unitOfWork.Commit();
             return Result<bool>.ResultSuccess(true);
         }

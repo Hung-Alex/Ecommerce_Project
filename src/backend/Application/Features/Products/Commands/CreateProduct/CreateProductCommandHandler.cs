@@ -79,52 +79,14 @@ namespace Application.Features.Products.Commands.CreateProduct
             ,
                 Price = request.Price
             ,
-                UnitPrice = request.UnitPrice
-            ,
                 Discount = request.Discount
             ,
                 BrandId = request.BrandId
             };
             repoProduct.Add(newProduct);
-            #region handle Collection
-            foreach (var item in request.Collections)
-            {
-                newProduct.ProductSubCategories.Add(new ProductSubCategory() { CategoryId = item.ParrentId });
-                if (item.SubCategoryId.HasValue)
-                {
-                    newProduct.ProductSubCategories.Add(new ProductSubCategory() { CategoryId = (Guid)item.SubCategoryId });
-
-                }
-            }
-            #endregion
+           
             #region hanle Images
             var image = new Image();
-
-            if (request.Images is not null)
-            {
-                int Count = 0;
-                foreach (var item in request.Images)
-                {
-                    var uploadResult = await _media.UploadLoadImageAsync(item, UploadFolderConstants.FolderProduct);
-                    if (uploadResult.IsSuccess)
-                    {
-                        image = new Image()
-                        {
-                            ImageExtension = item.ContentType
-                        ,
-                            ImageUrl = uploadResult.Data.Url
-                        ,
-                            PublicId = uploadResult.Data.PublicId
-                        };
-                        repoImage.Add(image);
-                        newProduct.Images.Add(new ProductImages() { ImageId = image.Id, ProductId = newProduct.Id, OrderItem = Count++ });
-                    }
-                    else
-                    {
-                        return Result<bool>.ResultFailures(ErrorConstants.UploadImageOccursErrorWithFileName(item.FileName));
-                    }
-                }
-            }
             #endregion
             if (request.Variant is not null)
             {

@@ -49,7 +49,6 @@ namespace Application.Features.Slides.Commands.CreateSlide
                             PublicId = uploadResult.Data.PublicId
                         };
                         repoImage.Add(image);
-                        slide.SlidesImages.Add(new SlidesImage() { ImageId = image.Id, SlideId = slide.Id, OrderItem = Count++ });
                     }
                     else
                     {

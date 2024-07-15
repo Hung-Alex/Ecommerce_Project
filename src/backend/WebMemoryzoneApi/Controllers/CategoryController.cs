@@ -1,5 +1,4 @@
 ﻿using Application.DTOs.Filters.Categories;
-using Application.Features.Category.Commands.AddCategoryForProduct;
 using Application.Features.Category.Commands.CreateCategory;
 using Application.Features.Category.Commands.DeleteCategory;
 using Application.Features.Category.Commands.UpdateCategory;
@@ -64,13 +63,6 @@ namespace WebMemoryzoneApi.Controllers
         [HttpPost]
         [FileValidatorFilter<CreateCategoryCommand>([".png", ".jpg"], 1024 * 1024)]
         public async Task<IActionResult> AddCategory([FromForm] CreateCategoryCommand command)
-        {
-            var result = await _mediator.Send(command);
-            if (!result.IsSuccess) return BadRequest(result);
-            return Ok();
-        }
-        [HttpPost("addcategoryforproduct")]
-        public async Task<IActionResult> AddCategoryForProduct([FromBody] AddCategotyForProductCommand command)
         {
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result);

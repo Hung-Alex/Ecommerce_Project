@@ -25,11 +25,9 @@ namespace Application.Features.Products.Queries.Get
             {
                 Id = x.Id,
                 Name = x.Name,
-                UnitPrice = x.UnitPrice,
                 Discount = x.Discount,
                 UrlSlug = x.UrlSlug,
                 Price = x.Price,
-                Images = x.Images.Select(x => x.Image.ImageUrl)
             })
                 , request.ProductFilter.PageNumber
                 , request.ProductFilter.PageSize

@@ -31,16 +31,11 @@ namespace Application.Features.Slides.Queries.GetById
                 Id = slide.Id,
                 Title = slide.Title,
                 Description = slide.Description,
-                Order = slide.Order,
                 Status = slide.Status,
                 Images = slide.SlidesImages
                     .Select(x => new SlideImageDTO()
                     {
-                        Id = x.Id
-                    ,
-                        Order = x.OrderItem
-                    ,
-                        Image = x.Image.ImageUrl
+                        Id = x.Id                  
                     })
             };
             return Result<SlideDTO>.ResultSuccess(productDTO);

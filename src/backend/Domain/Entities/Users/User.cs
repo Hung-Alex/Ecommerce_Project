@@ -3,13 +3,11 @@ using Domain.Entities.Banners;
 using Domain.Entities.Carts;
 using Domain.Entities.Category;
 using Domain.Entities.Comments;
-using Domain.Entities.Coupons;
 using Domain.Entities.Orders;
 using Domain.Entities.Posts;
 using Domain.Entities.Products;
 using Domain.Entities.Rattings;
 using Domain.Entities.Slides;
-using Domain.Entities.Tags;
 using Domain.Entities.WishLists;
 using Domain.Shared;
 namespace Domain.Entities.Users
@@ -41,10 +39,6 @@ namespace Domain.Entities.Users
         public virtual ICollection<Ratting> CreatedByRatting { get; set; }
         public virtual ICollection<Slide> UpdatedBySlide { get; set; }
         public virtual ICollection<Slide> CreatedBySlide { get; set; }
-        public virtual ICollection<Tag> UpdatedByTag { get; set; }
-        public virtual ICollection<Tag> CreatedByTag { get; set; }
-        public virtual ICollection<Coupon> UpdatedByCoupon { get; set; }
-        public virtual ICollection<Coupon> CreatedByCoupon { get; set; }
         public virtual ICollection<Product> UpdatedByProduct { get; set; }
         public virtual ICollection<Product> CreatedByProduct { get; set; }
         public DateTimeOffset CreatedAt { get; set; }

@@ -32,14 +32,10 @@ namespace Application.Features.Products.Queries.GetById
                 Id = product.Id,
                 Name = product.Name,
                 Description = product.Description,
-                UnitPrice = product.UnitPrice,
                 Discount = product.Discount,
                 Price = product.Price,
                 UrlSlug = product.UrlSlug,
                 Variants = product.ProductSkus.Select(x => new VariantsDTO { Id = x.Id, VariantName = x.Name, Description = x.Description, Quantity = x.Quantity, Price = x.Price }),
-                Images = product.Images.Select(x => new ProductImageDTO() { Id = x.Id, Image = x.Image.ImageUrl }),
-                CollectionId = product.ProductSubCategories.Select(x => x.Id).ToList()
-
             };
             return Result<ProductDetailsDTO>.ResultSuccess(productDTO);
         }

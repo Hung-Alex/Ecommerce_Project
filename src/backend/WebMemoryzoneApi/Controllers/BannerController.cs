@@ -14,7 +14,7 @@ namespace WebMemoryzoneApi.Controllers
 
     [Authorize]
     [ApiController]
-    [Route("apis/banners")]
+    [Route("api/banners")]
     public class BannerController : ControllerBase
     {
         private readonly IMediator _mediator;

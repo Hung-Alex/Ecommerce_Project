@@ -36,7 +36,6 @@ namespace Application.Features.Products.Commands.UpdateProduct
             product.UrlSlug = request.UrlSlug;
             product.Name = request.Name;
             product.Description = request.Description;
-            product.UnitPrice = request.UnitPrice;
             product.Price = request.Price;
             product.BrandId = request.BrandId;
             product.Discount = request.Discount;

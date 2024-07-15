@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using Domain.Entities.Images;
 using Domain.Entities.Users;
 using Domain.Shared;
 
@@ -11,14 +12,12 @@ namespace Domain.Entities.Slides
             Title = title ?? throw new ArgumentNullException(); ;
             Description = description ?? throw new ArgumentNullException();
             Status = status ?? throw new ArgumentNullException();
-            Order = order;
         }
         private Slide() : base() { }
         public string Title { get; set; }
         public string Description { get; set; }
-        public int Order { get; set; }
-        public bool? Status { get; set; }
-        public virtual ICollection<SlidesImage> SlidesImages { get; set; } = new List<SlidesImage>();
+        public bool Status { get; set; }
+        public virtual ICollection<Image> SlidesImages { get; set; } = new List<Image>();
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
         public Guid? CreatedByUserId { get; set; }

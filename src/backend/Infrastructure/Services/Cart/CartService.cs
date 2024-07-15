@@ -34,11 +34,11 @@ namespace Infrastructure.Services.Cart
                                          VariantName = variant != null ? variant.Name : null,
                                          Price = variant != null ? variant.Price : product.Price,
                                          Quantity = cartItem.Quantity,
-                                         Image = _context.ProductImages
-                                                 .Include(x => x.Image)
-                                                 .Where(x => product.Id == x.ProductId)
-                                                 .Select(x => x.Image.ImageUrl)
-                                                 .FirstOrDefault()
+                                         //Image = _context.ProductImages
+                                         //        .Include(x => x.Image)
+                                         //        .Where(x => product.Id == x.ProductId)
+                                         //        .Select(x => x.Image.ImageUrl)
+                                         //        .FirstOrDefault()
                                      }).ToList()
                         };
 

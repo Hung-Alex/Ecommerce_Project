@@ -2,8 +2,10 @@
 using Application.Features.Authen.Commands.Login;
 using Application.Features.Authen.Commands.Refresh;
 using Application.Features.Authen.Commands.Register;
+using Application.Features.Authen.Queries.GetGoogleLoginUrl;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace WebMemoryzoneApi.Controllers
 {
@@ -17,6 +19,22 @@ namespace WebMemoryzoneApi.Controllers
         {
             _sectionService = sectionService;
             _mediator = mediator;
+        }
+        [HttpGet("sign-in-google")]
+        public async Task<IActionResult> SignInWithGoole(string code,string state)
+        {
+            return Ok(code);
+        }
+        [HttpGet("get-login-google-url")]
+        public async Task<IActionResult> GetLoginGoogleUrl()
+        {
+            var result = await _mediator.Send(new GetGoogleLoginUrlQuery());
+            if (result.IsSuccess is false)
+            {
+                return NotFound(result);
+            }
+            return Ok(result);
+
         }
         [HttpPost("register")]
         public async Task<ActionResult> Register([FromBody] RegisterCommand command)

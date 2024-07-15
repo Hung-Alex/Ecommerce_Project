@@ -27,16 +27,11 @@ namespace Application.Features.Slides.Queries.Get
                 Id = x.Id,
                 Title = x.Title,
                 Description = x.Description,
-                Order = x.Order,
                 Status = x.Status,
                 Images = x.SlidesImages
                     .Select(x => new SlideImageDTO()
                     {
                         Id = x.Id
-                    ,
-                        Order = x.OrderItem
-                    ,
-                        Image = x.Image.ImageUrl
                     })
             })
                 , request.SlideFilter.PageNumber
