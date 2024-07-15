@@ -7,7 +7,6 @@ namespace Application.DTOs.Responses.Product
     {
         public string Name { get; init; }
         public string Description { get; init; }
-        public string UnitPrice { get; init; }
         public int? Discount { get; init; }
         public Guid BrandId { get; init; }
         public Decimal Price { get; init; }

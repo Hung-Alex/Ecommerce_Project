@@ -6,7 +6,6 @@ using Application.DTOs.Responses.Product;
 using Domain.Constants;
 using Application.Features.Products.Specification;
 using Domain.Entities.Products;
-using Application.DTOs.Responses.Product.ProductImage;
 using Application.DTOs.Responses.Product.Variants;
 
 namespace Application.Features.Products.Queries.GetById
@@ -35,7 +34,7 @@ namespace Application.Features.Products.Queries.GetById
                 Discount = product.Discount,
                 Price = product.Price,
                 UrlSlug = product.UrlSlug,
-                Variants = product.ProductSkus.Select(x => new VariantsDTO { Id = x.Id, VariantName = x.Name, Description = x.Description, Price = x.Price }),
+                Variants = product.ProductSkus.Select(x => new VariantsDTO { Id = x.Id, VariantName = x.Name, Description = x.Description }),
             };
             return Result<ProductDetailsDTO>.ResultSuccess(productDTO);
         }

@@ -1,7 +1,7 @@
 ﻿using Application.Common.Interface;
 using Application.Features.Slides.Specification;
 using Domain.Constants;
-using Domain.Entities.Images;
+using Domain.Entities;
 using Domain.Entities.Slides;
 using Domain.Shared;
 using MediatR;

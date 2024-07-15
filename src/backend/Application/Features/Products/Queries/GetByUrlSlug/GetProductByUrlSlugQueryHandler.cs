@@ -25,12 +25,13 @@ namespace Application.Features.Products.Queries.GetByUrlSlug
             {
                 Id = product.Id,
                 Name = product.Name,
+                Images = product.Images.Select(x => x.ImageUrl).ToList(),
                 UrlSlug = product.UrlSlug,
                 Description = product.Description,
                 BrandId = product.BrandId,
-                BrandUrlSlug = product.Brand.UrlSlug,
+                CategoryId = product.CategoryId,
                 Price = product.Price,
-                Variants = product.ProductSkus.Select(x => new VariantsDTO() { Id = x.Id, VariantName = x.Name, Description = x.Description, Price = x.Price }),
+                Variants = product.ProductSkus.Select(x => new VariantsDTO() { Id = x.Id, VariantName = x.Name, Description = x.Description }),
                 Discount = product.Discount,
                 Rate = product.Rattings.Count() > 0 ? product.Rattings.Average(x => x.Rate) : 0,
                 TotalRate = product.Rattings.Count()

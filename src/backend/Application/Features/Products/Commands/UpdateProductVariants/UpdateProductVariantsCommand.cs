@@ -3,6 +3,6 @@ using MediatR;
 
 namespace Application.Features.Products.Commands.UpdateProductVariants
 {
-    public record UpdateProductVariantsCommand(Guid ProductId, Guid VariantsId, string Name, string Description, int Quantity) : IRequest<Result<bool>>;
+    public record UpdateProductVariantsCommand(Guid ProductId, Guid VariantsId, string Name, string Description) : IRequest<Result<bool>>;
 }
 

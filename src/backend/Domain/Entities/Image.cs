@@ -4,7 +4,7 @@ using Domain.Entities.Slides;
 using Domain.Shared;
 
 
-namespace Domain.Entities.Images
+namespace Domain.Entities
 {
     public class Image : BaseEntity, IDatedModification, IAggregateRoot
     {
@@ -14,9 +14,10 @@ namespace Domain.Entities.Images
         public string PublicId { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
-        public Product Product { get; set; }
-        public Guid ProductId { get; set; }
-        public Slide Slide { get; set; }
-        public Guid SlideId { get; set; }
+        public int OrderItem { get; set; }
+        public virtual Product Product { get; set; }
+        public Guid? ProductId { get; set; }
+        public virtual Slide Slide { get; set; }
+        public Guid? SlideId { get; set; }
     }
 }

@@ -5,7 +5,6 @@ using Domain.Shared;
 using Domain.Entities.WishLists;
 using Domain.Entities.Users;
 using Domain.Entities.Brands;
-using Domain.Entities.Images;
 using Domain.Entities.Category;
 namespace Domain.Entities.Products
 {

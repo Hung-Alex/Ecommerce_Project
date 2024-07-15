@@ -4,7 +4,6 @@ using Domain.Entities.Brands;
 using Domain.Entities.Carts;
 using Domain.Entities.Category;
 using Domain.Entities.Comments;
-using Domain.Entities.Images;
 using Domain.Entities.Orders;
 using Domain.Entities.Payments;
 using Domain.Entities.Posts;

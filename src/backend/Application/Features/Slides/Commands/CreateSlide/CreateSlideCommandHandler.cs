@@ -1,6 +1,6 @@
 ﻿using Application.Common.Interface;
 using Domain.Constants;
-using Domain.Entities.Images;
+using Domain.Entities;
 using Domain.Entities.Products;
 using Domain.Entities.Slides;
 using Domain.Shared;

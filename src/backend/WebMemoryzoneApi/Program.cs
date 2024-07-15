@@ -3,16 +3,12 @@ using Infrastructure;
 using Infrastructure.Data.Seed;
 using Microsoft.OpenApi.Models;
 using WebMemoryzoneApi.Middleware;
-using WebMemoryzoneApi.ModelBinding;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var configuration = builder.Configuration;
-builder.Services.AddControllers(options =>
-{
-    options.ModelBinderProviders.Insert(0, new CreateProductCommandModelBinderProvider());
-});
+builder.Services.AddControllers();
 builder.Services.AddApplicationServices();
 // Add Swagger services
 builder.Services.AddInfrastructureServices(configuration);

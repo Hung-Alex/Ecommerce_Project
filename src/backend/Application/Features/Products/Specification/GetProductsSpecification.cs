@@ -21,7 +21,7 @@ namespace Application.Features.Products.Specification
 
         protected override void Handler()
         {
-            AddIncludeString("Images.Image");
+            AddInclude(x => x.Images);
             ApplyPaging(_filter.PageSize, _filter.PageNumber);
             if (PredicatedProperty.IsExitedProperty<Product>(_filter.SortColoumn))
             {
