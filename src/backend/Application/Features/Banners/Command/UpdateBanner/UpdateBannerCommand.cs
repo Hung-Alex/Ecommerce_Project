@@ -6,5 +6,5 @@ using Microsoft.AspNetCore.Http;
 
 namespace Application.Features.Banners.Commands.UpdateBanner
 {
-    public sealed record UpdateBannerCommand(Guid Id, string Title, string Description, IFormFile? FormFile) : IRequest<Result<BannerDTO>>, IValidatableRequest;
+    public sealed record UpdateBannerCommand(Guid Id, string Title, string Description, IFormFile? FormFile,bool Visiable) : IRequest<Result<BannerDTO>>, IValidatableRequest;
 }

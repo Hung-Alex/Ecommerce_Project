@@ -48,6 +48,7 @@ namespace Application.Features.Banners.Commands.UpdateBanner
             }
             banner.Title = request.Title;
             banner.Description = request.Description;
+            banner.IsVisible = request.Visiable;
             await _unitOfWork.Commit();
             var BannerDTO = _mapper.Map<BannerDTO>(banner);
             return Result<BannerDTO>.ResultSuccess(BannerDTO);

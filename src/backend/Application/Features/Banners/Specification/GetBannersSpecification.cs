@@ -16,7 +16,8 @@ namespace Application.Features.Banners.Specification
         }
         public override Expression<Func<Banner, bool>> Criteria
             => p
-            => (string.IsNullOrEmpty(_filter.Title) || p.Title.Contains(_filter.Title));
+            => (string.IsNullOrEmpty(_filter.Title) || p.Title.Contains(_filter.Title))
+            && (_filter.IsVisiable == null || p.IsVisible == _filter.IsVisiable);
 
         protected override void Handler()
         {

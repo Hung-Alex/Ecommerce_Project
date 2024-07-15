@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Banners\Queries\GetByUrlSlug\" />
     <Folder Include="Features\Brands\Queries\GetByUrlSlug\" />
     <Folder Include="Features\Slides\Queries\GetByUrlSlug\" />
   </ItemGroup>
