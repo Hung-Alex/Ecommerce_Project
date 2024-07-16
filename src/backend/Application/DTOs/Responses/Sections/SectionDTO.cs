@@ -1,5 +1,5 @@
 ﻿using Application.DTOs.Responses.Category;
-using Application.DTOs.Responses.Product;
+using Application.DTOs.Responses.Product.Client;
 
 namespace Application.DTOs.Responses.Sections
 {

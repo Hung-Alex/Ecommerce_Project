@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interface;
+using Application.Common.Interface.IdentityService;
 using Application.Features.Authen.Commands.Login;
 using Application.Features.Authen.Commands.Refresh;
 using Application.Features.Authen.Commands.Register;
@@ -13,16 +14,17 @@ namespace WebMemoryzoneApi.Controllers
     [Route("api/authentications")]
     public class AuthencationController : ControllerBase
     {
-        private readonly ISectionService _sectionService;
+        private readonly IGoogleAuthenService _googleAuthenService;
         private readonly IMediator _mediator;
-        public AuthencationController(IMediator mediator, ISectionService sectionService)
+        public AuthencationController(IMediator mediator, IGoogleAuthenService googleAuthenService)
         {
-            _sectionService = sectionService;
+            _googleAuthenService = googleAuthenService;
             _mediator = mediator;
         }
         [HttpGet("sign-in-google")]
         public async Task<IActionResult> SignInWithGoole(string code,string state)
         {
+            var result = await _googleAuthenService.SignInByGoogleAsync(code);
             return Ok(code);
         }
         [HttpGet("get-login-google-url")]

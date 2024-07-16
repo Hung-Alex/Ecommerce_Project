@@ -1,13 +1,15 @@
 ﻿using Application.Common.Interface;
-using Application.DTOs.Responses.Product;
+using Application.DTOs.Responses.Product.Client;
+using Application.Features.Search.Specification;
 using AutoMapper;
+using Domain.Entities.Products;
 using Domain.Shared;
 using FluentValidation;
 using MediatR;
 
 namespace Application.Features.Search.Queries
 {
-    public sealed class SearchQueyHandler : IRequestHandler<SearchQuery, Result<IEnumerable<ProductDTO>>>
+    public sealed class SearchQueyHandler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<SearchQuery, Result<IEnumerable<ProductDTO>>>
     {
 
         internal class SearchQueyValidator : AbstractValidator<SearchQuery>
@@ -17,19 +19,12 @@ namespace Application.Features.Search.Queries
                 // so oh ,today , I feel so bad :))))))))))))))
             }
         }
-        private readonly ISearchService _search;
-        private readonly IMapper _mapper;
-        public SearchQueyHandler(ISearchService search, IMapper mapper)
-        {
-            _search = search;
-            _mapper = mapper;
-        }
         public async Task<Result<IEnumerable<ProductDTO>>> Handle(SearchQuery request, CancellationToken cancellationToken)
         {
-            var products = await _search.SearchProductAsync(request.query, cancellationToken);
-            var productsDTO = _mapper.Map<IEnumerable<ProductDTO>>(products.Data);
-            return new PagingResult<IEnumerable<ProductDTO>>(productsDTO, products.PageNumber, products.PageSize, products.TotalItems);
-
+            var repo = unitOfWork.GetRepository<Product>();
+            var specification = new FilterProductSpecification();
+            var result = await repo.GetAllAsync(specification, cancellationToken);
+            return null;
         }
     }
 }

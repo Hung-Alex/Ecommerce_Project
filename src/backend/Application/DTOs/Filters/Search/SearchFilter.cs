@@ -8,5 +8,7 @@ namespace Application.DTOs.Filters.Search
         public string? ProductName { get; init; }
         public Guid? BrandId { get; init; }
         public Guid? CategoryId { get; init; }
+        public string? UrlSlugCategory { get; init;}
+        public string? UrlSlugBrand { get; init;}
     }
 }

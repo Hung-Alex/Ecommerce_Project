@@ -1,5 +1,5 @@
 ﻿using Application.Common.Interface;
-using Application.DTOs.Responses.Product;
+using Application.DTOs.Responses.Product.Client;
 using Application.Features.WishsList.Specification;
 using Domain.Entities.WishLists;
 using Domain.Shared;

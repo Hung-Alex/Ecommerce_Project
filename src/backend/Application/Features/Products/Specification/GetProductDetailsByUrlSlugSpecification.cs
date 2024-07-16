@@ -20,6 +20,7 @@ namespace Application.Features.Products.Specification
             AddInclude(p => p.ProductSkus);
             AddInclude(p => p.Brand);
             AddInclude(p => p.Images);
+            AddInclude(p => p.Category);
             base.Handler();
         }
     }
