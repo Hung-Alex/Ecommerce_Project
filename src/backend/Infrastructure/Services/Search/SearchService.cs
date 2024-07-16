@@ -3,7 +3,6 @@ using Application.DTOs.Filters.Search;
 using Application.DTOs.Internal.Product;
 using Domain.Shared;
 using Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Services.Search
 {

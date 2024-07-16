@@ -1,6 +1,5 @@
 ﻿using Application.Common.Interface;
 using Application.DTOs.Responses.Cart;
-using Domain.Entities.Carts;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,7 +31,7 @@ namespace Infrastructure.Services.Cart
                                          ProductSkusId = variant != null ? variant.Id : (Guid?)null,
                                          ProductName = product.Name,
                                          VariantName = variant != null ? variant.Name : null,
-                                         Price = variant != null ? variant.Price : product.Price,
+                                         Price = product.Price,
                                          Quantity = cartItem.Quantity,
                                          //Image = _context.ProductImages
                                          //        .Include(x => x.Image)
