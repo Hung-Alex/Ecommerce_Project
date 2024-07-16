@@ -1,26 +1,30 @@
-import { useState, createContext } from "react";
+import React, { createContext, useContext } from "react";
+import useFetch from "../hooks/useFetch";
 
+// Tạo ProductContext
 export const ProductContext = createContext({
   products: [],
-  setProduct: () => {},
   loading: false,
-  setLoading: () => {},
   error: false,
-  setError: () => {},
 });
 
+// Provider cho ProductContext
 const ProductProvider = ({ children }) => {
-  const [products, setProduct] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-
+  const { data: products, loading, error } = useFetch("/products");
   return (
     <ProductContext.Provider
-      value={{ products, loading, error, setProduct, setLoading, setError }}
+      value={{
+        products,
+        loading,
+        error,
+      }}
     >
       {children}
     </ProductContext.Provider>
   );
 };
+
+// Hook để sử dụng ProductContext dễ dàng hơn
+export const useProductContext = () => useContext(ProductContext);
 
 export default ProductProvider;

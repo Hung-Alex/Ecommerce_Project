@@ -1,77 +1,14 @@
 import CatCard from "../../../components/UI/Card/catCard";
-import React , { useState, useEffect } from "react";
-import axios from "../../../utils/axios.js";
+import React from "react";
+import { useCategoryContext } from "../../../context/CategoryContext.jsx"
 
-// const catObj = [
-//   {
-//     img: "https://organiconline.com.bd/wp-content/uploads/2021/09/Honeycm.png",
-//     name: "Honey",
-//   },
-//   {
-//     img: "https://organiconline.com.bd/wp-content/uploads/2021/09/Gheecm.png",
-//     name: "Ghee",
-//   },
-//   {
-//     img: "https://organiconline.com.bd/wp-content/uploads/2021/09/Oilcm.png",
-//     name: "Oil",
-//   },
-//   {
-//     img: "https://organiconline.com.bd/wp-content/uploads/2021/10/Gift-Items.png",
-//     name: "Gitf Items",
-//   },
-//   {
-//     img: "https://organiconline.com.bd/wp-content/uploads/2021/09/Superfoodcm.png",
-//     name: "Super Foods",
-//   },
-//   {
-//     img: "https://organiconline.com.bd/wp-content/uploads/2021/09/Herbalcm.png",
-//     name: "Herbal Powders",
-//   },
-//   {
-//     img: "https://organiconline.com.bd/wp-content/uploads/2021/09/Grocerycm.png",
-//     name: "Grocery Items",
-//   },
-//   {
-//     img: "https://organiconline.com.bd/wp-content/uploads/2021/09/Spicescm.png",
-//     name: "Spices Powders",
-//   },
-//   {
-//     img: "https://organiconline.com.bd/wp-content/uploads/2021/09/Seedscm.png",
-//     name: "Seeds",
-//   },
-//   {
-//     img: "https://organiconline.com.bd/wp-content/uploads/2021/09/otherscm.png",
-//     name: "Tea & Snacks",
-//   },
-//   {
-//     img: "https://organiconline.com.bd/wp-content/uploads/2021/09/Nutscm.png",
-//     name: "Nuts",
-//   },
-//   {
-//     img: "https://organiconline.com.bd/wp-content/uploads/2021/10/Fish.png",
-//     name: "Fish & Meat",
-//   },
-// ];
 const Category = () => {
-  const [catObj, setCategories] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const { categories, loading, error } = useCategoryContext();
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const res = await axios.get(`/categories?PageSize=8`);
-        setCategories(res.data.data);
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        setError(true);
-      }
-    })();
-  }, []);
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading categories</p>;
+
+  console.log(categories);
 
   return (
     <div className="mt-12">
@@ -82,7 +19,7 @@ const Category = () => {
         </h3>
       </div>
       <div className="grid grid-cols-4 lg:grid-cols-6 gap-6 mt-16">
-        {catObj.map((item, index) => (
+        {categories.map((item, index) => (
           <CatCard key={index} item={item} />
         ))}
       </div>

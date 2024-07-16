@@ -4,19 +4,22 @@ import "./index.css";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./routes/Routes.jsx";
 import ProductProvider from "./context/ProductContext";
+import CategoryProvider from "./context/CategoryContext.jsx";
 import { Toaster } from "react-hot-toast";
 import CartProvider from "./context/CartContext";
 import UserProvider from "./context/Usercontext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ProductProvider>
-      <CartProvider>
-        <UserProvider>
-          <RouterProvider router={router} />
-          <Toaster />
-        </UserProvider>
-      </CartProvider>
-    </ProductProvider>
+    <CategoryProvider>
+      <ProductProvider>
+        <CartProvider>
+          <UserProvider>
+            <RouterProvider router={router} />
+            <Toaster />
+          </UserProvider>
+        </CartProvider>
+      </ProductProvider>
+    </CategoryProvider>
   </React.StrictMode>
 );

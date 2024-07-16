@@ -13,7 +13,7 @@ const Product = () => {
     (async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`/sections?TakeCategories=6&TakeItems=4`);
+        const res = await axios.get(`/sections?TakeCategories=4&TakeItems=4`);
         setSections(res.data.data);
         setLoading(false);
       } catch (error) {
@@ -30,9 +30,9 @@ const Product = () => {
   }
 
   return (
-    <>
+    <div className="my-12 mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
       {section.map((categoryData, index) => (
-        <div key={index} className="my-12 mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+        <div key={index} className="my-5 mx-auto max-w-2xl px-4 sm:px-6 sm:py-12 lg:max-w-7xl lg:px-8">
           <div className="category-section">
             <div className="text-center">
               <p className="text-[#7EB693] font-[Yellowtail] text-3xl ">{categoryData.category.name}</p>
@@ -48,7 +48,7 @@ const Product = () => {
             </div>
             <div className="flex justify-center mt-8">
               <Link
-                to="#"
+                to={`/category/${categoryData.category.name.toLowerCase()}`}
                 className="bg-[#274c5b] text-white flex justify-center items-center w-[150px] mt-8 py-2 rounded-md"
               >
                 Explore Now{" "}
@@ -58,7 +58,7 @@ const Product = () => {
           </div>
         </div>
       ))}
-    </>
+    </div>
   );
 };
 

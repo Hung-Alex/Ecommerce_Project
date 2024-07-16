@@ -1,7 +1,7 @@
 import { Rating } from "@mui/material";
 import { Link } from "react-router-dom";
 
-const Card = ({ item, img }) => {
+const Card = ({ item }) => {
   return (
     <Link
       to={`/products/${item?.id}`}

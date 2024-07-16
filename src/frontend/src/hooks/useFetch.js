@@ -1,28 +1,29 @@
-import { useState, useEffect, useContext } from "react";
+// hooks/useFetchData.js
+import { useState, useEffect } from "react";
 import axios from "../utils/axios";
-import { ProductContext } from "../context/ProductContext";
 
-const useFetch = (urlPath) => {
-  const { setProduct, setLoading, setError } = useContext(ProductContext);
+const useFetch = (endpoint, queryParams = {}) => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    (async () => {
-      setLoading(true);
+    const fetchData = async () => {
       try {
-        const res = await axios.get(urlPath, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-        setProduct(res.data.data);
+        setLoading(true);
+        const res = await axios.get(endpoint, { params: queryParams });
+        setData(res.data.data);
         setLoading(false);
-      } catch (error) {
-        setProduct([]);
-        setError(error);
+      } catch (err) {
         setLoading(false);
+        setError(true);
       }
-    })();
-  }, [urlPath]);
+    };
+
+    fetchData();
+  }, [endpoint]);
+
+  return { data, loading, error };
 };
 
 export default useFetch;
