@@ -21,7 +21,7 @@ namespace Application.Features.Slides.Specification
 
         protected override void Handler()
         {
-            AddIncludeString("SlidesImages.Image");
+            AddInclude(x => x.SlidesImages);
             ApplyPaging(_filter.PageSize, _filter.PageNumber);
             if (PredicatedProperty.IsExitedProperty<Slide>(_filter.SortColoumn))
             {

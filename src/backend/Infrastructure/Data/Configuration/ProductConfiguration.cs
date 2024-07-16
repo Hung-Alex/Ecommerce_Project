@@ -9,24 +9,22 @@ namespace Infrastructure.Data.Configuration
         public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.HasMany(x => x.ProductSubCategories)
-                .WithOne(x => x.Product)
-                .HasForeignKey(x => x.ProductId);
             builder.HasMany(x => x.Images)
                 .WithOne(x => x.Product)
                 .HasForeignKey(x => x.ProductId);
             builder.HasMany(x => x.ProductSkus)
                .WithOne(x => x.Product)
                .HasForeignKey(x => x.ProductId);
-            builder.HasMany(x => x.ProductCoupons)
-                .WithOne(x => x.Product)
-                .HasForeignKey(x => x.ProductId);
             builder.HasMany(x => x.Rattings)
                 .WithOne(x => x.Product)
                 .HasForeignKey(x => x.ProductId);
             builder.HasMany(x => x.WishLists)
                 .WithOne(x => x.Product)
                 .HasForeignKey(x => x.ProductId);
+            builder.HasMany(x=>x.Images)
+                .WithOne(x => x.Product)
+                .HasForeignKey(x=>x.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

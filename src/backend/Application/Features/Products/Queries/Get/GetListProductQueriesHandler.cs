@@ -24,18 +24,18 @@ namespace Application.Features.Products.Queries.Get
             return new PagingResult<IEnumerable<ProductDTO>>(products.Select(x => new ProductDTO()
             {
                 Id = x.Id,
-                Name = x.Name,
                 Description = x.Description,
-                UnitPrice = x.UnitPrice,
+                Name = x.Name,
                 Discount = x.Discount,
-                BrandId = x.BrandId,
                 UrlSlug = x.UrlSlug,
                 Price = x.Price,
-                Images = x.Images.Select(x => x.Image.ImageUrl)
+                BrandId=x.BrandId,
+                CategoryId=x.CategoryId,
+                Image = x.Images.Select(x => x.ImageUrl).FirstOrDefault()
             })
                 , request.ProductFilter.PageNumber
                 , request.ProductFilter.PageSize
-                , totalItems);
+                , totalItems); ;
         }
     }
 }

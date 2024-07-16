@@ -1,5 +1,4 @@
-﻿using Application.DTOs.Responses.Brand;
-using Application.DTOs.Responses.Product;
+﻿using Application.DTOs.Responses.Product;
 using Domain.Shared;
 using MediatR;
 

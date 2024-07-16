@@ -1,5 +1,4 @@
 ﻿using static Domain.Enums.OrderEnum;
-using Domain.Entities.Coupons;
 using Domain.Entities.Users;
 using Domain.Common;
 using Domain.Shared;
@@ -21,8 +20,6 @@ namespace Domain.Entities.Orders
         public OrderStatus OrderStatus { get; set; }//enum 
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
-        public Guid? CouponId { get; set; }
-        public virtual Coupon Coupons { get; set; }
         public ICollection<OrderItems> OrderItems { get; set; }
         public Guid UserId { get; set; }
         public User User { get; set; }

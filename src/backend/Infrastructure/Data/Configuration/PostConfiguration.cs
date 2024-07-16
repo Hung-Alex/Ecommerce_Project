@@ -9,10 +9,6 @@ namespace Infrastructure.Data.Configuration
         public void Configure(EntityTypeBuilder<Post> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.HasMany(x => x.PostTags)
-                .WithOne(x => x.Post)
-                .HasForeignKey(x => x.PostId)
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -6,24 +6,22 @@ namespace Domain.Entities.Slides
 {
     public class Slide : BaseEntity, IDatedModification, IAggregateRoot, ICreatedAndUpdatedBy
     {
-        public Slide(string title, string description, bool? status, int order)
+        public Slide(string title, string description, bool isActive)
         {
             Title = title ?? throw new ArgumentNullException(); ;
             Description = description ?? throw new ArgumentNullException();
-            Status = status ?? throw new ArgumentNullException();
-            Order = order;
+            IsActive = isActive;
         }
         private Slide() : base() { }
         public string Title { get; set; }
         public string Description { get; set; }
-        public int Order { get; set; }
-        public bool? Status { get; set; }
-        public virtual ICollection<SlidesImage> SlidesImages { get; set; }
+        public bool IsActive { get; set; }
+        public virtual ICollection<Image> SlidesImages { get; set; } = new List<Image>();
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
-        public Guid ? CreatedByUserId { get; set; }
+        public Guid? CreatedByUserId { get; set; }
         public virtual User CreatedByUser { get; set; }
-        public Guid ? UpdatedByUserId { get; set; }
+        public Guid? UpdatedByUserId { get; set; }
         public virtual User UpdatedByUser { get; set; }
     }
 }
