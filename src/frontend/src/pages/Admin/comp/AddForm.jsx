@@ -17,7 +17,6 @@ const AddForm = () => {
       ...data,
       price: parseFloat(data.price),
     };
-    // console.log(productInfo);
     setLoading(true);
     try {
       const response = await axios.post("/add-product", productInfo, {

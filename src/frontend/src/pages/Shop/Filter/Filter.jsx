@@ -6,6 +6,7 @@ const Filter = () => {
   const { name } = useParams();
   const [sort, setSort] = useState("");
   useFetch(`/products?category=${name}&sort=${sort}`);
+  // useFetch(`/products?SortColoumn=price&SortBy=${sort}`);
 
   return (
     <div className="flex justify-between items-center flex-wrap my-8">

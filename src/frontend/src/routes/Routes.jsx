@@ -40,7 +40,7 @@ export const router = createBrowserRouter([
         element: <ShopPage />,
       },
       {
-        path: "/products/:id",
+        path: "/products/:slug",
         element: <Product />,
       },
       {
@@ -50,9 +50,9 @@ export const router = createBrowserRouter([
       {
         path: "/checkout",
         element: (
-          <PrivateRoute>
+          // <PrivateRoute>
             <Checkout />
-          </PrivateRoute>
+          // </PrivateRoute>
         ),
       },
       {

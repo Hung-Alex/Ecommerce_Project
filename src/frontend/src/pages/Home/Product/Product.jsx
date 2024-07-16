@@ -1,37 +1,16 @@
 import Card from "../../../components/UI/Card/Card";
 import { BsArrowRightShort } from "react-icons/bs";
 import { Link } from "react-router-dom";
-import { useContext, useState, useEffect } from "react";
-import axios from "../../../utils/axios";
+import useFetch from "../../../hooks/useFetch";
 
 const Product = () => {
-  const [section, setSections] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const res = await axios.get(`/sections?TakeCategories=4&TakeItems=4`);
-        setSections(res.data.data);
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        setError(true);
-      }
-    })();
-  }, []);
+  const { data, loading, error } = useFetch(`/sections?TakeCategories=4&TakeItems=4`);
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error loading categories</p>;
-
-  if (loading) {
-    return <h1 className="text-black">Loading...</h1>;
-  }
+  if (error) return <p>Error!</p>;
 
   return (
     <div className="my-12 mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-      {section.map((categoryData, index) => (
+      {data.map((categoryData, index) => (
         <div key={index} className="my-5 mx-auto max-w-2xl px-4 sm:px-6 sm:py-12 lg:max-w-7xl lg:px-8">
           <div className="category-section">
             <div className="text-center">

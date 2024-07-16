@@ -8,8 +8,6 @@ const Category = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading categories</p>;
 
-  console.log(categories);
-
   return (
     <div className="mt-12">
       <div className="text-center">

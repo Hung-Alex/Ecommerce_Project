@@ -11,7 +11,6 @@ export const CategoryContext = createContext({
 // Provider cho CategoryContext
 const CategoryProvider = ({ children }) => {
   const { data: categories, loading, error } = useFetch("/categories");
-  console.log(categories);
 
   return (
     <CategoryContext.Provider

@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 const Card = ({ item }) => {
   return (
     <Link
-      to={`/products/${item?.id}`}
+      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      to={`/products/${item?.urlSlug}`}
       className={`flex flex-col  gap-6 border hover:shadow-xl hover:scale-95 transition-all ease-in-out duration-200 w-full rounded-md relative bg-[#f9f8f8] justify-self-center`}
     >
       <p className="bg-[#274c5b] text-sm absolute top-0 left-0 text-white text-center rounded w-fit px-2 py-1 mt-4 ml-6">

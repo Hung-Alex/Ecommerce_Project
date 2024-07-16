@@ -1,27 +1,12 @@
 import { BsChevronDown } from "react-icons/bs";
 import { Link } from "react-router-dom";
-import React, { useState, useEffect } from "react";
-import axios from "../../../../utils/axios";
+import React, { useState} from "react";
+import { useCategoryContext } from "../../../../context/CategoryContext"
 
 const DropDown = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const { categories, loading, error } = useCategoryContext();
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const res = await axios.get(`/categories?PageSize=8`);
-        setCategories(res.data.data);
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        setError(true);
-      }
-    })();
-  }, []);
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading categories</p>;
 
@@ -39,7 +24,7 @@ const DropDown = () => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <Link to="/category">
+      <Link to="/category/category">
         <button
           className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-800 focus:outline-none"
         >
@@ -48,11 +33,11 @@ const DropDown = () => {
         </button>
       </Link>
       {isDropdownOpen && (
-        <div className="origin-top-right absolute right-0 mt-2 w-48 shadow-lg bg-white ring-1 ring-black ring-opacity-5 text-base font-normal">
+        <div className="origin-top-right absolute right-0 w-48 shadow-lg bg-white ring-1 ring-black ring-opacity-5 text-base font-normal">
           <div className="">
             {categories.map((category, index) => (
               <li key={index} className="border-b-2 py-1 pl-3">
-                <Link to={`/category/${category.slug}`}>{category.name}</Link>
+                <Link to={`/category/${category.id}`}>{category.name}</Link>
               </li>
             ))}
           </div>

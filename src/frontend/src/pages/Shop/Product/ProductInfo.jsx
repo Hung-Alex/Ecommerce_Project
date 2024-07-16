@@ -11,7 +11,7 @@ const ProductInfo = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [isAddToCart, setIsAddToCart] = useState(false);
-  const { id } = useParams();
+  const { slug } = useParams();
   const { addToCart } = useContext(CartContext);
   const [qunatity, setQuantity] = useState(1);
 
@@ -19,16 +19,15 @@ const ProductInfo = () => {
     (async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`/products/${id}`);
+        const res = await axios.get(`/products/${slug}`);
         setProduct(res.data.data);
         setLoading(false);
       } catch (error) {
         setLoading(false);
-        setError(true);
+        setError(false);
       }
     })();
-  }, []);
-  console.log(product);
+  }, [slug]);
 
   const handleDecrement = () => {
     if (qunatity > 1) {
@@ -77,7 +76,7 @@ const ProductInfo = () => {
         <figure>
           <img
             className="rounded-2xl h-52 lg:h-96"
-            src={product?.image}
+            src={product.images?.[0].image}
             alt="product"
           />
         </figure>
