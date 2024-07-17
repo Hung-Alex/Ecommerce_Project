@@ -1,7 +1,7 @@
 ﻿using Application.Common.Interface;
 using Application.Features.Products.Specification;
 using Domain.Constants;
-using Domain.Entities.Images;
+using Domain.Entities;
 using Domain.Entities.Products;
 using Domain.Shared;
 using MediatR;
@@ -40,15 +40,13 @@ namespace Application.Features.Products.Commands.AddProductImage
                 PublicId = uploadImage.Data.PublicId
                 ,
                 ImageExtension = request.File.ContentType
+                ,
+                OrderItem = product.Images.Count()
+                ,
+                ProductId = product.Id
+
             };
             repoImage.Add(image);
-            var productImage = new ProductImages()
-            {
-                ImageId = image.Id
-            ,
-                ProductId = product.Id
-            };
-            product.Images.Add(productImage);
             await _unitOfWork.Commit();
             return Result<bool>.ResultSuccess(true);
         }

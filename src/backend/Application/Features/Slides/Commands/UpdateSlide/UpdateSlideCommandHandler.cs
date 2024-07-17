@@ -29,8 +29,7 @@ namespace Application.Features.Slides.Commands.UpdateSlide
             if (slide == null) return Result<bool>.ResultFailures(ErrorConstants.NotFoundWithId(request.Id));
             slide.Title = request.Title;
             slide.Description = request.Description;
-            slide.Order = request.Order;
-            slide.Status = request.Status;
+            slide.IsActive = request.IsActive;
             await _unitOfWork.Commit();
             return Result<bool>.ResultSuccess(true);
         }

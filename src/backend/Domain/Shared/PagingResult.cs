@@ -14,6 +14,7 @@ namespace Domain.Shared
             PageNumber = pageNumber;
             PageSize = pageSize;
             TotalItems = totalItems;
+            IsSuccess=true;
         }
     }
 }

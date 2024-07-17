@@ -26,7 +26,6 @@ namespace Application.Features.Products.Commands.UpdateProductVariants
                 }
                 variant.Name = request.Name;
                 variant.Description = request.Description;
-                variant.Quantity = request.Quantity;
             }
             else
             {

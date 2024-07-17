@@ -4,14 +4,12 @@ using Domain.Interface;
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Infrastructure.Repositories.GenericRepository;
-using Infrastructure.Repositories.Repository;
-using Infrastructure.Repositories.Repository.Category;
 using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.Auth;
 using Infrastructure.Services.Cart;
 using Infrastructure.Services.CloudinaryUpload;
+using Infrastructure.Services.GoogleAuthen;
 using Infrastructure.Services.Identity;
-using Infrastructure.Services.Search;
 using Infrastructure.Services.UserInHttpContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -33,15 +31,11 @@ namespace Infrastructure
             //register Identity service
             // Register Repository
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
             // Register Services
             services.AddScoped<IMedia, Media>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
-            services.AddScoped<ISectionService, SectionService>();
             services.AddScoped<ICartService, CartService>();
-            services.AddScoped<ISearchService, SearchService>();
-
-
+            services.AddScoped<IGoogleAuthenService, GoogleAuthenService>();
             services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<StoreDbContext>()
                 .AddUserManager<UserManager<ApplicationUser>>()
@@ -92,9 +86,11 @@ namespace Infrastructure
             services.AddCors(options => options.AddPolicy("AllowAll",
                 policies
                 => policies
+                .WithOrigins("http://localhost:3000/")
+                .AllowCredentials()
+                .SetIsOriginAllowedToAllowWildcardSubdomains()
                 .AllowAnyHeader()
                 .AllowAnyMethod()
-                .AllowAnyOrigin()
                 )
             );
             return services;

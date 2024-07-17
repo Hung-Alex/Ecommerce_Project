@@ -1,5 +1,4 @@
 ﻿using Application.DTOs.Responses.Rattings;
-using Application.DTOs.Responses.Tags;
 using Domain.Behavior;
 using Domain.Shared;
 using MediatR;

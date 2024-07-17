@@ -1,5 +1,5 @@
 ﻿using Application.DTOs.Responses.Category;
-using Application.DTOs.Responses.Product;
+using Application.DTOs.Responses.Product.Client;
 
 namespace Application.DTOs.Responses.Sections
 {
@@ -8,7 +8,6 @@ namespace Application.DTOs.Responses.Sections
         public string Name { get; set; }
         public string UrlSlug { get; set; }
         public string Image {  get; set; }
-        public IEnumerable<CategorySection> SubCategories { get; set; }
     }
 
     public record SectionDTO

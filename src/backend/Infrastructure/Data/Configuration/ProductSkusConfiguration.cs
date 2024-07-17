@@ -12,7 +12,6 @@ namespace Infrastructure.Data.Configuration
             builder.HasMany(x => x.OrderItems)
                 .WithOne(x => x.ProductSkus)
                 .HasForeignKey(x => x.ProductSkusId);
-           
         }
     }
 }

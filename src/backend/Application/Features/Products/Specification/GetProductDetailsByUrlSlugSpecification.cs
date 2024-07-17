@@ -19,7 +19,8 @@ namespace Application.Features.Products.Specification
             AddInclude(p => p.Rattings);
             AddInclude(p => p.ProductSkus);
             AddInclude(p => p.Brand);
-            AddIncludeString("Images.Image");
+            AddInclude(p => p.Images);
+            AddInclude(p => p.Category);
             base.Handler();
         }
     }

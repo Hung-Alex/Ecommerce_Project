@@ -30,10 +30,5 @@ namespace Domain.Entities.Carts
                 && ProductId == other.ProductId
                 && ProductSkusId == other.ProductSkusId;
         }
-
-        public override int GetHashCode()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

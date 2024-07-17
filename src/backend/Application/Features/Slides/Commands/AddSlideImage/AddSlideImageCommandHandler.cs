@@ -1,7 +1,7 @@
 ﻿using Application.Common.Interface;
 using Application.Features.Slides.Specification;
 using Domain.Constants;
-using Domain.Entities.Images;
+using Domain.Entities;
 using Domain.Entities.Slides;
 using Domain.Shared;
 using MediatR;
@@ -40,10 +40,12 @@ namespace Application.Features.Slides.Commands.AddProductSlide
                 PublicId = uploadImage.Data.PublicId
                 ,
                 ImageExtension = request.File.ContentType
+                ,
+                SlideId = slide.Id
+                ,
+                OrderItem = 3
             };
             repoImage.Add(image);
-            var slideImage = new SlidesImage(slide.Id, image.Id) { OrderItem=slide.SlidesImages.Count()};
-            slide.SlidesImages.Add(slideImage);
             await _unitOfWork.Commit();
             return Result<bool>.ResultSuccess(true);
         }

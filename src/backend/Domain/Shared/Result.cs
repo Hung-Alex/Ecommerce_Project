@@ -10,7 +10,7 @@ namespace Domain.Shared
         }
         protected Result() { }
         public IEnumerable<Error>? Errors { get; set; }
-        public bool IsSuccess { get; private set; }
+        public bool IsSuccess { get; protected set; }
         public static Result<T> ResultSuccess(T data)
         {
             return new Result<T>(data) { IsSuccess = true };

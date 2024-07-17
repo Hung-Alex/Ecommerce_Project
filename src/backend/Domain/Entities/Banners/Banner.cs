@@ -1,7 +1,6 @@
 ﻿using Domain.Common;
 using Domain.Entities.Users;
 using Domain.Shared;
-using static Domain.Enums.BannerEnum;
 
 namespace Domain.Entities.Banners
 {
@@ -10,7 +9,7 @@ namespace Domain.Entities.Banners
         public string Title { get; set; }
         public string Description { get; set; }
         public string LogoImageUrl { get; set; }
-        public LocationBanner? Location { get; set; }
+        public bool IsVisible { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
         public Guid? CreatedByUserId { get; set; }
