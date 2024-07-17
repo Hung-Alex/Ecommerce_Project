@@ -91,7 +91,7 @@ namespace WebMemoryzoneApi.Controllers
             {
                 return BadRequest(result);
             }
-            SetCookies(result.Data.AccessToken, result.Data.RefreshToken);
+            SetCookies(result.Data.AccessToken, result.Data.RefreshToken,result.Data.User.Name);
             return Ok(result);
         }
         [HttpPost("refresh")]
@@ -106,15 +106,17 @@ namespace WebMemoryzoneApi.Controllers
             {
                 return BadRequest(result);
             }
-            SetCookies(result.Data.AccessToken, result.Data.RefreshToken);
+            SetCookies(result.Data.AccessToken, result.Data.RefreshToken,result.Data.User.Name);
             return Ok(result);
 
         }
-        private void SetCookies(string accessToken, string refreshToken)
+        private void SetCookies(string accessToken, string refreshToken,string userName)
         {
 
-            Response.Cookies.Append("X-Access-Token", accessToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = true, IsEssential = true });
-            Response.Cookies.Append("X-Refresh-Token", refreshToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = true, IsEssential = true });
+            Response.Cookies.Append("X-Access-Token", accessToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.None, Secure = true, IsEssential = true });
+            Response.Cookies.Append("X-Refresh-Token", refreshToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.None, Secure = true, IsEssential = true });
+            Response.Cookies.Append("User-Name-App", userName, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.None, Secure = true, IsEssential = true });
+
         }
     }
 }

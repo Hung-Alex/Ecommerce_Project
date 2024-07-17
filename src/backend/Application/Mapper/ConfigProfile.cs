@@ -9,6 +9,7 @@ using Application.DTOs.Responses.Product.Shared.BrandProduct;
 using Application.DTOs.Responses.Product.Shared.CategoryProduct;
 using Application.DTOs.Responses.Product.Shared.Variants;
 using Application.DTOs.Responses.Rattings;
+using Application.DTOs.Responses.Sections;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Entities.Banners;
@@ -35,6 +36,8 @@ namespace Application.Mapper
             CreateMap<BrandProductDTO, Brand>().ReverseMap();
             CreateMap<ProductSkus, VariantsDTO>().ReverseMap();
             CreateMap<ImageDTO, Image>().ReverseMap();
+            CreateMap<CatetgorySection, Categories>().ReverseMap();
+
         }
     }
 }
