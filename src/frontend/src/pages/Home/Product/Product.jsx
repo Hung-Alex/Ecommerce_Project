@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import useFetch from "../../../hooks/useFetch";
 
 const Product = () => {
-  const { data, loading, error } = useFetch(`/sections?TakeCategories=4&TakeItems=4`);
+  // const { data, loading, error } = useFetch(`/sections?TakeCategories=4&TakeItems=4`);
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error!</p>;
 

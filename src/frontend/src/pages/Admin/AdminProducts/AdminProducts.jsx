@@ -43,9 +43,7 @@ const AdminProducts = () => {
     return <h2 className="text-center text-2xl my-6">Loading...</h2>;
   }
 
-  if (error) {
-    return <h2 className="text-center text-2xl my-6">Something went wrong</h2>;
-  }
+  if (error) return <p>Error loading categories</p>;
   return (
     <div>
       <h2 className="text-center text-2xl my-6">AdminProducts</h2>

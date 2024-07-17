@@ -7,15 +7,16 @@ import { UserContext } from "../../context/Usercontext";
 
 function Login() {
   const [isAdmin, setIsAdmin] = useState(false);
-  const [loding, setLoding] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { login } = useContext(UserContext);
   const { register, handleSubmit } = useForm();
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/";
+
   const onSubmit = async (data) => {
     try {
-      setLoding(true);
+      setLoading(true);
       const response = await axios.post("/authentications/login", data);
       if (response.data) {
         const notify = () => toast.success("Login successfully");
@@ -26,11 +27,11 @@ function Login() {
         login(response.data.data);
         navigate(from, { replace: true });
       }
-      setLoding(false);
+      setLoading(false);
     } catch (error) {
-      const notify = () => toast.error("Invalid email or password");
+      const notify = () => toast.error("Invalid username or password");
       notify();
-      setLoding(false);
+      setLoading(false);
     }
   };
 
@@ -49,17 +50,20 @@ function Login() {
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="text-[#9796A1] w-[400px] flex flex-col justify-around mt-3"
+          autoComplete="on"
         >
           <div className="my-2">
-            <label className="text-left" htmlFor="email">
-              E-mail
+            <label className="text-left" htmlFor="username">
+              Username
             </label>
             <br />
             <input
-              {...register("userName", { required: true })}
+              {...register("username", { required: true })}
+              name="username"
               className="focus:ring-1 focus:outline-none focus:ring-[#274C5B] w-full h-12 rounded-lg pl-3 text-black border mt-2"
-              type="userName"
-              placeholder="try user@gmail.com or admin@gmail.com"
+              type="text"
+              placeholder="try user or admin"
+              autoComplete="username"
             />
           </div>
           <div className="my-2">
@@ -69,10 +73,11 @@ function Login() {
             <br />
             <input
               {...register("password", { required: true })}
+              name="password"
               className="focus:ring-1 focus:outline-none focus:ring-[#274C5B] w-full h-12 rounded-lg pl-3 text-black border mt-2"
               type="password"
               placeholder="Password"
-              defaultValue={"123456"}
+              autoComplete="current-password"
             />
           </div>
           <Link className="text-[#274C5B]" to="/reset-password">
@@ -82,8 +87,8 @@ function Login() {
             <input
               className="uppercase bg-[#274C5B] hover:bg-[#326072] font-medium text-white rounded-full w-1/2 py-[10px] cursor-pointer transition-all duration-500 ease-in-out"
               type="submit"
-              value={`${loding ? "Loading..." : "Login"}`}
-              disabled={loding}
+              value={`${loading ? "Loading..." : "Login"}`}
+              disabled={loading}
             />
           </div>
         </form>
