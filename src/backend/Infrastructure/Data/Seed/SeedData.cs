@@ -217,7 +217,7 @@ namespace Infrastructure.Data.Seed
                 new()
                 {
                     ImageExtension="jpg",
-                    ImageUrl=this.ImageSlides[0],
+                    ImageUrl=this.ImageProduct[randomNumbers[0]],
                     ProductId=product.Id,
                     OrderItem=1,
                     PublicId="test"
@@ -225,7 +225,7 @@ namespace Infrastructure.Data.Seed
                 new()
                 {
                     ImageExtension="jpg",
-                    ImageUrl=this.ImageSlides[1],
+                    ImageUrl=this.ImageProduct[randomNumbers[1]],
                     ProductId=product.Id,
                     OrderItem=2,
                     PublicId="test"
@@ -233,7 +233,7 @@ namespace Infrastructure.Data.Seed
                 new()
                 {
                     ImageExtension="jpg",
-                    ImageUrl=this.ImageSlides[2],
+                    ImageUrl=this.ImageProduct[randomNumbers[2]],
                     ProductId=product.Id,
                     OrderItem=3,
                     PublicId="test"
@@ -241,7 +241,7 @@ namespace Infrastructure.Data.Seed
                 new()
                 {
                     ImageExtension="jpg",
-                    ImageUrl=this.ImageSlides[3],
+                    ImageUrl=this.ImageProduct[randomNumbers[3]],
                     ProductId=product.Id,
                     OrderItem=4,
                     PublicId="test"
@@ -749,15 +749,18 @@ namespace Infrastructure.Data.Seed
             }
 
             Random random = new Random();
-            HashSet<int> uniqueNumbers = new HashSet<int>();
+            List<int> uniqueNumbers = new List<int>();
 
             while (uniqueNumbers.Count < count)
             {
                 int number = random.Next(max);
-                uniqueNumbers.Add(number);
+                if (!uniqueNumbers.Contains(number))
+                {
+                    uniqueNumbers.Add(number);
+                }
             }
 
-            return new int[count];
+            return uniqueNumbers.ToArray();
         }
 
     }
