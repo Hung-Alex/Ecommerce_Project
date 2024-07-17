@@ -1,6 +1,6 @@
 import { BsChevronDown } from "react-icons/bs";
 import { Link } from "react-router-dom";
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { useCategoryContext } from "../../../../context/CategoryContext"
 
 const DropDown = () => {
@@ -24,14 +24,12 @@ const DropDown = () => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <Link onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} to="/category/category">
-        <button
-          className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-800 focus:outline-none"
-        >
-          Category
-          <BsChevronDown className="ml-1 text-lg" />
-        </button>
-      </Link>
+      <button
+        className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-800 focus:outline-none"
+      >
+        Category
+        <BsChevronDown className="ml-1 text-lg" />
+      </button>
       {isDropdownOpen && (
         <div className="origin-top-right absolute right-0 w-48 shadow-lg bg-white ring-1 ring-black ring-opacity-5 text-base font-normal">
           <div className="">
