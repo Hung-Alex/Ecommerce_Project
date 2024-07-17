@@ -10,6 +10,7 @@ using Infrastructure.Services.Cart;
 using Infrastructure.Services.CloudinaryUpload;
 using Infrastructure.Services.GoogleAuthen;
 using Infrastructure.Services.Identity;
+using Infrastructure.Services.Section;
 using Infrastructure.Services.UserInHttpContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -33,6 +34,7 @@ namespace Infrastructure
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             // Register Services
             services.AddScoped<IMedia, Media>();
+            services.AddScoped<ISectionService, SectionService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<IGoogleAuthenService, GoogleAuthenService>();
