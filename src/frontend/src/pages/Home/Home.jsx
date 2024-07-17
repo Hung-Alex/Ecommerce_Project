@@ -14,8 +14,8 @@ const HomePage = () => {
     <div className="max-w-screen-xl mx-auto">
       <HomeBanner />
       <Category />
-      <Offer />
-      <About />
+      {/* <Offer /> */}
+      {/* <About /> */}
       <Product />
       <Testimonial />
       {/* <ProductOffer /> */}

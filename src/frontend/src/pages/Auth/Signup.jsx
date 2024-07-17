@@ -18,7 +18,6 @@ function SignUp() {
       if (response.data) {
         const notify = () => toast.success("Signup successfully");
         notify();
-        localStorage.setItem("token", response.data.token);
         login(response.data.data);
         navigate(from, { replace: true });
       }

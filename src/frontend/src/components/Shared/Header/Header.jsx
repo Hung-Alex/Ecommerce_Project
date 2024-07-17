@@ -17,7 +17,7 @@ const Header = () => {
   };
   return (
     <header className="sm:flex items-center justify-around py-6 gap-24 px-12 hidden sticky top-0 bg-[#EFF6F1] drop-shadow z-50">
-      <Link to="/" className="flex items-center justify-center gap-1">
+      <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center justify-center gap-1">
         <img className="h-8" src={logo} alt="organick" />
         <h1 className="text-2xl font-bold">Organick</h1>
       </Link>

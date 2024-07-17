@@ -6,14 +6,14 @@ const NavList = () => {
     <nav>
       <ul className="flex items-center gap-8 font-semibold">
         <li>
-          <NavLink to="/">Home</NavLink>
+          <NavLink onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} to="/">Home</NavLink>
         </li>
         <DropDown />
         <li>
-          <NavLink to="/about">About</NavLink>
+          <NavLink onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} to="/about">About</NavLink>
         </li>
         <li>
-          <NavLink to="/news">News</NavLink>
+          <NavLink onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} to="/news">News</NavLink>
         </li>
       </ul>
     </nav>
