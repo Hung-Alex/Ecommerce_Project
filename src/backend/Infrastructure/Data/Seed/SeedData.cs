@@ -63,13 +63,13 @@ namespace Infrastructure.Data.Seed
             "https://images.pexels.com/photos/94442/pexels-photo-94442.jpeg?auto=compress&cs=tinysrgb&w=600",
         };
         private readonly string[] ImageSlides =
-            [
+            {
                 "https://images.pexels.com/photos/257816/pexels-photo-257816.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
                 "https://images.pexels.com/photos/319798/pexels-photo-319798.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
                 "https://images.pexels.com/photos/2252584/pexels-photo-2252584.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
                 "https://images.pexels.com/photos/23228994/pexels-photo-23228994/free-photo-of-g-thien-nhien-hoa-mua-he.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
                 "https://images.pexels.com/photos/1458694/pexels-photo-1458694.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-            ];
+            };
         private readonly StoreDbContext _dbContext;
         public SeedData(StoreDbContext dbContext)
         {
@@ -84,13 +84,31 @@ namespace Infrastructure.Data.Seed
             }
             var brandsData = BrandsInit();
             await _dbContext.AddRangeAsync(brandsData);
+            var bannersData = BannerInit();
+            await _dbContext.AddRangeAsync(bannersData);
             var parrentCategory = CategoryParrents();
             await _dbContext.AddRangeAsync(parrentCategory);
+            var product = ProductInit(parrentCategory, brandsData);
+            await _dbContext.AddRangeAsync(product);
+            foreach (var item in product)
+            {
+                var images = AssignedImageForProduct(item);
+                var variants= AssignedVariantForProduct(item);
+                await _dbContext.AddRangeAsync(images);
+                await _dbContext.AddRangeAsync(variants);
+            }
+            var slidesData = SlideInit();
+            await _dbContext.AddRangeAsync(slidesData);
+            foreach (var item in slidesData)
+            {
+                var images = AssignedImageForSlide(item);
+                await _dbContext.AddRangeAsync(images);
+            }
             await _dbContext.SaveChangesAsync();
         }
-        private IEnumerable<Slide> SlideInit()
+        private List<Slide> SlideInit()
         {
-            IEnumerable<Slide> slides = new List<Slide>()
+            List<Slide> slides = new List<Slide>()
             {
                 new()
                 {
@@ -118,7 +136,32 @@ namespace Infrastructure.Data.Seed
             };
             return slides;
         }
-        private IEnumerable<Image> AssignedImageForSlide(Slide slide)
+        private List<ProductSkus> AssignedVariantForProduct(Product product)
+        {
+            List<ProductSkus> images = new List<ProductSkus>()
+            {
+                new()
+                {
+                    ProductId=product.Id,
+                    Name="5 KG",
+                    Description="Oganic"
+                },
+                new()
+                {
+                    ProductId=product.Id,
+                    Name="4 KG",
+                    Description="Sea Food"
+                },
+                new()
+                {
+                   ProductId=product.Id,
+                    Name="3 KG",
+                    Description="Craw Fish"
+                }
+            };
+            return images;
+        }
+        private List<Image> AssignedImageForSlide(Slide slide)
         {
             List<Image> images = new List<Image>()
             {
@@ -127,40 +170,45 @@ namespace Infrastructure.Data.Seed
                     ImageExtension="jpg",
                     ImageUrl=this.ImageSlides[0],
                     SlideId=slide.Id,
-                    OrderItem=1
+                    OrderItem=1,
+                    PublicId="test"
                 },
                 new()
                 {
                     ImageExtension="jpg",
                     ImageUrl=this.ImageSlides[1],
                     SlideId=slide.Id,
-                    OrderItem=2
+                    OrderItem=2,
+                    PublicId="test"
                 },
                 new()
                 {
                     ImageExtension="jpg",
                     ImageUrl=this.ImageSlides[2],
                     SlideId=slide.Id,
-                    OrderItem=3
+                    OrderItem=3,
+                    PublicId="test"
                 },
                 new()
                 {
                     ImageExtension="jpg",
                     ImageUrl=this.ImageSlides[3],
                     SlideId=slide.Id,
-                    OrderItem=4
+                    OrderItem=4,
+                    PublicId="test"
                 },
                 new()
                 {
                     ImageExtension="jpg",
                     ImageUrl=this.ImageSlides[4],
                     SlideId=slide.Id,
-                    OrderItem=5
+                    OrderItem=5,
+                    PublicId="test"
                 },
             };
             return images;
         }
-        private IEnumerable<Image> AssignedImageForProduct(Product product)
+        private List<Image> AssignedImageForProduct(Product product)
         {
             int arrayLength = this.ImageProduct.Length;
             int[] randomNumbers = GenerateUniqueRandomNumbers(arrayLength, 4);
@@ -171,35 +219,39 @@ namespace Infrastructure.Data.Seed
                     ImageExtension="jpg",
                     ImageUrl=this.ImageSlides[0],
                     ProductId=product.Id,
-                    OrderItem=1
+                    OrderItem=1,
+                    PublicId="test"
                 },
                 new()
                 {
                     ImageExtension="jpg",
                     ImageUrl=this.ImageSlides[1],
                     ProductId=product.Id,
-                    OrderItem=2
+                    OrderItem=2,
+                    PublicId="test"
                 },
                 new()
                 {
                     ImageExtension="jpg",
                     ImageUrl=this.ImageSlides[2],
                     ProductId=product.Id,
-                    OrderItem=3
+                    OrderItem=3,
+                    PublicId="test"
                 },
                 new()
                 {
                     ImageExtension="jpg",
                     ImageUrl=this.ImageSlides[3],
                     ProductId=product.Id,
-                    OrderItem=4
+                    OrderItem=4,
+                    PublicId="test"
                 },
             };
             return imageProducts;
         }
-        private IEnumerable<Banner> BannerInit()
+        private List<Banner> BannerInit()
         {
-            IEnumerable<Banner> banner = new List<Banner>()
+            List<Banner> banner = new List<Banner>()
             {
                 new()
                 {
@@ -302,9 +354,9 @@ namespace Infrastructure.Data.Seed
             };
             return banner;
         }
-        private IEnumerable<Brand> BrandsInit()
+        private List<Brand> BrandsInit()
         {
-            IEnumerable<Brand> vegetableBrands = new List<Brand>()
+            List<Brand> vegetableBrands = new List<Brand>()
             {
                 new Brand
                 {
@@ -312,7 +364,7 @@ namespace Infrastructure.Data.Seed
                     Name = "Fresh & Green",
                     UrlSlug = "fresh-green",
                     Description = "Providing fresh and high-quality vegetables directly from farms to your table.",
-                    Image = "https://images.pexels.com/photos/755992/pexels-photo-755992.jpeg?auto=compress&cs=tinysrgb&w=600" // Replace with actual image URL
+                    Image = "https://images.pexels.com/photos/755992/pexels-photo-755992.jpeg?auto=compress&cs=tinysrgb&w=600" 
                 },
                 new Brand
                 {
@@ -320,38 +372,46 @@ namespace Infrastructure.Data.Seed
                     Name = "Organic Valley",
                     UrlSlug = "organic-valley",
                     Description = "Offering a wide range of organic vegetables grown sustainably and without harmful chemicals.",
-                    Image = "https://images.pexels.com/photos/104842/bmw-vehicle-ride-bike-104842.jpeg?auto=compress&cs=tinysrgb&w=600" // Replace with actual image URL
+                    Image = "https://images.pexels.com/photos/104842/bmw-vehicle-ride-bike-104842.jpeg?auto=compress&cs=tinysrgb&w=600" 
                 },
                 new Brand
                 {
                     Id = Guid.NewGuid(),
-                    Name = "Steamies-1",
-                    UrlSlug = "steamies-1",
+                    Name = "Fruid",
+                    UrlSlug = "Fruid",
                     Description = "Steamed vegetables packed with freshness and nutrients for a healthy and tasty side dish.",
-                    Image = "https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=600" // Replace with actual image URL
+                    Image = "https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=600"
                 },
                 new Brand
                 {
                     Id = Guid.NewGuid(),
-                    Name = "Steamies-2",
-                    UrlSlug = "steamies-2",
+                    Name = "Oganic",
+                    UrlSlug = "oganic",
                     Description = "Steamed vegetables packed with freshness and nutrients for a healthy and tasty side dish.",
-                    Image = "https://images.pexels.com/photos/2983100/pexels-photo-2983100.jpeg?auto=compress&cs=tinysrgb&w=600" // Replace with actual image URL
+                    Image = "https://images.pexels.com/photos/2983100/pexels-photo-2983100.jpeg?auto=compress&cs=tinysrgb&w=600"
                 },
                 new Brand
                 {
                     Id = Guid.NewGuid(),
-                    Name = "Steamie-3",
-                    UrlSlug = "steamies-3",
+                    Name = "Heald",
+                    UrlSlug = "heald",
                     Description = "Steamed vegetables packed with freshness and nutrients for a healthy and tasty side dish.",
                     Image = "https://images.pexels.com/photos/3689532/pexels-photo-3689532.jpeg?auto=compress&cs=tinysrgb&w=600"
+                },
+                new Brand
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Anada",
+                    UrlSlug = "anada",
+                    Description = "Steamed vegetables packed with freshness and nutrients for a healthy and tasty side dish.",
+                    Image = "https://cdn.shoplightspeed.com/shops/643839/themes/15892/v/897839/assets/first-image-1.jpg?20240319193340"
                 }
             };
             return vegetableBrands;
         }
-        private IEnumerable<Categories> CategoryParrents()
+        private List<Categories> CategoryParrents()
         {
-            IEnumerable<Categories> subCategories = new List<Categories>()
+            List<Categories> subCategories = new List<Categories>()
             {
                 new Categories() { Id = Guid.NewGuid(), Name = "Water Spinach", Description = "Water spinach is a popular green vegetable in Vietnam.", Image = "https://images.pexels.com/photos/26861260/pexels-photo-26861260/free-photo-of-nh-ng-ng-i-d-ng-ph-t-ng-v-n.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load", UrlSlug = "water-spinach" },
                 new Categories() { Id = Guid.NewGuid(), Name = "Napa Cabbage", Description = "Napa cabbage is a type of Chinese cabbage, commonly used to make kimchi.", Image = "https://images.pexels.com/photos/17514564/pexels-photo-17514564/free-photo-of-phong-c-nh-nh-ng-dam-may-th-i-ti-t-d-i.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load", UrlSlug = "napa-cabbage" },
@@ -366,10 +426,14 @@ namespace Infrastructure.Data.Seed
             };
             return subCategories;
         }
-        private IEnumerable<Product> ProductInit()
+        private List<Product> ProductInit
+            (
+                List<Categories> categories,
+                List<Brand> brands
+            )
         {
             #region
-            IEnumerable<Product> products = new List<Product>()
+            List<Product> products = new List<Product>()
             {
                new Product
                 {
@@ -378,6 +442,8 @@ namespace Infrastructure.Data.Seed
                     Price = 1.20M,
                     UrlSlug = "apple",
                     Discount = 10,
+                    CategoryId=categories[0].Id,
+                    BrandId=brands[0].Id
                 },
                 new Product
                 {
@@ -385,7 +451,9 @@ namespace Infrastructure.Data.Seed
                     Description = "Ripe bananas rich in potassium.",
                     Price = 0.50M,
                     UrlSlug = "banana",
-                    Discount = null
+                    Discount = null,
+                    CategoryId=categories[0].Id,
+                    BrandId=brands[0].Id
                 },
                 new Product
                 {
@@ -393,7 +461,9 @@ namespace Infrastructure.Data.Seed
                     Description = "Sweet and tangy oranges, perfect for juicing.",
                     Price = 0.80M,
                     UrlSlug = "orange",
-                    Discount = 5
+                    Discount = 5,
+                    CategoryId=categories[0].Id,
+                    BrandId=brands[0].Id
                 },
                 new Product
                 {
@@ -401,7 +471,9 @@ namespace Infrastructure.Data.Seed
                     Description = "Fresh strawberries, perfect for desserts.",
                     Price = 2.00M,
                     UrlSlug = "strawberry",
-                    Discount = 15
+                    Discount = 15,
+                    CategoryId=categories[0].Id,
+                    BrandId=brands[0].Id
                 },
                 new Product
                 {
@@ -409,7 +481,9 @@ namespace Infrastructure.Data.Seed
                     Description = "Seedless grapes, great for snacking.",
                     Price = 2.50M,
                     UrlSlug = "grapes",
-                    Discount = null
+                    Discount = null,
+                    CategoryId=categories[0].Id,
+                    BrandId=brands[0].Id
                 },
                 new Product
                 {
@@ -417,7 +491,9 @@ namespace Infrastructure.Data.Seed
                     Description = "Sweet and ripe mangoes, full of tropical flavor.",
                     Price = 1.50M,
                     UrlSlug = "mango",
-                    Discount = 20
+                    Discount = 20,
+                    CategoryId=categories[1].Id,
+                    BrandId=brands[1].Id
                 },
                 new Product
                 {
@@ -425,7 +501,9 @@ namespace Infrastructure.Data.Seed
                     Description = "Fresh blueberries, packed with antioxidants.",
                     Price = 3.00M,
                     UrlSlug = "blueberry",
-                    Discount = null
+                    Discount = null,
+                    CategoryId=categories[1].Id,
+                    BrandId=brands[1].Id
                 },
                 new Product
                 {
@@ -433,7 +511,9 @@ namespace Infrastructure.Data.Seed
                     Description = "Refreshing watermelon, perfect for hot days.",
                     Price = 5.00M,
                     UrlSlug = "watermelon",
-                    Discount = 25
+                    Discount = 25,
+                    CategoryId=categories[1].Id,
+                    BrandId=brands[1].Id
                 },
                 new Product
                 {
@@ -441,7 +521,9 @@ namespace Infrastructure.Data.Seed
                     Description = "Sweet and tangy pineapples, great for desserts and juices.",
                     Price = 3.50M,
                     UrlSlug = "pineapple",
-                    Discount = null
+                    Discount = null,
+                    CategoryId=categories[1].Id,
+                    BrandId=brands[1].Id
                 },
                 new Product
                 {
@@ -449,7 +531,209 @@ namespace Infrastructure.Data.Seed
                     Description = "Juicy and sweet cherries, perfect for snacking.",
                     Price = 4.00M,
                     UrlSlug = "cherry",
-                    Discount = 10
+                    Discount = 10,
+                    CategoryId=categories[1].Id,
+                    BrandId=brands[1].Id
+                },
+                 new Product
+                {
+                    Name = "Peach",
+                    Description = "Sweet and juicy peaches, perfect for eating fresh.",
+                    Price = 2.20M,
+                    UrlSlug = "peach",
+                    Discount = 5,
+                    CategoryId=categories[2].Id,
+                    BrandId=brands[2].Id
+                },
+                new Product
+                {
+                    Name = "Cucumber",
+                    Description = "Crisp and refreshing cucumbers, great for salads.",
+                    Price = 1.00M,
+                    UrlSlug = "cucumber",
+                    Discount = null,
+                    CategoryId=categories[2].Id,
+                    BrandId=brands[2].Id
+                },
+                new Product
+                {
+                    Name = "Tomato",
+                    Description = "Ripe and juicy tomatoes, perfect for salads and cooking.",
+                    Price = 1.50M,
+                    UrlSlug = "tomato",
+                    Discount = 10,
+                    CategoryId=categories[2].Id,
+                    BrandId=brands[2].Id
+                },
+                new Product
+                {
+                    Name = "Carrot",
+                    Description = "Crunchy and sweet carrots, great for snacking and cooking.",
+                    Price = 1.20M,
+                    UrlSlug = "carrot",
+                    Discount = 5,
+                    CategoryId=categories[2].Id,
+                    BrandId=brands[2].Id
+                },
+                new Product
+                {
+                    Name = "Lettuce",
+                    Description = "Fresh and crisp lettuce, perfect for salads.",
+                    Price = 1.00M,
+                    UrlSlug = "lettuce",
+                    Discount = null,
+                    CategoryId=categories[2].Id,
+                    BrandId=brands[2].Id
+                },
+                new Product
+                {
+                    Name = "Bell Pepper",
+                    Description = "Colorful bell peppers, great for salads and cooking.",
+                    Price = 2.00M,
+                    UrlSlug = "bell-pepper",
+                    Discount = 10,
+                    CategoryId=categories[3].Id,
+                    BrandId=brands[3].Id
+                },
+                new Product
+                {
+                    Name = "Broccoli",
+                    Description = "Fresh broccoli, packed with nutrients.",
+                    Price = 2.50M,
+                    UrlSlug = "broccoli",
+                    Discount = null,
+                    CategoryId=categories[3].Id,
+                    BrandId=brands[3].Id
+                },
+                new Product
+                {
+                    Name = "Cauliflower",
+                    Description = "Versatile cauliflower, great for roasting and mashing.",
+                    Price = 2.30M,
+                    UrlSlug = "cauliflower",
+                    Discount = 15,
+                    CategoryId=categories[3].Id,
+                    BrandId=brands[3].Id
+                },
+                new Product
+                {
+                    Name = "Spinach",
+                    Description = "Fresh spinach leaves, packed with iron and vitamins.",
+                    Price = 1.80M,
+                    UrlSlug = "spinach",
+                    Discount = null,
+                    CategoryId=categories[3].Id,
+                    BrandId=brands[3].Id
+                },
+                new Product
+                {
+                    Name = "Potato",
+                    Description = "Versatile potatoes, great for baking, mashing, and frying.",
+                    Price = 1.00M,
+                    UrlSlug = "potato",
+                    Discount = 20,
+                    CategoryId=categories[3].Id,
+                    BrandId=brands[3].Id
+                },
+                new Product
+                {
+                    Name = "Onion",
+                    Description = "Flavorful onions, essential for many dishes.",
+                    Price = 1.00M,
+                    UrlSlug = "onion",
+                    Discount = null,
+                    CategoryId=categories[4].Id,
+                    BrandId=brands[4].Id
+                },
+                new Product
+                {
+                    Name = "Garlic",
+                    Description = "Aromatic garlic, perfect for adding flavor to dishes.",
+                    Price = 0.80M,
+                    UrlSlug = "garlic",
+                    Discount = 5,
+                    CategoryId=categories[4].Id,
+                    BrandId=brands[4].Id
+                },
+                new Product
+                {
+                    Name = "Avocado",
+                    Description = "Creamy avocados, perfect for guacamole and salads.",
+                    Price = 2.50M,
+                    UrlSlug = "avocado",
+                    Discount = 10,
+                    CategoryId=categories[4].Id,
+                    BrandId=brands[4].Id
+                },
+                new Product
+                {
+                    Name = "Zucchini",
+                    Description = "Versatile zucchini, great for grilling and baking.",
+                    Price = 1.50M,
+                    UrlSlug = "zucchini",
+                    Discount = null,
+                    CategoryId=categories[4].Id,
+                    BrandId=brands[4].Id
+                },
+                new Product
+                {
+                    Name = "Eggplant",
+                    Description = "Rich and flavorful eggplants, perfect for roasting and grilling.",
+                    Price = 2.00M,
+                    UrlSlug = "eggplant",
+                    Discount = 10,
+                    CategoryId=categories[4].Id,
+                    BrandId=brands[4].Id
+                },
+                new Product
+                {
+                    Name = "Pumpkin",
+                    Description = "Sweet pumpkins, great for pies and soups.",
+                    Price = 3.00M,
+                    UrlSlug = "pumpkin",
+                    Discount = 15,
+                    CategoryId=categories[5].Id,
+                    BrandId=brands[5].Id
+                },
+                new Product
+                {
+                    Name = "Lemon",
+                    Description = "Tangy lemons, perfect for adding flavor to dishes.",
+                    Price = 0.50M,
+                    UrlSlug = "lemon",
+                    Discount = 5,
+                    CategoryId=categories[5].Id,
+                    BrandId=brands[5].Id
+                },
+                new Product
+                {
+                    Name = "Lime",
+                    Description = "Zesty limes, great for drinks and cooking.",
+                    Price = 0.50M,
+                    UrlSlug = "lime",
+                    Discount = null,
+                    CategoryId=categories[5].Id,
+                    BrandId=brands[5].Id
+                },
+                new Product
+                {
+                    Name = "Pear",
+                    Description = "Sweet and juicy pears, perfect for snacking.",
+                    Price = 2.00M,
+                    UrlSlug = "pear",
+                    Discount = 10,
+                    CategoryId=categories[5].Id,
+                    BrandId=brands[5].Id
+                },
+                new Product
+                {
+                    Name = "Cabbage",
+                    Description = "Crunchy cabbage, great for salads and cooking.",
+                    Price = 1.20M,
+                    UrlSlug = "cabbage",
+                    Discount = 5,
+                    CategoryId=categories[5].Id,
+                    BrandId=brands[5].Id
                 }
             };
             #endregion
