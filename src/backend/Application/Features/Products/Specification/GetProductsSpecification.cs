@@ -46,7 +46,6 @@ namespace Application.Features.Products.Specification
             {
                 ApplyOrderBy(b => b.Id);
             }
-            AddInclude(p => p.Images);
             base.Handler();
         }
     }
