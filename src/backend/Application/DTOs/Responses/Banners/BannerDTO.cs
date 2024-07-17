@@ -5,7 +5,6 @@
         public string Title { get; init; }
         public string Description { get; init; }
         public string LogoImageUrl { get; init; }
-        public bool? Left { get; init; }
-        public bool? Right { get; init; }
+        public bool IsVisible { get; init; }
     }
 }

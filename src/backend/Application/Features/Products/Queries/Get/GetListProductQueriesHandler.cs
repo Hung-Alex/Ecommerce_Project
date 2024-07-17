@@ -3,21 +3,19 @@ using Domain.Shared;
 using MediatR;
 using Application.Features.Products.Specification;
 using Domain.Entities.Products;
-using Application.DTOs.Responses.Product;
+using Application.DTOs.Responses.Product.Client;
+using AutoMapper;
+using Application.DTOs.Responses.Product.Shared.BrandProduct;
+using Application.DTOs.Responses.Product.Shared.CategoryProduct;
 
 
 namespace Application.Features.Products.Queries.Get
 {
-    public class GetListProductQueriesHandler : IRequestHandler<GetListProductQuery, Result<IEnumerable<ProductDTO>>>
+    public class GetListProductQueriesHandler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<GetListProductQuery, Result<IEnumerable<ProductDTO>>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public GetListProductQueriesHandler(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
         public async Task<Result<IEnumerable<ProductDTO>>> Handle(GetListProductQuery request, CancellationToken cancellationToken)
         {
-            var productRepo = _unitOfWork.GetRepository<Product>();
+            var productRepo = unitOfWork.GetRepository<Product>();
             var getProductSpecification = new GetProductsSpecification(request.ProductFilter);
             var products = await productRepo.GetAllAsync(getProductSpecification);
             var totalItems = await productRepo.CountAsync(getProductSpecification);
@@ -26,16 +24,18 @@ namespace Application.Features.Products.Queries.Get
                 Id = x.Id,
                 Name = x.Name,
                 Description = x.Description,
-                UnitPrice = x.UnitPrice,
-                Discount = x.Discount,
-                BrandId = x.BrandId,
                 UrlSlug = x.UrlSlug,
+                Discount = x.Discount,
                 Price = x.Price,
-                Images = x.Images.Select(x => x.Image.ImageUrl)
+                Brand = mapper.Map<BrandProductDTO>(x.Brand),
+                Category = mapper.Map<CategoryProductDTO>(x.Category),
+                Rate = x.Rattings.Count() > 0 ? x.Rattings.Average(r => r.Rate) : 0,
+                TotalRate = x.Rattings.Count(),
+                Images = x.Images.Select(p => p.ImageUrl).ToList(),
             })
                 , request.ProductFilter.PageNumber
                 , request.ProductFilter.PageSize
-                , totalItems);
+                , totalItems); ;
         }
     }
 }

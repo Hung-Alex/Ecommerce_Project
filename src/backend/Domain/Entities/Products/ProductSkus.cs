@@ -9,8 +9,6 @@ namespace Domain.Entities.Products
         public ProductSkus() : base() { }
         public string Name { get; set; }
         public string Description { get; set; }
-        public Decimal Price { get; set; }
-        public int Quantity { get; set; }
         public Guid ProductId { get; set; }
         public Product Product { get; set; }
         public virtual ICollection<CartItem> CartItems { get; set; }

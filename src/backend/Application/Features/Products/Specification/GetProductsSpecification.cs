@@ -21,7 +21,10 @@ namespace Application.Features.Products.Specification
 
         protected override void Handler()
         {
-            AddIncludeString("Images.Image");
+            AddInclude(x => x.Images);
+            AddInclude(x => x.Brand);
+            AddInclude(x => x.Category);
+            AddInclude(x => x.Rattings);
             ApplyPaging(_filter.PageSize, _filter.PageNumber);
             if (PredicatedProperty.IsExitedProperty<Product>(_filter.SortColoumn))
             {
@@ -43,7 +46,6 @@ namespace Application.Features.Products.Specification
             {
                 ApplyOrderBy(b => b.Id);
             }
-            AddInclude(p => p.Images);
             base.Handler();
         }
     }

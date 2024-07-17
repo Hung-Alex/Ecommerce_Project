@@ -16,6 +16,7 @@ namespace Infrastructure.Data.Configuration
             builder.HasOne(x => x.ProductSkus)
                .WithMany(x => x.CartItems)
                .HasForeignKey(x => x.ProductSkusId)
+               .IsRequired(false)
                .OnDelete(DeleteBehavior.Restrict);
         }
     }

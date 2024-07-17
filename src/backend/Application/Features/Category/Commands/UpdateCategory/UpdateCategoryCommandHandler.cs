@@ -7,6 +7,9 @@ using Application.DTOs.Responses.Category;
 using Domain.Entities.Category;
 using Domain.Constants;
 using Domain.Shared;
+using Application.Features.Brands.Commands.CreateBrands;
+using Application.Common.Exceptions;
+using Application.Features.Category.Specification;
 
 namespace Application.Features.Category.Commands.UpdateCategory
 {
@@ -16,10 +19,9 @@ namespace Application.Features.Category.Commands.UpdateCategory
         {
             public UpdateCategoryCommandValidator()
             {
-                RuleFor(x => x.Id).NotEmpty().WithMessage("Not Null");
-                RuleFor(b => b.Name).NotEmpty().WithMessage("Not Null");
-                RuleFor(b => b.Description).NotEmpty().WithMessage("Not Null");
-                RuleFor(b => b.UrlSlug).NotEmpty().WithMessage("Not Null");
+                RuleFor(x => x.Name).NotEmpty().WithMessage(nameof(CreateBrandCommand.Name));
+                RuleFor(x => x.Description).NotEmpty().WithMessage(nameof(CreateBrandCommand.Description));
+                RuleFor(x => x.UrlSlug).NotEmpty().WithMessage(nameof(CreateBrandCommand.UrlSlug));
             }
         }
         private readonly IUnitOfWork _unitOfWork;
@@ -36,6 +38,11 @@ namespace Application.Features.Category.Commands.UpdateCategory
             var repoCategory = _unitOfWork.GetRepository<Categories>();
             var category = await repoCategory.GetByIdAsync(request.Id);
             if (category == null) return Result<CategoryDTO>.ResultFailures(ErrorConstants.UserNotFoundWithID(request.Id));
+            var isExisted = await repoCategory.FindOneAsync(new UrlSlugIsExistedSpecification(category.Id, request.UrlSlug));
+            if (isExisted != null)
+            {
+                return Result<CategoryDTO>.ResultFailures(ErrorConstants.UrlSlugIsExisted(request.UrlSlug));
+            }
             if (request.ParrentId is not null)
             {
                 var isExistedParrent = await repoCategory.GetByIdAsync(request.ParrentId);
@@ -43,20 +50,21 @@ namespace Application.Features.Category.Commands.UpdateCategory
                 {
                     return Result<CategoryDTO>.ResultFailures(ErrorConstants.NotFoundWithId((Guid)request.ParrentId));
                 }
+                category.ParrentId = request.ParrentId;
+
             }
-            Result<ImageUpload> uploadResult = null;
-            if (!(request.Image is null))
+            if (request.Image is not null)
             {
-                uploadResult = await _media.UploadLoadImageAsync(request.Image, UploadFolderConstants.FolderCategory, cancellationToken);
+                Result<ImageUpload> uploadResult = await _media.UploadLoadImageAsync(request.Image, UploadFolderConstants.FolderCategory, cancellationToken);
+                if (uploadResult.IsSuccess is false)
+                {
+                    throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
+                }
+                category.Image = uploadResult.Data.Url;
             }
             category.UrlSlug = request.UrlSlug;
             category.Name = request.Name;
             category.Description = request.Description;
-            category.ParrentId = request.ParrentId;
-            if (!(uploadResult is null))
-            {
-                category.Image = uploadResult.Data.Url;
-            }
             await _unitOfWork.Commit();
             var CategoryDTO = _mapper.Map<CategoryDTO>(category);
             return Result<CategoryDTO>.ResultSuccess(CategoryDTO);

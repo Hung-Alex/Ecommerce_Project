@@ -45,14 +45,6 @@ namespace Infrastructure.Data.Configuration
                .WithOne(x => x.UpdatedByUser)
                .HasForeignKey(x => x.UpdatedByUserId)
                .OnDelete(DeleteBehavior.Restrict);
-            builder.HasMany(x => x.CreatedByBrand)
-                .WithOne(x => x.CreatedByUser)
-                .HasForeignKey(x => x.CreatedByUserId)
-                .OnDelete(DeleteBehavior.Restrict);
-            builder.HasMany(x => x.UpdatedByBrand)
-               .WithOne(x => x.UpdatedByUser)
-               .HasForeignKey(x => x.UpdatedByUserId)
-               .OnDelete(DeleteBehavior.Restrict);
             builder.HasMany(x => x.CreatedByCategory)
                 .WithOne(x => x.CreatedByUser)
                 .HasForeignKey(x => x.CreatedByUserId)
@@ -90,22 +82,6 @@ namespace Infrastructure.Data.Configuration
                 .HasForeignKey(x => x.CreatedByUserId)
                 .OnDelete(DeleteBehavior.Restrict);
             builder.HasMany(x => x.UpdatedBySlide)
-               .WithOne(x => x.UpdatedByUser)
-               .HasForeignKey(x => x.UpdatedByUserId)
-               .OnDelete(DeleteBehavior.Restrict);
-            builder.HasMany(x => x.CreatedByTag)
-                .WithOne(x => x.CreatedByUser)
-                .HasForeignKey(x => x.CreatedByUserId)
-                .OnDelete(DeleteBehavior.Restrict);
-            builder.HasMany(x => x.UpdatedByTag)
-               .WithOne(x => x.UpdatedByUser)
-               .HasForeignKey(x => x.UpdatedByUserId)
-               .OnDelete(DeleteBehavior.Restrict);
-            builder.HasMany(x => x.CreatedByCoupon)
-                .WithOne(x => x.CreatedByUser)
-                .HasForeignKey(x => x.CreatedByUserId)
-                .OnDelete(DeleteBehavior.Restrict);
-            builder.HasMany(x => x.UpdatedByCoupon)
                .WithOne(x => x.UpdatedByUser)
                .HasForeignKey(x => x.UpdatedByUserId)
                .OnDelete(DeleteBehavior.Restrict);

@@ -1,5 +1,5 @@
 ﻿using Application.DTOs.Filters.WishList;
-using Application.DTOs.Responses.Product;
+using Application.DTOs.Responses.Product.Client;
 using Domain.Shared;
 using MediatR;
 

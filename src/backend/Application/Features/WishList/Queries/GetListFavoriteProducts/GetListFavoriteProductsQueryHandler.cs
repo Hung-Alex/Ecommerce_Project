@@ -1,5 +1,5 @@
 ﻿using Application.Common.Interface;
-using Application.DTOs.Responses.Product;
+using Application.DTOs.Responses.Product.Client;
 using Application.Features.WishsList.Specification;
 using Domain.Entities.WishLists;
 using Domain.Shared;
@@ -26,13 +26,9 @@ namespace Application.Features.WishsList.Queries.GetListFavoriteProducts
                 {
                     Id = x.Product.Id,
                     Name = x.Product.Name,
-                    Description = x.Product.Description,
-                    UnitPrice = x.Product.UnitPrice,
                     Discount = x.Product.Discount,
-                    BrandId = x.Product.BrandId,
                     UrlSlug = x.Product.UrlSlug,
                     Price = x.Product.Price,
-                    Images = x.Product.Images.Select(x => x.Image.ImageUrl)
                 })
                 , request.Filter.PageNumber
                 , request.Filter.PageSize

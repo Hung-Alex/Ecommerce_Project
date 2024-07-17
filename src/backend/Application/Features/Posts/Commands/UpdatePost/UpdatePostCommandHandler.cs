@@ -46,8 +46,6 @@ namespace Application.Features.Posts.Commands.UpdatePost
             post.ShortDescription = request.ShortDescription;
             post.Description = request.Description;
             post.Title=request.Title;
-            post.Meta = request.Meta;
-            post.Pulished = request.Pulished;
             if (!(uploadResult is null))
             {
                 post.ImageUrl = uploadResult.Data.Url;
