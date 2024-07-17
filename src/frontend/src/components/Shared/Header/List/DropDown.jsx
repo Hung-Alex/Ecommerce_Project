@@ -24,7 +24,7 @@ const DropDown = () => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <Link to="/category/category">
+      <Link onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} to="/category/category">
         <button
           className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-800 focus:outline-none"
         >
@@ -37,7 +37,7 @@ const DropDown = () => {
           <div className="">
             {categories.map((category, index) => (
               <li key={index} className="border-b-2 py-1 pl-3">
-                <Link to={`/category/${category.id}`}>{category.name}</Link>
+                <Link onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} to={`/category/${category.urlSlug}`}>{category.name}</Link>
               </li>
             ))}
           </div>

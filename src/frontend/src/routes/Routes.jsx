@@ -36,10 +36,6 @@ export const router = createBrowserRouter([
         element: <ShopPage />,
       },
       {
-        path: "/category",
-        element: <ShopPage />,
-      },
-      {
         path: "/products/:slug",
         element: <Product />,
       },
@@ -50,48 +46,8 @@ export const router = createBrowserRouter([
       {
         path: "/checkout",
         element: (
-          // <PrivateRoute>
+          <PrivateRoute>
             <Checkout />
-          // </PrivateRoute>
-        ),
-      },
-      {
-        path: "/user/profile",
-        element: (
-          <PrivateRoute>
-            <Profile />
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: "/user/profile/update",
-        element: (
-          <PrivateRoute>
-            <UpdateProfile />
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: "/admin/products",
-        element: (
-          <PrivateRoute>
-            <AdminProducts />
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: "/admin/add-product",
-        element: (
-          <PrivateRoute>
-            <AddProduct />
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: "/admin/product/update/:id",
-        element: (
-          <PrivateRoute>
-            <UpdateProduct />
           </PrivateRoute>
         ),
       },
@@ -104,8 +60,40 @@ export const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: "signup",
+        path: "/signup",
         element: <SignUp />,
+      },
+    ],
+  },
+  {
+    path: "/user",
+    element: <PrivateRoute />, // Ensure all user routes are private
+    children: [
+      {
+        path: "profile",
+        element: <Profile />,
+      },
+      {
+        path: "profile/update",
+        element: <UpdateProfile />,
+      },
+    ],
+  },
+  {
+    path: "/admin",
+    element: <PrivateRoute />, // Ensure all admin routes are private
+    children: [
+      {
+        path: "products",
+        element: <AdminProducts />,
+      },
+      {
+        path: "add-product",
+        element: <AddProduct />,
+      },
+      {
+        path: "product/update/:id",
+        element: <UpdateProduct />,
       },
     ],
   },

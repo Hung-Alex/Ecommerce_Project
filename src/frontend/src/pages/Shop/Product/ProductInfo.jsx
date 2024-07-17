@@ -1,51 +1,36 @@
-import { Rating } from "@mui/material";
-import { BsArrowRightShort } from "react-icons/bs";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
+import { useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { CartContext } from "../../../context/CartContext";
-import { useParams } from "react-router-dom";
-import axios from "../../../utils/axios.js";
+import useFetch from "../../../hooks/useFetch";
 
 const ProductInfo = () => {
-  const [product, setProduct] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [isAddToCart, setIsAddToCart] = useState(false);
   const { slug } = useParams();
   const { addToCart } = useContext(CartContext);
-  const [qunatity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(1); // Giữ nguyên tên biến quantity
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const res = await axios.get(`/products/${slug}`);
-        setProduct(res.data.data);
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        setError(false);
-      }
-    })();
-  }, [slug]);
+  const { data: product, loading, error } = useFetch(`/products/${slug}`);
+
+  const [isAddedToCart, setIsAddedToCart] = useState(false); // Giữ nguyên tên biến isAddedToCart
 
   const handleDecrement = () => {
-    if (qunatity > 1) {
-      return setQuantity((preValue) => preValue - 1);
+    if (quantity > 1) {
+      setQuantity((prevQuantity) => prevQuantity - 1);
     }
-    return;
+  };
+
+  const handleIncrement = () => {
+    if (quantity < 10) {
+      setQuantity((prevQuantity) => prevQuantity + 1);
+    }
   };
 
   const handleClick = () => {
-    if (!isAddToCart) {
-      const notify = () => toast.success("Added to cart");
+    if (!isAddedToCart) {
       addToCart(product);
-      notify();
-      setIsAddToCart(true);
-      return;
-    }
-
-    const notify = () =>
+      toast.success("Added to cart");
+      setIsAddedToCart(true);
+    } else {
       toast.success("Product already added to cart", {
         style: {
           padding: "16px",
@@ -56,7 +41,7 @@ const ProductInfo = () => {
           secondary: "#FFFAEE",
         },
       });
-    notify();
+    }
   };
 
   if (loading) {
@@ -76,7 +61,7 @@ const ProductInfo = () => {
         <figure>
           <img
             className="rounded-2xl h-52 lg:h-96"
-            src={product.images?.[0].image}
+            src={product?.images?.[0]?.image}
             alt="product"
           />
         </figure>
@@ -115,15 +100,12 @@ const ProductInfo = () => {
             <input
               className="outline-none border border-[#274C5B] rounded-md w-12 h-8 text-center"
               type="number"
-              name="qunatity"
+              name="quantity"
+              value={quantity}
               readOnly
-              value={qunatity}
-              id=""
-              min={1}
-              max={10}
             />
             <button
-              onClick={() => setQuantity((preValue) => preValue + 1)}
+              onClick={handleIncrement}
               className="text-2xl font-semibold bg-white p-1 w-8 h-8 flex justify-center items-center rounded-md"
             >
               +
@@ -133,7 +115,7 @@ const ProductInfo = () => {
             onClick={handleClick}
             className="w-[150px] bg-[#274c5b] text-white px-2 py-1 md:px-4 md:py-3 text-sm md:text-base rounded-md md:rounded-xl flex justify-center items-center md:font-semibold"
           >
-            Add To Cart{" "}
+            {isAddedToCart ? "Added To Cart" : "Add To Cart"}
             <BsArrowRightShort className="bg-[#335B6B] text-white rounded-full ml-1" />
           </button>
         </div>

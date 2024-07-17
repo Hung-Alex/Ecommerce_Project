@@ -11,7 +11,7 @@ import UserProvider from "./context/Usercontext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-      <ProductProvider>
+      {/* <ProductProvider> */}
     <CategoryProvider>
         <CartProvider>
           <UserProvider>
@@ -20,6 +20,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           </UserProvider>
         </CartProvider>
     </CategoryProvider>
-      </ProductProvider>
+      {/* </ProductProvider> */}
   </React.StrictMode>
 );

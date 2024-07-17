@@ -10,7 +10,7 @@ export const ProductContext = createContext({
 
 // Provider cho ProductContext
 const ProductProvider = ({ children }) => {
-  const { data: products, loading, error } = useFetch("/products");
+  // const { data: products, loading, error } = useFetch("/products");
   return (
     <ProductContext.Provider
       value={{
