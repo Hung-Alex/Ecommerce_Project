@@ -22,11 +22,11 @@ namespace Domain.Entities.Products
         public Guid CategoryId { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
-        public virtual ICollection<Image> Images { get; set; } = new List<Image>();
+        public virtual IEnumerable<Image> Images { get; set; } = new List<Image>();
         public virtual ICollection<ProductSkus> ProductSkus { get; set; } = new List<ProductSkus>();
-        public virtual ICollection<CartItem> CartItems { get; set; }
-        public virtual ICollection<Ratting> Rattings { get; set; }
-        public virtual ICollection<WishList> WishLists { get; set; }
+        public virtual IEnumerable<CartItem> CartItems { get; set; }
+        public virtual IEnumerable<Ratting> Rattings { get; set; }
+        public virtual IEnumerable<WishList> WishLists { get; set; }
         public Guid? CreatedByUserId { get; set; }
         public virtual User CreatedByUser { get; set; }
         public Guid? UpdatedByUserId { get; set; }

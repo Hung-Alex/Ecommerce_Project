@@ -32,7 +32,6 @@ namespace WebMemoryzoneApi.Controllers
             if (result.IsSuccess is false) return NotFound(result);
             return Ok(result);
         }
-        [Authorize(Roles ="Admin")]
         [HttpGet]
         public async Task<ActionResult> GetProducts([FromQuery] ProductFilter productFilter)
         {

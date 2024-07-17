@@ -12,7 +12,7 @@ namespace Domain.Entities.Slides
             Description = description ?? throw new ArgumentNullException();
             IsActive = isActive;
         }
-        private Slide() : base() { }
+        public Slide() : base() { }
         public string Title { get; set; }
         public string Description { get; set; }
         public bool IsActive { get; set; }
