@@ -86,7 +86,7 @@ namespace Infrastructure
             services.AddCors(options => options.AddPolicy("AllowAll",
                 policies
                 => policies
-                .WithOrigins("http://localhost:3000/")
+                .WithOrigins("http://localhost:3000")
                 .AllowCredentials()
                 .SetIsOriginAllowedToAllowWildcardSubdomains()
                 .AllowAnyHeader()
