@@ -30,7 +30,11 @@ namespace WebMemoryzoneApi.Controllers
         [HttpPost("sign-in-google")]
         public async Task<IActionResult> SignInWithGoole([FromBody]LoginGoogleCommand command)
         {
-            var result = await _googleAuthenService.SignInByGoogleAsync(command.IdToken);
+            var result = await _mediator.Send(command);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result);
+            }
             return Ok(result);
         }      
         [HttpPost("register")]
