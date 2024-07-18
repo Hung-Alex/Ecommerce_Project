@@ -53,7 +53,6 @@ const UserProvider = ({ children }) => {
   const getUserInfo = async () => {
     try {
       const userName = Cookies.get('userName');
-      console.log(userName);
       if (userName) {
         setUser({ name: userName, image: img });
       } else {

@@ -2,7 +2,6 @@ import { Rating } from "@mui/material";
 import { Link } from "react-router-dom";
 
 const Card = ({ item }) => {
-  console.log(item);
   return (
     <Link
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}

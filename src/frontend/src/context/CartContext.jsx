@@ -1,66 +1,57 @@
-import { createContext, useState } from "react";
+// CartContext.js
+import React, { createContext, useState, useEffect } from "react";
 
-export const CartContext = createContext({
-  cart: [],
-  addToCart: (product) => {},
-  removeFromCart: (id) => {},
-  deleteFromCart: (id) => {},
-});
+export const CartContext = createContext();
 
-const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState([]);
+const CartContextProvider = (props) => {
+  const initialCart = JSON.parse(localStorage.getItem("cart")) || [];
+  const [cart, setCart] = useState(initialCart);
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
 
   const addToCart = (product) => {
-    const existingItem = cart.find((item) => item._id === product._id);
-    if (existingItem) {
-      setCart(
-        cart.map((item) =>
-          item._id === product._id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        )
-      );
+    console.log(product);
+    const existingItemIndex = cart.findIndex((item) => {
+      return item.id === product.id;
+    });
+
+    if (existingItemIndex !== -1) {
+      // If item already exists in cart, increase quantity
+      const updatedCart = [...cart];
+      updatedCart[existingItemIndex].quantity++;
+      setCart(updatedCart);
     } else {
+      // Otherwise, add new item to cart
       setCart([...cart, { ...product, quantity: 1 }]);
     }
   };
 
-  const removeFromCart = (id) => {
-    const isExist = cart.find((item) => item._id === id);
-    if (isExist) {
-      setCart(
-        cart.map((item) =>
-          item._id === id && item.quantity > 1
-            ? { ...item, quantity: item.quantity - 1 }
-            : item
-        )
-      );
-    } else {
-      setCart(cart.filter((item) => item._id !== id));
-    }
+  const removeFromCart = (productId) => {
+    const updatedCart = cart.map((item) =>
+      item.id === productId && item.quantity > 1
+        ? { ...item, quantity: item.quantity - 1 }
+        : item
+    );
+    setCart(updatedCart.filter((item) => item.quantity > 0));
   };
 
-  const deleteFromCart = (id) => {
-    setCart(cart.filter((item) => item._id !== id));
+  const deleteFromCart = (productId) => {
+    setCart(cart.filter((item) => item.id !== productId));
   };
 
   const totalPrice = () => {
-    let totalPrice = 0;
-    cart.map((item) => (totalPrice += item.price * item.quantity));
-    return Number(totalPrice.toFixed(2));
+    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
-  const cartInfo = {
-    cart,
-    setCart,
-    addToCart,
-    removeFromCart,
-    deleteFromCart,
-    totalPrice,
-  };
   return (
-    <CartContext.Provider value={cartInfo}>{children}</CartContext.Provider>
+    <CartContext.Provider
+      value={{ cart, addToCart, removeFromCart, deleteFromCart, totalPrice }}
+    >
+      {props.children}
+    </CartContext.Provider>
   );
 };
 
-export default CartProvider;
+export default CartContextProvider;
