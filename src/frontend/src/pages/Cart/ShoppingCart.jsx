@@ -1,26 +1,26 @@
+// ShoppingCart.js
+import React, { useContext } from "react";
 import { BsCheck2 } from "react-icons/bs";
-import { useContext } from "react";
 import { CartContext } from "../../context/CartContext";
 import { Link } from "react-router-dom";
 
 const ShoppingCart = () => {
   const { cart, addToCart, removeFromCart, deleteFromCart, totalPrice } =
     useContext(CartContext);
+
   return (
     <>
       {cart.length > 0 ? (
         <section className="mx-auto max-w-2xl px-4 py-8 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900">
-            Cart
-          </h1>
+          <h1 className="text-4xl font-bold tracking-tight text-gray-900">Cart</h1>
           {/* products */}
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 my-8">
             <div className="col-span-3 border-b">
               {cart.map((item) => (
-                <div key={item._id} className="flex gap-6 py-8 border-t">
+                <div key={item.id} className="flex gap-6 py-8 border-t">
                   <figure>
                     <img
-                      src={item.image}
+                      src={item.images[0]}
                       alt={item.name}
                       className="h-[96px] w-[96px] md:h-[192px] md:w-[192px] object-cover object-center"
                     />
@@ -30,10 +30,6 @@ const ShoppingCart = () => {
                       {/* Product details */}
                       <div className="flex flex-col gap-1">
                         <h3>{item.name}</h3>
-                        <div className="flex gap-4 text-gray-500">
-                          {/* <p>{item.color} </p> */}
-                          {/* <p className="border-l pl-4">Large</p> */}
-                        </div>
                         <p>{item.price}</p>
                       </div>
                       {/* Listbox */}
@@ -41,7 +37,7 @@ const ShoppingCart = () => {
                         <div className="flex gap-1">
                           <button
                             className="px-3 border"
-                            onClick={() => removeFromCart(item._id)}
+                            onClick={() => removeFromCart(item.id)}
                           >
                             -
                           </button>
@@ -58,7 +54,7 @@ const ShoppingCart = () => {
                           </button>
                         </div>
                         {/* remove button */}
-                        <button onClick={() => deleteFromCart(item._id)}>
+                        <button onClick={() => deleteFromCart(item.id)}>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"

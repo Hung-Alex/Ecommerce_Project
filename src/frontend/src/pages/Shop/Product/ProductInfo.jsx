@@ -1,15 +1,19 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { CartContext } from "../../../context/CartContext";
 import { Rating } from "@mui/material";
 import { BsArrowRightShort } from "react-icons/bs";
 
-const ProductInfo = (productData) => {
+const ProductInfo = ({ productData }) => {
   const { addToCart } = useContext(CartContext);
   const [quantity, setQuantity] = useState(1);
-  const product = productData?.productData;
+  const product = productData;
 
   const [isAddedToCart, setIsAddedToCart] = useState(false);
+
+  useEffect(() => {
+    setIsAddedToCart(false);
+  }, [product]);
 
   const handleDecrement = () => {
     if (quantity > 1) {

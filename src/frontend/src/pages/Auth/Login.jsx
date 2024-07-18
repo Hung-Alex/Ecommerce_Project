@@ -21,7 +21,6 @@ function Login() {
       if (response.data) {
         const notify = () => toast.success("Login successfully");
         notify();
-        console.log(response.data);
         localStorage.setItem("accessToken", response.data.data.accessToken);
         localStorage.setItem("refreshToken", response.data.data.refreshToken);
         login(response.data.data);
