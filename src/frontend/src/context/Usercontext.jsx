@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "../utils/axios";
 import Cookies from "js-cookie";
+import img from "../assets/Home/img/user.png"
 
 export const UserContext = createContext({
   user: null,
@@ -54,12 +55,11 @@ const UserProvider = ({ children }) => {
       const userName = Cookies.get('userName');
       console.log(userName);
       if (userName) {
-        setUser({ name: userName });
+        setUser({ name: userName, image: img });
       } else {
-        const response = await axios.get('/authentications/user-info');
-        setUser(response.data); // Set user state from response
-        // Set the user name in cookies if not already set
-        Cookies.set('user-name', response.data.name, { expires: 7 });
+        // const response = await axios.get('/authentications/user-info');
+        // setUser(response.data);
+        // Cookies.set('user-name', response.data.name, { expires: 7 });
       }
     } catch (error) {
       console.log('Failed to fetch user info: ', error);
@@ -67,7 +67,8 @@ const UserProvider = ({ children }) => {
   };
 
   const login = (data) => {
-    setUser(data);
+    // setUser(data);
+    setUser({ image: img });
     Cookies.set("accessToken", data.accessToken);
     Cookies.set("refreshToken", data.refreshToken);
     Cookies.set("userName", data.user.name);
