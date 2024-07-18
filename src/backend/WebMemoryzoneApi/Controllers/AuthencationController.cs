@@ -1,9 +1,9 @@
 ﻿using Application.Common.Interface;
 using Application.Common.Interface.IdentityService;
 using Application.Features.Authen.Commands.Login;
+using Application.Features.Authen.Commands.LoginWithGoogle;
 using Application.Features.Authen.Commands.Refresh;
 using Application.Features.Authen.Commands.Register;
-using Application.Features.Authen.Queries.GetGoogleLoginUrl;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
@@ -27,52 +27,12 @@ namespace WebMemoryzoneApi.Controllers
             _configuration = configuration;
 
         }
-        [HttpGet("sign-in-google")]
-        public async Task<IActionResult> SignInWithGoole(string code, string state)
+        [HttpPost("sign-in-google")]
+        public async Task<IActionResult> SignInWithGoole([FromBody]LoginGoogleCommand command)
         {
-            // var result = await _googleAuthenService.SignInByGoogleAsync(code);
-            //return Ok(code);
-            var _googleSettings = _configuration.GetSection("Google").Get<GoogleSettings>();
-
-
-            var requestBody = new FormUrlEncodedContent(new[]
-        {
-            new KeyValuePair<string, string>("code", code),
-            new KeyValuePair<string, string>("client_id", _googleSettings.ClientId),
-            new KeyValuePair<string, string>("client_secret", _googleSettings.ClientSecret),
-            new KeyValuePair<string, string>("redirect_uri", _googleSettings.RedirectUri),
-            new KeyValuePair<string, string>("grant_type", "authorization_code")
-        });
-
-            var response = await httpClient.PostAsync("https://oauth2.googleapis.com/token", requestBody);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                return BadRequest("Error exchanging authorization code for tokens.");
-            }
-
-            var responseBody = await response.Content.ReadAsStringAsync();
-            var json = JObject.Parse(responseBody);
-
-            var idToken = json.Value<string>("id_token");
-            var accessToken = json.Value<string>("access_token");
-            var result = await _googleAuthenService.SignInByGoogleAsync(idToken);
-            // Xử lý ID token và access token theo nhu cầu của bạn
-            // Ví dụ: Lưu trữ trong database, thiết lập cookie, v.v.
-
-            return Ok(new { idToken, accessToken });
-        }
-        [HttpGet("get-login-google-url")]
-        public async Task<IActionResult> GetLoginGoogleUrl()
-        {
-            var result = await _mediator.Send(new GetGoogleLoginUrlQuery());
-            if (result.IsSuccess is false)
-            {
-                return NotFound(result);
-            }
+            var result = await _googleAuthenService.SignInByGoogleAsync(command.IdToken);
             return Ok(result);
-
-        }
+        }      
         [HttpPost("register")]
         public async Task<ActionResult> Register([FromBody] RegisterCommand command)
         {
