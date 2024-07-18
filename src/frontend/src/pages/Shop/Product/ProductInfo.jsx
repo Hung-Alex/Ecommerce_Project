@@ -1,17 +1,15 @@
 import { useContext, useState } from "react";
-import { useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { CartContext } from "../../../context/CartContext";
-import useFetch from "../../../hooks/useFetch";
+import { Rating } from "@mui/material";
+import { BsArrowRightShort } from "react-icons/bs";
 
-const ProductInfo = () => {
-  const { slug } = useParams();
+const ProductInfo = (productData) => {
   const { addToCart } = useContext(CartContext);
-  const [quantity, setQuantity] = useState(1); // Giữ nguyên tên biến quantity
+  const [quantity, setQuantity] = useState(1);
+  const product = productData?.productData;
 
-  const { data: product, loading, error } = useFetch(`/products/${slug}`);
-
-  const [isAddedToCart, setIsAddedToCart] = useState(false); // Giữ nguyên tên biến isAddedToCart
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
 
   const handleDecrement = () => {
     if (quantity > 1) {
@@ -44,24 +42,16 @@ const ProductInfo = () => {
     }
   };
 
-  if (loading) {
-    return <h1>Loading...</h1>;
-  }
-
-  if (error) {
-    return <h1>Something went wrong</h1>;
-  }
-
   return (
     <>
       <div className="relative">
         <p className="bg-[#274c5b] absolute top-0 left-0 text-white text-center rounded-md w-fit px-2 py-1 mt-4 ml-6">
-          {product?.category}
+          {product?.category?.name}
         </p>
         <figure>
           <img
             className="rounded-2xl h-52 lg:h-96"
-            src={product?.images?.[0]?.image}
+            src={product?.images?.[0]}
             alt="product"
           />
         </figure>

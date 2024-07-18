@@ -55,6 +55,7 @@ const Header = () => {
                 }
                 alt=""
               />
+              <p>{user?.name}</p>
             </button>
 
             {/* Dropdown Menu */}
