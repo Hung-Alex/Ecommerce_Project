@@ -25,6 +25,8 @@ namespace Application.Features.Slides.Queries.GetSlideActive
                     Description = slide.Description
                     ,
                     Images = slide.SlidesImages.Select(x => x.ImageUrl).ToList()
+                    ,
+                    IsActive= slide.IsActive
                 });
         }
     }

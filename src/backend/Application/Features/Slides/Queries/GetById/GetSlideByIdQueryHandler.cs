@@ -22,7 +22,7 @@ namespace Application.Features.Slides.Queries.GetById
         public async Task<Result<SlideDTO>> Handle(GetSlideByIdQuery request, CancellationToken cancellationToken)
         {
             var repo = _unitOfWork.GetRepository<Slide>();
-            var getSlideByIdSpecification = new GetSlideDetailAndImageSpecification(request.Id);
+            var getSlideByIdSpecification = new GetSlideByIdSepecification(request.Id);
             var slide = await repo.FindOneAsync(getSlideByIdSpecification);
             if (slide == null) return Result<SlideDTO>.ResultFailures(ErrorConstants.NotFoundWithId(request.Id));
             var productDTO = new SlideDTO()
