@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "../utils/axios";
 import Cookies from "js-cookie";
+import img from "../assets/Home/img/user.png"
 
 export const UserContext = createContext({
   user: null,
@@ -41,19 +42,36 @@ const UserProvider = ({ children }) => {
     return () => clearInterval(tokenTimer);
   }, []);
 
+  // const getUserInfo = async () => {
+  //   try {
+  //     const response = await axios.get("/authentications/user-info");
+  //     setUser(response.data); // Set user state from response
+  //   } catch (error) {
+  //     console.log("Failed to fetch user info: ", error);
+  //   }
+  // };
   const getUserInfo = async () => {
     try {
-      const response = await axios.get("/authentications/user-info");
-      setUser(response.data); // Set user state from response
+      const userName = Cookies.get('userName');
+      console.log(userName);
+      if (userName) {
+        setUser({ name: userName, image: img });
+      } else {
+        // const response = await axios.get('/authentications/user-info');
+        // setUser(response.data);
+        // Cookies.set('user-name', response.data.name, { expires: 7 });
+      }
     } catch (error) {
-      console.log("Failed to fetch user info: ", error);
+      console.log('Failed to fetch user info: ', error);
     }
   };
 
   const login = (data) => {
-    setUser(data);
+    // setUser(data);
+    setUser({ image: img });
     Cookies.set("accessToken", data.accessToken);
     Cookies.set("refreshToken", data.refreshToken);
+    Cookies.set("userName", data.user.name);
     axios.defaults.headers.common["Authorization"] = `Bearer ${data.accessToken}`;
   };
 
@@ -65,6 +83,8 @@ const UserProvider = ({ children }) => {
     } finally {
       Cookies.remove("accessToken");
       Cookies.remove("refreshToken");
+      Cookies.remove("X-Access-Token");
+      Cookies.remove("X-Refresh-Token");
       delete axios.defaults.headers.common["Authorization"];
       setUser(null);
     }
