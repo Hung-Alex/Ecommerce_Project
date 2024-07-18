@@ -13,6 +13,7 @@ namespace Infrastructure.Data.Configuration
                 .WithOne(x => x.Slide)
                 .HasForeignKey(x => x.SlideId)
                 .OnDelete(DeleteBehavior.Cascade);
+            builder.HasIndex(x => x.IsActive).IsUnique();
         }
     }
 }

@@ -1,12 +1,14 @@
 ﻿using Application.Common.Interface;
 using Application.Common.Interface.IdentityService;
 using Application.DTOs.Internal;
+using Domain.Entities.Carts;
+using Domain.Entities.Users;
 using Domain.Shared;
 using Google.Apis.Auth;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
+using System.Transactions;
 using static Google.Apis.Auth.GoogleJsonWebSignature;
 
 namespace Infrastructure.Services.GoogleAuthen
@@ -17,8 +19,10 @@ namespace Infrastructure.Services.GoogleAuthen
         private readonly JwtSetting _jwtSetting;
         private readonly GoogleSettings _googleSettings;
         private readonly UserManager<ApplicationUser> _userManager;
-        public GoogleAuthenService(IConfiguration configuration, UserManager<ApplicationUser> userManager)
+        private readonly IUnitOfWork _unitOfWork;
+        public GoogleAuthenService(IConfiguration configuration, UserManager<ApplicationUser> userManager, IUnitOfWork unitOfWork)
         {
+            _unitOfWork = unitOfWork;
             _userManager = userManager;
             _configuration = configuration;
             _jwtSetting = configuration.GetSection("JwtSetting").Get<JwtSetting>() ?? throw new NotImplementedException("configuration not found");
@@ -27,11 +31,43 @@ namespace Infrastructure.Services.GoogleAuthen
 
         public async Task<Result<Guid>> SignInByGoogleAsync(string IdToken, CancellationToken cancellationToken = default)
         {
-            var payload = await GoogleJsonWebSignature.ValidateAsync(IdToken, new ValidationSettings
+            using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                Audience = new List<string>() { _googleSettings.ClientId }
-            });
-            return null;
+                try
+                {
+                    var payload = await GoogleJsonWebSignature.ValidateAsync(IdToken, new ValidationSettings
+                    {
+                        Audience = new List<string>() { _googleSettings.ClientId }
+                    });
+
+                    var userApplication = await _userManager.FindByEmailAsync(payload.Email);
+                    if (userApplication != null)
+                    {
+                        return Result<Guid>.ResultSuccess(userApplication.Id);
+                    }
+                    var repoUserDomain = _unitOfWork.GetRepository<User>();
+                    var newUserDomain = new User()
+                    {
+                        AvatarImage = payload.Picture,
+                        FirstName = payload.GivenName,
+                        LastName = payload.FamilyName,
+                    };
+                    repoUserDomain.Add(newUserDomain);
+                    var newUserInfo = new ApplicationUser() { UserName="goole"+newUserDomain.Id.ToString(), Email = payload.Email, UserId = newUserDomain.Id };
+                    var newUserApplication = await _userManager.CreateAsync(newUserInfo);
+                    var repoCart = _unitOfWork.GetRepository<Cart>();
+                    repoCart.Add(new Cart() { UserId = newUserDomain.Id });
+                    await _unitOfWork.Commit();
+                    transactionScope.Complete();
+                    return Result<Guid>.ResultSuccess(newUserInfo.Id);
+                }
+                catch (Exception e)
+                {
+                    transactionScope.Dispose();
+                    return Result<Guid>.ResultFailures();
+                }
+            }
+
         }
     }
 }

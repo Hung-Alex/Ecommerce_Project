@@ -5,6 +5,7 @@ using Application.Features.Slides.Commands.DeleteSlide;
 using Application.Features.Slides.Commands.UpdateSlide;
 using Application.Features.Slides.Queries.Get;
 using Application.Features.Slides.Queries.GetById;
+using Application.Features.Slides.Queries.GetSlideActive;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,13 @@ namespace WebMemoryzoneApi.Controllers
             return Ok(result);
         }
         [AllowAnonymous]
+        [HttpGet("is-actice")]
+        public async Task<ActionResult> GetSlideIsActive()
+        {
+            var result = await _mediator.Send(new GetSlideIsActiveQuery());
+            if (!result.IsSuccess) return NotFound(result);
+            return Ok(result);
+        }
         [HttpGet]
         public async Task<ActionResult> GetSlides([FromQuery] SlideFilter slideFilter)
         {

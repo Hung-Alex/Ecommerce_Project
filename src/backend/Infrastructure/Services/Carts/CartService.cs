@@ -3,7 +3,7 @@ using Application.DTOs.Responses.Cart;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Services.Cart
+namespace Infrastructure.Services.Carts
 {
     public class CartService : ICartService
     {

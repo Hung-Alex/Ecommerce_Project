@@ -25,6 +25,7 @@ namespace Application.Features.Slides.Queries.Get
             {
                 Id = x.Id,
                 Title = x.Title,
+                IsActive= x.IsActive,
                 Description = x.Description,
                 Images = x.SlidesImages.Select(x => x.ImageUrl)
             })
