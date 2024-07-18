@@ -1,4 +1,4 @@
-import CatCard from "../../../components/UI/Card/catCard";
+import CatCard from "../../../components/UI/Card/CatCard.jsx";
 import React from "react";
 import { useCategoryContext } from "../../../context/CategoryContext.jsx"
 

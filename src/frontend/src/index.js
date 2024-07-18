@@ -4,10 +4,11 @@ import { RouterProvider } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import "./index.css";
 import { router } from "./routes/Routes.jsx";
-import ProductProvider from "./context/ProductContext";
+import ProductProvider from "./context/ProductContext.jsx";
 import CategoryProvider from "./context/CategoryContext.jsx";
-import CartProvider from "./context/CartContext";
-import UserProvider from "./context/Usercontext";
+import CartProvider from "./context/CartContext.jsx";
+import UserProvider from "./context/Usercontext.jsx";
+
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
