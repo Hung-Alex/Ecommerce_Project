@@ -29,6 +29,7 @@ namespace Application.Features.Slides.Queries.GetById
             {
                 Id = slide.Id,
                 Title = slide.Title,
+                IsActive = slide.IsActive,
                 Description = slide.Description,
                 Images = slide.SlidesImages.Select(x => x.ImageUrl)
             };
