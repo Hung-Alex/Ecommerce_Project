@@ -93,7 +93,7 @@ namespace Infrastructure.Data.Seed
             foreach (var item in product)
             {
                 var images = AssignedImageForProduct(item);
-                var variants= AssignedVariantForProduct(item);
+                var variants = AssignedVariantForProduct(item);
                 await _dbContext.AddRangeAsync(images);
                 await _dbContext.AddRangeAsync(variants);
             }
@@ -364,7 +364,7 @@ namespace Infrastructure.Data.Seed
                     Name = "Fresh & Green",
                     UrlSlug = "fresh-green",
                     Description = "Providing fresh and high-quality vegetables directly from farms to your table.",
-                    Image = "https://images.pexels.com/photos/755992/pexels-photo-755992.jpeg?auto=compress&cs=tinysrgb&w=600" 
+                    Image = "https://images.pexels.com/photos/755992/pexels-photo-755992.jpeg?auto=compress&cs=tinysrgb&w=600"
                 },
                 new Brand
                 {
@@ -372,7 +372,7 @@ namespace Infrastructure.Data.Seed
                     Name = "Organic Valley",
                     UrlSlug = "organic-valley",
                     Description = "Offering a wide range of organic vegetables grown sustainably and without harmful chemicals.",
-                    Image = "https://images.pexels.com/photos/104842/bmw-vehicle-ride-bike-104842.jpeg?auto=compress&cs=tinysrgb&w=600" 
+                    Image = "https://images.pexels.com/photos/104842/bmw-vehicle-ride-bike-104842.jpeg?auto=compress&cs=tinysrgb&w=600"
                 },
                 new Brand
                 {
@@ -413,16 +413,18 @@ namespace Infrastructure.Data.Seed
         {
             List<Categories> subCategories = new List<Categories>()
             {
-                new Categories() { Id = Guid.NewGuid(), Name = "Water Spinach", Description = "Water spinach is a popular green vegetable in Vietnam.", Image = "https://images.pexels.com/photos/26861260/pexels-photo-26861260/free-photo-of-nh-ng-ng-i-d-ng-ph-t-ng-v-n.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load", UrlSlug = "water-spinach" },
-                new Categories() { Id = Guid.NewGuid(), Name = "Napa Cabbage", Description = "Napa cabbage is a type of Chinese cabbage, commonly used to make kimchi.", Image = "https://images.pexels.com/photos/17514564/pexels-photo-17514564/free-photo-of-phong-c-nh-nh-ng-dam-may-th-i-ti-t-d-i.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load", UrlSlug = "napa-cabbage" },
-                new Categories() { Id = Guid.NewGuid(), Name = "Broccoli", Description = "Broccoli is a green vegetable that is often eaten steamed or raw.", Image = "https://images.pexels.com/photos/68507/spring-flowers-flowers-collage-floral-68507.jpeg?auto=compress&cs=tinysrgb&w=600", UrlSlug = "broccoli" },
-                new Categories() { Id = Guid.NewGuid(), Name = "Spinach", Description = "Spinach is a leafy green vegetable that is rich in iron.", Image = "https://images.pexels.com/photos/250716/pexels-photo-250716.jpeg?auto=compress&cs=tinysrgb&w=600", UrlSlug = "spinach" },
-                new Categories() { Id = Guid.NewGuid(), Name = "Carrot", Description = "Carrots are root vegetables that are often orange in color.", Image = "https://images.pexels.com/photos/1058836/pexels-photo-1058836.jpeg?auto=compress&cs=tinysrgb&w=600", UrlSlug = "carrot" },
-                new Categories() { Id = Guid.NewGuid(), Name = "Tomato", Description = "Tomatoes are red fruits that are commonly used in salads and cooking.", Image = "https://images.pexels.com/photos/673857/pexels-photo-673857.jpeg?auto=compress&cs=tinysrgb&w=600", UrlSlug = "tomato" },
-                new Categories() { Id = Guid.NewGuid(), Name = "Cucumber", Description = "Cucumbers are long, green vegetables that are often used in salads.", Image = "https://images.pexels.com/photos/235683/pexels-photo-235683.jpeg?auto=compress&cs=tinysrgb&w=600", UrlSlug = "cucumber" },
-                new Categories() { Id = Guid.NewGuid(), Name = "Bell Pepper", Description = "Bell peppers are colorful vegetables that are often used in cooking.", Image = "https://images.pexels.com/photos/409800/pexels-photo-409800.jpeg?auto=compress&cs=tinysrgb&w=600", UrlSlug = "bell-pepper" },
-                new Categories() { Id = Guid.NewGuid(), Name = "Zucchini", Description = "Zucchini is a type of summer squash that is often used in cooking.", Image = "https://images.pexels.com/photos/1408199/pexels-photo-1408199.jpeg?auto=compress&cs=tinysrgb&w=600", UrlSlug = "zucchini" },
-                new Categories() { Id = Guid.NewGuid(), Name = "Lettuce", Description = "Lettuce is a leafy green vegetable that is commonly used in salads.", Image = "https://images.pexels.com/photos/1235742/pexels-photo-1235742.jpeg?auto=compress&cs=tinysrgb&w=600", UrlSlug = "lettuce" }
+                new Categories() { Id = Guid.NewGuid(), Name = "Honey", Description = "Water spinach is a popular green vegetable in Vietnam.", Image = "https://organiconline.com.bd/wp-content/uploads/2021/09/Honeycm.png", UrlSlug = "water-spinach" },
+                new Categories() { Id = Guid.NewGuid(), Name = "Ghee", Description = "Napa cabbage is a type of Chinese cabbage, commonly used to make kimchi.", Image = "https://organiconline.com.bd/wp-content/uploads/2021/09/Gheecm.png", UrlSlug = "napa-cabbage" },
+                new Categories() { Id = Guid.NewGuid(), Name = "Oil", Description = "Broccoli is a green vegetable that is often eaten steamed or raw.", Image = "https://organiconline.com.bd/wp-content/uploads/2021/09/Oilcm.png", UrlSlug = "broccoli" },
+                new Categories() { Id = Guid.NewGuid(), Name = "Gitf Items", Description = "Spinach is a leafy green vegetable that is rich in iron.", Image = "https://organiconline.com.bd/wp-content/uploads/2021/10/Gift-Items.png", UrlSlug = "spinach" },
+                new Categories() { Id = Guid.NewGuid(), Name = "Super Foods", Description = "Carrots are root vegetables that are often orange in color.", Image = "https://organiconline.com.bd/wp-content/uploads/2021/09/Superfoodcm.png", UrlSlug = "carrot" },
+                new Categories() { Id = Guid.NewGuid(), Name = "Herbal Powders", Description = "Tomatoes are red fruits that are commonly used in salads and cooking.", Image = "https://organiconline.com.bd/wp-content/uploads/2021/09/Herbalcm.png", UrlSlug = "tomato" },
+                new Categories() { Id = Guid.NewGuid(), Name = "Grocery Items", Description = "Cucumbers are long, green vegetables that are often used in salads.", Image = "https://organiconline.com.bd/wp-content/uploads/2021/09/Grocerycm.png", UrlSlug = "cucumber" },
+                new Categories() { Id = Guid.NewGuid(), Name = "Spices Powders", Description = "Bell peppers are colorful vegetables that are often used in cooking.", Image = "https://organiconline.com.bd/wp-content/uploads/2021/09/Spicescm.png", UrlSlug = "bell-pepper" },
+                new Categories() { Id = Guid.NewGuid(), Name = "Seeds", Description = "Zucchini is a type of summer squash that is often used in cooking.", Image = "https://organiconline.com.bd/wp-content/uploads/2021/09/Seedscm.png", UrlSlug = "zucchini" },
+                new Categories() { Id = Guid.NewGuid(), Name = "Tea & Snacks", Description = "Lettuce is a leafy green vegetable that is commonly used in salads.", Image = "https://organiconline.com.bd/wp-content/uploads/2021/09/otherscm.png", UrlSlug = "lettuce" },
+                new Categories() { Id = Guid.NewGuid(), Name = "Nuts", Description = "Zucchini is a type of summer squash that is often used in cooking.", Image = "https://organiconline.com.bd/wp-content/uploads/2021/09/Nutscm.png", UrlSlug = "zucchini" },
+                new Categories() { Id = Guid.NewGuid(), Name = "Fish & Meat", Description = "Lettuce is a leafy green vegetable that is commonly used in salads.", Image = "https://organiconline.com.bd/wp-content/uploads/2021/10/Fish.png", UrlSlug = "lettuce" }
             };
             return subCategories;
         }
@@ -734,6 +736,56 @@ namespace Infrastructure.Data.Seed
                     Discount = 5,
                     CategoryId=categories[5].Id,
                     BrandId=brands[5].Id
+                },
+                new Product
+                {
+                    Name = "Salmon Fillet",
+                    Description = "Fresh and tender salmon fillet, perfect for grilling or baking.",
+                    Price = 15.99M,
+                    UrlSlug = "salmon-fillet",
+                    Discount = null,
+                    CategoryId = categories[10].Id,
+                    BrandId = brands[5].Id
+                },
+                new Product
+                {
+                    Name = "Chicken Breast",
+                    Description = "Lean and juicy chicken breast, great for a healthy meal.",
+                    Price = 7.99M,
+                    UrlSlug = "chicken-breast",
+                    Discount = null,
+                    CategoryId = categories[10].Id,
+                    BrandId = brands[5].Id
+                },
+                new Product
+                {
+                    Name = "Beef Steak",
+                    Description = "Tender and flavorful beef steak, ideal for grilling.",
+                    Price = 12.50M,
+                    UrlSlug = "beef-steak",
+                    Discount = null,
+                    CategoryId = categories[10].Id,
+                    BrandId = brands[5].Id
+                },
+                new Product
+                {
+                    Name = "Pork Chops",
+                    Description = "Succulent pork chops, perfect for roasting or frying.",
+                    Price = 8.25M,
+                    UrlSlug = "pork-chops",
+                    Discount = null,
+                    CategoryId = categories[10].Id,
+                    BrandId = brands[5].Id
+                },
+                new Product
+                {
+                    Name = "Shrimp",
+                    Description = "Fresh and delicious shrimp, excellent for seafood dishes.",
+                    Price = 10.99M,
+                    UrlSlug = "shrimp",
+                    Discount = null,
+                    CategoryId = categories[10].Id,
+                    BrandId = brands[5].Id
                 }
             };
             #endregion

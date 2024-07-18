@@ -18,12 +18,15 @@ namespace Application.Features.WishsList.Specification
         }
         protected override void Handler()
         {
-            AddIncludeString("Product.Images.Image");
+            AddIncludeString("Product.Images");
+            AddIncludeString("Product.Category");
+            AddIncludeString("Product.Brand");
+            AddIncludeString("Product.Rattings");
             ApplyPaging(_filter.PageSize, _filter.PageNumber);
             if (PredicatedProperty.IsExitedProperty<WishList>(_filter.SortColoumn))
             {
                 var property = PredicatedProperty.BuildProperty<WishList>(_filter.SortColoumn);
-                switch (_filter.SortBy)
+                switch (_filter.SortBy.ToUpper())
                 {
                     case "ASC":
                         ApplyOrderBy(property);

@@ -35,6 +35,7 @@ namespace Infrastructure.Services.Section
                                    UrlSlug = x.UrlSlug,
                                    Discount = x.Discount,
                                    Price = x.Price,
+                                   Category = new CategoryProductDTO { Id = cate.Id, Name = cate.Name, UrlSlug = cate.UrlSlug },
                                    Brand = new BrandProductDTO { Id = x.Brand.Id, Name = x.Brand.Name, UrlSlug = x.Brand.UrlSlug },
                                    Rate = x.Rattings.Count() > 0 ? x.Rattings.Average(r => r.Rate) : 0,
                                    TotalRate = x.Rattings.Count(),
