@@ -1,13 +1,10 @@
-﻿using Application.Common.Interface;
-using Application.Common.Interface.IdentityService;
+﻿using Application.Common.Interface.IdentityService;
 using Application.Features.Authen.Commands.Login;
 using Application.Features.Authen.Commands.LoginWithGoogle;
 using Application.Features.Authen.Commands.Refresh;
 using Application.Features.Authen.Commands.Register;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
-using System.Net.Sockets;
 
 
 namespace WebMemoryzoneApi.Controllers
@@ -35,6 +32,7 @@ namespace WebMemoryzoneApi.Controllers
             {
                 return BadRequest(result);
             }
+            SetCookies(result.Data.AccessToken, result.Data.RefreshToken, result.Data.User.Name);
             return Ok(result);
         }      
         [HttpPost("register")]
