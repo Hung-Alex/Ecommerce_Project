@@ -25,6 +25,8 @@ namespace Infrastructure.Data
             //Database.EnsureCreated();
         }
         #region DbSet Entities
+        public DbSet<RolePermission> RolePermissions { get; set; }
+        public DbSet<ApplicationPermission> Permissions { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Banner> Banners { get; set; }
