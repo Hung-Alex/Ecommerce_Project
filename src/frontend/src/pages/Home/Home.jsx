@@ -8,13 +8,11 @@ import Our from "./Our/Our";
 import Category from "./Category/Category";
 import News from "./News/News";
 import Subscribe from "./Subscribe/Subscribe";
-import { TestSwipper } from "./test/test";
 
 
 const HomePage = () => {
   return (
     <div className="max-w-screen-xl mx-auto">
-      <TestSwipper />
       <HomeBanner />
       <Category />
       {/* <Offer /> */}

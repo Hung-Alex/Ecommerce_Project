@@ -37,28 +37,16 @@ const UserProvider = ({ children }) => {
       }
     };
 
-    const tokenTimer = setInterval(refreshToken, 120000); // Refresh token every 2 minutes
+    const tokenTimer = setInterval(refreshToken, 120000);
 
     return () => clearInterval(tokenTimer);
   }, []);
-
-  // const getUserInfo = async () => {
-  //   try {
-  //     const response = await axios.get("/authentications/user-info");
-  //     setUser(response.data); // Set user state from response
-  //   } catch (error) {
-  //     console.log("Failed to fetch user info: ", error);
-  //   }
-  // };
   const getUserInfo = async () => {
     try {
       const userName = Cookies.get('userName');
       if (userName) {
         setUser({ name: userName, image: img });
       } else {
-        // const response = await axios.get('/authentications/user-info');
-        // setUser(response.data);
-        // Cookies.set('user-name', response.data.name, { expires: 7 });
       }
     } catch (error) {
       console.log('Failed to fetch user info: ', error);
