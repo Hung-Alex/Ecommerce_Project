@@ -79,8 +79,9 @@ namespace Infrastructure.Services.Auth
                 return false;
             }
             var getRefreshToken = await _userManager.GetAuthenticationTokenAsync(user, UserToken.Provider, UserToken.RefreshToken);
+            if (getRefreshToken is null) return false;
             var userToken = JsonSerializer.Deserialize<RefreshToken>(getRefreshToken);
-            if (getRefreshToken is null || !(refreshToken == userToken.Token && userToken.ExpriedTime >= DateTime.Now))
+            if (!(refreshToken == userToken.Token && userToken.ExpriedTime >= DateTime.Now))
             {
                 return false;
             }

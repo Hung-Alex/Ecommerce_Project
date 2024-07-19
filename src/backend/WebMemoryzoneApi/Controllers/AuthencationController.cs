@@ -1,9 +1,11 @@
 ﻿using Application.Common.Interface.IdentityService;
 using Application.Features.Authen.Commands.Login;
 using Application.Features.Authen.Commands.LoginWithGoogle;
+using Application.Features.Authen.Commands.Logout;
 using Application.Features.Authen.Commands.Refresh;
 using Application.Features.Authen.Commands.Register;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -25,7 +27,7 @@ namespace WebMemoryzoneApi.Controllers
 
         }
         [HttpPost("sign-in-google")]
-        public async Task<IActionResult> SignInWithGoole([FromBody]LoginGoogleCommand command)
+        public async Task<IActionResult> SignInWithGoole([FromBody] LoginGoogleCommand command)
         {
             var result = await _mediator.Send(command);
             if (!result.IsSuccess)
@@ -34,7 +36,7 @@ namespace WebMemoryzoneApi.Controllers
             }
             SetCookies(result.Data.AccessToken, result.Data.RefreshToken, result.Data.User.Name);
             return Ok(result);
-        }      
+        }
         [HttpPost("register")]
         public async Task<ActionResult> Register([FromBody] RegisterCommand command)
         {
@@ -53,7 +55,23 @@ namespace WebMemoryzoneApi.Controllers
             {
                 return BadRequest(result);
             }
-            SetCookies(result.Data.AccessToken, result.Data.RefreshToken,result.Data.User.Name);
+            SetCookies(result.Data.AccessToken, result.Data.RefreshToken, result.Data.User.Name);
+            return Ok(result);
+        }
+        [HttpGet("logout")]
+        public async Task<ActionResult> Logout()
+        {
+            if (!(Request.Cookies.ContainsKey("X-Access-Token")
+                && Request.Cookies.ContainsKey("X-Refresh-Token"))) return BadRequest("Not Found Token in Cookies");
+            var refreshToken = Request.Cookies.FirstOrDefault(x => x.Key == "X-Refresh-Token");
+            var accessToken = Request.Cookies.FirstOrDefault(x => x.Key == "X-Access-Token");
+            var result = await _mediator.Send(new LogoutCommand(accessToken.Value));
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result);
+            }
+            HttpContext.Response.Cookies.Delete("X-Access-Token");
+            HttpContext.Response.Cookies.Delete("X-Refresh-Token");
             return Ok(result);
         }
         [HttpPost("refresh")]
@@ -68,11 +86,11 @@ namespace WebMemoryzoneApi.Controllers
             {
                 return BadRequest(result);
             }
-            SetCookies(result.Data.AccessToken, result.Data.RefreshToken,result.Data.User.Name);
+            SetCookies(result.Data.AccessToken, result.Data.RefreshToken, result.Data.User.Name);
             return Ok(result);
 
         }
-        private void SetCookies(string accessToken, string refreshToken,string userName)
+        private void SetCookies(string accessToken, string refreshToken, string userName)
         {
 
             Response.Cookies.Append("X-Access-Token", accessToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.None, Secure = true, IsEssential = true });
