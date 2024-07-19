@@ -1,12 +1,26 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { RouterProvider } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import "./index.css";
+import { router } from "./routes/Routes.jsx";
+import ProductProvider from "./context/ProductContext.jsx";
+import CategoryProvider from "./context/CategoryContext.jsx";
+import CartProvider from "./context/CartContext.jsx";
+import UserProvider from "./context/Usercontext.jsx";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <App />
+      {/* <ProductProvider> */}
+    <CategoryProvider>
+        <CartProvider>
+          <UserProvider>
+            <RouterProvider router={router} />
+            <Toaster />
+          </UserProvider>
+        </CartProvider>
+    </CategoryProvider>
+      {/* </ProductProvider> */}
   </React.StrictMode>
 );
