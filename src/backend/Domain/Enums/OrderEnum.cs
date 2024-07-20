@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.Enums
+﻿namespace Domain.Enums
 {
     public static class OrderEnum
     {
         public enum OrderStatus
         {
             Unknown = 0,
-            Pending,
-            Processing,
-            Shipped,
-            Delivered,
-            Cancelled
+            Pending = 1,
+            Processing = 2,
+            Shipping = 3,
+            Shipped = 4,
+            Delivered = 5,
+            Cancelled = 6,
+            ShippingFailed = 7,
         }
     }
 }

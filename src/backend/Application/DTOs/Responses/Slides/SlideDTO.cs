@@ -6,6 +6,6 @@ namespace Application.DTOs.Responses.Slides
         public string Title { get; init; }
         public string Description { get; init; }
         public bool IsActive { get; init; }
-        public IEnumerable<string> Images { get; init; }
+        public string Image { get; init; }
     }
 }

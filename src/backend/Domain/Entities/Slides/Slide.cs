@@ -16,7 +16,7 @@ namespace Domain.Entities.Slides
         public string Title { get; set; }
         public string Description { get; set; }
         public bool IsActive { get; set; }
-        public virtual ICollection<Image> SlidesImages { get; set; } = new List<Image>();
+        public string Image { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
         public Guid? CreatedByUserId { get; set; }

@@ -10,7 +10,6 @@ namespace Application.Features.Slides.Specification
         public GetSlideByIdSepecification(Guid id)
         {
             _id = id;
-            AddInclude(x => x.SlidesImages);
         }
         public override Expression<Func<Slide, bool>> Criteria => x => x.Id == _id;
     }
