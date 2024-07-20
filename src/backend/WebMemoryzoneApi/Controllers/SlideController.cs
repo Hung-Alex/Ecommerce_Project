@@ -1,5 +1,4 @@
 ﻿using Application.DTOs.Filters.Slides;
-using Application.Features.Slides.Commands.AddProductSlide;
 using Application.Features.Slides.Commands.CreateSlide;
 using Application.Features.Slides.Commands.DeleteSlide;
 using Application.Features.Slides.Commands.UpdateSlide;
@@ -64,14 +63,6 @@ namespace WebMemoryzoneApi.Controllers
         [HttpPost]
         public async Task<IActionResult> AddSlide([FromForm] CreateSlideCommand command)
         {
-            var result = await _mediator.Send(command);
-            if (!result.IsSuccess) return BadRequest(result);
-            return Ok();
-        }
-        [HttpPost("addimage")]
-        public async Task<IActionResult> AddSlieImage([FromForm] AddSlideImageCommand command)
-        {
-
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result);
             return Ok();

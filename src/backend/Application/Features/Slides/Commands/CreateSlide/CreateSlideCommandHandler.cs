@@ -1,7 +1,8 @@
-﻿using Application.Common.Interface;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interface;
+using Application.DTOs.Internal;
 using Domain.Constants;
 using Domain.Entities;
-using Domain.Entities.Products;
 using Domain.Entities.Slides;
 using Domain.Shared;
 using FluentValidation;
@@ -12,7 +13,7 @@ namespace Application.Features.Slides.Commands.CreateSlide
 {
     public sealed class CreateSlideCommandHandler : IRequestHandler<CreateSlideCommand, Result<bool>>
     {
-        internal class CreateSlideCommandValidator : AbstractValidator<CreateSlideCommand>
+        public class CreateSlideCommandValidator : AbstractValidator<CreateSlideCommand>
         {
 
         }
@@ -23,43 +24,19 @@ namespace Application.Features.Slides.Commands.CreateSlide
         {
             _unitOfWork = unitOfWork;
             _media = media;
-            _media = media;
         }
         public async Task<Result<bool>> Handle(CreateSlideCommand request, CancellationToken cancellationToken)
         {
             var repoSlide = _unitOfWork.GetRepository<Slide>();
             var repoImage = _unitOfWork.GetRepository<Image>();
             var slide = new Slide(request.Title, request.Description, request.IsActive);
-            #region hanle Images
-            var image = new Image();
-            if (request.Images is not null)
+            #region hanle Images         
+            Result<ImageUpload> uploadResult = await _media.UploadLoadImageAsync(request.Image, UploadFolderConstants.FolderSlide);
+            if (uploadResult.IsSuccess is false)
             {
-                int Count = 1;
-                foreach (var item in request.Images)
-                {
-                    var uploadResult = await _media.UploadLoadImageAsync(item, UploadFolderConstants.FolderProduct);
-                    if (uploadResult.IsSuccess)
-                    {
-                        image = new Image()
-                        {
-                            ImageExtension = item.ContentType
-                        ,
-                            ImageUrl = uploadResult.Data.Url
-                        ,
-                            PublicId = uploadResult.Data.PublicId
-                        ,
-                            SlideId = slide.Id
-                        ,
-                            OrderItem = Count++
-                        };
-                        repoImage.Add(image);
-                    }
-                    else
-                    {
-                        return Result<bool>.ResultFailures(ErrorConstants.UploadImageOccursErrorWithFileName(item.FileName));
-                    }
-                }
+                throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
             }
+            slide.Image = uploadResult.Data.Url;
             #endregion
             repoSlide.Add(slide);
             await _unitOfWork.Commit();

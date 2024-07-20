@@ -8,7 +8,6 @@ namespace Application.Features.Slides.Specification
     {
         public GetSlideIsActiveSpecification()
         {
-            AddInclude(s => s.SlidesImages);
         }
         public override Expression<Func<Slide, bool>> Criteria => s => s.IsActive == true;
     }

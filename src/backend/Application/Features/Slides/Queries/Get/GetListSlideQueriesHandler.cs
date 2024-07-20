@@ -25,9 +25,9 @@ namespace Application.Features.Slides.Queries.Get
             {
                 Id = x.Id,
                 Title = x.Title,
-                IsActive= x.IsActive,
+                IsActive = x.IsActive,
                 Description = x.Description,
-                Images = x.SlidesImages.Select(x => x.ImageUrl)
+                Image = x.Image
             })
                 , request.SlideFilter.PageNumber
                 , request.SlideFilter.PageSize

@@ -31,7 +31,7 @@ namespace Application.Features.Slides.Queries.GetById
                 Title = slide.Title,
                 IsActive = slide.IsActive,
                 Description = slide.Description,
-                Images = slide.SlidesImages.Select(x => x.ImageUrl)
+                Image = slide.Image
             };
             return Result<SlideDTO>.ResultSuccess(productDTO);
         }
