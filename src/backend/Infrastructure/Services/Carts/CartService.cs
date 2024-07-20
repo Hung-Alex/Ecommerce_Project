@@ -19,25 +19,22 @@ namespace Infrastructure.Services.Carts
                         select new CartDTO
                         {
                             Id = c.Id,
-                            Items = (from cartItem in _context.CartItems
+                            Items = (from cartItem in _context.CartItems.Include(x=>x.ProductSkus)
                                      join product in _context.Products on cartItem.ProductId equals product.Id
-                                     join variant in _context.ProductSkus on cartItem.ProductSkusId equals variant.Id into variants
-                                     from variant in variants.DefaultIfEmpty()
                                      where cartItem.CartId == c.Id
                                      select new CartItemDTO
                                      {
                                          Id = cartItem.Id,
                                          ProductId = product.Id,
-                                         ProductSkusId = variant != null ? variant.Id : (Guid?)null,
+                                         ProductSkusId = cartItem.ProductSkus != null ? cartItem.ProductSkus.Id : (Guid?)null,
                                          ProductName = product.Name,
-                                         VariantName = variant != null ? variant.Name : null,
+                                         VariantName = cartItem.ProductSkus != null ? cartItem.ProductSkus.Name : null,
                                          Price = product.Price,
                                          Quantity = cartItem.Quantity,
-                                         //Image = _context.ProductImages
-                                         //        .Include(x => x.Image)
-                                         //        .Where(x => product.Id == x.ProductId)
-                                         //        .Select(x => x.Image.ImageUrl)
-                                         //        .FirstOrDefault()
+                                         Image = _context.Images
+                                                 .Where(x => product.Id == x.ProductId)
+                                                 .Select(x => x.ImageUrl)
+                                                 .FirstOrDefault()
                                      }).ToList()
                         };
 
