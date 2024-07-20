@@ -62,14 +62,6 @@ namespace Infrastructure.Data.Seed
             "https://images.pexels.com/photos/1425358/pexels-photo-1425358.jpeg?auto=compress&cs=tinysrgb&w=600",
             "https://images.pexels.com/photos/94442/pexels-photo-94442.jpeg?auto=compress&cs=tinysrgb&w=600",
         };
-        private readonly string[] ImageSlides =
-            {
-                "https://images.pexels.com/photos/257816/pexels-photo-257816.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-                "https://images.pexels.com/photos/319798/pexels-photo-319798.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-                "https://images.pexels.com/photos/2252584/pexels-photo-2252584.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-                "https://images.pexels.com/photos/23228994/pexels-photo-23228994/free-photo-of-g-thien-nhien-hoa-mua-he.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-                "https://images.pexels.com/photos/1458694/pexels-photo-1458694.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-            };
         private readonly StoreDbContext _dbContext;
         public SeedData(StoreDbContext dbContext)
         {
@@ -98,12 +90,7 @@ namespace Infrastructure.Data.Seed
                 await _dbContext.AddRangeAsync(variants);
             }
             var slidesData = SlideInit();
-            await _dbContext.AddRangeAsync(slidesData);
-            foreach (var item in slidesData)
-            {
-                var images = AssignedImageForSlide(item);
-                await _dbContext.AddRangeAsync(images);
-            }
+            await _dbContext.AddRangeAsync(slidesData);     
             await _dbContext.SaveChangesAsync();
         }
         private List<Slide> SlideInit()
@@ -120,6 +107,7 @@ namespace Infrastructure.Data.Seed
                     " Posuere morbi leo urna molestie at. Accumsan tortor posuere ac ut consequat semper viverra nam." +
                     " Faucibus vitae aliquet nec ullamcorper sit amet risus nullam. Pellentesque elit ullamcorper dignissim cras",
                     IsActive=true,
+                    Image="https://images.pexels.com/photos/257816/pexels-photo-257816.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
 
                 },
                 new()
@@ -132,7 +120,20 @@ namespace Infrastructure.Data.Seed
                     " Posuere morbi leo urna molestie at. Accumsan tortor posuere ac ut consequat semper viverra nam." +
                     " Faucibus vitae aliquet nec ullamcorper sit amet risus nullam. Pellentesque elit ullamcorper dignissim cras",
                     IsActive=false,
+                    Image="https://images.pexels.com/photos/319798/pexels-photo-319798.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                 },
+                new()
+                {
+                    Title="Home Page",
+                    Description="Lorem ipsum dolor sit amet" +
+                    ", consectetur adipiscing elit," +
+                    " sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." +
+                    " Cras tincidunt lobortis feugiat vivamus at augue eget." +
+                    " Posuere morbi leo urna molestie at. Accumsan tortor posuere ac ut consequat semper viverra nam." +
+                    " Faucibus vitae aliquet nec ullamcorper sit amet risus nullam. Pellentesque elit ullamcorper dignissim cras",
+                    IsActive=false,
+                    Image="https://images.pexels.com/photos/2252584/pexels-photo-2252584.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                }
             };
             return slides;
         }
@@ -160,54 +161,7 @@ namespace Infrastructure.Data.Seed
                 }
             };
             return images;
-        }
-        private List<Image> AssignedImageForSlide(Slide slide)
-        {
-            List<Image> images = new List<Image>()
-            {
-                new()
-                {
-                    ImageExtension="jpg",
-                    ImageUrl=this.ImageSlides[0],
-                    SlideId=slide.Id,
-                    OrderItem=1,
-                    PublicId="test"
-                },
-                new()
-                {
-                    ImageExtension="jpg",
-                    ImageUrl=this.ImageSlides[1],
-                    SlideId=slide.Id,
-                    OrderItem=2,
-                    PublicId="test"
-                },
-                new()
-                {
-                    ImageExtension="jpg",
-                    ImageUrl=this.ImageSlides[2],
-                    SlideId=slide.Id,
-                    OrderItem=3,
-                    PublicId="test"
-                },
-                new()
-                {
-                    ImageExtension="jpg",
-                    ImageUrl=this.ImageSlides[3],
-                    SlideId=slide.Id,
-                    OrderItem=4,
-                    PublicId="test"
-                },
-                new()
-                {
-                    ImageExtension="jpg",
-                    ImageUrl=this.ImageSlides[4],
-                    SlideId=slide.Id,
-                    OrderItem=5,
-                    PublicId="test"
-                },
-            };
-            return images;
-        }
+        }       
         private List<Image> AssignedImageForProduct(Product product)
         {
             int arrayLength = this.ImageProduct.Length;
