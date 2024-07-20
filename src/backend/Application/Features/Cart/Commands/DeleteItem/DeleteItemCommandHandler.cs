@@ -17,6 +17,12 @@ namespace Application.Features.Carts.Commands.DeleteItem
             {
                 return Result<bool>.ResultFailures(ErrorConstants.CartNotFound);
             }
+            var isExited = cart.CartItems.FirstOrDefault(x => x.Id == request.CarItemId);
+            if (isExited == null)
+            {
+                return Result<bool>.ResultFailures(ErrorConstants.NotFoundWithId(request.CarItemId));
+
+            }
             cart.RemoveItem(request.CarItemId);
             await unitOfWork.Commit();
             return Result<bool>.ResultSuccess(true);
