@@ -9,7 +9,9 @@ namespace Infrastructure.Data.Configuration
         public void Configure(EntityTypeBuilder<ApplicationRole> builder)
         {
             builder.HasKey(t => t.Id);
+            builder.HasMany(x => x.Permissions)
+                .WithOne(x => x.Role)
+                .OnDelete(DeleteBehavior.Cascade);
         }
-
     }
 }

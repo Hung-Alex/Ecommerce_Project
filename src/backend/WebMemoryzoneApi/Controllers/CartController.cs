@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.Request;
 using Application.Features.Carts.Commands.AddItem;
 using Application.Features.Carts.Commands.DeleteItem;
+using Application.Features.Carts.Commands.UpdateQuanity;
 using Application.Features.Carts.Queries.GetItemInCart;
 using Domain.Constants;
 using MediatR;
@@ -40,6 +41,14 @@ namespace WebMemoryzoneApi.Controllers
         {
             var claimUser = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimUser.UserId);
             var result = await _mediator.Send(new DeleteItemCommand(Guid.Parse(claimUser.Value), id));
+            if (result.IsSuccess is false) return BadRequest(result);
+            return Ok(result);
+        }
+        [HttpPut]
+        public async Task<ActionResult> UpdateQuantiy([FromBody] UpdateQuantityItemRequest updateQuantity)
+        {
+            var claimUser = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimUser.UserId);
+            var result = await _mediator.Send(new UpdateQuantityItemCommand(Guid.Parse(claimUser.Value), updateQuantity.CartItemId, updateQuantity.quantity));
             if (result.IsSuccess is false) return BadRequest(result);
             return Ok(result);
         }

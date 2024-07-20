@@ -1,11 +1,11 @@
-﻿using Application.Common.Interface.IdentityService;
+﻿using Application.DTOs.Internal;
 using Application.Features.Authen.Commands.Login;
 using Application.Features.Authen.Commands.LoginWithGoogle;
 using Application.Features.Authen.Commands.Logout;
 using Application.Features.Authen.Commands.Refresh;
 using Application.Features.Authen.Commands.Register;
+using Domain.Constants;
 using MediatR;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -15,15 +15,14 @@ namespace WebMemoryzoneApi.Controllers
     [Route("api/authentications")]
     public class AuthencationController : ControllerBase
     {
-        private readonly IGoogleAuthenService _googleAuthenService;
         private readonly IMediator _mediator;
         private readonly IConfiguration _configuration;
-        private static readonly HttpClient httpClient = new HttpClient();
-        public AuthencationController(IMediator mediator, IGoogleAuthenService googleAuthenService, IConfiguration configuration)
+        private readonly JwtSetting _jwtSetting;
+        public AuthencationController(IMediator mediator, IConfiguration configuration)
         {
-            _googleAuthenService = googleAuthenService;
             _mediator = mediator;
             _configuration = configuration;
+            _jwtSetting = _configuration.GetSection("JwtSetting").Get<JwtSetting>() ?? throw new ArgumentNullException("not config jwt ");
 
         }
         [HttpPost("sign-in-google")]
@@ -34,7 +33,11 @@ namespace WebMemoryzoneApi.Controllers
             {
                 return BadRequest(result);
             }
-            SetCookies(result.Data.AccessToken, result.Data.RefreshToken, result.Data.User.Name);
+            SetCookies(result.Data.AccessToken
+                  , result.Data.RefreshToken
+                  , result.Data.User.Name
+                  , DateTime.Now.AddMinutes(_jwtSetting.ExpiredToken)
+                  , DateTime.Now.AddDays(_jwtSetting.ExpiredRefreshToken));
             return Ok(result);
         }
         [HttpPost("register")]
@@ -55,48 +58,56 @@ namespace WebMemoryzoneApi.Controllers
             {
                 return BadRequest(result);
             }
-            SetCookies(result.Data.AccessToken, result.Data.RefreshToken, result.Data.User.Name);
+            SetCookies(result.Data.AccessToken
+                 , result.Data.RefreshToken
+                 , result.Data.User.Name
+                 , DateTime.Now.AddMinutes(_jwtSetting.ExpiredToken)
+                 , DateTime.Now.AddDays(_jwtSetting.ExpiredRefreshToken));
             return Ok(result);
         }
         [HttpGet("logout")]
         public async Task<ActionResult> Logout()
         {
-            if (!(Request.Cookies.ContainsKey("X-Access-Token")
-                && Request.Cookies.ContainsKey("X-Refresh-Token"))) return BadRequest("Not Found Token in Cookies");
-            var refreshToken = Request.Cookies.FirstOrDefault(x => x.Key == "X-Refresh-Token");
-            var accessToken = Request.Cookies.FirstOrDefault(x => x.Key == "X-Access-Token");
+            if (!(Request.Cookies.ContainsKey(UserToken.AccessTokenCookies)
+                && Request.Cookies.ContainsKey(UserToken.RefreshTokenCookies))) return BadRequest("Not Found Token in Cookies");
+            var refreshToken = Request.Cookies.FirstOrDefault(x => x.Key == UserToken.RefreshTokenCookies);
+            var accessToken = Request.Cookies.FirstOrDefault(x => x.Key == UserToken.AccessTokenCookies);
             var result = await _mediator.Send(new LogoutCommand(accessToken.Value));
             if (!result.IsSuccess)
             {
                 return BadRequest(result);
             }
-            HttpContext.Response.Cookies.Delete("X-Access-Token");
-            HttpContext.Response.Cookies.Delete("X-Refresh-Token");
+            SetCookies(""
+                , ""
+                , ""
+                , DateTime.Now.AddYears(-100), DateTime.Now.AddYears(-100));
             return Ok(result);
         }
         [HttpPost("refresh")]
         public async Task<ActionResult> RefreshToken()
         {
-            if (!(Request.Cookies.ContainsKey("X-Access-Token")
-                && Request.Cookies.ContainsKey("X-Refresh-Token"))) return BadRequest("Not Found Token in Cookies");
-            var refreshToken = Request.Cookies.FirstOrDefault(x => x.Key == "X-Refresh-Token");
-            var accessToken = Request.Cookies.FirstOrDefault(x => x.Key == "X-Access-Token");
+            if (!(Request.Cookies.ContainsKey(UserToken.AccessTokenCookies)
+                && Request.Cookies.ContainsKey(UserToken.RefreshTokenCookies))) return BadRequest("Not Found Token in Cookies");
+            var refreshToken = Request.Cookies.FirstOrDefault(x => x.Key == UserToken.RefreshTokenCookies);
+            var accessToken = Request.Cookies.FirstOrDefault(x => x.Key == UserToken.AccessTokenCookies);
             var result = await _mediator.Send(new RefreshTokenCommand(accessToken.Value, refreshToken.Value));
             if (!result.IsSuccess)
             {
                 return BadRequest(result);
             }
-            SetCookies(result.Data.AccessToken, result.Data.RefreshToken, result.Data.User.Name);
+            SetCookies(result.Data.AccessToken
+                , result.Data.RefreshToken
+                , result.Data.User.Name
+                , DateTime.Now.AddMinutes(_jwtSetting.ExpiredToken)
+                , DateTime.Now.AddDays(_jwtSetting.ExpiredRefreshToken));
             return Ok(result);
-
         }
-        private void SetCookies(string accessToken, string refreshToken, string userName)
+        private void SetCookies(string accessToken, string refreshToken, string userName, DateTime expiredTimeAccestoken, DateTime expiredTimeRefreshToken)
         {
 
-            Response.Cookies.Append("X-Access-Token", accessToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.None, Secure = true, IsEssential = true });
-            Response.Cookies.Append("X-Refresh-Token", refreshToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.None, Secure = true, IsEssential = true });
-            Response.Cookies.Append("User-Name-App", userName, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.None, Secure = true, IsEssential = true });
-
+            Response.Cookies.Append(UserToken.AccessTokenCookies, accessToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.None, Secure = true, IsEssential = true, Expires = expiredTimeAccestoken });
+            Response.Cookies.Append(UserToken.RefreshTokenCookies, refreshToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.None, Secure = true, IsEssential = true, Expires = expiredTimeRefreshToken });
+            Response.Cookies.Append(UserToken.UserInfoCookies, userName, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.None, Secure = true, IsEssential = true, Expires = expiredTimeRefreshToken });
         }
     }
 }

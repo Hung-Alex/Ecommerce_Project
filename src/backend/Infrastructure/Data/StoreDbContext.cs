@@ -20,11 +20,10 @@ namespace Infrastructure.Data
 {
     public class StoreDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
     {
-        public StoreDbContext(DbContextOptions options) : base(options)
-        {
-            //Database.EnsureCreated();
-        }
+        public StoreDbContext(DbContextOptions options) : base(options) { }
         #region DbSet Entities
+        public DbSet<RolePermission> RolePermissions { get; set; }
+        public DbSet<ApplicationPermission> Permissions { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Banner> Banners { get; set; }
@@ -45,11 +44,6 @@ namespace Infrastructure.Data
         #endregion
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            //builder.Entity<ApplicationRole>().HasData(
-            //    new ApplicationRole() { Id = new Guid("911B0CBD-4EED-4EB0-8488-1B2CDD915C02"), Name = nameof(UserRoleConstants.Roles.User) },
-            //    new ApplicationRole() { Id = new Guid("911B0CBD-4EED-4EB0-8488-1B2CDD915C01"), Name = nameof(UserRoleConstants.Roles.SupperAdmin) },
-            //    new ApplicationRole() { Id = new Guid("911B0CBD-4EED-4EB0-8488-1B2CDD915C03"), Name = nameof(UserRoleConstants.Roles.Employee) }
-            //    );
             base.OnModelCreating(builder);
             builder.ApplyConfigurationsFromAssembly(typeof(StoreDbContext).Assembly);
 
