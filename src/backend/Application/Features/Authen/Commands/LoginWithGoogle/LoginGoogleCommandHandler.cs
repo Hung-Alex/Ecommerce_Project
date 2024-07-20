@@ -5,7 +5,6 @@ using Application.DTOs.Internal.Authen;
 using Application.DTOs.Responses.Auth;
 using Application.Helper;
 using Domain.Constants;
-using Domain.Entities.Users;
 using Domain.Shared;
 using MediatR;
 using Microsoft.Extensions.Configuration;

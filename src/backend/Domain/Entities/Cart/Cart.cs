@@ -38,6 +38,21 @@ namespace Domain.Entities.Carts
                 CartItems.Add(cartItem);
             }
         }
+        public void UpdateQuantity(Guid cartItemId, int quantity)
+        {
+            if (CartItems is null || !CartItems.Any()) throw new CartNullException();
+            var cartItem = CartItems.FirstOrDefault(c => c.Id == cartItemId);
+            if (cartItem is null) throw new CartItemNotFoundException();
+            if (quantity <= 0)
+            {
+                CartItems.Remove(cartItem);
+            }
+            else
+            {
+                cartItem.Quantity = quantity;
+            }
+
+        }
         public void RemoveItem(Guid cartItemId)
         {
             if (CartItems is null || !CartItems.Any()) throw new CartNullException();
