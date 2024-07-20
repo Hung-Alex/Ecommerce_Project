@@ -1,7 +1,9 @@
-﻿using Application.Features.Rattings.Commands.CreateRatting;
+﻿using Application.DTOs.Filters.Rattings;
+using Application.Features.Rattings.Commands.CreateRatting;
 using Application.Features.Rattings.Commands.DeleteRatting;
 using Application.Features.Rattings.Commands.UpdateRatting;
 using Application.Features.Rattings.Queries.GetById;
+using Application.Features.Rattings.Queries.GetRattingProductById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +25,14 @@ namespace WebMemoryzoneApi.Controllers
         {
             var result = await _mediator.Send(new GetRattingByIdQuery(id));
             if (!result.IsSuccess) return NotFound(result);
+            return Ok(result);
+        }
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<ActionResult> GetRattings([FromQuery] RattingFilter filter)
+        {
+            var result = await _mediator.Send(new GetRattingProductByIdQuery(filter));
+            if (!result.IsSuccess) return BadRequest(result);
             return Ok(result);
         }
         [HttpPut("{id:Guid}")]
