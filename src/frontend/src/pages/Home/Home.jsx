@@ -8,6 +8,7 @@ import Our from "./Our/Our";
 import Category from "./Category/Category";
 import News from "./News/News";
 import Subscribe from "./Subscribe/Subscribe";
+import Brands from "./Brands/Brands";
 
 
 const HomePage = () => {
@@ -15,13 +16,14 @@ const HomePage = () => {
     <div className="max-w-screen-xl mx-auto">
       <HomeBanner />
       <Category />
+      <Product />
+      <Brands />
       {/* <Offer /> */}
       {/* <About /> */}
-      <Product />
-      <Testimonial />
+      {/* <Testimonial /> */}
       {/* <ProductOffer /> */}
-      <Our />
-      <News />
+      {/* <Our /> */}
+      {/* <News /> */}
       <Subscribe />
     </div>
   );

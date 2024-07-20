@@ -11,15 +11,18 @@ import { router } from "./routes/Routes.jsx";
 import CategoryProvider from "./context/CategoryContext.jsx";
 import CartProvider from "./context/CartContext.jsx";
 import UserProvider from "./context/Usercontext.jsx";
+import BrandProvider from "./context/BrandContext.jsx";
 
 // AppProviders component to wrap all context providers
 const AppProviders = ({ children }) => (
   <CategoryProvider>
-    <CartProvider>
-      <UserProvider>
-        {children}
-      </UserProvider>
-    </CartProvider>
+    <BrandProvider>
+      <CartProvider>
+        <UserProvider>
+          {children}
+        </UserProvider>
+      </CartProvider>
+    </BrandProvider>
   </CategoryProvider>
 );
 
