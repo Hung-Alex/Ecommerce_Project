@@ -13,12 +13,12 @@ namespace WebMemoryzoneApi.Controllers
 {
     [ApiController]
     [Route("api/authentications")]
-    public class AuthencationController : ControllerBase
+    public class AuthenticationController : ControllerBase
     {
         private readonly IMediator _mediator;
         private readonly IConfiguration _configuration;
         private readonly JwtSetting _jwtSetting;
-        public AuthencationController(IMediator mediator, IConfiguration configuration)
+        public AuthenticationController(IMediator mediator, IConfiguration configuration)
         {
             _mediator = mediator;
             _configuration = configuration;
