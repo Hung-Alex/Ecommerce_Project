@@ -10,14 +10,21 @@ const useFetch = (endpoint, method = "GET", queryParams = {}, body = null) => {
     try {
       setLoading(true);
       let res;
-      if (method === "GET") {
-        res = await axios.get(endpoint, { params: queryParams });
-      } else if (method === "POST") {
-        res = await axios.post(endpoint, body);
-      } else if (method === "PUT") {
-        res = await axios.put(endpoint, body);
-      } else if (method === "DELETE") {
-        res = await axios.delete(endpoint, { params: queryParams });
+      switch (method) {
+        case "GET":
+          res = await axios.get(endpoint, { params: queryParams });
+          break;
+        case "POST":
+          res = await axios.post(endpoint, body);
+          break;
+        case "PUT":
+          res = await axios.put(endpoint, body);
+          break;
+        case "DELETE":
+          res = await axios.delete(endpoint, { params: queryParams });
+          break;
+        default:
+          throw new Error(`Unsupported request method: ${method}`);
       }
       setData(res.data.data);
       setLoading(false);
