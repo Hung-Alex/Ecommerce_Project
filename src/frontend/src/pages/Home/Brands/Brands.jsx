@@ -8,7 +8,6 @@ import { useBrandContext } from "../../../context/BrandContext.jsx";
 
 const Brands = () => {
   const { brands, loading, error } = useBrandContext();
-  console.log(brands);
 
   const handleError = (error) => {
     console.error("Error loading categories:", error); // Log the error for debugging

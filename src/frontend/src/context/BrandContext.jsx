@@ -11,7 +11,6 @@ export const BrandContext = createContext({
 // Provider cho BrandContext
 const BrandProvider = ({ children }) => {
   const { data: brands, loading, error } = useFetch("/brands");
-console.log(brands);
   return (
     <BrandContext.Provider
       value={{

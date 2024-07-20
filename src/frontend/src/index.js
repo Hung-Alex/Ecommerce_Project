@@ -17,11 +17,11 @@ import BrandProvider from "./context/BrandContext.jsx";
 const AppProviders = ({ children }) => (
   <CategoryProvider>
     <BrandProvider>
-      <CartProvider>
-        <UserProvider>
+      <UserProvider>
+        <CartProvider>
           {children}
-        </UserProvider>
-      </CartProvider>
+        </CartProvider>
+      </UserProvider>
     </BrandProvider>
   </CategoryProvider>
 );

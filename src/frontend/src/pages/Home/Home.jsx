@@ -18,12 +18,12 @@ const HomePage = () => {
       <Category />
       <Product />
       <Brands />
-      {/* <Offer /> */}
-      {/* <About /> */}
-      {/* <Testimonial /> */}
-      {/* <ProductOffer /> */}
-      {/* <Our /> */}
-      {/* <News /> */}
+      <Offer />
+      <About />
+      <Testimonial />
+      <ProductOffer />
+      <Our />
+      <News />
       <Subscribe />
     </div>
   );
