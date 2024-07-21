@@ -1,96 +1,59 @@
-import { useEffect, useState } from "react";
-import axios from "../../../utils/axios.js";
-import { AiFillDelete, AiOutlineEdit } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from 'react'; // Import React và useEffect
+import DashboardLayout from '../../../layout/DashboardLayout.jsx';
+import Table from '../comp/Table';
+import useFetch from '../../../hooks/useFetch';
 
 const AdminProducts = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-
-  const handleDleteProduct = async (id) => {
-    try {
-      await axios.delete(`/admin/product/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      setProducts(products.filter((product) => product._id !== id));
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { data: products, loading, error } = useFetch('/products');
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const { data } = await axios.get("/admin/products", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-        setProducts(data.data);
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        setError(true);
-      }
-    })();
-  }, []);
+    if (products) {
+      // Giả sử mỗi sản phẩm có các thuộc tính như name, price, category, brand
+      const filteredData = products.map(product => ({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        category: product.category.name,
+        brand: product.brand.name
+      }));
+      setData(filteredData);
+    }
+  }, [products]);
 
-  if (loading) {
-    return <h2 className="text-center text-2xl my-6">Loading...</h2>;
-  }
+  const columns = [
+    { header: 'ID', accessor: 'id' },
+    { header: 'Name', accessor: 'name' },
+    { header: 'Price', accessor: 'price' },
+    { header: 'Category', accessor: 'category' },
+    { header: 'Brand', accessor: 'brand' }
+  ];
 
-  if (error) return <p>Error loading categories</p>;
+  const handleEdit = (row) => {
+    console.log('Edit', row.id);
+    // Thực hiện chỉnh sửa
+  };
+
+  const handleDelete = (row) => {
+    console.log('Delete', row.id);
+    // Thực hiện xóa
+    setData(data.filter(item => item.id !== row.id));
+  };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error loading products: {error.message}</p>;
+
   return (
-    <div>
-      <h2 className="text-center text-2xl my-6">AdminProducts</h2>
-      <div className="max-w-5xl mx-auto mb-8">
-        <div className="overflow-x-auto border">
-          <table className="table">
-            {/* head */}
-            <thead>
-              <tr>
-                <th>Total Product</th>
-                <th>Name</th>
-                <th>Stock</th>
-                <th>Update Product</th>
-                <th>Delete Product</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map((product, index) => (
-                <tr key={product._id}>
-                  <th>{index + 1}</th>
-                  <td>{product?.productName}</td>
-                  <td>{product?.stock}</td>
-                  <td>
-                    <Link
-                      className="tooltip"
-                      data-tip="Update"
-                      to={`/admin/product/update/${product._id}`}
-                    >
-                      <AiOutlineEdit />
-                    </Link>
-                  </td>
-                  <td>
-                    <button
-                      onClick={() => handleDleteProduct(product._id)}
-                      className="tooltip"
-                      data-tip="Delete"
-                    >
-                      <AiFillDelete />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+    <DashboardLayout>
+      <div className='p-6'>
+        <Table
+          columns={columns}
+          data={data}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 
