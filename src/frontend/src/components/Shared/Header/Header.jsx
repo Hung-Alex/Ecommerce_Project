@@ -37,13 +37,13 @@ const Header = () => {
           <BiSearch className="text-2xl text-gray-600" />
           <Link to="/cart" className="relative">
             <AiOutlineShoppingCart className="text-2xl text-gray-600" />
-            {cart.length > 0 && (
+            {cart?.items?.length > 0 && (
               <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-1">
-                {cart.length}
+                {cart?.items?.length}
               </span>
             )}
           </Link>
-          {user ? (
+          {cart ? (
             <div className="relative">
               <button onClick={toggleDropdown} className="border-4 shadow-lg rounded-full">
                 <img
@@ -80,7 +80,7 @@ const Header = () => {
         </div>
         <Link to="/cart" className="flex items-center gap-2 border-2 rounded-full px-3 py-2 font-semibold">
           <AiOutlineShoppingCart className="text-3xl text-white font-extrabold bg-[#274C5B] rounded-full p-1" />
-          <span>Cart {cart.length}</span>
+          <span>Cart {cart?.items?.length}</span>
         </Link>
         {user ? (
           <div className="relative">

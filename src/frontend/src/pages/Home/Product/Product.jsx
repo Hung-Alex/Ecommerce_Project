@@ -3,8 +3,14 @@ import { BsArrowRightShort } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import useFetch from "../../../hooks/useFetch";
 
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css'; // Import core Swiper styles
+import 'swiper/css/navigation'; // Import navigation styles (optional)
+import 'swiper/css/pagination'; // Import pagination styles (optional)
+import { Pagination } from "swiper/modules";
+
 const Product = () => {
-  const { data, loading, error } = useFetch(`/sections?TakeCategories=4&TakeItems=4`);
+  const { data, loading, error } = useFetch(`/sections?TakeCategories=4&TakeItems=8`);
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error!</p>;
 
@@ -18,17 +24,32 @@ const Product = () => {
                 to={`/category/${categoryData.category.name}`}
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               >
-                <h3 className="text-[#7EB693] font-[Yellowtail] text-5xl">
+                <h3 className="my-12 text-[#7EB693] font-[Yellowtail] text-5xl">
                   {categoryData.category.name}
                 </h3>
               </Link>
             </div>
-            <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+            <Swiper
+              spaceBetween={20} // Optional: Spacing between slides (in pixels)
+              slidesPerView={1} // Default to 1 slide per view
+              breakpoints={{
+                768: {
+                  slidesPerView: 3, // Adjust for medium screens
+                },
+                992: {
+                  slidesPerView: 4, // Adjust for larger screens
+                },
+              }}
+              pagination={{ clickable: true }} // Optional: Enable pagination dots
+              loop={true}
+            >
               {categoryData.products &&
                 categoryData.products.map((product) => (
-                  <Card key={product.id} item={product} />
+                  <SwiperSlide key={product.id} >
+                      <Card item={product} />
+                  </SwiperSlide>
                 ))}
-            </div>
+            </Swiper>
             <div className="flex justify-center mt-8">
             </div>
           </div>

@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "../utils/axios";
 import Cookies from "js-cookie";
-import img from "../assets/Home/img/user.png"
+import img from "../assets/Home/img/user.png";
 
 export const UserContext = createContext({
   user: null,
@@ -16,7 +16,6 @@ const UserProvider = ({ children }) => {
   useEffect(() => {
     const token = Cookies.get("accessToken");
     if (token) {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       getUserInfo(); // Fetch user info on startup if token exists
     }
   }, []);
@@ -29,7 +28,6 @@ const UserProvider = ({ children }) => {
         });
         if (response.data.accessToken) {
           Cookies.set("accessToken", response.data.accessToken);
-          axios.defaults.headers.common["Authorization"] = `Bearer ${response.data.accessToken}`;
         }
       } catch (error) {
         console.log("Failed to refresh token: ", error);
@@ -37,29 +35,37 @@ const UserProvider = ({ children }) => {
       }
     };
 
-    const tokenTimer = setInterval(refreshToken, 120000);
+    const interceptors = axios.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response && error.response.status === 401) {
+          refreshToken();
+        }
+        return Promise.reject(error);
+      }
+    );
 
-    return () => clearInterval(tokenTimer);
+    return () => axios.interceptors.response.eject(interceptors);
   }, []);
+
   const getUserInfo = async () => {
     try {
-      const userName = Cookies.get('userName');
+      const userName = Cookies.get("userName");
       if (userName) {
         setUser({ name: userName, image: img });
       } else {
+        console.log("User name not found in cookies.");
       }
     } catch (error) {
-      console.log('Failed to fetch user info: ', error);
+      console.log("Failed to fetch user info: ", error);
     }
   };
 
-  const login = (data) => {
-    // setUser(data);
-    setUser({ image: img });
+  const login = async (data) => {
     Cookies.set("accessToken", data.accessToken);
     Cookies.set("refreshToken", data.refreshToken);
     Cookies.set("userName", data.user.name);
-    axios.defaults.headers.common["Authorization"] = `Bearer ${data.accessToken}`;
+    await getUserInfo();
   };
 
   const logout = async () => {
@@ -70,9 +76,7 @@ const UserProvider = ({ children }) => {
     } finally {
       Cookies.remove("accessToken");
       Cookies.remove("refreshToken");
-      Cookies.remove("X-Access-Token");
-      Cookies.remove("X-Refresh-Token");
-      delete axios.defaults.headers.common["Authorization"];
+      Cookies.remove("userName");
       setUser(null);
     }
   };

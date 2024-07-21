@@ -1,53 +1,56 @@
 // CartContext.js
 import React, { createContext, useState, useEffect } from "react";
+import axios from "../utils/axios"; // Import your axios instance
 
 export const CartContext = createContext();
 
 const CartContextProvider = (props) => {
-  const initialCart = JSON.parse(localStorage.getItem("cart")) || [];
-  const [cart, setCart] = useState(initialCart);
+  const [cart, setCart] = useState({ items: [], total: 0 });
 
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
-
-  const addToCart = (product) => {
-    console.log(product);
-    const existingItemIndex = cart.findIndex((item) => {
-      return item.id === product.id;
-    });
-
-    if (existingItemIndex !== -1) {
-      // If item already exists in cart, increase quantity
-      const updatedCart = [...cart];
-      updatedCart[existingItemIndex].quantity++;
-      setCart(updatedCart);
-    } else {
-      // Otherwise, add new item to cart
-      setCart([...cart, { ...product, quantity: 1 }]);
+  const fetchCart = async () => {
+    try {
+      const response = await axios.get("/carts");
+      setCart(response.data.data || { items: [], total: 0 });
+    } catch (error) {
+      console.error("Error fetching cart:", error);
+      setCart({ items: [], total: 0 });
     }
   };
 
-  const removeFromCart = (productId) => {
-    const updatedCart = cart.map((item) =>
-      item.id === productId && item.quantity > 1
-        ? { ...item, quantity: item.quantity - 1 }
-        : item
-    );
-    setCart(updatedCart.filter((item) => item.quantity > 0));
+  useEffect(() => {
+    fetchCart();
+  }, []);
+
+  const addToCart = async ({ productId, quantity }) => {
+    try {
+      await axios.post("/carts", { productId, quantity });
+      fetchCart();
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
   };
 
-  const deleteFromCart = (productId) => {
-    setCart(cart.filter((item) => item.id !== productId));
+  const updateCart = async ({ cartItemId, quantity }) => {
+    try {
+      await axios.put("/carts", { cartItemId, quantity });
+      fetchCart();
+    } catch (error) {
+      console.error("Error updating cart:", error);
+    }
   };
 
-  const totalPrice = () => {
-    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  const deleteFromCart = async (cartItemId) => {
+    try {
+      await axios.delete(`/carts/${cartItemId}`);
+      fetchCart();
+    } catch (error) {
+      console.error("Error deleting from cart:", error);
+    }
   };
 
   return (
     <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, deleteFromCart, totalPrice }}
+      value={{ cart, addToCart, updateCart, deleteFromCart }}
     >
       {props.children}
     </CartContext.Provider>
