@@ -1,21 +1,19 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.Identity.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Services.Auth
 {
-    public class PermissionRequirement:IAuthorizationRequirement
+    public class PermissionRequirement : IAuthorizationRequirement
     {
-        public PermissionRequirement(string permission)
+        public PermissionOperator Operator { get; }
+        public string[] Permissions { get; }
+        public PermissionRequirement(PermissionOperator permissionOperator, string[] permissions)
         {
-            Permission = permission;
+            if (permissions.Length == 0)
+            {
+                throw new ArgumentException("At least one permission is required.", nameof(permissions));
+            }
+            Operator = permissionOperator;
+            Permissions = permissions;
         }
-
-        public string Permission { get; }
-
     }
 }
