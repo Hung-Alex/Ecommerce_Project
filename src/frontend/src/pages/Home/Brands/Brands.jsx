@@ -1,13 +1,13 @@
 import React from "react";
-import { useCategoryContext } from "../../../context/CategoryContext.jsx";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css'; // Import core Swiper styles
 import 'swiper/css/navigation'; // Import navigation styles (optional)
 import 'swiper/css/pagination'; // Import pagination styles (optional)
 import CatCard from "../../../components/UI/Card/CatCard.jsx";
+import { useBrandContext } from "../../../context/BrandContext.jsx";
 
-const Category = () => {
-  const { categories, loading, error } = useCategoryContext();
+const Brands = () => {
+  const { brands, loading, error } = useBrandContext();
 
   const handleError = (error) => {
     console.error("Error loading categories:", error); // Log the error for debugging
@@ -20,7 +20,7 @@ const Category = () => {
   return (
     <div className="mt-12">
       <div className="text-center">
-        <h3 className="text-[#7EB693] font-[Yellowtail] text-5xl">Categories</h3>
+        <h3 className="text-[#7EB693] font-[Yellowtail] text-5xl">Brands</h3>
       </div>
       <div className="mt-16">
         <Swiper
@@ -38,7 +38,7 @@ const Category = () => {
           loop={true}
           modules={[ ]} // Register modules
         >
-          {categories.map((item, index) => (
+          {brands.map((item, index) => (
             <SwiperSlide key={index} >
               <CatCard  item={item} />
             </SwiperSlide>
@@ -49,4 +49,4 @@ const Category = () => {
   );
 };
 
-export default Category;
+export default Brands;

@@ -81,10 +81,18 @@ export const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <PrivateRoute />, // Ensure all admin routes are private
+    // element: <PrivateRoute />, // Ensure all admin routes are private
     children: [
       {
+        path: "",
+        element: <AdminProducts />,
+      },
+      {
         path: "products",
+        element: <AdminProducts />,
+      },
+      {
+        path: "admin",
         element: <AdminProducts />,
       },
       {

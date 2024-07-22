@@ -1,37 +1,43 @@
-import { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { CartContext } from "../../../context/CartContext";
 import { Rating } from "@mui/material";
 import { BsArrowRightShort } from "react-icons/bs";
+import { UserContext } from "../../../context/Usercontext"; // Corrected import path
 
 const ProductInfo = ({ productData }) => {
-  const { addToCart } = useContext(CartContext);
+  const { addToCart, cart } = useContext(CartContext);
+  const { user } = useContext(UserContext); // Use UserContext
   const [quantity, setQuantity] = useState(1);
-  const product = productData;
-
   const [isAddedToCart, setIsAddedToCart] = useState(false);
-
-  useEffect(() => {
-    setIsAddedToCart(false);
-  }, [product]);
+  const product = productData;
 
   const handleDecrement = () => {
     if (quantity > 1) {
-      setQuantity((prevQuantity) => prevQuantity - 1);
+      setQuantity(prevQuantity => prevQuantity - 1);
     }
   };
 
   const handleIncrement = () => {
     if (quantity < 10) {
-      setQuantity((prevQuantity) => prevQuantity + 1);
+      setQuantity(prevQuantity => prevQuantity + 1);
     }
   };
 
-  const handleClick = () => {
+  const handleClick = async () => {
+    if (!user) {
+      toast.error("You need to log in to add items to the cart.");
+      return;
+    }
+
     if (!isAddedToCart) {
-      addToCart(product);
-      toast.success("Added to cart");
-      setIsAddedToCart(true);
+      try {
+        await addToCart({ productId: product.id, quantity });
+        toast.success("Added to cart");
+        setIsAddedToCart(false);
+      } catch (error) {
+        toast.error("Error adding product to cart");
+      }
     } else {
       toast.success("Product already added to cart", {
         style: {
@@ -70,7 +76,6 @@ const ProductInfo = ({ productData }) => {
             precision={0.5}
             readOnly
           />
-
           <p className="text-xl font-bold">
             <span>
               <strike className="text-[#B8B8B8] text-base font-normal">
