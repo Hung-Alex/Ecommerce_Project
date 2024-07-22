@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interface;
 using Application.Common.Interface.IdentityService;
 using Domain.Interface;
+using Google;
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Infrastructure.Repositories.GenericRepository;
@@ -13,7 +14,9 @@ using Infrastructure.Services.Identity;
 using Infrastructure.Services.Section;
 using Infrastructure.Services.UserInHttpContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,12 +37,14 @@ namespace Infrastructure
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             // Register Services
             services.AddScoped<IMedia, Media>();
+            services.AddScoped<IPermissionService, PermissionService>();
+           
             services.AddScoped<ISectionService, SectionService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<IGoogleAuthenService, GoogleAuthenService>();
             services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<StoreDbContext>()
+                .AddEntityFrameworkStores<StoreDbContext>()                
                 .AddUserManager<UserManager<ApplicationUser>>()
                 .AddRoleManager<RoleManager<ApplicationRole>>()
                 .AddSignInManager<SignInManager<ApplicationUser>>()
@@ -95,6 +100,17 @@ namespace Infrastructure
                 .AllowAnyMethod()
                 )
             );
+            services.AddAuthorization(options =>
+            {
+                // One static policy - All users must be authenticated
+                options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+                    .RequireAuthenticatedUser()
+                    .Build();
+            });
+            // Register our custom Authorization handler
+            services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+            // Overrides the DefaultAuthorizationPolicyProvider with our own
+            services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
             return services;
         }
     }
