@@ -1,36 +1,49 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../context/Usercontext";
+import logo from '../assets/Logo.png'; // Đảm bảo bạn có đường dẫn đúng đến hình ảnh logo
+
+const navItems = [
+  { label: "My Products", path: "/admin/products" },
+  { label: "Add Product", path: "/admin/add-product" },
+  { label: "Analytics", path: "/admin/analytics" }
+];
+
+const adminNavItems = [
+  { label: "My Products", path: "/admin/products" },
+  { label: "Add Product", path: "/admin/add-product" },
+  { label: "Analytics", path: "/admin/analytics" }
+];
 
 const SideNav = () => {
   const { user } = useContext(UserContext);
+
   return (
-    <div className="rounded shadow-md bg-white min-h-min w-52 mt-12">
-      <Link to={"/user/profile"} className="p-4 border-b border-dashed block">
-        My Account
-      </Link>
-      <Link to={"/user/orders"} className="p-4 border-b border-dashed block">
-        My Oders
-      </Link>
-      <Link to={"/user/wishlist"} className="p-4 border-b border-dashed block">
-        My Wishlist
-      </Link>
-      <Link to={"/user/points"} className="p-4 border-b block">
-        My Points
-      </Link>
-      {user?.role === "admin" && (
-        <span>
-          <Link to={"/admin/products"} className="p-4 border-b block">
-            My Products
+    <div className="mt-12 min-h-full bg-white w-52 shadow-md rounded-lg">
+      <div className="mt-4">
+        {navItems.map((item, index) => (
+          <Link
+            key={index}
+            to={item.path}
+            className="block px-4 py-2 text-gray-700 hover:bg-gray-100 border-b border-gray-200"
+          >
+            {item.label}
           </Link>
-          <Link to={"/admin/add-product"} className="p-4 border-b block">
-            Add Product
-          </Link>
-          <Link to={"/admin/analytic"} className="p-4 border-b block">
-            Analylics
-          </Link>
-        </span>
-      )}
+        ))}
+        {user?.role === "admin" && (
+          <>
+            {adminNavItems.map((item, index) => (
+              <Link
+                key={index}
+                to={item.path}
+                className="block px-4 py-2 text-gray-700 hover:bg-gray-100 border-b border-gray-200"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </>
+        )}
+      </div>
     </div>
   );
 };

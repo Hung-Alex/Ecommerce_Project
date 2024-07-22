@@ -12,18 +12,6 @@ const ProductInfo = ({ productData }) => {
   const [isAddedToCart, setIsAddedToCart] = useState(false);
   const product = productData;
 
-  useEffect(() => {
-    // Ensure cart is an array before using .some
-    if (Array.isArray(cart)) {
-      const checkIfAdded = () => {
-        const isInCart = cart.some(item => item.id === product.id);
-        setIsAddedToCart(isInCart);
-      };
-
-      checkIfAdded();
-    }
-  }, [cart, product.id]);
-
   const handleDecrement = () => {
     if (quantity > 1) {
       setQuantity(prevQuantity => prevQuantity - 1);
@@ -46,7 +34,7 @@ const ProductInfo = ({ productData }) => {
       try {
         await addToCart({ productId: product.id, quantity });
         toast.success("Added to cart");
-        setIsAddedToCart(true);
+        setIsAddedToCart(false);
       } catch (error) {
         toast.error("Error adding product to cart");
       }
