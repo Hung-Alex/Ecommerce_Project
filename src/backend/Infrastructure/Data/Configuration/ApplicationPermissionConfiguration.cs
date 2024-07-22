@@ -1,4 +1,5 @@
-﻿using Infrastructure.Identity;
+﻿using Domain.Enums;
+using Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -12,6 +13,8 @@ namespace Infrastructure.Data.Configuration
             builder.HasMany(x => x.Roles)
                 .WithOne(x => x.Permission)
                 .OnDelete(DeleteBehavior.Cascade);
+            var initPermission = Enum.GetValues<PermissionEnum.Permission>();
+            builder.HasData(initPermission.Select(x => new ApplicationPermission() {Id=Guid.NewGuid(), Name = x.ToString(),Description=x.ToString() }));
         }
     }
 }
