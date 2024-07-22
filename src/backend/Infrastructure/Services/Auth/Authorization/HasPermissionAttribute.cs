@@ -2,7 +2,7 @@
 using static Domain.Enums.PermissionEnum;
 using static Infrastructure.Helper.PolicyHelper;
 
-namespace Infrastructure.Services.Auth
+namespace Infrastructure.Services.Auth.Authorization
 {
     public enum PermissionOperator
     {
@@ -16,7 +16,7 @@ namespace Infrastructure.Services.Auth
         }
         public HasPermissionAttribute(PermissionOperator operatorPermission, Permission[] permissions)
         {
-            Policy = $"{PolicyPrefix}{Separator}{(int)operatorPermission}{Separator}{String.Join(Separator, permissions.Select(x=>x.ToString()))}";
+            Policy = $"{PolicyPrefix}{Separator}{(int)operatorPermission}{Separator}{string.Join(Separator, permissions.Select(x => x.ToString()))}";
         }
     }
 }

@@ -7,6 +7,7 @@ using Infrastructure.Identity;
 using Infrastructure.Repositories.GenericRepository;
 using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.Auth;
+using Infrastructure.Services.Auth.Authorization;
 using Infrastructure.Services.Carts;
 using Infrastructure.Services.CloudinaryUpload;
 using Infrastructure.Services.GoogleAuthen;

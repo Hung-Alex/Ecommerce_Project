@@ -1,4 +1,4 @@
-﻿using Infrastructure.Services.Auth;
+﻿using Infrastructure.Services.Auth.Authorization;
 
 namespace Infrastructure.Helper
 {

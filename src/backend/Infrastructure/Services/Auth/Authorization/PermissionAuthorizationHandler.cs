@@ -3,7 +3,7 @@ using Domain.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Infrastructure.Services.Auth
+namespace Infrastructure.Services.Auth.Authorization
 {
     public class PermissionAuthorizationHandler : AuthorizationHandler<PermissionRequirement>
     {
