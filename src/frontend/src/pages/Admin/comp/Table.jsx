@@ -8,7 +8,7 @@ const Table = ({ columns, data = [], onEdit, onDelete, onAdd }) => {
   const rowsPerPage = 10;
 
   const hiddenColumns = new Set(['id']);
-console.log(data.image);
+
   const filteredData = Array.isArray(data) ? data.filter(row =>
     columns.some(col =>
       row[col.accessor]
@@ -59,17 +59,23 @@ console.log(data.image);
               <tr>
                 {columns.map((col, index) => {
                   if (hiddenColumns.has(col.accessor)) return null;
+                  let colClass = '';
+                  if (index === 0) colClass = 'col-first';
+                  else if (index === 1) colClass = 'col-second';
+                  else if (index === columns.length - 1) colClass = 'col-last';
+                  else colClass = 'col-hidden';
+
                   return (
                     <th
                       key={index}
-                      className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[120px]"
+                      className={`px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[120px] max-w-[200px] overflow-hidden text-ellipsis ${colClass}`}
                     >
                       {col.header}
                     </th>
                   );
                 })}
                 {(onEdit || onDelete) && (
-                  <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[80px]">
+                  <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[80px] max-w-[100px] overflow-hidden text-ellipsis col-last">
                     Actions
                   </th>
                 )}
@@ -81,11 +87,17 @@ console.log(data.image);
                   {columns.map((col, colIndex) => {
                     if (hiddenColumns.has(col.accessor)) return null;
 
+                    let colClass = '';
+                    if (colIndex === 0) colClass = 'col-first';
+                    else if (colIndex === 1) colClass = 'col-second';
+                    else if (colIndex === columns.length - 1) colClass = 'col-last';
+                    else colClass = 'col-hidden';
+
                     const cellValue = row[col.accessor];
                     return (
                       <td
                         key={colIndex}
-                        className="px-2 py-2 whitespace-nowrap text-gray-900 truncate"
+                        className={`px-2 py-2 whitespace-nowrap text-gray-900 truncate max-w-[200px] overflow-hidden text-ellipsis ${colClass}`}
                       >
                         {col.accessor === 'isVisible' ? (
                           <span
@@ -96,7 +108,6 @@ console.log(data.image);
                             {cellValue ? 'True' : 'False'}
                           </span>
                         ) : col.accessor === 'image' || col.accessor === 'images' || col.accessor === 'logoImageUrl' ? (
-                          console.log(cellValue),
                           <img
                             src={Array.isArray(cellValue) ? cellValue[0] : cellValue}
                             alt="Image"
@@ -109,7 +120,7 @@ console.log(data.image);
                     );
                   })}
                   {(onEdit || onDelete) && (
-                    <td className="px-2 py-2 whitespace-nowrap text-gray-500">
+                    <td className="px-2 py-2 whitespace-nowrap text-gray-500 col-last">
                       {onEdit && (
                         <button
                           onClick={() => onEdit(row)}

@@ -43,3 +43,23 @@ input::-webkit-inner-spin-button {
   color:#F9F8F8
   color:#EFF6F1
   */
+
+  /* Tailwind CSS media queries */
+@media (max-width: 1024px) { /* Tablet view */
+  .col-first, .col-second, .col-last {
+    display: table-cell;
+  }
+  .col-hidden {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) { /* Mobile view */
+  .col-first, .col-second, .col-last {
+    display: table-cell;
+  }
+  .col-hidden {
+    display: none;
+  }
+}
+

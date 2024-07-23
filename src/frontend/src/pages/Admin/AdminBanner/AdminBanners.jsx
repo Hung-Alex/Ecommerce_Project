@@ -59,7 +59,7 @@ const AdminBanners = () => {
       if (updatedBanner.image) {
         formData.append("FormFile", updatedBanner.image);
       }
-      formData.append("isVisible", updatedBanner.visible);
+      formData.append("visible", updatedBanner.visible);
 
       const response = await axios.put(`/banners/${id}`, formData, {
         headers: {
@@ -67,9 +67,10 @@ const AdminBanners = () => {
         }
       });
 
+      console.log(response.data);
       setBanners(prevList =>
         prevList.map(banner =>
-          banner.id === id ? { ...banner, ...response.data } : banner
+          banner.id === id ? { ...banner, ...response.data.data } : banner
         )
       );
     } catch (error) {
