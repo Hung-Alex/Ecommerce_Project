@@ -41,10 +41,10 @@ const AdminCategories = () => {
         <Table
           columns={[
             { header: 'ID', accessor: 'id' },
+            { header: 'image', accessor: 'image' },
             { header: 'Name', accessor: 'name' },
             { header: 'URL Slug', accessor: 'urlSlug' },
             { header: 'Description', accessor: 'description' },
-            { header: 'Image', accessor: 'image' }
           ]}
           data={categories}
           onEdit={handleEdit}

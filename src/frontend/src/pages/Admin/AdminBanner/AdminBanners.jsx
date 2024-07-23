@@ -32,7 +32,7 @@ const AdminBanners = () => {
       formData.append("title", banner.title);
       formData.append("description", banner.description);
       formData.append("FormFile", banner.image);
-      formData.append("visible", banner.visible);
+      formData.append("isVisible", banner.visible);
 
       // POST request to add a new banner
       await axios.post("/banners", formData, {
@@ -59,7 +59,7 @@ const AdminBanners = () => {
       if (updatedBanner.image) {
         formData.append("FormFile", updatedBanner.image);
       }
-      formData.append("visible", updatedBanner.visible);
+      formData.append("isVisible", updatedBanner.visible);
 
       const response = await axios.put(`/banners/${id}`, formData, {
         headers: {
@@ -118,9 +118,9 @@ const AdminBanners = () => {
         <Table
           columns={[
             { header: 'ID', accessor: 'id' },
+            { header: 'Image', accessor: 'logoImageUrl' },
             { header: 'Title', accessor: 'title' },
             { header: 'Description', accessor: 'description' },
-            { header: 'Image', accessor: 'logoImageUrl' },
             { header: 'Visible', accessor: 'isVisible' }
           ]}
           data={banners}

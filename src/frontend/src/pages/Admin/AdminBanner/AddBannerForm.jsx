@@ -4,7 +4,7 @@ const AddBannerForm = ({ banner, onClose, addBanner, updateBanner }) => {
   const [title, setTitle] = useState(banner ? banner.title : "");
   const [urlSlug, setUrlSlug] = useState(banner ? banner.urlSlug : "");
   const [description, setDescription] = useState(banner ? banner.description : "");
-  const [visible, setVisible] = useState(banner ? banner.visible : false);
+  const [visible, setVisible] = useState(banner ? banner.isVisible : false);
   const [image, setImage] = useState("");
   const [imagePreview, setImagePreview] = useState(banner ? banner.logoImageUrl : null);
 
