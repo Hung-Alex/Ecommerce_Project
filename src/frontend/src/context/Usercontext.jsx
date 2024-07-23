@@ -1,6 +1,5 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState } from "react";
 import axios from "../utils/axios";
-import Cookies from "js-cookie";
 import img from "../assets/Home/img/user.png";
 
 export const UserContext = createContext({
@@ -14,20 +13,10 @@ export const UserContext = createContext({
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    const token = Cookies.get("accessToken");
-    if (token) {
-      getUserInfo(); // Fetch user info on startup if token exists
-    }
-  }, []);
-
   const refreshToken = async () => {
     try {
-      const response = await axios.post("/authentications/refresh", {
-        refreshToken: Cookies.get("refreshToken"),
-      });
+      const response = await axios.post("/authentications/refresh");
       if (response.data.accessToken) {
-        Cookies.set("accessToken", response.data.accessToken);
         return response.data.accessToken; // Return new token
       }
     } catch (error) {
@@ -37,24 +26,16 @@ const UserProvider = ({ children }) => {
     }
   };
 
-  const getUserInfo = async () => {
-    try {
-      const userName = Cookies.get("userName");
-      if (userName) {
-        setUser({ name: userName, image: img });
-      } else {
-        console.log("User name not found in cookies.");
-      }
-    } catch (error) {
-      console.log("Failed to fetch user info: ", error);
-    }
-  };
-
   const login = async (data) => {
-    Cookies.set("accessToken", data.accessToken);
-    Cookies.set("refreshToken", data.refreshToken);
-    Cookies.set("userName", data.user.name);
-    await getUserInfo();
+    try {
+      // Directly set user info from login response
+      setUser({
+        name: data.user.name,
+        image: img, // Keep this as it is or modify as needed
+      });
+    } catch (error) {
+      console.error("Login failed: ", error);
+    }
   };
 
   const logout = async () => {
@@ -63,9 +44,6 @@ const UserProvider = ({ children }) => {
     } catch (error) {
       console.log("Logout failed: ", error);
     } finally {
-      Cookies.remove("accessToken");
-      Cookies.remove("refreshToken");
-      Cookies.remove("userName");
       setUser(null);
     }
   };

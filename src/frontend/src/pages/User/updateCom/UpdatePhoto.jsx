@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { UserContext } from "../../../context/Usercontext";
+import { UserContext } from "../../../context/UserContext";
 
 const UpdatePhoto = () => {
   const { user } = useContext(UserContext);
