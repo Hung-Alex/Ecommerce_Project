@@ -9,7 +9,8 @@ export const BrandContext = createContext({
   error: false,
   addBrand: () => {},
   updateBrand: () => {},
-  deleteBrand: () => {}
+  deleteBrand: () => {},
+  getBrands: () => {}
 });
 
 // Provider for BrandContext
@@ -23,6 +24,15 @@ const BrandContextProvider = ({ children }) => {
     }
   }, [brands]);
 
+  const getBrands = async () => {
+    try {
+      const response = await axios.get("/brands");
+      setBrandList(response.data);
+    } catch (error) {
+      console.error("Error fetching brands:", error);
+    }
+  };
+
   const addBrand = async (brand) => {
     try {
       const formData = new FormData();
@@ -31,12 +41,12 @@ const BrandContextProvider = ({ children }) => {
       formData.append("description", brand.description);
       formData.append("FormFile", brand.image);
 
-      const response = await axios.post("/brands", formData, {
+      await axios.post("/brands", formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }
       });
-      setBrandList([...brandList, response.data]);
+      await getBrands();
     } catch (error) {
       console.error("Error adding brand:", error);
     }
@@ -51,14 +61,12 @@ const BrandContextProvider = ({ children }) => {
       formData.append("description", updatedBrand.description);
       formData.append("FormFile", updatedBrand.image);
 
-      const response = await axios.put(`/brands/${id}`, formData, {
+      await axios.put(`/brands/${id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }
       });
-      setBrandList(
-        brandList.map((brand) => (brand.id === id? response.data : brand))
-      );
+      await getBrands();
     } catch (error) {
       console.error("Error updating brand:", error);
     }
@@ -67,7 +75,7 @@ const BrandContextProvider = ({ children }) => {
   const deleteBrand = async (id) => {
     try {
       await axios.delete(`/brands/${id}`);
-      setBrandList(brandList.filter((brand) => brand.id!== id));
+      await getBrands();
     } catch (error) {
       console.error("Error deleting brand:", error);
     }
@@ -81,7 +89,8 @@ const BrandContextProvider = ({ children }) => {
         error,
         addBrand,
         updateBrand,
-        deleteBrand
+        deleteBrand,
+        getBrands
       }}
     >
       {children}
