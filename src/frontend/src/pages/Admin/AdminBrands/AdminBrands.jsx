@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import DashboardLayout from "../../../layout/DashboardLayout.jsx";
 import Table from "../comp/Table";
-import useFetch from "../../../hooks/useFetch";
-import AddBrandForm from "./AddBrands"; // Import AddBrandForm
+import AddBrandForm from "./AddBrands";
 import { useBrandContext } from "../../../context/BrandContext.jsx";
 
 const AdminBrands = () => {
@@ -10,28 +9,28 @@ const AdminBrands = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingBrand, setEditingBrand] = useState(null);
 
-  const handleEdit = (row) => {
+  const handleEdit = useCallback((row) => {
     setEditingBrand(row);
     setShowForm(true);
-  };
+  }, []);
 
-  const handleDelete = async (row) => {
+  const handleDelete = useCallback(async (row) => {
     try {
       await deleteBrand(row.id);
     } catch (error) {
       console.error('Error deleting brand:', error);
     }
-  };
+  }, [deleteBrand]);
 
-  const handleAddBrand = () => {
+  const handleAddBrand = useCallback(() => {
     setEditingBrand(null);
     setShowForm(true);
-  };
+  }, []);
 
-  const handleCloseForm = () => {
+  const handleCloseForm = useCallback(() => {
     setShowForm(false);
     setEditingBrand(null);
-  };
+  }, []);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading brands: {error.message}</p>;
@@ -45,7 +44,7 @@ const AdminBrands = () => {
             { header: 'Name', accessor: 'name' },
             { header: 'URL Slug', accessor: 'urlSlug' },
             { header: 'Description', accessor: 'description' },
-            { header: 'image', accessor: 'image' }
+            { header: 'Image', accessor: 'image' }
           ]}
           data={brands}
           onEdit={handleEdit}

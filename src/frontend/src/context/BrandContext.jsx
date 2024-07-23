@@ -1,8 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import axios from "../utils/axios";  // Make sure you have axios setup correctly
+import axios from "../utils/axios";
 import useFetch from "../hooks/useFetch";
 
-// Create BrandContext
 export const BrandContext = createContext({
   brands: [],
   loading: false,
@@ -13,16 +12,15 @@ export const BrandContext = createContext({
   getBrands: () => {}
 });
 
-// Provider for BrandContext
 const BrandContextProvider = ({ children }) => {
-  const { data: brands, loading, error } = useFetch("/brands");
-  const [brandList, setBrandList] = useState(brands || []);
+  const { data: initialBrands, loading, error } = useFetch("/brands");
+  const [brandList, setBrandList] = useState(initialBrands || []);
 
   useEffect(() => {
-    if (brands) {
-      setBrandList(brands);
+    if (initialBrands) {
+      setBrandList(initialBrands);
     }
-  }, [brands]);
+  }, [initialBrands]);
 
   const getBrands = async () => {
     try {
@@ -41,12 +39,14 @@ const BrandContextProvider = ({ children }) => {
       formData.append("description", brand.description);
       formData.append("FormFile", brand.image);
 
-      await axios.post("/brands", formData, {
+      const response = await axios.post("/brands", formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }
       });
-      await getBrands();
+
+      // Add the newly created brand to the state
+      setBrandList(prevList => [...prevList, response.data]);
     } catch (error) {
       console.error("Error adding brand:", error);
     }
@@ -59,14 +59,22 @@ const BrandContextProvider = ({ children }) => {
       formData.append("name", updatedBrand.name);
       formData.append("urlSlug", updatedBrand.urlSlug);
       formData.append("description", updatedBrand.description);
-      formData.append("FormFile", updatedBrand.image);
+      if (updatedBrand.image) {
+        formData.append("FormFile", updatedBrand.image);
+      }
 
       await axios.put(`/brands/${id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }
       });
-      await getBrands();
+
+      // Update the brand in the state
+      setBrandList(prevList =>
+        prevList.map(brand =>
+          brand.id === id ? { ...brand, ...updatedBrand } : brand
+        )
+      );
     } catch (error) {
       console.error("Error updating brand:", error);
     }
@@ -75,7 +83,9 @@ const BrandContextProvider = ({ children }) => {
   const deleteBrand = async (id) => {
     try {
       await axios.delete(`/brands/${id}`);
-      await getBrands();
+      
+      // Remove the deleted brand from the state
+      setBrandList(prevList => prevList.filter(brand => brand.id !== id));
     } catch (error) {
       console.error("Error deleting brand:", error);
     }
@@ -98,7 +108,6 @@ const BrandContextProvider = ({ children }) => {
   );
 };
 
-// Hook to use BrandContext easily
 export const useBrandContext = () => useContext(BrandContext);
 
 export default BrandContextProvider;
