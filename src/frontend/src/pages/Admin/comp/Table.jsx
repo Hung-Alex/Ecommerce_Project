@@ -7,8 +7,8 @@ const Table = ({ columns, data = [], onEdit, onDelete, onAdd }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
 
-  const hiddenColumns = new Set(['id', 'logoImageUrl']);
-
+  const hiddenColumns = new Set(['id']);
+console.log(data.image);
   const filteredData = Array.isArray(data) ? data.filter(row =>
     columns.some(col =>
       row[col.accessor]
@@ -95,6 +95,13 @@ const Table = ({ columns, data = [], onEdit, onDelete, onAdd }) => {
                           >
                             {cellValue ? 'True' : 'False'}
                           </span>
+                        ) : col.accessor === 'image' || col.accessor === 'images' || col.accessor === 'logoImageUrl' ? (
+                          console.log(cellValue),
+                          <img
+                            src={Array.isArray(cellValue) ? cellValue[0] : cellValue}
+                            alt="Image"
+                            className="h-10 w-10 object-cover rounded-full"
+                          />
                         ) : (
                           cellValue
                         )}

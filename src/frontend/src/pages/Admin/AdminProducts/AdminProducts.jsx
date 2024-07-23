@@ -12,6 +12,7 @@ const AdminProducts = () => {
       // Giả sử mỗi sản phẩm có các thuộc tính như name, price, category, brand
       const filteredData = products.map(product => ({
         id: product.id,
+        image: product.images,
         name: product.name,
         price: product.price,
         category: product.category.name,
@@ -23,10 +24,11 @@ const AdminProducts = () => {
 
   const columns = [
     { header: 'ID', accessor: 'id' },
+    { header: 'image', accessor: 'image' },
     { header: 'Name', accessor: 'name' },
     { header: 'Price', accessor: 'price' },
     { header: 'Category', accessor: 'category' },
-    { header: 'Brand', accessor: 'brand' }
+    { header: 'Brand', accessor: 'brand' },
   ];
 
   const handleEdit = (row) => {
