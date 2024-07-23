@@ -367,18 +367,11 @@ namespace Infrastructure.Data.Seed
         {
             List<Categories> subCategories = new List<Categories>()
             {
-                new Categories() { Id = Guid.NewGuid(), Name = "Honey", Description = "Water spinach is a popular green vegetable in Vietnam.", Image = "https://organiconline.com.bd/wp-content/uploads/2021/09/Honeycm.png", UrlSlug = "water-spinach" },
-                new Categories() { Id = Guid.NewGuid(), Name = "Ghee", Description = "Napa cabbage is a type of Chinese cabbage, commonly used to make kimchi.", Image = "https://organiconline.com.bd/wp-content/uploads/2021/09/Gheecm.png", UrlSlug = "napa-cabbage" },
-                new Categories() { Id = Guid.NewGuid(), Name = "Oil", Description = "Broccoli is a green vegetable that is often eaten steamed or raw.", Image = "https://organiconline.com.bd/wp-content/uploads/2021/09/Oilcm.png", UrlSlug = "broccoli" },
-                new Categories() { Id = Guid.NewGuid(), Name = "Gitf Items", Description = "Spinach is a leafy green vegetable that is rich in iron.", Image = "https://organiconline.com.bd/wp-content/uploads/2021/10/Gift-Items.png", UrlSlug = "spinach" },
-                new Categories() { Id = Guid.NewGuid(), Name = "Super Foods", Description = "Carrots are root vegetables that are often orange in color.", Image = "https://organiconline.com.bd/wp-content/uploads/2021/09/Superfoodcm.png", UrlSlug = "carrot" },
-                new Categories() { Id = Guid.NewGuid(), Name = "Herbal Powders", Description = "Tomatoes are red fruits that are commonly used in salads and cooking.", Image = "https://organiconline.com.bd/wp-content/uploads/2021/09/Herbalcm.png", UrlSlug = "tomato" },
-                new Categories() { Id = Guid.NewGuid(), Name = "Grocery Items", Description = "Cucumbers are long, green vegetables that are often used in salads.", Image = "https://organiconline.com.bd/wp-content/uploads/2021/09/Grocerycm.png", UrlSlug = "cucumber" },
-                new Categories() { Id = Guid.NewGuid(), Name = "Spices Powders", Description = "Bell peppers are colorful vegetables that are often used in cooking.", Image = "https://organiconline.com.bd/wp-content/uploads/2021/09/Spicescm.png", UrlSlug = "bell-pepper" },
-                new Categories() { Id = Guid.NewGuid(), Name = "Seeds", Description = "Zucchini is a type of summer squash that is often used in cooking.", Image = "https://organiconline.com.bd/wp-content/uploads/2021/09/Seedscm.png", UrlSlug = "zucchini" },
-                new Categories() { Id = Guid.NewGuid(), Name = "Tea & Snacks", Description = "Lettuce is a leafy green vegetable that is commonly used in salads.", Image = "https://organiconline.com.bd/wp-content/uploads/2021/09/otherscm.png", UrlSlug = "lettuce" },
-                new Categories() { Id = Guid.NewGuid(), Name = "Nuts", Description = "Zucchini is a type of summer squash that is often used in cooking.", Image = "https://organiconline.com.bd/wp-content/uploads/2021/09/Nutscm.png", UrlSlug = "zucchini" },
-                new Categories() { Id = Guid.NewGuid(), Name = "Fish & Meat", Description = "Lettuce is a leafy green vegetable that is commonly used in salads.", Image = "https://organiconline.com.bd/wp-content/uploads/2021/10/Fish.png", UrlSlug = "lettuce" }
+                new Categories() { Id = Guid.NewGuid(), Name = "Fresh vegetables", Description = "Fresh vegetables", Image = "https://res.cloudinary.com/drz5sabm7/image/upload/v1721756809/categories/hxm8yhc5gwlechu1rysv.jpg", UrlSlug = "fresh-vegetables" },
+                new Categories() { Id = Guid.NewGuid(), Name = "Fruit Smoothie", Description = "Fruit Smoothie", Image = "https://res.cloudinary.com/drz5sabm7/image/upload/v1721756800/categories/d57vejj1uhypfirleboj.jpg", UrlSlug = "fruit-smoothie" },
+                new Categories() { Id = Guid.NewGuid(), Name = "Fresh food", Description = "Fresh food", Image = "https://res.cloudinary.com/drz5sabm7/image/upload/v1721756791/categories/uqkjbzkyvnrzgmw8wnvw.jpg", UrlSlug = "fresh-food" },
+                new Categories() { Id = Guid.NewGuid(), Name = "Fresh fruit", Description = "Fresh fruit", Image = "https://res.cloudinary.com/drz5sabm7/image/upload/v1721756781/categories/wmlpfiiclbmeemyw127z.jpg", UrlSlug = "fresh-fruit" },
+                new Categories() { Id = Guid.NewGuid(), Name = "Kinds of Bean", Description = "kinds of bean", Image = "https://res.cloudinary.com/drz5sabm7/image/upload/v1721757186/categories/wr9a8kcky83cqzny0rvt.jpg", UrlSlug = "kinds-of-bean" },            
             };
             return subCategories;
         }
@@ -598,7 +591,7 @@ namespace Infrastructure.Data.Seed
                     Price = 1.00M,
                     UrlSlug = "onion",
                     Discount = null,
-                    CategoryId=categories[4].Id,
+                    CategoryId=categories[0].Id,
                     BrandId=brands[4].Id
                 },
                 new Product
@@ -608,7 +601,7 @@ namespace Infrastructure.Data.Seed
                     Price = 0.80M,
                     UrlSlug = "garlic",
                     Discount = 5,
-                    CategoryId=categories[4].Id,
+                    CategoryId=categories[0].Id,
                     BrandId=brands[4].Id
                 },
                 new Product
@@ -618,7 +611,7 @@ namespace Infrastructure.Data.Seed
                     Price = 2.50M,
                     UrlSlug = "avocado",
                     Discount = 10,
-                    CategoryId=categories[4].Id,
+                    CategoryId=categories[0].Id,
                     BrandId=brands[4].Id
                 },
                 new Product
@@ -628,7 +621,7 @@ namespace Infrastructure.Data.Seed
                     Price = 1.50M,
                     UrlSlug = "zucchini",
                     Discount = null,
-                    CategoryId=categories[4].Id,
+                    CategoryId=categories[0].Id,
                     BrandId=brands[4].Id
                 },
                 new Product
@@ -638,7 +631,7 @@ namespace Infrastructure.Data.Seed
                     Price = 2.00M,
                     UrlSlug = "eggplant",
                     Discount = 10,
-                    CategoryId=categories[4].Id,
+                    CategoryId=categories[0].Id,
                     BrandId=brands[4].Id
                 },
                 new Product
@@ -648,7 +641,7 @@ namespace Infrastructure.Data.Seed
                     Price = 3.00M,
                     UrlSlug = "pumpkin",
                     Discount = 15,
-                    CategoryId=categories[5].Id,
+                    CategoryId=categories[1].Id,
                     BrandId=brands[5].Id
                 },
                 new Product
@@ -658,7 +651,7 @@ namespace Infrastructure.Data.Seed
                     Price = 0.50M,
                     UrlSlug = "lemon",
                     Discount = 5,
-                    CategoryId=categories[5].Id,
+                    CategoryId=categories[1].Id,
                     BrandId=brands[5].Id
                 },
                 new Product
@@ -668,7 +661,7 @@ namespace Infrastructure.Data.Seed
                     Price = 0.50M,
                     UrlSlug = "lime",
                     Discount = null,
-                    CategoryId=categories[5].Id,
+                    CategoryId=categories[1].Id,
                     BrandId=brands[5].Id
                 },
                 new Product
@@ -678,7 +671,7 @@ namespace Infrastructure.Data.Seed
                     Price = 2.00M,
                     UrlSlug = "pear",
                     Discount = 10,
-                    CategoryId=categories[5].Id,
+                    CategoryId=categories[1].Id,
                     BrandId=brands[5].Id
                 },
                 new Product
@@ -688,7 +681,7 @@ namespace Infrastructure.Data.Seed
                     Price = 1.20M,
                     UrlSlug = "cabbage",
                     Discount = 5,
-                    CategoryId=categories[5].Id,
+                    CategoryId=categories[1].Id,
                     BrandId=brands[5].Id
                 },
                 new Product
@@ -698,7 +691,7 @@ namespace Infrastructure.Data.Seed
                     Price = 15.99M,
                     UrlSlug = "salmon-fillet",
                     Discount = null,
-                    CategoryId = categories[10].Id,
+                    CategoryId = categories[2].Id,
                     BrandId = brands[5].Id
                 },
                 new Product
@@ -708,7 +701,7 @@ namespace Infrastructure.Data.Seed
                     Price = 7.99M,
                     UrlSlug = "chicken-breast",
                     Discount = null,
-                    CategoryId = categories[10].Id,
+                    CategoryId = categories[2].Id,
                     BrandId = brands[5].Id
                 },
                 new Product
@@ -718,7 +711,7 @@ namespace Infrastructure.Data.Seed
                     Price = 12.50M,
                     UrlSlug = "beef-steak",
                     Discount = null,
-                    CategoryId = categories[10].Id,
+                    CategoryId = categories[2].Id,
                     BrandId = brands[5].Id
                 },
                 new Product
@@ -728,7 +721,7 @@ namespace Infrastructure.Data.Seed
                     Price = 8.25M,
                     UrlSlug = "pork-chops",
                     Discount = null,
-                    CategoryId = categories[10].Id,
+                    CategoryId = categories[2].Id,
                     BrandId = brands[5].Id
                 },
                 new Product
@@ -738,7 +731,7 @@ namespace Infrastructure.Data.Seed
                     Price = 10.99M,
                     UrlSlug = "shrimp",
                     Discount = null,
-                    CategoryId = categories[10].Id,
+                    CategoryId = categories[2].Id,
                     BrandId = brands[5].Id
                 }
             };
