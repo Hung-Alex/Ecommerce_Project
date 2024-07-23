@@ -21,12 +21,12 @@ namespace Infrastructure.Services.Identity
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
             {
-                throw new NotFoundException($"{ErrorConstants.UserNotFoundWithID}{userId}");
+                throw new NotFoundException($"{ErrorConstants.ApplicationUserError.UserNotFoundWithID}{userId}");
             }
             var isExixted = await _userManager.IsInRoleAsync(user, role);
             if (isExixted)
             {
-                throw new ConflictException(ErrorConstants.UserHaveBeenSameRole(role).Description);
+                throw new ConflictException(ErrorConstants.RoleError.UserHaveBeenSameRole(role).Description);
             }
             var result = await _userManager.AddToRoleAsync(user, role);
             return result.Succeeded;
@@ -45,21 +45,21 @@ namespace Infrastructure.Services.Identity
         public async Task<bool> DeleteRefreshTokenAsync(Guid userId, string provider, string tokenName)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
-            if (user is null) throw new NotFoundException(ErrorConstants.UserNotFoundWithID(userId).Description);
+            if (user is null) throw new NotFoundException(ErrorConstants.ApplicationUserError.UserNotFoundWithID(userId).Description);
             var result = await _userManager.RemoveAuthenticationTokenAsync(user, provider, tokenName);
             return result.Succeeded;
         }
         public async Task<string> GetRefreshTokenAsync(Guid userId, string provider, string tokenName)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
-            if (user is null) throw new NotFoundException(ErrorConstants.UserNotFoundWithID(userId).Description);
+            if (user is null) throw new NotFoundException(ErrorConstants.ApplicationUserError.UserNotFoundWithID(userId).Description);
             string token = await _userManager.GetAuthenticationTokenAsync(user, provider, tokenName);
             return token;
         }
         public async Task<UserDTO> GetUserAsync(string userName, CancellationToken cancellationToken = default)
         {
             var user = await _userManager.FindByNameAsync(userName);
-            if (user is null) throw new NotFoundException(ErrorConstants.UserNotFoundWithName + userName);
+            if (user is null) return null;
             var roles = await _userManager.GetRolesAsync(user);
             return new UserDTO()
             {
@@ -91,7 +91,7 @@ namespace Infrastructure.Services.Identity
         public async Task<bool> SaveRefreshTokenAsync(Guid userId, string provider, string tokenName, string value)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
-            if (user is null) throw new NotFoundException(ErrorConstants.UserNotFoundWithID(userId).Description);
+            if (user is null) throw new NotFoundException(ErrorConstants.ApplicationUserError.UserNotFoundWithID(userId).Description);
             var result = await _userManager.SetAuthenticationTokenAsync(user, provider, tokenName, value);
             return result.Succeeded;
         }

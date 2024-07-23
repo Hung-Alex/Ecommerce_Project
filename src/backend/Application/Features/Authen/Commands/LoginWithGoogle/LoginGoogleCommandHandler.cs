@@ -34,16 +34,24 @@ namespace Application.Features.Authen.Commands.LoginWithGoogle
             var userId = await _authenService.SignInByGoogleAsync(request.IdToken);
             if (userId.IsSuccess is false)
             {
-                return Result<AuthencationResponse>.ResultFailures();
+                return Result<AuthencationResponse>.ResultFailures(ErrorConstants.LoginError.LoginIsNotSuccessWithGoogle);
             }
             //get infomation to generate token
             var user = await _identityService.GetUserByIdAsync(userId.Data);
+            if (user is null)
+            {
+                return Result<AuthencationResponse>.ResultFailures(ErrorConstants.LoginError.LoginIsNotSuccessWithGoogle);
+            }
             var token = await _jwtProvider.GenerateTokenAsync(user.Id);
             //generate refresh token
             var refreshToken = JWTHelper.GenerateRefreshToken(DateTime.Now.AddDays(_jwtSetting.ExpiredRefreshToken));
             //convert the refresh token to json containing the expiration time, Token. After saving it
             var convertRefreshIntoJson = JsonSerializer.Serialize<RefreshToken>(refreshToken);
-            await _identityService.SaveRefreshTokenAsync(user.Id, UserToken.Provider, UserToken.RefreshToken, convertRefreshIntoJson);
+            var isSuccess = await _identityService.SaveRefreshTokenAsync(user.Id, UserToken.Provider, UserToken.RefreshToken, convertRefreshIntoJson);
+            if (isSuccess is false)
+            {
+                return Result<AuthencationResponse>.ResultFailures(ErrorConstants.LoginError.LoginIsNotSuccessWithGoogle);
+            }
             return Result<AuthencationResponse>.ResultSuccess(new AuthencationResponse(token, refreshToken.Token, "Bearer", new UserAuthentication(user.Id, user.Name ?? "")));
         }
     }

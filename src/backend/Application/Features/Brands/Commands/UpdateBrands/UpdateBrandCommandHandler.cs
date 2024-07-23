@@ -37,7 +37,7 @@ namespace Application.Features.Brands.Commands.UpdateBrand
         {
             var repo = _unitOfWork.GetRepository<Brand>();
             var brand = await repo.GetByIdAsync(request.Id);
-            if (brand == null) return Result<BrandDTO>.ResultFailures(ErrorConstants.UserNotFoundWithID(request.Id));
+            if (brand == null) return Result<BrandDTO>.ResultFailures(ErrorConstants.ApplicationUserError.UserNotFoundWithID(request.Id));
             var isExisted = await repo.FindOneAsync(new UrlSlugIsExistedSpecification(request.Id, request.UrlSlug));
             if (isExisted is not null)
             {

@@ -30,7 +30,7 @@ namespace Application.Features.Rattings.Commands.UpdateRatting
         {
             var repoRatting = _unitOfWork.GetRepository<Ratting>();
             var ratting = await repoRatting.GetByIdAsync(request.Id);
-            if (ratting == null) return Result<RattingDTO>.ResultFailures(ErrorConstants.UserNotFoundWithID(request.Id));
+            if (ratting == null) return Result<RattingDTO>.ResultFailures(ErrorConstants.ApplicationUserError.UserNotFoundWithID(request.Id));
             ratting.Rate = request.Rate;
             ratting.ProductId = request.ProductId;
             ratting.Description = request.Description;

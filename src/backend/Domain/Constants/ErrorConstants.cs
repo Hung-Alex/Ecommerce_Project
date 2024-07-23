@@ -1,37 +1,79 @@
 ﻿using Domain.Shared;
-using System.Diagnostics;
 
 namespace Domain.Constants
 {
     public static class ErrorConstants
     {
-        public static Error ProductNotFoundWithSlug(string slug) => new Error("Product Not Found", $"Not found product with Url slug  {slug}");
+        public static class ProductError
+        {
+            public static Error ProductNotFoundWithSlug(string slug) => new Error("Product Not Found", $"Not found product with Url slug  {slug}");
+
+            public static readonly Error VariantsDontHaveVariant = new Error("VariantsDontHaveVariant", "Variants Dont Have Variant");
+        }
+        public static class BrandError
+        {
+        }
+        public static class UserError
+        {
+        }
+        public static class ApplicationUserError
+        {
+            public static Error UserNotFoundWithName(string name) => new Error("User.UserNotFoundWithName", $"Not found with name {name}");
+            public static Error ProductNotFoundWithSlug(string slug) => new Error("Product Not Found", $"Not found product with Url slug  {slug}");
+            public static Error UserNotFoundWithID(Guid userId) => new Error("User.NotFound", $"Not found user with id {userId}");
+        }
+        public static class RoleError
+        {
+            public static Error UserHaveBeenSameRole(string role) => new Error("User.HaveBeenSameRole", $"User have been same role {role}");
+        }
+        public static class PermissionError
+        {
+        }
+        public static class AuthenticationError
+        {
+            public static readonly Error AuthUsernamePasswordInvalid = new Error("Authencation.UsernamePasswordInvalid", "Username and Password Invalid");
+            public static readonly Error AuthAccessTokenInvalid = new Error("Authencation.AccessTokenInvalid", "AccessToken invalid");
+            public static readonly Error AuthRefreshTokenDoesNotMatchOrExpired
+                = new Error("Authencation.RefreshTokenDoesNotMatchOrExpired"
+                    , "Refresh token doesn't match with refresh token is saved or it was expired, you must be login again");
+        }
+        public static class WishListError
+        {
+            public static Error ProductDontHaveInWishlistWithId(Guid id) => new Error("Product.DontHaveInWishlistWithId", $"Product Dont Have In Wishlist With Id {id}");
+            //WishList
+            public static Error WishListProductIsExistedInWishListWithId(Guid ProductId) => new Error("WishList.Product already Existed In Wishlist", $"Product already existed in wishlist with id {ProductId}");
+        }
+        public static class CartError
+        {
+            public static readonly Error CartNotFound = new Error("Cart.CartNotFound", "Cart Not Found");
+        }
+        public static class UploadImageError
+        {
+            public static Error UploadImageOccursErrorWithFileName(string fileName) => new Error("UploadImageOccursErrorWithFileName", $"Upload Image Occurs Error With FileName {fileName}");
+        }
+        public static class BannerError
+        {
+        }
+        public static class SlideError
+        {
+        }
+        public static class RattingError
+        {
+        }
+        public static class PostError
+        {
+        }
+        public static class CommentError
+        {
+        }
+        public static class LoginError
+        {
+            public static Error LoginIsNotSuccess(string userName) => new Error("Login", $"Login isn't Success with UserName {userName}");
+            public static Error LoginIsNotSuccessWithGoogle => new Error("Login", $"Login isn't Success with Google ");
+        }
+        //comom
         public static Error UrlSlugIsExisted(string url) => new Error("Url Slug Is Existed", $"Url slug is existed {url}");
         public static Error NotFound(string url) => new Error("NotFound", $"Url slug is existed {url}");
-        public static Error NotFoundWithId(Guid id) => new Error("NotFound", $"Not Found With Id {id}");
-        public static readonly Error VariantsDontHaveVariant = new Error("VariantsDontHaveVariant", "Variants Dont Have Variant");
-
-        //Users
-        public static Error UserNotFoundWithID(Guid userId) => new Error("User.NotFound", $"Not found user with id {userId}");
-        public static Error UserNotFoundWithName(string name) => new Error("User.UserNotFoundWithName", $"Not found with name {name}");
-        public static Error UserExistedWithName(string name) => new Error("User.ExistedWithName", $"User existed with name {name}");
-        public static Error UserHaveBeenSameRole(string role) => new Error("User.HaveBeenSameRole", $"User have been same role {role}");
-        //authencation
-        public static readonly Error AuthUsernamePasswordInvalid = new Error("Authencation.UsernamePasswordInvalid", "Username and Password Invalid");
-        public static readonly Error AuthAccessTokenInvalid = new Error("Authencation.AccessTokenInvalid", "AccessToken invalid");
-        public static readonly Error AuthRefreshTokenDoesNotMatchOrExpired
-            = new Error("Authencation.RefreshTokenDoesNotMatchOrExpired"
-                , "Refresh token doesn't match with refresh token is saved or it was expired, you must be login again");
-        //ProductImage
-        public static Error ProductImageDontHaveImageWithId(Guid id) => new Error("ProductImage.DontHaveImageWithId", $"Product dont have image with id {id}");
-        //WishList
-        public static Error WishListDontHaveProductInWishListWithId(Guid ProductId) => new Error("WishList.Not Found Producy In Wishlist", $"Dont have product in wishlist with id {ProductId}");
-        public static Error WishListProductIsExistedInWishListWithId(Guid ProductId) => new Error("WishList.Product already Existed In Wishlist", $"Product already existed in wishlist with id {ProductId}");
-        public static Error UploadImageOccursErrorWithFileName(string fileName) => new Error("UploadImageOccursErrorWithFileName", $"Upload Image Occurs Error With FileName {fileName}");
-        //Banner
-
-        //cart
-        public static readonly Error CartNotFound = new Error("Cart.CartNotFound", "Cart Not Found");
-
+        public static Error NotFoundWithId(Guid id) => new Error("NotFound", $"Not Found With Id {id}"); 
     }
 }

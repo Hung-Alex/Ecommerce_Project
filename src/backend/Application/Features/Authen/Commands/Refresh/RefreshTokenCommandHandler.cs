@@ -32,7 +32,7 @@ namespace Application.Features.Authen.Commands.Refresh
             var validateToken = await _jwtProvider.ValidateTokenAsync(request.Token);
             if (validateToken is false)
             {
-                return Result<AuthencationResponse>.ResultFailures(null, ErrorConstants.AuthAccessTokenInvalid);
+                return Result<AuthencationResponse>.ResultFailures(ErrorConstants.AuthenticationError.AuthAccessTokenInvalid);
             }
             //get claim from token 
             var claims = await _jwtProvider.GetClaimsFromTokenAsync(request.Token);
@@ -40,7 +40,7 @@ namespace Application.Features.Authen.Commands.Refresh
             var claimUserId = claims.FirstOrDefault(x => x.Type == ClaimUser.ApplicationUserId)?.Value;
             if (claimUserId is null)
             {
-                return Result<AuthencationResponse>.ResultFailures(null, ErrorConstants.AuthAccessTokenInvalid);
+                return Result<AuthencationResponse>.ResultFailures(null, ErrorConstants.AuthenticationError.AuthAccessTokenInvalid);
             }
             //convert userid into Guid
             var userId = new Guid(claimUserId);
@@ -48,7 +48,7 @@ namespace Application.Features.Authen.Commands.Refresh
             var refreshTokenIsValid = await _jwtProvider.ValidateRefreshTokenAsync(userId, request.RefreshToken);
             if (!refreshTokenIsValid)
             {
-                return Result<AuthencationResponse>.ResultFailures(null, ErrorConstants.AuthRefreshTokenDoesNotMatchOrExpired);
+                return Result<AuthencationResponse>.ResultFailures(ErrorConstants.AuthenticationError.AuthRefreshTokenDoesNotMatchOrExpired);
             }
             //generate new refresh token and access token
             var newRefreshToken = JWTHelper.GenerateRefreshToken(DateTime.Now.AddDays(_jwtSetting.ExpiredRefreshToken));

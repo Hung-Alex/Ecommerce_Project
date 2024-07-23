@@ -26,11 +26,11 @@ namespace Application.Features.Carts.Commands.AddItem
             var cart = await repo.FindOneAsync(new GetCartByUserIdSpecification(request.UserId));
             if (cart is null)
             {
-                return Result<bool>.ResultFailures(ErrorConstants.CartNotFound);
+                return Result<bool>.ResultFailures(ErrorConstants.CartError.CartNotFound);
             }
             var repoProduct = unitOfWork.GetRepository<Product>();
             var product = await repoProduct.FindOneAsync(new GetProductWithVariantsSpecification(request.ProductId));
-            if (product is null) { return Result<bool>.ResultFailures(ErrorConstants.CartNotFound); }
+            if (product is null) { return Result<bool>.ResultFailures(ErrorConstants.CartError.CartNotFound); }
             if (request.ProductSkusId is not null)
             {
                 var variant = product.ProductSkus.FirstOrDefault(x => x.Id == request.ProductSkusId);

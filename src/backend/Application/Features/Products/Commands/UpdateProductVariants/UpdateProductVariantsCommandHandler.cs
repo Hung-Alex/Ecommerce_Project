@@ -29,7 +29,7 @@ namespace Application.Features.Products.Commands.UpdateProductVariants
             }
             else
             {
-                return Result<bool>.ResultFailures(ErrorConstants.VariantsDontHaveVariant);
+                return Result<bool>.ResultFailures(ErrorConstants.ProductError.VariantsDontHaveVariant);
             }
             await unitOfWork.Commit();
             return Result<bool>.ResultSuccess(true);
