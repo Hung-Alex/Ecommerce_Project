@@ -9,7 +9,7 @@ export const UserContext = createContext({
   logout: () => {},
   refreshToken: () => {},
 });
-
+//user
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
