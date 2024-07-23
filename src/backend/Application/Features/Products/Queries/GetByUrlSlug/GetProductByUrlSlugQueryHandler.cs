@@ -20,7 +20,7 @@ namespace Application.Features.Products.Queries.GetByUrlSlug
             var product = await repo.FindOneAsync(new GetProductDetailsByUrlSlugSpecification(request.UrlSlug));
             if (product == null)
             {
-                return Result<ProductGetBySlugDTO>.ResultFailures(ErrorConstants.ProductNotFoundWithSlug(request.UrlSlug));
+                return Result<ProductGetBySlugDTO>.ResultFailures(ErrorConstants.ProductError.ProductNotFoundWithSlug(request.UrlSlug));
             }
             var productDto = new ProductGetBySlugDTO()
             {

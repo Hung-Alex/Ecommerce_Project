@@ -28,7 +28,7 @@ namespace Application.Features.WishsList.Commands.CreateFavoriteProduct
             var IsExistedInWishList = await repoWishList.FindOneAsync(new ProductIsExistedInWishListSpecification(request.ProductId, request.UserId));
             if (IsExistedInWishList is not null)
             {
-                return Result<bool>.ResultFailures(ErrorConstants.WishListProductIsExistedInWishListWithId(request.ProductId));
+                return Result<bool>.ResultFailures(ErrorConstants.WishListError.WishListProductIsExistedInWishListWithId(request.ProductId));
             }
             var repo = _unitOfWork.GetRepository<Product>();
             var hasProduct = await repo.GetByIdAsync(request.ProductId);

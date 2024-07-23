@@ -21,7 +21,7 @@ namespace Application.Features.WishsList.Commands.DeleteFavoriteProduct
             var hasProductInListWish = favouriteProductsOfUser.Where(x => x.ProductId == request.ProductId).FirstOrDefault();
             if (hasProductInListWish is null)
             {
-                return Result<bool>.ResultFailures(ErrorConstants.ProductImageDontHaveImageWithId(request.ProductId));
+                return Result<bool>.ResultFailures(ErrorConstants.WishListError.ProductDontHaveInWishlistWithId(request.ProductId));
             }
             repo.Delete(hasProductInListWish);
             await _unitOfWork.Commit();

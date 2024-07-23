@@ -33,7 +33,7 @@ namespace Infrastructure.Services.Auth
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user is null)
             {
-                return Result<bool>.ResultFailures(ErrorConstants.UserNotFoundWithID(userId));
+                return Result<bool>.ResultFailures(ErrorConstants.ApplicationUserError.UserNotFoundWithID(userId));
             }
             var role = await _roleManager.FindByIdAsync(roleId.ToString());
             if (role is null)
@@ -94,7 +94,7 @@ namespace Infrastructure.Services.Auth
             var isExixted = await _userManager.IsInRoleAsync(user, role);
             if (isExixted)
             {
-                return Result<bool>.ResultFailures(ErrorConstants.UserHaveBeenSameRole(role));
+                return Result<bool>.ResultFailures(ErrorConstants.RoleError.UserHaveBeenSameRole(role));
             }
             var result = await _userManager.AddToRoleAsync(user, role);
             if (result.Succeeded is false)

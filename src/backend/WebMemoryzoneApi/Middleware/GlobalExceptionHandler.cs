@@ -41,6 +41,12 @@ namespace WebMemoryzoneApi.Middleware
                     httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
                     problemDetails.Detail = exception.Message;
                     break;
+                case UploadImageException UploadImageException:
+                    problemDetails.Title = "Upload error occurred.";
+                    problemDetails.Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4";
+                    httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                    problemDetails.Detail = exception.Message;
+                    break;
                 default:
                     problemDetails.Title = exception.Message;
                     break;

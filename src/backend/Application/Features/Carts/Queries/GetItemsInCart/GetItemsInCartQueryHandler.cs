@@ -25,7 +25,7 @@ namespace Application.Features.Carts.Queries.GetItemsInCart
             var cart = await repo.FindOneAsync(new GetCartByUserIdSpecification(request.UserId));
             if (cart is null)
             {
-                return Result<CartDTO>.ResultFailures(ErrorConstants.CartNotFound);
+                return Result<CartDTO>.ResultFailures(ErrorConstants.CartError.CartNotFound);
             }
             var cartDTO = await _cartService.GetCartAsync(cart.Id);
             return Result<CartDTO>.ResultSuccess(cartDTO);

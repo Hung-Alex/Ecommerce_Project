@@ -31,7 +31,7 @@ namespace Application.Features.Posts.Commands.UpdatePost
         {
             var repo = _unitOfWork.GetRepository<Post>();
             var post = await repo.GetByIdAsync(request.Id);
-            if (post == null) return Result<bool>.ResultFailures(ErrorConstants.UserNotFoundWithID(request.Id));
+            if (post == null) return Result<bool>.ResultFailures(ErrorConstants.ApplicationUserError.UserNotFoundWithID(request.Id));
             var isExisted = await repo.FindOneAsync(new UrlSlugIsExistedSpecification(post.Id, request.UrlSlug));
             if (isExisted != null)
             {

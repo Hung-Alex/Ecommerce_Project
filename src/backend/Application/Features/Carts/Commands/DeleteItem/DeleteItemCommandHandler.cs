@@ -15,7 +15,7 @@ namespace Application.Features.Carts.Commands.DeleteItem
             var cart = await repo.FindOneAsync(new GetCartByUserIdSpecification(request.UserId));
             if (cart is null)
             {
-                return Result<bool>.ResultFailures(ErrorConstants.CartNotFound);
+                return Result<bool>.ResultFailures(ErrorConstants.CartError.CartNotFound);
             }
             var isExited = cart.CartItems.FirstOrDefault(x => x.Id == request.CarItemId);
             if (isExited == null)

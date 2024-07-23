@@ -37,7 +37,7 @@ namespace Application.Features.Category.Commands.UpdateCategory
         {
             var repoCategory = _unitOfWork.GetRepository<Categories>();
             var category = await repoCategory.GetByIdAsync(request.Id);
-            if (category == null) return Result<CategoryDTO>.ResultFailures(ErrorConstants.UserNotFoundWithID(request.Id));
+            if (category == null) return Result<CategoryDTO>.ResultFailures(ErrorConstants.ApplicationUserError.UserNotFoundWithID(request.Id));
             var isExisted = await repoCategory.FindOneAsync(new UrlSlugIsExistedSpecification(category.Id, request.UrlSlug));
             if (isExisted != null)
             {

@@ -53,7 +53,7 @@ namespace Infrastructure.Services.CloudinaryUpload
             {
                 return Result<ImageUpload>.ResultSuccess(new ImageUpload(uploadResult.PublicId, uploadResult.SecureUrl.ToString()));
             }
-            return Result<ImageUpload>.ResultFailures(ErrorConstants.UploadImageOccursErrorWithFileName(file.FileName));
+            return Result<ImageUpload>.ResultFailures(ErrorConstants.UploadImageError.UploadImageOccursErrorWithFileName(file.FileName));
         }
 
         public Task<Result<IEnumerable<ImageUpload>>> UploadLoadImagesAsync(IFormFileCollection file, CancellationToken cancellationToken = default)

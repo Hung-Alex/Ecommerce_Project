@@ -32,16 +32,24 @@ namespace Application.Features.Authen.Commands.Login
             var result = await _identityService.SignInAsync(request.UserName, request.Password);
             if (!result)
             {
-                return Result<AuthencationResponse>.ResultFailures(null, ErrorConstants.AuthUsernamePasswordInvalid);
+                return Result<AuthencationResponse>.ResultFailures(ErrorConstants.AuthenticationError.AuthUsernamePasswordInvalid);
             }
             //get infomation to generate token
             var user = await _identityService.GetUserAsync(request.UserName);
+            if (user is null)
+            {
+                return Result<AuthencationResponse>.ResultFailures(ErrorConstants.ApplicationUserError.UserNotFoundWithName(request.UserName));
+            }
             var token = await _jwtProvider.GenerateTokenAsync(user.Id);
             //generate refresh token
             var refreshToken = JWTHelper.GenerateRefreshToken(DateTime.Now.AddDays(_jwtSetting.ExpiredRefreshToken));
             //convert the refresh token to json containing the expiration time, Token. After saving it
             var convertRefreshIntoJson = JsonSerializer.Serialize<RefreshToken>(refreshToken);
-            await _identityService.SaveRefreshTokenAsync(user.Id, UserToken.Provider, UserToken.RefreshToken, convertRefreshIntoJson);
+            var isSuccess= await _identityService.SaveRefreshTokenAsync(user.Id, UserToken.Provider, UserToken.RefreshToken, convertRefreshIntoJson);
+            if (isSuccess is false)
+            {
+                return Result<AuthencationResponse>.ResultFailures(ErrorConstants.LoginError.LoginIsNotSuccess(request.UserName));
+            }
             return Result<AuthencationResponse>.ResultSuccess(new AuthencationResponse(token, refreshToken.Token, "Bearer",new UserAuthentication(user.Id, user.Name??"")));
         }
     }

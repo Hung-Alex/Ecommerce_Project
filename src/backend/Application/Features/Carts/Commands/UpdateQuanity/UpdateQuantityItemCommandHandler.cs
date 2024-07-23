@@ -16,7 +16,7 @@ namespace Application.Features.Carts.Commands.UpdateQuanity
             var cart = await repo.FindOneAsync(new GetCartByUserIdSpecification(request.UserId));
             if (cart is null)
             {
-                return Result<bool>.ResultFailures(ErrorConstants.CartNotFound);
+                return Result<bool>.ResultFailures(ErrorConstants.CartError.CartNotFound);
             }
             var repoProduct = unitOfWork.GetRepository<Product>();
             cart.UpdateQuantity(request.CartItemId, request.Quantity);
