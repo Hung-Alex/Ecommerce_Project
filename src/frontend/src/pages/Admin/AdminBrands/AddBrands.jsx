@@ -1,105 +1,82 @@
-import { useContext, useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
-import axios from "../../../utils/axios";
-import { BrandContext } from "../../../context/BrandContext"; // Make sure to create and set up BrandContext
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 
-const AddBrandForm = () => {
-  const [loading, setLoading] = useState(false);
-  const { register, handleSubmit } = useForm();
-  const { setBrand } = useContext(BrandContext); // Use the BrandContext to manage state
-  const navigate = useNavigate();
+const AddBrandForm = ({ brand, onClose, addBrand, updateBrand }) => {
+  const [name, setName] = useState(brand ? brand.name : "");
+  const [urlSlug, setUrlSlug] = useState(brand ? brand.urlSlug : "");
+  const [description, setDescription] = useState(brand ? brand.description : "");
+  const [image, setImage] = useState(brand ? brand.image : null);
+  const [imagePreview, setImagePreview] = useState(null);
 
-  const notify = () => toast.success("Brand added successfully");
-
-  const onSubmit = async (data) => {
-    setLoading(true);
-    try {
-      const formData = new FormData();
-      formData.append("name", data.name);
-      formData.append("description", data.description);
-      formData.append("urlSlug", data.urlSlug);
-      formData.append("formFile", data.formFile[0]); // Assuming formFile is a file input
-
-      const response = await axios.post("/brands", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      if (response.data) {
-        notify();
-        setBrand(response.data.data);
-        navigate("/admin/brands");
-        setLoading(false);
-      }
-    } catch (error) {
-      setLoading(false);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (brand) {
+      await updateBrand(brand.id, { name, urlSlug, description, image });
+    } else {
+      await addBrand({ name, urlSlug, description, image });
     }
+    onClose();
+  };
+
+  const handleImageChange = (event) => {
+    setImage(event.target.files[0]);
+    setImagePreview(URL.createObjectURL(event.target.files[0]));
   };
 
   return (
-    <div className="border-t-2 border-[#7eb693] shadow-md rounded bg-white max-w-2xl mb-24">
-      <h3 className="text-xl text-center my-4 p-3">Brand Details</h3>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="mx-6 pb-6 grid grid-cols-1 md:grid-cols-12 gap-4">
-          <div className="col-span-6">
-            <label className="block mb-2" htmlFor="name">
-              Name
-            </label>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+        <h2 className="text-2xl mb-4">{brand ? "Edit Brand" : "Add Brand"}</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium">Name:</label>
             <input
-              {...register("name", { required: true })}
-              className="block outline-none p-2 border rounded bg-slate-50 w-full text-gray-600"
               type="text"
-              placeholder="Brand Name"
-              required
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              className="mt-1 block w-full px-3 py-2 border rounded-md"
             />
           </div>
-          <div className="col-span-6">
-            <label className="block mb-2" htmlFor="description">
-              Description
-            </label>
+          <div>
+            <label className="block text-sm font-medium">URL Slug:</label>
             <input
-              {...register("description")}
-              className="block outline-none p-2 border rounded bg-slate-50 w-full text-gray-600"
               type="text"
-              placeholder="Description"
+              value={urlSlug}
+              onChange={(event) => setUrlSlug(event.target.value)}
+              className="mt-1 block w-full px-3 py-2 border rounded-md"
             />
           </div>
-        </div>
-        <div className="mx-6 pb-6 grid grid-cols-1 md:grid-cols-12 gap-4">
-          <div className="col-span-6">
-            <label className="block mb-2" htmlFor="urlSlug">
-              Url Slug
-            </label>
-            <input
-              {...register("urlSlug")}
-              className="block outline-none p-2 border rounded bg-slate-50 w-full text-gray-600"
-              type="text"
-              placeholder="URL Slug"
+          <div>
+            <label className="block text-sm font-medium">Description:</label>
+            <textarea
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
+              className="mt-1 block w-full px-3 py-2 border rounded-md"
             />
           </div>
-          <div className="col-span-6">
-            <label className="block mb-2" htmlFor="formFile">
-              Form File
-            </label>
-            <input
-              {...register("formFile", { required: true })}
-              className="block outline-none p-2 border rounded bg-slate-50 w-full text-gray-600"
-              type="file"
-              required
-            />
+          <div>
+            <label className="block text-sm font-medium">Image:</label>
+            <input type="file" onChange={handleImageChange} className="mt-1 block w-full" />
+            {imagePreview && (
+              <img src={imagePreview} alt="Image preview" className="mt-2 w-24 h-24 object-cover" />
+            )}
           </div>
-        </div>
-        <div className="mx-6 pb-6 text-right">
-          <input
-            className="bg-[#7eb693] text-white p-1 px-4 rounded cursor-pointer"
-            type="submit"
-            value={loading ? "Loading..." : "Add"}
-          />
-        </div>
-      </form>
+          <div className="flex justify-end space-x-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

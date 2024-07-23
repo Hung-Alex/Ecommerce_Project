@@ -3,33 +3,12 @@ import DashboardLayout from "../../../layout/DashboardLayout.jsx";
 import Table from "../comp/Table";
 import useFetch from "../../../hooks/useFetch";
 import AddBrandForm from "./AddBrands"; // Import AddBrandForm
+import { useBrandContext } from "../../../context/BrandContext.jsx";
 
 const AdminBrands = () => {
-  const { data: brands = [], loading, error, refetch } = useFetch('/brands');
-  const [data, setData] = useState([]);
+  const { brands, loading, error, addBrand, updateBrand, deleteBrand } = useBrandContext();
   const [showForm, setShowForm] = useState(false);
   const [editingBrand, setEditingBrand] = useState(null);
-
-  useEffect(() => {
-    if (Array.isArray(brands)) {
-      const filteredData = brands.map(brand => ({
-        id: brand.id,
-        name: brand.name,
-        urlSlug: brand.urlSlug,
-        description: brand.description
-      }));
-      setData(filteredData);
-    } else {
-      console.error('Expected an array of brands but got:', brands);
-    }
-  }, [brands]);
-
-  const columns = [
-    { header: 'ID', accessor: 'id' },
-    { header: 'Name', accessor: 'name' },
-    { header: 'URL Slug', accessor: 'urlSlug' },
-    { header: 'Description', accessor: 'description' }
-  ];
 
   const handleEdit = (row) => {
     setEditingBrand(row);
@@ -38,8 +17,7 @@ const AdminBrands = () => {
 
   const handleDelete = async (row) => {
     try {
-      await useFetch(`/brands/${row.id}`, "DELETE");
-      setData(data.filter(item => item.id !== row.id));
+      await deleteBrand(row.id);
     } catch (error) {
       console.error('Error deleting brand:', error);
     }
@@ -62,8 +40,14 @@ const AdminBrands = () => {
     <DashboardLayout>
       <div className='p-6'>
         <Table
-          columns={columns}
-          data={data}
+          columns={[
+            { header: 'ID', accessor: 'id' },
+            { header: 'Name', accessor: 'name' },
+            { header: 'URL Slug', accessor: 'urlSlug' },
+            { header: 'Description', accessor: 'description' },
+            { header: 'image', accessor: 'image' }
+          ]}
+          data={brands}
           onEdit={handleEdit}
           onDelete={handleDelete}
           onAdd={handleAddBrand}
@@ -72,7 +56,8 @@ const AdminBrands = () => {
           <AddBrandForm
             brand={editingBrand}
             onClose={handleCloseForm}
-            refetch={refetch} // Refresh data
+            addBrand={addBrand}
+            updateBrand={updateBrand}
           />
         )}
       </div>
