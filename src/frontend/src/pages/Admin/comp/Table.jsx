@@ -7,7 +7,7 @@ const Table = ({ columns, data = [], onEdit, onDelete, onAdd }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
 
-  const hiddenColumns = new Set(['id', 'image']);
+  const hiddenColumns = new Set(['id', 'logoImageUrl']);
 
   const filteredData = Array.isArray(data) ? data.filter(row =>
     columns.some(col =>
@@ -80,12 +80,24 @@ const Table = ({ columns, data = [], onEdit, onDelete, onAdd }) => {
                 <tr key={rowIndex} className="text-sm">
                   {columns.map((col, colIndex) => {
                     if (hiddenColumns.has(col.accessor)) return null;
+
+                    const cellValue = row[col.accessor];
                     return (
                       <td
                         key={colIndex}
                         className="px-2 py-2 whitespace-nowrap text-gray-900 truncate"
                       >
-                        {row[col.accessor]}
+                        {col.accessor === 'isVisible' ? (
+                          <span
+                            className={`px-2 py-1 rounded-full text-sm ${
+                              cellValue ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                            }`}
+                          >
+                            {cellValue ? 'True' : 'False'}
+                          </span>
+                        ) : (
+                          cellValue
+                        )}
                       </td>
                     );
                   })}

@@ -16,6 +16,7 @@ import Error from "../pages/Error/Error";
 import AdminProducts from "../pages/Admin/AdminProducts/AdminProducts";
 import AdminBrands from "../pages/Admin/AdminBrands/AdminBrands";
 import AdminCategories from "../pages/Admin/AdminCategory/AdminCategory";
+import AdminBanners from "../pages/Admin/AdminBanner/AdminBanners";
 
 export const router = createBrowserRouter([
   {
@@ -98,6 +99,10 @@ export const router = createBrowserRouter([
       {
         path: "brands",
         element: <AdminBrands />,
+      },
+      {
+        path: "banner",
+        element: <AdminBanners />,
       },
       {
         path: "category",
