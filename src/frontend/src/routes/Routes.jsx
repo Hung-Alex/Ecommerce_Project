@@ -16,6 +16,7 @@ import Error from "../pages/Error/Error";
 import AdminProducts from "../pages/Admin/AdminProducts/AdminProducts";
 import AddProduct from "../pages/Admin/AdminProducts/AddProduct";
 import UpdateProduct from "../pages/Admin/AdminProducts/UpdateProduct";
+import AdminBrands from "../pages/Admin/AdminBrands/AdminBrands";
 
 export const router = createBrowserRouter([
   {
@@ -88,11 +89,15 @@ export const router = createBrowserRouter([
         element: <AdminProducts />,
       },
       {
-        path: "products",
+        path: "admin",
         element: <AdminProducts />,
       },
       {
-        path: "admin",
+        path: "brands",
+        element: <AdminBrands />,
+      },
+      {
+        path: "products",
         element: <AdminProducts />,
       },
       {

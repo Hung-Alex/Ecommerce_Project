@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; // Import React và useEffect
+import React, { useState, useEffect } from 'react';
 import DashboardLayout from '../../../layout/DashboardLayout.jsx';
 import Table from '../comp/Table';
 import useFetch from '../../../hooks/useFetch';
@@ -40,6 +40,11 @@ const AdminProducts = () => {
     setData(data.filter(item => item.id !== row.id));
   };
 
+  const handleAddProduct = () => {
+    console.log('Add product button clicked');
+    // Implement the logic for adding a product here
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading products: {error.message}</p>;
 
@@ -51,6 +56,7 @@ const AdminProducts = () => {
           data={data}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          onAdd={handleAddProduct}
         />
       </div>
     </DashboardLayout>

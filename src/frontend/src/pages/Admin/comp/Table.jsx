@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { AiOutlinePlus } from 'react-icons/ai';
 
-const Table = ({ columns, data, onEdit, onDelete }) => {
+const Table = ({ columns, data, onEdit, onDelete, onAdd }) => {
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
@@ -36,7 +37,13 @@ const Table = ({ columns, data, onEdit, onDelete }) => {
 
   return (
     <div className="p-6">
-      <div className="mb-4">
+      <div className="mb-4 flex items-center">
+        <button
+          onClick={onAdd}
+          className="mr-4 p-2 bg-green-500 text-white rounded-3xl shadow-md hover:bg-green-600 transition-colors duration-200"
+        >
+          <AiOutlinePlus size={20} />
+        </button>
         <input
           type="text"
           value={search}
@@ -132,7 +139,8 @@ Table.propTypes = {
   ).isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   onEdit: PropTypes.func,
-  onDelete: PropTypes.func
+  onDelete: PropTypes.func,
+  onAdd: PropTypes.func.isRequired
 };
 
 export default Table;
