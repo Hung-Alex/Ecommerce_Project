@@ -8,6 +8,7 @@ export const UserContext = createContext({
   setUser: () => {},
   login: (data) => {},
   logout: () => {},
+  refreshToken: () => {},
 });
 
 const UserProvider = ({ children }) => {
@@ -20,33 +21,21 @@ const UserProvider = ({ children }) => {
     }
   }, []);
 
-  useEffect(() => {
-    const refreshToken = async () => {
-      try {
-        const response = await axios.post("/authentications/refresh", {
-          refreshToken: Cookies.get("refreshToken"),
-        });
-        if (response.data.accessToken) {
-          Cookies.set("accessToken", response.data.accessToken);
-        }
-      } catch (error) {
-        console.log("Failed to refresh token: ", error);
-        logout(); // Clear user and tokens on refresh failure
+  const refreshToken = async () => {
+    try {
+      const response = await axios.post("/authentications/refresh", {
+        refreshToken: Cookies.get("refreshToken"),
+      });
+      if (response.data.accessToken) {
+        Cookies.set("accessToken", response.data.accessToken);
+        return response.data.accessToken; // Return new token
       }
-    };
-
-    const interceptors = axios.interceptors.response.use(
-      (response) => response,
-      (error) => {
-        if (error.response && error.response.status === 401) {
-          refreshToken();
-        }
-        return Promise.reject(error);
-      }
-    );
-
-    return () => axios.interceptors.response.eject(interceptors);
-  }, []);
+    } catch (error) {
+      console.error("Failed to refresh token: ", error);
+      logout(); // Handle token refresh failure
+      throw error; // Re-throw error for further handling
+    }
+  };
 
   const getUserInfo = async () => {
     try {
@@ -86,6 +75,7 @@ const UserProvider = ({ children }) => {
     setUser,
     login,
     logout,
+    refreshToken,
   };
 
   return (

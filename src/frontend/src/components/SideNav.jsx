@@ -4,15 +4,15 @@ import { UserContext } from "../context/Usercontext";
 import logo from '../assets/Logo.png'; // Đảm bảo bạn có đường dẫn đúng đến hình ảnh logo
 
 const navItems = [
-  { label: "My Products", path: "/admin/products" },
-  { label: "Add Product", path: "/admin/add-product" },
-  { label: "Analytics", path: "/admin/analytics" }
+  { label: "Products", path: "/admin/products" },
+  { label: "Category", path: "/admin/Category" },
+  { label: "Brand", path: "/admin/brands" }
 ];
 
 const adminNavItems = [
-  { label: "My Products", path: "/admin/products" },
-  { label: "Add Product", path: "/admin/add-product" },
-  { label: "Analytics", path: "/admin/analytics" }
+  { label: "Products", path: "/admin/products" },
+  { label: "Category", path: "/admin/Category" },
+  { label: "Brand", path: "/admin/Brand" }
 ];
 
 const SideNav = () => {
