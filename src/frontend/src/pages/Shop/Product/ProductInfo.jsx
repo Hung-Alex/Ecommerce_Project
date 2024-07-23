@@ -3,7 +3,7 @@ import { toast } from "react-hot-toast";
 import { CartContext } from "../../../context/CartContext";
 import { Rating } from "@mui/material";
 import { BsArrowRightShort } from "react-icons/bs";
-import { UserContext } from "../../../context/Usercontext"; // Corrected import path
+import { UserContext } from "../../../context/UserContext"; // Corrected import path
 
 const ProductInfo = ({ productData }) => {
   const { addToCart, cart } = useContext(CartContext);

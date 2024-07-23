@@ -45,8 +45,14 @@ const BrandContextProvider = ({ children }) => {
         }
       });
 
-      // Add the newly created brand to the state
-      setBrandList(prevList => [...prevList, response.data]);
+      // Add the newly created brand to the state immediately
+      setBrandList(prevList => [
+        ...prevList,
+        {
+          id: Date.now(), // Temporary ID, replace with real ID if available
+          ...brand
+        }
+      ]);
     } catch (error) {
       console.error("Error adding brand:", error);
     }
@@ -83,7 +89,7 @@ const BrandContextProvider = ({ children }) => {
   const deleteBrand = async (id) => {
     try {
       await axios.delete(`/brands/${id}`);
-      
+
       // Remove the deleted brand from the state
       setBrandList(prevList => prevList.filter(brand => brand.id !== id));
     } catch (error) {

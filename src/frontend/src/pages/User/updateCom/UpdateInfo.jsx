@@ -5,7 +5,7 @@ import axios from "../../../utils/axios";
 import UpdatePhoto from "./UpdatePhoto";
 import UpdatePassword from "./UpdatePassword";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../../../context/Usercontext";
+import { UserContext } from "../../../context/UserContext";
 
 const UpdateInformation = () => {
   const { user, setUser } = useContext(UserContext);

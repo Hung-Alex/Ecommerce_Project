@@ -3,7 +3,7 @@ import { toast } from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useContext, useState } from "react";
-import { UserContext } from "../../context/Usercontext";
+import { UserContext } from "../../context/UserContext";
 import axios from "../../utils/axios";
 import GoogleLoginButton from "./GoogleLoginButton";
 

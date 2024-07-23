@@ -5,7 +5,7 @@ import NavList from "./List/NavList";
 import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import { CartContext } from "../../../context/CartContext";
-import { UserContext } from "../../../context/Usercontext";
+import { UserContext } from "../../../context/UserContext";
 import UserDropdown from "./UserDropdown";
 
 const Header = () => {

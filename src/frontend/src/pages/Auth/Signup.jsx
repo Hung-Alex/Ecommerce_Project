@@ -3,7 +3,7 @@ import { toast } from "react-hot-toast";
 import axios from "../../utils/axios";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { UserContext } from "../../context/Usercontext";
+import { UserContext } from "../../context/UserContext";
 
 function SignUp() {
   const { login } = useContext(UserContext);
