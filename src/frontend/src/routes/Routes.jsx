@@ -14,8 +14,9 @@ import UpdateProfile from "../pages/User/UpdateProfile";
 import Checkout from "../pages/Order/Checkout";
 import Error from "../pages/Error/Error";
 import AdminProducts from "../pages/Admin/AdminProducts/AdminProducts";
-import AddProduct from "../pages/Admin/AdminProducts/AddProduct";
-import UpdateProduct from "../pages/Admin/AdminProducts/UpdateProduct";
+import AdminBrands from "../pages/Admin/AdminBrands/AdminBrands";
+import AdminCategories from "../pages/Admin/AdminCategory/AdminCategory";
+import AdminBanners from "../pages/Admin/AdminBanner/AdminBanners";
 
 export const router = createBrowserRouter([
   {
@@ -88,20 +89,24 @@ export const router = createBrowserRouter([
         element: <AdminProducts />,
       },
       {
-        path: "products",
-        element: <AdminProducts />,
-      },
-      {
         path: "admin",
         element: <AdminProducts />,
       },
       {
-        path: "add-product",
-        element: <AddProduct />,
+        path: "products",
+        element: <AdminProducts />,
       },
       {
-        path: "product/update/:id",
-        element: <UpdateProduct />,
+        path: "brands",
+        element: <AdminBrands />,
+      },
+      {
+        path: "banner",
+        element: <AdminBanners />,
+      },
+      {
+        path: "category",
+        element: <AdminCategories />,
       },
     ],
   },

@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { AiOutlinePlus } from 'react-icons/ai';
 
-const Table = ({ columns, data, onEdit, onDelete }) => {
+const Table = ({ columns, data = [], onEdit, onDelete, onAdd }) => {
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
 
-  // Lọc dữ liệu theo tìm kiếm
-  const filteredData = data.filter(row =>
+  const hiddenColumns = new Set(['id']);
+console.log(data.image);
+  const filteredData = Array.isArray(data) ? data.filter(row =>
     columns.some(col =>
       row[col.accessor]
         .toString()
         .toLowerCase()
         .includes(search.toLowerCase())
     )
-  );
+  ) : [];
 
-  // Tính toán các trang
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
   const paginatedData = filteredData.slice(
     (currentPage - 1) * rowsPerPage,
@@ -25,7 +26,7 @@ const Table = ({ columns, data, onEdit, onDelete }) => {
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
-    setCurrentPage(1); // Đặt lại trang khi tìm kiếm
+    setCurrentPage(1);
   };
 
   const handlePageChange = (newPage) => {
@@ -36,7 +37,13 @@ const Table = ({ columns, data, onEdit, onDelete }) => {
 
   return (
     <div className="p-6">
-      <div className="mb-4">
+      <div className="mb-4 flex items-center">
+        <button
+          onClick={onAdd}
+          className="mr-4 p-2 bg-green-500 text-white rounded-3xl shadow-md hover:bg-green-600 transition-colors duration-200"
+        >
+          <AiOutlinePlus size={20} />
+        </button>
         <input
           type="text"
           value={search}
@@ -45,60 +52,87 @@ const Table = ({ columns, data, onEdit, onDelete }) => {
           className="shadow-md p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         />
       </div>
-      <div className="shadow-md overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200 bg-white shadow-md rounded-lg">
-          <thead className="bg-gray-50">
-            <tr>
-              {columns.map((col, index) => (
-                <th
-                  key={index}
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  {col.header}
-                </th>
-              ))}
-              {(onEdit || onDelete) && (
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              )}
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {paginatedData.map((row, rowIndex) => (
-              <tr key={rowIndex}>
-                {columns.map((col, colIndex) => (
-                  <td
-                    key={colIndex}
-                    className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
-                  >
-                    {row[col.accessor]}
-                  </td>
-                ))}
+      <div className="overflow-x-auto">
+        <div className="max-w-screen-lg mx-auto">
+          <table className="min-w-full divide-y divide-gray-200 bg-white shadow-md rounded-lg">
+            <thead className="bg-gray-50">
+              <tr>
+                {columns.map((col, index) => {
+                  if (hiddenColumns.has(col.accessor)) return null;
+                  return (
+                    <th
+                      key={index}
+                      className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[120px]"
+                    >
+                      {col.header}
+                    </th>
+                  );
+                })}
                 {(onEdit || onDelete) && (
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
-                    {onEdit && (
-                      <button
-                        onClick={() => onEdit(row)}
-                        className="text-blue-500 hover:text-blue-700 mr-2"
-                      >
-                        Edit
-                      </button>
-                    )}
-                    {onDelete && (
-                      <button
-                        onClick={() => onDelete(row)}
-                        className="text-red-500 hover:text-red-700"
-                      >
-                        Delete
-                      </button>
-                    )}
-                  </td>
+                  <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[80px]">
+                    Actions
+                  </th>
                 )}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {paginatedData.map((row, rowIndex) => (
+                <tr key={rowIndex} className="text-sm">
+                  {columns.map((col, colIndex) => {
+                    if (hiddenColumns.has(col.accessor)) return null;
+
+                    const cellValue = row[col.accessor];
+                    return (
+                      <td
+                        key={colIndex}
+                        className="px-2 py-2 whitespace-nowrap text-gray-900 truncate"
+                      >
+                        {col.accessor === 'isVisible' ? (
+                          <span
+                            className={`px-2 py-1 rounded-full text-sm ${
+                              cellValue ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                            }`}
+                          >
+                            {cellValue ? 'True' : 'False'}
+                          </span>
+                        ) : col.accessor === 'image' || col.accessor === 'images' || col.accessor === 'logoImageUrl' ? (
+                          console.log(cellValue),
+                          <img
+                            src={Array.isArray(cellValue) ? cellValue[0] : cellValue}
+                            alt="Image"
+                            className="h-10 w-10 object-cover rounded-full"
+                          />
+                        ) : (
+                          cellValue
+                        )}
+                      </td>
+                    );
+                  })}
+                  {(onEdit || onDelete) && (
+                    <td className="px-2 py-2 whitespace-nowrap text-gray-500">
+                      {onEdit && (
+                        <button
+                          onClick={() => onEdit(row)}
+                          className="text-blue-500 hover:text-blue-700 mr-2 text-xs"
+                        >
+                          Edit
+                        </button>
+                      )}
+                      {onDelete && (
+                        <button
+                          onClick={() => onDelete(row)}
+                          className="text-red-500 hover:text-red-700 text-xs"
+                        >
+                          Delete
+                        </button>
+                      )}
+                    </td>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
       <div className="flex justify-end mt-4">
         <button
@@ -130,9 +164,10 @@ Table.propTypes = {
       accessor: PropTypes.string.isRequired
     })
   ).isRequired,
-  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  data: PropTypes.arrayOf(PropTypes.object), // Validate data as an array
   onEdit: PropTypes.func,
-  onDelete: PropTypes.func
+  onDelete: PropTypes.func,
+  onAdd: PropTypes.func.isRequired
 };
 
 export default Table;

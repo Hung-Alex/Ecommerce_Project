@@ -1,13 +1,19 @@
-// CartContext.js
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import axios from "../utils/axios"; // Import your axios instance
+import { UserContext } from "./UserContext";
 
 export const CartContext = createContext();
 
 const CartContextProvider = (props) => {
   const [cart, setCart] = useState({ items: [], total: 0 });
+  const { user } = useContext(UserContext);
 
   const fetchCart = async () => {
+    if (!user) {
+      setCart({ items: [], total: 0 }); // Set default cart when there's no user
+      return;
+    }
+
     try {
       const response = await axios.get("/carts");
       setCart(response.data.data || { items: [], total: 0 });
@@ -19,9 +25,11 @@ const CartContextProvider = (props) => {
 
   useEffect(() => {
     fetchCart();
-  }, []);
+  }, [user]); // Re-fetch cart when user changes
 
   const addToCart = async ({ productId, quantity }) => {
+    if (!user) return; // Exit if there is no user
+
     try {
       await axios.post("/carts", { productId, quantity });
       fetchCart();
@@ -31,6 +39,8 @@ const CartContextProvider = (props) => {
   };
 
   const updateCart = async ({ cartItemId, quantity }) => {
+    if (!user) return; // Exit if there is no user
+
     try {
       await axios.put("/carts", { cartItemId, quantity });
       fetchCart();
@@ -40,6 +50,8 @@ const CartContextProvider = (props) => {
   };
 
   const deleteFromCart = async (cartItemId) => {
+    if (!user) return; // Exit if there is no user
+
     try {
       await axios.delete(`/carts/${cartItemId}`);
       fetchCart();

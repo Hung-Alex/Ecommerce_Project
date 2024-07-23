@@ -1,25 +1,27 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { UserContext } from "../context/Usercontext";
+import { UserContext } from "../context/UserContext";
 import logo from '../assets/Logo.png'; // Đảm bảo bạn có đường dẫn đúng đến hình ảnh logo
 
 const navItems = [
-  { label: "My Products", path: "/admin/products" },
-  { label: "Add Product", path: "/admin/add-product" },
-  { label: "Analytics", path: "/admin/analytics" }
+  { label: "Products", path: "/admin/products" },
+  { label: "Category", path: "/admin/Category" },
+  { label: "Brand", path: "/admin/brands" },
+  { label: "Banner", path: "/admin/banner" }
 ];
 
 const adminNavItems = [
-  { label: "My Products", path: "/admin/products" },
-  { label: "Add Product", path: "/admin/add-product" },
-  { label: "Analytics", path: "/admin/analytics" }
+  { label: "Products", path: "/admin/products" },
+  { label: "Category", path: "/admin/Category" },
+  { label: "Brand", path: "/admin/Brand" },
+  { label: "Banner", path: "/admin/banner" }
 ];
 
 const SideNav = () => {
   const { user } = useContext(UserContext);
 
   return (
-    <div className="mt-12 min-h-full bg-white w-52 shadow-md rounded-lg">
+    <div className="mt-12 bg-white w-52 shadow-md rounded-lg">
       <div className="mt-4">
         {navItems.map((item, index) => (
           <Link

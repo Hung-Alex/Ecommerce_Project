@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { UserContext } from "../../../context/Usercontext";
+import { UserContext } from "../../../context/UserContext";
 
 const UserDropdown = () => {
   const { logout, user } = useContext(UserContext);
