@@ -100,14 +100,6 @@ export const router = createBrowserRouter([
         path: "products",
         element: <AdminProducts />,
       },
-      {
-        path: "add-product",
-        element: <AddProduct />,
-      },
-      {
-        path: "product/update/:id",
-        element: <UpdateProduct />,
-      },
     ],
   },
 ]);
