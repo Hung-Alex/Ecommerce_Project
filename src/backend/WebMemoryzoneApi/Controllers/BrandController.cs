@@ -4,10 +4,12 @@ using Application.Features.Brands.Commands.DeleteBrand;
 using Application.Features.Brands.Commands.UpdateBrand;
 using Application.Features.Brands.Queries.Get;
 using Application.Features.Brands.Queries.GetById;
+using Infrastructure.Services.Auth.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebMemoryzoneApi.Filters;
+using static Domain.Enums.PermissionEnum;
 
 namespace WebMemoryzoneApi.Controllers
 {
@@ -28,6 +30,7 @@ namespace WebMemoryzoneApi.Controllers
             if (!result.IsSuccess) return NotFound(result);
             return Ok(result);
         }
+        // [HasPermission(PermissionOperator.Or, [Permission.CreateBanner, Permission.CreateBrand, Permission.CreateProduct])]
         [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> GetBrands([FromQuery] BrandFilter brandFilter)
