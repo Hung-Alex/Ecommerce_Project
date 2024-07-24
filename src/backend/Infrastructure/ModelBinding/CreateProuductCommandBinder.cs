@@ -8,11 +8,6 @@ namespace Infrastructure.ModelBinding
 {
     public class CreateProuductCommandBinder : IModelBinder
     {
-        string CleanJsonString(string jsonString)
-        {
-            // Loại bỏ các ký tự không mong muốn, chẳng hạn như \r, \n, \t và các ký tự khác
-            return Regex.Replace(jsonString, @"[\r\n\t]", string.Empty);
-        }
         public async Task BindModelAsync(ModelBindingContext bindingContext)
         {
             if (bindingContext == null)
@@ -47,7 +42,6 @@ namespace Infrastructure.ModelBinding
                     var cleanedVariantJsonList = variantJsonList
                         .Select(v => (v))
                         .ToList();
-
 
                     foreach (var v in cleanedVariantJsonList)
                     {
