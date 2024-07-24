@@ -1,133 +1,86 @@
-import React, { useState, useEffect } from 'react';
-import DashboardLayout from '../../../layout/DashboardLayout.jsx';
-import Table from '../comp/Table';
-import useFetch from '../../../hooks/useFetch';
-import AddProductForm from './AddProduct.jsx';
+import React, { useState, useEffect, useCallback } from "react";
+import DashboardLayout from "../../../layout/DashboardLayout.jsx";
+import Table from "../comp/Table.jsx";
+import AddProductForm from "./AddProductForm"; // Assuming you have a similar form component for products
+import axios from "../../../utils/axios";
 
 const AdminProducts = () => {
-  const { data: products, loading, error } = useFetch('/products?SortColoumn=name&SortBy=ASC');
-  const [data, setData] = useState([]);
-  const [showAddProductForm, setShowAddProductForm] = useState(false);
-  const [currentProduct, setCurrentProduct] = useState(null);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [showForm, setShowForm] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
+
+  const fetchProducts = useCallback(async () => {
+    try {
+      const response = await axios.get("/products?SortColoumn=Name&SortBy=ASC");
+      setProducts(response.data.data);
+      setLoading(false);
+    } catch (error) {
+      setError(error);
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    if (products) {
-      // Map the products to match the table data structure
-      const filteredData = products.map(product => ({
-        id: product.id,
-        image: product.images[0] || '', // Assuming the first image is to be shown
-        name: product.name,
-        price: product.price,
-        category: product.category.name,
-        brand: product.brand.name
-      }));
-      setData(filteredData);
+    fetchProducts();
+  }, [fetchProducts]);
+
+  const deleteProduct = async (id) => {
+    try {
+      await axios.delete(`/products/${id}`);
+      setProducts(prevList => prevList.filter(product => product.id !== id));
+    } catch (error) {
+      console.error("Error deleting product:", error);
     }
-  }, [products]);
-
-  const columns = [
-    { header: 'ID', accessor: 'id' },
-    { header: 'Image', accessor: 'image' },
-    { header: 'Name', accessor: 'name' },
-    { header: 'Price', accessor: 'price' },
-    { header: 'Category', accessor: 'category' },
-    { header: 'Brand', accessor: 'brand' },
-    { header: 'Actions', accessor: 'actions' }
-  ];
-
-  const handleEdit = (row) => {
-    setCurrentProduct(row);
-    setShowAddProductForm(true);
   };
 
-  const handleDelete = async (id) => {
+  const handleEdit = useCallback((row) => {
+    setEditingProduct(row);
+    setShowForm(true);
+  }, []);
+
+  const handleDelete = useCallback(async (row) => {
     try {
-      await fetch(`/products/${id}`, { method: 'DELETE' });
-      // Refresh the product list
-      const response = await fetch('/products');
-      const updatedProducts = await response.json();
-      setData(updatedProducts);
+      await deleteProduct(row.id);
     } catch (error) {
       console.error('Error deleting product:', error);
     }
-  };
+  }, []);
 
-  const handleAddProduct = () => {
-    setCurrentProduct(null);
-    setShowAddProductForm(true);
-  };
+  const handleAddProduct = useCallback(() => {
+    setEditingProduct(null);
+    setShowForm(true);
+  }, []);
 
-  const handleCloseForm = () => {
-    setShowAddProductForm(false);
-    setCurrentProduct(null);
-  };
-
-  const handleSaveProduct = async (product) => {
-    try {
-      const formData = new FormData();
-      formData.append('name', product.name);
-      formData.append('description', product.description);
-      formData.append('urlSlug', product.urlSlug);
-      formData.append('price', product.price);
-      formData.append('discount', product.discount);
-      formData.append('brandId', product.brandId);
-      formData.append('categoryId', product.categoryId);
-      formData.append('variant', JSON.stringify(product.variant)); // Assuming variant is an array of objects
-      formData.append('images', product.images); // Assuming images is an array of strings or URLs
-
-      const method = product.id ? 'PUT' : 'POST';
-      const endpoint = product.id ? `/products/${product.id}` : '/products';
-
-      await fetch(endpoint, {
-        method,
-        body: formData
-      });
-
-      // Refresh the product list
-      const response = await fetch('/products');
-      const updatedProducts = await response.json();
-      setData(updatedProducts);
-    } catch (error) {
-      console.error('Error saving product:', error);
-    }
-    handleCloseForm();
-  };
+  const handleCloseForm = useCallback(() => {
+    setShowForm(false);
+    setEditingProduct(null);
+  }, []);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading products: {error.message}</p>;
 
   return (
     <DashboardLayout>
-      <div className="p-6">
+      <div className='p-6'>
         <Table
-          columns={columns}
+          columns={[
+            { header: 'ID', accessor: 'id' },
+            { header: 'Image', accessor: 'images' },
+            { header: 'Name', accessor: 'name' },
+            { header: 'URL Slug', accessor: 'urlSlug' },
+            { header: 'Description', accessor: 'description' },
+            { header: 'Actions', accessor: 'actions' }
+          ]}
+          data={products}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
           onAdd={handleAddProduct}
-          data={data.map(item => ({
-            ...item,
-            actions: (
-              <div className="flex space-x-2">
-                <button
-                  onClick={() => handleEdit(item)}
-                  className="text-blue-600 hover:text-blue-800"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(item.id)}
-                  className="text-red-600 hover:text-red-800"
-                >
-                  Delete
-                </button>
-              </div>
-            )
-          }))}
         />
-
-        {showAddProductForm && (
+        {showForm && (
           <AddProductForm
-            product={currentProduct}
             onClose={handleCloseForm}
-            saveProduct={handleSaveProduct}
           />
         )}
       </div>
