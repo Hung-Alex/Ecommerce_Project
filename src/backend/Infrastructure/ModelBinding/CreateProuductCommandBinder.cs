@@ -43,7 +43,7 @@ namespace Infrastructure.ModelBinding
                     {
                         variant = variantJsonList.Select(v => JsonConvert.DeserializeObject<CreateProductSkus>(v));
                     }
-                    catch (JsonException)
+                    catch (Exception)
                     {
                         throw new ArgumentException("Invalid Variant JSON");
                     }
