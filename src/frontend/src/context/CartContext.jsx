@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, { createContext, useState, useEffect, useContext, useCallback } from "react";
 import axios from "../utils/axios"; // Import your axios instance
 import { UserContext } from "./UserContext";
 
@@ -8,7 +8,7 @@ const CartContextProvider = (props) => {
   const [cart, setCart] = useState({ items: [], total: 0 });
   const { user } = useContext(UserContext);
 
-  const fetchCart = async () => {
+  const fetchCart = useCallback( async () => {
     if (!user) {
       setCart({ items: [], total: 0 }); // Set default cart when there's no user
       return;
@@ -21,7 +21,7 @@ const CartContextProvider = (props) => {
       console.error("Error fetching cart:", error);
       setCart({ items: [], total: 0 });
     }
-  };
+  });
 
   useEffect(() => {
     fetchCart();
