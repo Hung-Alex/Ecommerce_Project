@@ -1,4 +1,6 @@
-﻿using Application.Common.Interface;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interface;
+using Application.DTOs.Internal;
 using Application.Features.Products.Specification;
 using Domain.Constants;
 using Domain.Entities;
@@ -26,27 +28,33 @@ namespace Application.Features.Products.Commands.AddProductImage
                 return Result<bool>.ResultFailures(ErrorConstants.NotFoundWithId(request.ProductId));
 
             }
-            var uploadImage = await _media.UploadLoadImageAsync(request.File, UploadFolderConstants.FolderImage);
-            if (uploadImage.IsSuccess is false)
-            {
-                return Result<bool>.ResultFailures(uploadImage.Errors);
-
-            }
             var repoImage = _unitOfWork.GetRepository<Image>();
-            var image = new Image()
+            if (request.File is not null)
             {
-                ImageUrl = uploadImage.Data.Url
-                ,
-                PublicId = uploadImage.Data.PublicId
-                ,
-                ImageExtension = request.File.ContentType
-                ,
-                OrderItem = product.Images.Count()
-                ,
-                ProductId = product.Id
-
-            };
-            repoImage.Add(image);
+                Result<ImageUpload> uploadResult = null;
+                int itemOrder = product.Images.Count();
+                foreach (var item in request.File)
+                {
+                    uploadResult = await _media.UploadLoadImageAsync(item, UploadFolderConstants.FolderProduct, cancellationToken);
+                    if (uploadResult.IsSuccess is false)
+                    {
+                        throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
+                    }
+                    repoImage.Add(new Image()
+                    {
+                        ImageExtension = item.ContentType
+                    ,
+                        ImageUrl = uploadResult.Data.Url
+                    ,
+                        PublicId = uploadResult.Data.PublicId
+                    ,
+                        OrderItem = itemOrder
+                    ,
+                        ProductId = request.ProductId
+                    });
+                    itemOrder++;
+                }
+            }
             await _unitOfWork.Commit();
             return Result<bool>.ResultSuccess(true);
         }
