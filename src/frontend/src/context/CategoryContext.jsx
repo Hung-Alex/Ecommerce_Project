@@ -1,11 +1,10 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import axios from "../utils/axios";
-import useFetch from "../hooks/useFetch";
 
 export const CategoryContext = createContext({
   categories: [],
   loading: false,
-  error: false,
+  error: null,
   addCategory: () => {},
   updateCategory: () => {},
   deleteCategory: () => {},
@@ -13,23 +12,26 @@ export const CategoryContext = createContext({
 });
 
 const CategoryContextProvider = ({ children }) => {
-  const { data: initialCategories, loading, error } = useFetch("/categories");
-  const [categoryList, setCategoryList] = useState(initialCategories || []);
+  const [categoryList, setCategoryList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    if (initialCategories) {
-      setCategoryList(initialCategories);
-    }
-  }, [initialCategories]);
-
-  const getCategories = async () => {
+  const getCategories = useCallback(async () => {
+    setLoading(true);
     try {
       const response = await axios.get("/categories");
-      setCategoryList(response.data);
+      setCategoryList(response.data.data || []);
+      setError(null); // Clear any previous errors
     } catch (error) {
-      console.error("Error fetching categories:", error);
+      setError(error);
+    } finally {
+      setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    getCategories();
+  }, [getCategories]);
 
   const addCategory = async (category) => {
     try {
@@ -39,20 +41,14 @@ const CategoryContextProvider = ({ children }) => {
       formData.append("description", category.description);
       formData.append("FormFile", category.image);
 
-      const response = await axios.post("/categories", formData, {
+      await axios.post("/categories", formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }
       });
 
-      // Add the newly created category to the state immediately
-      setCategoryList(prevList => [
-        ...prevList,
-        {
-          id: Date.now(), // Temporary ID, replace with real ID if available
-          ...category
-        }
-      ]);
+      // Fetch the updated category list
+      await getCategories();
     } catch (error) {
       console.error("Error adding category:", error);
     }
@@ -61,7 +57,6 @@ const CategoryContextProvider = ({ children }) => {
   const updateCategory = async (id, updatedCategory) => {
     try {
       const formData = new FormData();
-      formData.append("id", id);
       formData.append("name", updatedCategory.name);
       formData.append("urlSlug", updatedCategory.urlSlug);
       formData.append("description", updatedCategory.description);
