@@ -99,15 +99,9 @@ const AdminProducts = () => {
   return (
     <DashboardLayout>
       <div className="p-6">
-        <button
-          onClick={handleAddProduct}
-          className="mb-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-        >
-          Add Product
-        </button>
-
         <Table
           columns={columns}
+          onAdd={handleAddProduct}
           data={data.map(item => ({
             ...item,
             actions: (
