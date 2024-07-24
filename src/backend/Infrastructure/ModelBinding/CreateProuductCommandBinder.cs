@@ -1,13 +1,19 @@
 ﻿using Application.Features.Products.Commands.CreateProduct;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 
 namespace Infrastructure.ModelBinding
 {
     public class CreateProuductCommandBinder : IModelBinder
     {
-        public Task BindModelAsync(ModelBindingContext bindingContext)
+        string CleanJsonString(string jsonString)
+        {
+            // Loại bỏ các ký tự không mong muốn, chẳng hạn như \r, \n, \t và các ký tự khác
+            return Regex.Replace(jsonString, @"[\r\n\t]", string.Empty);
+        }
+        public async Task BindModelAsync(ModelBindingContext bindingContext)
         {
             if (bindingContext == null)
             {
@@ -35,32 +41,50 @@ namespace Infrastructure.ModelBinding
                     throw new ArgumentException("Invalid BrandId");
                 }
                 var variantJsonList = form["Variant"].ToList();
-                IEnumerable<CreateProductSkus> variant = null;
-
+                List<CreateProductSkus> variants = new List<CreateProductSkus>();
                 if (variantJsonList.Count > 0)
                 {
-                    try
+                    var cleanedVariantJsonList = variantJsonList
+                        .Select(v => (v))
+                        .ToList();
+
+
+                    foreach (var v in cleanedVariantJsonList)
                     {
-                        variant = variantJsonList.Select(v => JsonConvert.DeserializeObject<CreateProductSkus>(v));
+                        try
+                        {
+
+                            var variant = JsonConvert.DeserializeObject<CreateProductSkus>(v);
+                            if (variant != null)
+                            {
+                                variants.Add(variant);
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Warning: Deserialization returned null for JSON: {v}");
+                            }
+                        }
+                        catch (JsonException jsonEx)
+                        {
+                            bindingContext.HttpContext.Response.StatusCode = 400; // Set status code to 400
+                            bindingContext.ModelState.AddModelError(bindingContext.ModelName, jsonEx.Message);
+                            bindingContext.Result = ModelBindingResult.Failed();
+                        }
                     }
-                    catch (Exception)
-                    {
-                        throw new ArgumentException("Invalid Variant JSON");
-                    }
+                    var images = form.Files.Count > 0 ? form.Files : null;
+                    var result = new CreateProductCommand(
+                        name,
+                        description,
+                        urlSlug,
+                        price,
+                        discount,
+                        brandId,
+                        categoryId,
+                        variants,
+                        images
+                    );
+                    bindingContext.Result = ModelBindingResult.Success(result);
                 }
-                var images = form.Files.Count > 0 ? form.Files : null;
-                var result = new CreateProductCommand(
-                    name,
-                    description,
-                    urlSlug,
-                    price,
-                    discount,
-                    brandId,
-                    categoryId,
-                    variant,
-                    images
-                );
-                bindingContext.Result = ModelBindingResult.Success(result);
             }
             catch (Exception ex)
             {
@@ -68,7 +92,7 @@ namespace Infrastructure.ModelBinding
                 bindingContext.ModelState.AddModelError(bindingContext.ModelName, ex.Message);
                 bindingContext.Result = ModelBindingResult.Failed();
             }
-            return Task.CompletedTask;
         }
     }
 }
+
