@@ -28,6 +28,7 @@ namespace Domain.Constants
         }
         public static class PermissionError
         {
+            public static Error DuplicatePermission => new Error("Duplicate.DuplicatePermission", "Duplicate Permission");
         }
         public static class AuthenticationError
         {
@@ -74,6 +75,6 @@ namespace Domain.Constants
         //comom
         public static Error UrlSlugIsExisted(string url) => new Error("Url Slug Is Existed", $"Url slug is existed {url}");
         public static Error NotFound(string url) => new Error("NotFound", $"Url slug is existed {url}");
-        public static Error NotFoundWithId(Guid id) => new Error("NotFound", $"Not Found With Id {id}"); 
+        public static Error NotFoundWithId(Guid id) => new Error("NotFound", $"Not Found With Id {id}");
     }
 }

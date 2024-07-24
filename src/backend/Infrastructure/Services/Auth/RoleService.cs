@@ -17,15 +17,15 @@ namespace Infrastructure.Services.Auth
             _userManager = userManager;
             _roleManager = roleManager;
         }
-        public async Task<Result<bool>> CreateRoleAsync(string name, CancellationToken cancellationToken = default)
+        public async Task<Result<Guid>> CreateRoleAsync(string name, CancellationToken cancellationToken = default)
         {
             var role = new ApplicationRole() { Name = name };
             var result = await _roleManager.CreateAsync(role);
             if (result.Succeeded is false)
             {
-                return Result<bool>.ResultFailures(result.Errors.Select(e => new Error(e.Code, e.Description)));
+                return Result<Guid>.ResultFailures(result.Errors.Select(e => new Error(e.Code, e.Description)));
             }
-            return Result<bool>.ResultSuccess(true);
+            return Result<Guid>.ResultSuccess(role.Id);
         }
 
         public async Task<Result<bool>> DeleteRoleFromUserAsync(Guid userId, Guid roleId, CancellationToken cancellationToken = default)
@@ -97,6 +97,22 @@ namespace Infrastructure.Services.Auth
                 return Result<bool>.ResultFailures(ErrorConstants.RoleError.UserHaveBeenSameRole(role));
             }
             var result = await _userManager.AddToRoleAsync(user, role);
+            if (result.Succeeded is false)
+            {
+                return Result<bool>.ResultFailures(result.Errors.Select(x => new Error(x.Code, x.Description)));
+            }
+            return Result<bool>.ResultSuccess(true);
+        }
+
+        public async Task<Result<bool>> DeleteAsync(Guid roleId, CancellationToken cancellationToken = default)
+        {
+            //implement delete role
+            var role = await _roleManager.FindByIdAsync(roleId.ToString());
+            if (role is null)
+            {
+                return Result<bool>.ResultFailures(ErrorConstants.NotFoundWithId(roleId));
+            }
+            var result = await _roleManager.DeleteAsync(role);
             if (result.Succeeded is false)
             {
                 return Result<bool>.ResultFailures(result.Errors.Select(x => new Error(x.Code, x.Description)));
