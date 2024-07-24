@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Filters.Product;
 using Application.Features.Products.Commands.AddProductImage;
+using Application.Features.Products.Commands.AddProductVariant;
 using Application.Features.Products.Commands.CreateProduct;
 using Application.Features.Products.Commands.DeleteProduct;
 using Application.Features.Products.Commands.DeleteProductVariants;
@@ -60,6 +61,7 @@ namespace WebMemoryzoneApi.Controllers
             if (result.IsSuccess is false) return BadRequest(result);
             return Ok(result);
         }
+
         [HttpDelete("{id:Guid}")]
         public async Task<ActionResult> DeleteProduct(Guid id)
         {
@@ -99,6 +101,13 @@ namespace WebMemoryzoneApi.Controllers
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result);
             return Ok();
+        }
+        [HttpPost("add-variant")]
+        public async Task<ActionResult> AddProductVariant([FromBody] AddProductVariantCommand command)
+        {
+            var result = await _mediator.Send(command);
+            if (result.IsSuccess is false) return BadRequest(result);
+            return Ok(result);
         }
     }
 }
