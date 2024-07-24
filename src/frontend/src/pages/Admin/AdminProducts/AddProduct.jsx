@@ -3,7 +3,7 @@ import axios from '../../../utils/axios';
 import { useCategoryContext } from '../../../context/CategoryContext';
 import { useBrandContext } from '../../../context/BrandContext';
 
-const AddProductForm = ({ product, onClose, onSuccess }) => {
+const AddProductForm = ({ product, onClose}) => {
   const { categories, loading: categoriesLoading, error: categoriesError } = useCategoryContext();
   const { brands, loading: brandsLoading, error: brandsError } = useBrandContext();
 
@@ -35,10 +35,10 @@ const AddProductForm = ({ product, onClose, onSuccess }) => {
       formData.append('images', file);
     });
 
-    // Conditionally append variants if they are not empty
-    if (variants.length > 0) {
-      formData.append('variant', JSON.stringify(variants));
-    }
+  // Append each variant as a separate JSON object
+  variants.forEach((variant) => {
+    formData.append('Variant', JSON.stringify(variant));
+  });
 
     try {
       const response = await axios.post('/products', formData, {
@@ -47,7 +47,6 @@ const AddProductForm = ({ product, onClose, onSuccess }) => {
         },
       });
       console.log('Product added:', response.data);
-      onSuccess();
       onClose();
     } catch (error) {
       console.error('Error submitting product:', error);
