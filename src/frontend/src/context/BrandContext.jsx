@@ -1,11 +1,10 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import axios from "../utils/axios";
-import useFetch from "../hooks/useFetch";
 
 export const BrandContext = createContext({
   brands: [],
   loading: false,
-  error: false,
+  error: null,
   addBrand: () => {},
   updateBrand: () => {},
   deleteBrand: () => {},
@@ -13,23 +12,26 @@ export const BrandContext = createContext({
 });
 
 const BrandContextProvider = ({ children }) => {
-  const { data: initialBrands, loading, error } = useFetch("/brands");
-  const [brandList, setBrandList] = useState(initialBrands || []);
+  const [brandList, setBrandList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    if (initialBrands) {
-      setBrandList(initialBrands);
-    }
-  }, [initialBrands]);
-
-  const getBrands = async () => {
+  const getBrands = useCallback(async () => {
+    setLoading(true);
     try {
       const response = await axios.get("/brands");
-      setBrandList(response.data);
+      setBrandList(response.data.data);
+      setError(null); // Clear any previous errors
     } catch (error) {
-      console.error("Error fetching brands:", error);
+      setError(error);
+    } finally {
+      setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    getBrands();
+  }, [getBrands]);
 
   const addBrand = async (brand) => {
     try {
@@ -39,20 +41,14 @@ const BrandContextProvider = ({ children }) => {
       formData.append("description", brand.description);
       formData.append("FormFile", brand.image);
 
-      const response = await axios.post("/brands", formData, {
+      await axios.post("/brands", formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }
       });
 
-      // Add the newly created brand to the state immediately
-      setBrandList(prevList => [
-        ...prevList,
-        {
-          id: Date.now(), // Temporary ID, replace with real ID if available
-          ...brand
-        }
-      ]);
+      // Fetch the updated brand list
+      await getBrands();
     } catch (error) {
       console.error("Error adding brand:", error);
     }
@@ -61,7 +57,6 @@ const BrandContextProvider = ({ children }) => {
   const updateBrand = async (id, updatedBrand) => {
     try {
       const formData = new FormData();
-      formData.append("id", id);
       formData.append("name", updatedBrand.name);
       formData.append("urlSlug", updatedBrand.urlSlug);
       formData.append("description", updatedBrand.description);
