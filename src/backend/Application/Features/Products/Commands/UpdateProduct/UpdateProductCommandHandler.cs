@@ -26,7 +26,7 @@ namespace Application.Features.Products.Commands.UpdateProduct
             var product = await repo.GetByIdAsync(request.Id);
             if (product == null) return Result<bool>.ResultFailures(ErrorConstants.NotFoundWithId(request.Id));
             var isExisted = await repo.FindOneAsync(new UrlSlugIsExistedSpecification(request.Id, request.UrlSlug));
-            if (isExisted is null)
+            if (isExisted is not null)
             {
                 return Result<bool>.ResultFailures(ErrorConstants.UrlSlugIsExisted(request.UrlSlug));
             }
