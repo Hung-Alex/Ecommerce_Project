@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Application.Features.Roles.Command.CreateRole;
+using Application.Features.Roles.Command.DeleteRole;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebMemoryzoneApi.Controllers
@@ -13,9 +15,24 @@ namespace WebMemoryzoneApi.Controllers
             _mediator = mediator;
         }
         [HttpPost]
-        public async Task<IActionResult> CreateRole()
+        public async Task<IActionResult> CreateRole([FromBody] CreateRoleCommand command)
         {
-            return Ok();
+            var result = await _mediator.Send(command);
+            if (result.IsSuccess is false)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+        [HttpDelete("{id:Guid}")]
+        public async Task<IActionResult> DeleteRole(Guid id)
+        {
+            var result = await _mediator.Send(new DeleteRoleCommand(id));
+            if (result.IsSuccess is false)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
         }
     }
 }
