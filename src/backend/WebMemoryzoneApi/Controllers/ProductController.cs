@@ -95,7 +95,7 @@ namespace WebMemoryzoneApi.Controllers
             if (!result.IsSuccess) return BadRequest(result);
             return Ok(result);
         }
-        [HttpPost("addimage")]
+        [HttpPost("add-image")]
         public async Task<IActionResult> AddProductImage([FromForm] AddProductImageCommand command)
         {
             var result = await _mediator.Send(command);
