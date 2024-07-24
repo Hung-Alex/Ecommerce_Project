@@ -1,10 +1,12 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interface.IdentityService;
 using Application.DTOs.Internal.Role;
+using Application.DTOs.Responses.Role;
 using Domain.Constants;
 using Domain.Shared;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Services.Auth
 {
@@ -106,7 +108,6 @@ namespace Infrastructure.Services.Auth
 
         public async Task<Result<bool>> DeleteAsync(Guid roleId, CancellationToken cancellationToken = default)
         {
-            //implement delete role
             var role = await _roleManager.FindByIdAsync(roleId.ToString());
             if (role is null)
             {
@@ -118,6 +119,17 @@ namespace Infrastructure.Services.Auth
                 return Result<bool>.ResultFailures(result.Errors.Select(x => new Error(x.Code, x.Description)));
             }
             return Result<bool>.ResultSuccess(true);
+        }
+
+        public async Task<IEnumerable<RoleDTO>> GetAllRoleAsync(CancellationToken cancellationToken = default)
+        {
+            var roles = await _roleManager.Roles.ToListAsync();
+            if (roles is null)
+            {
+                return null;
+            }
+            return roles.Select(x => new RoleDTO { Id = x.Id, Name = x.Name });
+
         }
     }
 }
