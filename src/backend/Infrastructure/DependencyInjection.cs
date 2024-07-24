@@ -39,13 +39,13 @@ namespace Infrastructure
             // Register Services
             services.AddScoped<IMedia, Media>();
             services.AddScoped<IPermissionService, PermissionService>();
-           
+            services.AddScoped<IRoleServivce, RoleService>();
             services.AddScoped<ISectionService, SectionService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<IGoogleAuthenService, GoogleAuthenService>();
             services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<StoreDbContext>()                
+                .AddEntityFrameworkStores<StoreDbContext>()
                 .AddUserManager<UserManager<ApplicationUser>>()
                 .AddRoleManager<RoleManager<ApplicationRole>>()
                 .AddSignInManager<SignInManager<ApplicationUser>>()
