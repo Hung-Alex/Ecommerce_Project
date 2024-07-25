@@ -90,7 +90,7 @@ namespace Infrastructure.Data.Seed
                 await _dbContext.AddRangeAsync(variants);
             }
             var slidesData = SlideInit();
-            await _dbContext.AddRangeAsync(slidesData);     
+            await _dbContext.AddRangeAsync(slidesData);
             await _dbContext.SaveChangesAsync();
         }
         private List<Slide> SlideInit()
@@ -161,7 +161,7 @@ namespace Infrastructure.Data.Seed
                 }
             };
             return images;
-        }       
+        }
         private List<Image> AssignedImageForProduct(Product product)
         {
             int arrayLength = this.ImageProduct.Length;
@@ -219,7 +219,8 @@ namespace Infrastructure.Data.Seed
                     "and more recently with desktop publishing software like Aldus PageMaker including " +
                     "versions of Lorem Ipsum.",
                     IsVisible=true,
-                    LogoImageUrl="https://images.pexels.com/photos/2876511/pexels-photo-2876511.jpeg?auto=compress&cs=tinysrgb&w=600"
+                    LogoImageUrl="https://images.pexels.com/photos/2876511/pexels-photo-2876511.jpeg?auto=compress&cs=tinysrgb&w=600",
+                      PublicIdImage="test"
                 },
                 new()
                 {
@@ -233,7 +234,8 @@ namespace Infrastructure.Data.Seed
                     "and more recently with desktop publishing software like Aldus PageMaker including " +
                     "versions of Lorem Ipsum.",
                     IsVisible=true,
-                    LogoImageUrl="https://images.pexels.com/photos/1379627/pexels-photo-1379627.jpeg?auto=compress&cs=tinysrgb&w=600"
+                    LogoImageUrl="https://images.pexels.com/photos/1379627/pexels-photo-1379627.jpeg?auto=compress&cs=tinysrgb&w=600",
+                    PublicIdImage="test"
                 },
                 new()
                 {
@@ -247,7 +249,8 @@ namespace Infrastructure.Data.Seed
                     "and more recently with desktop publishing software like Aldus PageMaker including " +
                     "versions of Lorem Ipsum.",
                     IsVisible=true,
-                    LogoImageUrl="https://images.pexels.com/photos/1191548/pexels-photo-1191548.jpeg?auto=compress&cs=tinysrgb&w=600"
+                    LogoImageUrl="https://images.pexels.com/photos/1191548/pexels-photo-1191548.jpeg?auto=compress&cs=tinysrgb&w=600",
+                    PublicIdImage="test"
                 },
                 new()
                 {
@@ -262,6 +265,7 @@ namespace Infrastructure.Data.Seed
                     "versions of Lorem Ipsum.",
                     IsVisible=false,
                     LogoImageUrl="https://images.pexels.com/photos/6674032/pexels-photo-6674032.jpeg?auto=compress&cs=tinysrgb&w=600"
+                    ,PublicIdImage="test"
                 },
                 new()
                 {
@@ -275,7 +279,8 @@ namespace Infrastructure.Data.Seed
                     "and more recently with desktop publishing software like Aldus PageMaker including " +
                     "versions of Lorem Ipsum.",
                     IsVisible=true,
-                    LogoImageUrl="https://images.pexels.com/photos/1424239/pexels-photo-1424239.jpeg?auto=compress&cs=tinysrgb&w=600"
+                    LogoImageUrl="https://images.pexels.com/photos/1424239/pexels-photo-1424239.jpeg?auto=compress&cs=tinysrgb&w=600",
+                    PublicIdImage="test"
                 },
                 new()
                 {
@@ -289,7 +294,8 @@ namespace Infrastructure.Data.Seed
                     "and more recently with desktop publishing software like Aldus PageMaker including " +
                     "versions of Lorem Ipsum.",
                     IsVisible=true,
-                    LogoImageUrl="https://images.pexels.com/photos/2092828/pexels-photo-2092828.jpeg?auto=compress&cs=tinysrgb&w=600"
+                    LogoImageUrl="https://images.pexels.com/photos/2092828/pexels-photo-2092828.jpeg?auto=compress&cs=tinysrgb&w=600",
+                    PublicIdImage="test"
                 },
                 new()
                 {
@@ -304,6 +310,7 @@ namespace Infrastructure.Data.Seed
                     "versions of Lorem Ipsum.",
                     IsVisible=true,
                     LogoImageUrl="https://images.pexels.com/photos/925263/pexels-photo-925263.jpeg?auto=compress&cs=tinysrgb&w=600"
+                    ,PublicIdImage="test"
                 },
             };
             return banner;
@@ -319,6 +326,7 @@ namespace Infrastructure.Data.Seed
                     UrlSlug = "fresh-green",
                     Description = "Providing fresh and high-quality vegetables directly from farms to your table.",
                     Image = "https://images.pexels.com/photos/755992/pexels-photo-755992.jpeg?auto=compress&cs=tinysrgb&w=600"
+                    ,PublicIdImage="test"
                 },
                 new Brand
                 {
@@ -327,6 +335,7 @@ namespace Infrastructure.Data.Seed
                     UrlSlug = "organic-valley",
                     Description = "Offering a wide range of organic vegetables grown sustainably and without harmful chemicals.",
                     Image = "https://images.pexels.com/photos/104842/bmw-vehicle-ride-bike-104842.jpeg?auto=compress&cs=tinysrgb&w=600"
+                    ,PublicIdImage="test"
                 },
                 new Brand
                 {
@@ -334,7 +343,8 @@ namespace Infrastructure.Data.Seed
                     Name = "Fruid",
                     UrlSlug = "Fruid",
                     Description = "Steamed vegetables packed with freshness and nutrients for a healthy and tasty side dish.",
-                    Image = "https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=600"
+                    Image = "https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=600",
+                    PublicIdImage="test"
                 },
                 new Brand
                 {
@@ -342,7 +352,8 @@ namespace Infrastructure.Data.Seed
                     Name = "Oganic",
                     UrlSlug = "oganic",
                     Description = "Steamed vegetables packed with freshness and nutrients for a healthy and tasty side dish.",
-                    Image = "https://images.pexels.com/photos/2983100/pexels-photo-2983100.jpeg?auto=compress&cs=tinysrgb&w=600"
+                    Image = "https://images.pexels.com/photos/2983100/pexels-photo-2983100.jpeg?auto=compress&cs=tinysrgb&w=600",
+                    PublicIdImage="test"
                 },
                 new Brand
                 {
@@ -351,6 +362,7 @@ namespace Infrastructure.Data.Seed
                     UrlSlug = "heald",
                     Description = "Steamed vegetables packed with freshness and nutrients for a healthy and tasty side dish.",
                     Image = "https://images.pexels.com/photos/3689532/pexels-photo-3689532.jpeg?auto=compress&cs=tinysrgb&w=600"
+                    ,PublicIdImage="test"
                 },
                 new Brand
                 {
@@ -359,6 +371,7 @@ namespace Infrastructure.Data.Seed
                     UrlSlug = "anada",
                     Description = "Steamed vegetables packed with freshness and nutrients for a healthy and tasty side dish.",
                     Image = "https://cdn.shoplightspeed.com/shops/643839/themes/15892/v/897839/assets/first-image-1.jpg?20240319193340"
+                    ,PublicIdImage="test"
                 }
             };
             return vegetableBrands;
@@ -367,11 +380,11 @@ namespace Infrastructure.Data.Seed
         {
             List<Categories> subCategories = new List<Categories>()
             {
-                new Categories() { Id = Guid.NewGuid(), Name = "Fresh vegetables", Description = "Fresh vegetables", Image = "https://res.cloudinary.com/drz5sabm7/image/upload/v1721756809/categories/hxm8yhc5gwlechu1rysv.jpg", UrlSlug = "fresh-vegetables" },
-                new Categories() { Id = Guid.NewGuid(), Name = "Fruit Smoothie", Description = "Fruit Smoothie", Image = "https://res.cloudinary.com/drz5sabm7/image/upload/v1721756800/categories/d57vejj1uhypfirleboj.jpg", UrlSlug = "fruit-smoothie" },
-                new Categories() { Id = Guid.NewGuid(), Name = "Fresh food", Description = "Fresh food", Image = "https://res.cloudinary.com/drz5sabm7/image/upload/v1721756791/categories/uqkjbzkyvnrzgmw8wnvw.jpg", UrlSlug = "fresh-food" },
-                new Categories() { Id = Guid.NewGuid(), Name = "Fresh fruit", Description = "Fresh fruit", Image = "https://res.cloudinary.com/drz5sabm7/image/upload/v1721756781/categories/wmlpfiiclbmeemyw127z.jpg", UrlSlug = "fresh-fruit" },
-                new Categories() { Id = Guid.NewGuid(), Name = "Kinds of Bean", Description = "kinds of bean", Image = "https://res.cloudinary.com/drz5sabm7/image/upload/v1721757186/categories/wr9a8kcky83cqzny0rvt.jpg", UrlSlug = "kinds-of-bean" },            
+                new Categories() { Id = Guid.NewGuid(), Name = "Fresh vegetables", Description = "Fresh vegetables", Image = "https://res.cloudinary.com/drz5sabm7/image/upload/v1721756809/categories/hxm8yhc5gwlechu1rysv.jpg", UrlSlug = "fresh-vegetables",PublicIdImage="test" },
+                new Categories() { Id = Guid.NewGuid(), Name = "Fruit Smoothie", Description = "Fruit Smoothie", Image = "https://res.cloudinary.com/drz5sabm7/image/upload/v1721756800/categories/d57vejj1uhypfirleboj.jpg", UrlSlug = "fruit-smoothie" , PublicIdImage = "test"},
+                new Categories() { Id = Guid.NewGuid(), Name = "Fresh food", Description = "Fresh food", Image = "https://res.cloudinary.com/drz5sabm7/image/upload/v1721756791/categories/uqkjbzkyvnrzgmw8wnvw.jpg", UrlSlug = "fresh-food" , PublicIdImage = "test"},
+                new Categories() { Id = Guid.NewGuid(), Name = "Fresh fruit", Description = "Fresh fruit", Image = "https://res.cloudinary.com/drz5sabm7/image/upload/v1721756781/categories/wmlpfiiclbmeemyw127z.jpg", UrlSlug = "fresh-fruit" , PublicIdImage = "test"},
+                new Categories() { Id = Guid.NewGuid(), Name = "Kinds of Bean", Description = "kinds of bean", Image = "https://res.cloudinary.com/drz5sabm7/image/upload/v1721757186/categories/wr9a8kcky83cqzny0rvt.jpg", UrlSlug = "kinds-of-bean" , PublicIdImage = "test"},
             };
             return subCategories;
         }
