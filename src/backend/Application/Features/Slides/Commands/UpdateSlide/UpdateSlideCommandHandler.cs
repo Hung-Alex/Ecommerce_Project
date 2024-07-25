@@ -6,7 +6,6 @@ using Domain.Constants;
 using Domain.Entities.Slides;
 using Application.Common.Exceptions;
 using Application.DTOs.Internal;
-using Domain.Entities.Banners;
 
 namespace Application.Features.Slides.Commands.UpdateSlide
 {
@@ -40,7 +39,9 @@ namespace Application.Features.Slides.Commands.UpdateSlide
                 {
                     throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
                 }
+                var DeleteImageResult = await _media.DeleteImageAsync(slide.PublicIdImage);
                 slide.Image = uploadResult?.Data.Url;
+                slide.PublicIdImage = uploadResult.Data.PublicId;
 
             }
             slide.Title = request.Title;

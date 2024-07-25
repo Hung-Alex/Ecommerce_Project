@@ -31,6 +31,15 @@ namespace Infrastructure.Services.Auth
             await _context.SaveChangesAsync(cancellationToken);
         }
 
+        public async Task DeleteAllPermissionInRole(Guid roleId, CancellationToken cancellationToken = default)
+        {
+            var rolePermissions = await _context.RolePermissions
+                .Where(rp => rp.RoleId == roleId)
+                .ToListAsync(cancellationToken);
+            _context.RolePermissions.RemoveRange(rolePermissions);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
         public async Task<IEnumerable<PermissionDTO>> GetAllPermissionAsync(CancellationToken cancellationToken = default)
         {
             var permissions = await _context.Permissions

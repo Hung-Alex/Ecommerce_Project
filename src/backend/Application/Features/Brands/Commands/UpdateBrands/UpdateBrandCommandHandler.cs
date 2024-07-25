@@ -9,6 +9,7 @@ using Application.DTOs.Responses.Brands;
 using Domain.Entities.Brands;
 using Application.Common.Exceptions;
 using Application.Features.Brands.Specification;
+using Domain.Entities.Banners;
 
 namespace Application.Features.Brands.Commands.UpdateBrand
 {
@@ -50,7 +51,9 @@ namespace Application.Features.Brands.Commands.UpdateBrand
                 {
                     throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
                 }
+                var DeleteImageResult = await _media.DeleteImageAsync(brand.PublicIdImage);
                 brand.Image = uploadResult.Data.Url;
+                brand.PublicIdImage = uploadResult.Data.PublicId;
             }
             brand.UrlSlug = request.UrlSlug;
             brand.Name = request.Name;

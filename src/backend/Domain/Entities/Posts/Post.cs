@@ -22,6 +22,7 @@ namespace Domain.Entities.Posts
         public string ShortDescription { get; set; }
         public string Description { get; set; }
         public string ImageUrl { get; set; }
+        public string PublicIdImage { get; set; }//base 64
         public bool Pulished { get; set; }
         public int ViewCount { get; set; }
         public DateTimeOffset CreatedAt { get; set; }

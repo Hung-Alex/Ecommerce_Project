@@ -12,6 +12,7 @@ namespace Domain.Entities.Brands
         public string UrlSlug { get; set; }
         public string Description { get; set; }
         public string Image { get; set; }
+        public string PublicIdImage { get; set; }//base 64
         public Guid? CreatedByUserId { get; set; }
         public User CreatedByUser { get; set; }
         public Guid? UpdatedByUserId { get; set; }

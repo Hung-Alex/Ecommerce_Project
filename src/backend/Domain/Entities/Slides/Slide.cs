@@ -17,6 +17,7 @@ namespace Domain.Entities.Slides
         public string Description { get; set; }
         public bool IsActive { get; set; }
         public string Image { get; set; }
+        public string PublicIdImage { get; set; }//base 64
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
         public Guid? CreatedByUserId { get; set; }

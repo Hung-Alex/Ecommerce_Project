@@ -43,7 +43,8 @@ namespace Application.Features.Posts.Commands.CreatePost
                 ShortDescription = request.ShortDescription,
                 Description = request.Description,
                 UrlSlug = request.UrlSlug,
-                ImageUrl = image.Data.Url
+                ImageUrl = image.Data.Url,
+                PublicIdImage = image.Data.PublicId,
             });
             await _unitOfWork.Commit();
             return Result<bool>.ResultSuccess(true);

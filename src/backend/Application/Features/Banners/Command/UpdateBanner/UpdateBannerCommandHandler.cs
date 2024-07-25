@@ -43,7 +43,9 @@ namespace Application.Features.Banners.Commands.UpdateBanner
                 {
                     throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
                 }
+                var DeleteImageResult = await _media.DeleteImageAsync(banner.PublicIdImage);           
                 banner.LogoImageUrl = uploadResult?.Data.Url;
+                banner.PublicIdImage = uploadResult.Data.PublicId;
 
             }
             banner.Title = request.Title;

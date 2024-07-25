@@ -10,6 +10,7 @@ using Domain.Shared;
 using Application.Features.Brands.Commands.CreateBrands;
 using Application.Common.Exceptions;
 using Application.Features.Category.Specification;
+using Domain.Entities.Banners;
 
 namespace Application.Features.Category.Commands.UpdateCategory
 {
@@ -60,7 +61,9 @@ namespace Application.Features.Category.Commands.UpdateCategory
                 {
                     throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
                 }
+                var DeleteImageResult = await _media.DeleteImageAsync(category.PublicIdImage);
                 category.Image = uploadResult.Data.Url;
+                category.PublicIdImage = uploadResult.Data.PublicId;
             }
             category.UrlSlug = request.UrlSlug;
             category.Name = request.Name;

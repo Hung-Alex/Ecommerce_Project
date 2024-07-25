@@ -29,6 +29,7 @@ namespace Domain.Constants
         public static class PermissionError
         {
             public static Error DuplicatePermission => new Error("Duplicate.DuplicatePermission", "Duplicate Permission");
+            public static Error HaveAnyPermissionDontBelongApplication => new Error("HaveAnyPermissionDontBelongApplication", "Have Any Permission Dont Belong Application");
         }
         public static class AuthenticationError
         {

@@ -1,5 +1,7 @@
 ﻿using Application.Features.Roles.Command.CreateRole;
 using Application.Features.Roles.Command.DeleteRole;
+using Application.Features.Roles.Command.UpdateRole;
+using Application.Features.Roles.Queries.GetRoles;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,6 +30,26 @@ namespace WebMemoryzoneApi.Controllers
         public async Task<IActionResult> DeleteRole(Guid id)
         {
             var result = await _mediator.Send(new DeleteRoleCommand(id));
+            if (result.IsSuccess is false)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+        [HttpPut("{id:Guid}")]
+        public async Task<IActionResult> UpdateRole([FromBody]UpdateRoleCommand command)
+        {
+            var result = await _mediator.Send(command);
+            if (result.IsSuccess is false)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetRoles()
+        {
+            var result = await _mediator.Send(new GetRolesQuery());
             if (result.IsSuccess is false)
             {
                 return BadRequest(result);

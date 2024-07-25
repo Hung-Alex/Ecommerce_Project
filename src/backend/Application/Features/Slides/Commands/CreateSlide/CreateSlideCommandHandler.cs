@@ -37,6 +37,7 @@ namespace Application.Features.Slides.Commands.CreateSlide
                 throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
             }
             slide.Image = uploadResult.Data.Url;
+            slide.PublicIdImage = uploadResult.Data.PublicId;
             #endregion
             repoSlide.Add(slide);
             await _unitOfWork.Commit();
