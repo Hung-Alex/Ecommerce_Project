@@ -53,7 +53,7 @@ namespace Application.Features.Category.Commands.CreateCategory
             {
                 throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
             }
-            repoCategory.Add(new Categories() { Name = request.Name, Description = request.Description, UrlSlug = request.UrlSlug, Image = uploadResult.Data.Url, ParrentId = request.ParrentId });
+            repoCategory.Add(new Categories() { Name = request.Name, Description = request.Description, UrlSlug = request.UrlSlug, Image = uploadResult.Data.Url, ParrentId = request.ParrentId, PublicIdImage = uploadResult.Data.PublicId });
             await _unitOfWork.Commit();
             return Result<bool>.ResultSuccess(true);
         }

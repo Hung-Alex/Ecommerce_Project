@@ -34,70 +34,80 @@ namespace Application.Features.Products.Commands.CreateProduct
             var repoProduct = unitOfWork.GetRepository<Product>();
             var repoImage = unitOfWork.GetRepository<Image>();
             var repoCategory = unitOfWork.GetRepository<Categories>();
+
+            // Check if the URL slug already exists
             var isExisted = await repoProduct.FindOneAsync(new UrlSlugIsExistedSpecification(Guid.Empty, request.UrlSlug));
             if (isExisted is not null)
             {
                 return Result<bool>.ResultFailures(ErrorConstants.UrlSlugIsExisted(request.UrlSlug));
             }
+
+            // Verify the category exists
             var category = await repoCategory.GetByIdAsync(request.CategoryId);
             if (category is null)
             {
                 return Result<bool>.ResultFailures(ErrorConstants.NotFoundWithId(request.CategoryId));
             }
-            var newProduct = new Product()
+
+            // Create and add new product
+            var newProduct = new Product
             {
-                Name = request.Name
-            ,
-                Description = request.Description
-            ,
-                UrlSlug = request.UrlSlug
-            ,
-                Price = request.Price
-            ,
-                Discount = request.Discount
-            ,
-                BrandId = request.BrandId
-            ,
+                Name = request.Name,
+                Description = request.Description,
+                UrlSlug = request.UrlSlug,
+                Price = request.Price,
+                Discount = request.Discount,
+                BrandId = request.BrandId,
                 CategoryId = request.CategoryId
             };
             repoProduct.Add(newProduct);
 
-            #region hanle Images
+            #region Handle Images
             if (request.Images is not null)
             {
-                Result<ImageUpload> uploadResult = null;
-                int itemOrder = 1;
-                foreach (var item in request.Images)
+                var uploadTasks = request.Images.Select((item, index) =>
+                    media.UploadLoadImageAsync(item, UploadFolderConstants.FolderProduct, cancellationToken).ContinueWith(task =>
+                    {
+                        if (task.Result.IsSuccess == false)
+                        {
+                            throw new UploadImageException(task.Result.Errors.Select(x => x.Description).ToList());
+                        }
+                        var uploadResult = task.Result.Data;
+                        return new Image
+                        {
+                            ImageExtension = item.ContentType,
+                            ImageUrl = uploadResult.Url,
+                            PublicId = uploadResult.PublicId,
+                            OrderItem = index + 1,
+                            ProductId = newProduct.Id
+                        };
+                    })
+                ).ToList();
+
+                var images = await Task.WhenAll(uploadTasks);
+                foreach (var image in images)
                 {
-                    uploadResult = await media.UploadLoadImageAsync(item, UploadFolderConstants.FolderProduct, cancellationToken);
-                    if (uploadResult.IsSuccess is false)
-                    {
-                        throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
-                    }
-                    repoImage.Add(new Image()
-                    {
-                        ImageExtension = item.ContentType
-                    ,
-                        ImageUrl = uploadResult.Data.Url
-                    ,
-                        PublicId = uploadResult.Data.PublicId
-                    ,
-                        OrderItem = itemOrder
-                    ,
-                        ProductId = newProduct.Id
-                    });
+                    repoImage.Add(image);
                 }
             }
             #endregion
+
+            #region Handle Variants
             if (request.Variant is not null)
             {
-                newProduct.ProductSkus = request
-               .Variant
-               .Select(x => new ProductSkus() { Name = x.VariantName, Description = x.Description })
-               .ToList();
+                newProduct.ProductSkus = request.Variant
+                    .Select(x => new ProductSkus
+                    {
+                        Name = x.VariantName,
+                        Description = x.Description
+                    })
+                    .ToList();
             }
+            #endregion
+
             await unitOfWork.Commit();
             return Result<bool>.ResultSuccess(true);
+
         }
     }
 }
