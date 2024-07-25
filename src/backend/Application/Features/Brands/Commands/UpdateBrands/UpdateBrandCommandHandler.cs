@@ -50,7 +50,7 @@ namespace Application.Features.Brands.Commands.UpdateBrand
                 {
                     throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
                 }
-                brand.Image = uploadResult.Data.Url;
+                brand.Image = uploadResult.Data.PublicId;
             }
             brand.UrlSlug = request.UrlSlug;
             brand.Name = request.Name;

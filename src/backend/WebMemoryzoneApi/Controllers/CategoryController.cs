@@ -36,7 +36,7 @@ namespace WebMemoryzoneApi.Controllers
             return Ok(result);
         }
         [HttpPut("{id:Guid}")]
-        [FileValidatorFilter<UpdateCategoryCommand>([".png", ".jpg"], 1 * 1024)]
+        [FileValidatorFilter<UpdateCategoryCommand>([".png", ".jpg"],  1920*1080)]
         public async Task<ActionResult> UpadateBrand(Guid id, [FromForm] UpdateCategoryCommand command)
         {
             if (id != command.Id)
@@ -61,7 +61,7 @@ namespace WebMemoryzoneApi.Controllers
             return Ok();
         }
         [HttpPost]
-        [FileValidatorFilter<CreateCategoryCommand>([".png", ".jpg"], 1024 * 1024)]
+        [FileValidatorFilter<CreateCategoryCommand>([".png", ".jpg"], 1920 * 1080)]
         public async Task<IActionResult> AddCategory([FromForm] CreateCategoryCommand command)
         {
             var result = await _mediator.Send(command);

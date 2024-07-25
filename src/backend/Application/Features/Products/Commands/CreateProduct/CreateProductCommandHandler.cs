@@ -63,31 +63,24 @@ namespace Application.Features.Products.Commands.CreateProduct
             repoProduct.Add(newProduct);
 
             #region hanle Images
-            if (request.Images is not null)
+            var imageTasks = request.Images.Select(async (item, index) =>
             {
-                Result<ImageUpload> uploadResult = null;
-                int itemOrder = 1;
-                foreach (var item in request.Images)
+                var uploadResult = await media.UploadLoadImageAsync(item, UploadFolderConstants.FolderProduct, cancellationToken);
+                if (!uploadResult.IsSuccess)
                 {
-                    uploadResult = await media.UploadLoadImageAsync(item, UploadFolderConstants.FolderProduct, cancellationToken);
-                    if (uploadResult.IsSuccess is false)
-                    {
-                        throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
-                    }
-                    repoImage.Add(new Image()
-                    {
-                        ImageExtension = item.ContentType
-                    ,
-                        ImageUrl = uploadResult.Data.Url
-                    ,
-                        PublicId = uploadResult.Data.PublicId
-                    ,
-                        OrderItem = itemOrder
-                    ,
-                        ProductId = newProduct.Id
-                    });
+                    throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
                 }
-            }
+                repoImage.Add(new Image
+                {
+                    ImageExtension = item.ContentType,
+                    ImageUrl = uploadResult.Data.Url,
+                    PublicId = uploadResult.Data.PublicId,
+                    OrderItem = index + 1,
+                    ProductId = newProduct.Id
+                });
+            });
+
+            await Task.WhenAll(imageTasks);
             #endregion
             if (request.Variant is not null)
             {
