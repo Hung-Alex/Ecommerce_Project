@@ -36,6 +36,7 @@ namespace WebMemoryzoneApi.Controllers
             SetCookies(result.Data.AccessToken
                   , result.Data.RefreshToken
                   , result.Data.User.Name
+                  , result.Data.User.ImageUrl
                   , DateTime.Now.AddMinutes(_jwtSetting.ExpiredToken)
                   , DateTime.Now.AddDays(_jwtSetting.ExpiredRefreshToken));
             return Ok(result);
@@ -61,6 +62,7 @@ namespace WebMemoryzoneApi.Controllers
             SetCookies(result.Data.AccessToken
                  , result.Data.RefreshToken
                  , result.Data.User.Name
+                 , result.Data.User.ImageUrl
                  , DateTime.Now.AddMinutes(_jwtSetting.ExpiredToken)
                  , DateTime.Now.AddDays(_jwtSetting.ExpiredRefreshToken));
             return Ok(result);
@@ -78,6 +80,7 @@ namespace WebMemoryzoneApi.Controllers
                 return BadRequest(result);
             }
             SetCookies(""
+                , ""
                 , ""
                 , ""
                 , DateTime.Now.AddYears(-100), DateTime.Now.AddYears(-100));
@@ -98,13 +101,16 @@ namespace WebMemoryzoneApi.Controllers
             SetCookies(result.Data.AccessToken
                 , result.Data.RefreshToken
                 , result.Data.User.Name
+                , result.Data.User.ImageUrl
                 , DateTime.Now.AddMinutes(_jwtSetting.ExpiredToken)
-                , DateTime.Now.AddDays(_jwtSetting.ExpiredRefreshToken));
+                , DateTime.Now.AddDays(_jwtSetting.ExpiredRefreshToken)
+                );
             return Ok(result);
         }
-        private void SetCookies(string accessToken, string refreshToken, string userName, DateTime expiredTimeAccestoken, DateTime expiredTimeRefreshToken)
+        private void SetCookies(string accessToken, string refreshToken, string userName, string image, DateTime expiredTimeAccestoken, DateTime expiredTimeRefreshToken)
         {
-
+            Response.Cookies.Append(UserToken.UserInfoNoneBlock, userName, new CookieOptions() { SameSite = SameSiteMode.None, Secure = true, IsEssential = true, Expires = expiredTimeAccestoken });
+            Response.Cookies.Append(UserToken.ImageDefault, image ?? UserToken.ImageDefaultValue, new CookieOptions() { SameSite = SameSiteMode.None, IsEssential = true, Secure = true, Expires = expiredTimeAccestoken });
             Response.Cookies.Append(UserToken.AccessTokenCookies, accessToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.None, Secure = true, IsEssential = true, Expires = expiredTimeAccestoken });
             Response.Cookies.Append(UserToken.RefreshTokenCookies, refreshToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.None, Secure = true, IsEssential = true, Expires = expiredTimeRefreshToken });
             Response.Cookies.Append(UserToken.UserInfoCookies, userName, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.None, Secure = true, IsEssential = true, Expires = expiredTimeRefreshToken });

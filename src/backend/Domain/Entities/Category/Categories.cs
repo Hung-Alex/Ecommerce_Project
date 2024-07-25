@@ -22,7 +22,7 @@ namespace Domain.Entities.Category
         public Guid? ParrentId { get; set; }
         public string UrlSlug { get; set; }
         public string Description { get; set; }
-        public string Image { get; set; }//base 64
+        public string Image { get; set; }//base 64g
         public virtual ICollection<Categories> SubCategories { get; set; }
         public virtual ICollection<Product> Products { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
