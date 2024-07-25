@@ -14,5 +14,6 @@ namespace Application.Common.Interface
         Task<Result<ImageUpload>> UploadLoadImageAsync(IFormFile file,string folder, CancellationToken cancellationToken = default);
         Task<Result<IEnumerable<ImageUpload>>> UploadLoadImagesAsync(IFormFileCollection file, CancellationToken cancellationToken = default);
         Task<Result<bool>> DeleteImageAsync(string id, CancellationToken cancellationToken = default);
+        string GetUrl(string id);
     }
 }
