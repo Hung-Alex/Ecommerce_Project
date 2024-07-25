@@ -13,9 +13,7 @@ const Product = () => {
   return (
     <div>
       <ProductBanner />
-      <div className="flex flex-col md:flex-row justify-center items-center gap-4 bg-[#f9f8f8] pt-24 pb-12">
-        <ProductInfo productData={data} />
-      </div>
+      <ProductInfo />
       <RelatedProducts slug={data?.category?.urlSlug} />
     </div>
   );
