@@ -3,13 +3,15 @@ import DashboardLayout from "../../../layout/DashboardLayout.jsx";
 import Table from "../comp/Table.jsx";
 import AddProductForm from "./AddProductForm"; // Assuming you have a similar form component for products
 import axios from "../../../utils/axios";
+import UpdateProductForm from "./UpdateProductForm.jsx";
 
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);
+  const [EditProduct, setEditingProduct] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
-  const [editingProduct, setEditingProduct] = useState(null);
+  const [showEditForm, setShowEditForm] = useState(false);
 
   const fetchProducts = useCallback(async () => {
     try {
@@ -35,11 +37,6 @@ const AdminProducts = () => {
     }
   };
 
-  const handleEdit = useCallback((row) => {
-    setEditingProduct(row);
-    setShowForm(true);
-  }, []);
-
   const handleDelete = useCallback(async (row) => {
     try {
       await deleteProduct(row.id);
@@ -53,9 +50,16 @@ const AdminProducts = () => {
     setShowForm(true);
   }, []);
 
+  const handleEdit = useCallback((row) => {
+    setShowEditForm(row.id);
+    setShowForm(true);
+  }, []);
+
   const handleCloseForm = useCallback(() => {
     setShowForm(false);
+    setShowEditForm(false);
     setEditingProduct(null);
+    fetchProducts();
   }, []);
 
   if (loading) return <p>Loading...</p>;
@@ -71,7 +75,6 @@ const AdminProducts = () => {
             { header: 'Name', accessor: 'name' },
             { header: 'URL Slug', accessor: 'urlSlug' },
             { header: 'Description', accessor: 'description' },
-            { header: 'Actions', accessor: 'actions' }
           ]}
           data={products}
           onEdit={handleEdit}
@@ -80,6 +83,12 @@ const AdminProducts = () => {
         />
         {showForm && (
           <AddProductForm
+            onClose={handleCloseForm}
+          />
+        )}
+        {showEditForm && (
+          <UpdateProductForm
+            productId={showEditForm}
             onClose={handleCloseForm}
           />
         )}

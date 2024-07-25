@@ -1,54 +1,103 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from '../../../utils/axios';
 import { useCategoryContext } from '../../../context/CategoryContext';
 import { useBrandContext } from '../../../context/BrandContext';
 
-const AddProductForm = ({ product, onClose}) => {
-  const { categories, loading: categoriesLoading, error: categoriesError } = useCategoryContext();
-  const { brands, loading: brandsLoading, error: brandsError } = useBrandContext();
+const UpdateProductForm = ({ productId, onClose }) => {
+  const { categories } = useCategoryContext();
+  const { brands } = useBrandContext();
 
-  const [name, setName] = useState(product ? product.name : '');
-  const [urlSlug, setUrlSlug] = useState(product ? product.urlSlug : '');
-  const [description, setDescription] = useState(product ? product.description : '');
-  const [price, setPrice] = useState(product ? product.price : '');
-  const [discount, setDiscount] = useState(product ? product.discount : '');
-  const [brandId, setBrandId] = useState(product ? product.brandId : '');
-  const [categoryId, setCategoryId] = useState(product ? product.categoryId : '');
-  const [images, setImages] = useState(product ? product.images : []);
+  const [productData, setProductData] = useState(null);
+  const [name, setName] = useState('');
+  const [urlSlug, setUrlSlug] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState('');
+  const [discount, setDiscount] = useState('');
+  const [brandId, setBrandId] = useState('');
+  const [categoryId, setCategoryId] = useState('');
+  const [images, setImages] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
-  const [variants, setVariants] = useState(product ? product.variants : [{ variantName: '', description: '' }]);
+  const [variants, setVariants] = useState([]);
 
   const fileInputRef = useRef(null);
 
-  const handleSubmit = async () => {
+  useEffect(() => {
+    const fetchProductData = async () => {
+      try {
+        const response = await axios.get(`/products/${productId}`);
+        const data = response.data.data;
+
+        setProductData(data);
+        setName(data.name);
+        setUrlSlug(data.urlSlug);
+        setDescription(data.description);
+        setPrice(data.price);
+        setDiscount(data.discount);
+        setBrandId(data.brandId);
+        setCategoryId(data.categoryId);
+        setImages(data.images);
+        setVariants(data.variants || []);
+        setImagePreviews(data.images.map((img) => img.imageUrl)); // Assuming images are URLs
+      } catch (error) {
+        console.error('Error fetching product data:', error);
+      }
+    };
+
+    fetchProductData();
+  }, [productId]);
+
+  const handleProductSave = async () => {
+    try {
+      await axios.put(`/products/${productId}`, {
+        id: productId,
+        name,
+        urlSlug,
+        description,
+        price,
+        discount,
+        brandId,
+        categoryId
+      });
+      console.log('Product details updated successfully');
+    } catch (error) {
+      console.error('Error updating product details:', error);
+    }
+  };
+
+  const handleImageSave = async () => {
     const formData = new FormData();
-    formData.append('name', name);
-    formData.append('urlSlug', urlSlug);
-    formData.append('description', description);
-    formData.append('price', price);
-    formData.append('discount', discount);
-    formData.append('brandId', brandId);
-    formData.append('categoryId', categoryId);
-
-    // Append images directly
-    images.forEach((file) => {
-      formData.append('images', file);
-    });
-
-  // Append each variant as a separate JSON object
-  variants.forEach((variant) => {
-    formData.append('Variant', JSON.stringify(variant));
-  });
+    images.forEach((file) => formData.append('images', file));
 
     try {
-      const response = await axios.post('/products', formData, {
+      await axios.put(`/products/${productId}/images`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      onClose();
+      console.log('Images updated successfully');
     } catch (error) {
-      console.error('Error submitting product:', error);
+      console.error('Error updating images:', error);
+    }
+  };
+
+  const handleVariantSave = async () => {
+    try {
+      await Promise.all(variants.map(async (variant) => {
+        if (variant.id) {
+            await axios.put(`/products/${productId}/${variant.id}`, {
+                productId,
+                variantsId: variant.id,
+                name: variant.name,
+                description: variant.description,
+              });
+        } else {
+          await axios.post(`/products/add-variant`, variant);
+          await fetchProductData();
+        }
+      }));
+      console.log('Variants updated successfully');
+    } catch (error) {
+      console.error('Error updating variants:', error);
     }
   };
 
@@ -58,45 +107,45 @@ const AddProductForm = ({ product, onClose}) => {
     const imageUrls = newImages.map((file) => URL.createObjectURL(file));
     setImages(newImages);
     setImagePreviews(imageUrls);
-    event.target.value = null; // Clear the input field value
+    event.target.value = null;
   };
 
   const removeImage = (index) => {
-    // Remove the image from the list
     const updatedImages = images.filter((_, i) => i !== index);
     const updatedPreviews = imagePreviews.filter((_, i) => i !== index);
 
     setImages(updatedImages);
     setImagePreviews(updatedPreviews);
 
-    // If needed, trigger file input to allow re-selection
     if (fileInputRef.current) {
       fileInputRef.current.value = null;
     }
   };
 
   const addVariant = () => {
-    setVariants((prevVariants) => [...prevVariants, { variantName: '', description: '' }]);
+    setVariants([...variants, {productId, name: '', description: '' }]);
   };
 
-  const removeVariant = (index) => {
-    setVariants((prevVariants) => prevVariants.filter((_, i) => i !== index));
+  const removeVariant = async (index) => {
+    const variant = variants[index];
+    if (variant.id) {
+      try {
+        await axios.delete(`/products/${productId}/${variant.id}`);
+      } catch (error) {
+        console.error('Error deleting variant:', error);
+      }
+    }
+    setVariants(variants.filter((_, i) => i !== index));
   };
 
   const updateVariant = (index, key, value) => {
-    setVariants((prevVariants) =>
-      prevVariants.map((variant, i) =>
-        i === index ? { ...variant, [key]: value } : variant
-      )
-    );
+    setVariants(variants.map((variant, i) =>
+      i === index ? { ...variant, [key]: value } : variant
+    ));
   };
 
-  if (categoriesLoading || brandsLoading) {
+  if (!productData) {
     return <div>Loading...</div>;
-  }
-
-  if (categoriesError || brandsError) {
-    return <div>Error loading data</div>;
   }
 
   return (
@@ -107,10 +156,10 @@ const AddProductForm = ({ product, onClose}) => {
           <div className="space-y-4">
             <div className="w-full bg-gray-100 rounded-md h-64 flex items-center justify-center">
               {imagePreviews.length > 0 ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-4 sm:grid-cols-3 md:grid-cols-8">
                   {imagePreviews.map((preview, index) => (
                     <div key={index} className="relative w-full h-64 bg-gray-200 rounded-md flex items-center justify-center">
-                      <img src={preview} alt={`Preview ${index}`} className="w-full h-full object-cover rounded-md" />
+                      <img src={preview} alt={`Preview ${index}`} className="w-full h-auto object-cover rounded-md" />
                       <button
                         type="button"
                         onClick={() => removeImage(index)}
@@ -132,11 +181,18 @@ const AddProductForm = ({ product, onClose}) => {
               ref={fileInputRef}
               className="mt-1 block w-full px-3 py-2 border rounded-md"
             />
+            <button
+              type="button"
+              onClick={handleImageSave}
+              className="bg-blue-500 text-white rounded-md px-4 py-2"
+            >
+              Save Images
+            </button>
           </div>
 
-          {/* Form Data Section */}
+          {/* Product Section */}
           <div className="space-y-4">
-            <h2 className="text-2xl mb-4">{product ? 'Edit Product' : 'Add Product'}</h2>
+            <h2 className="text-2xl mb-4">Edit Product</h2>
             <form className="space-y-4">
               <div>
                 <label className="block text-sm font-medium">Name:</label>
@@ -214,64 +270,67 @@ const AddProductForm = ({ product, onClose}) => {
                 </select>
               </div>
             </form>
+            <button
+              type="button"
+              onClick={handleProductSave}
+              className="bg-blue-500 text-white rounded-md px-4 py-2"
+            >
+              Save Product
+            </button>
           </div>
 
-          {/* Variants Section */}
+          {/* Variant Section */}
           <div className="space-y-4">
-            <h4 className="text-xl mb-2">Variants</h4>
+            <h2 className="text-2xl mb-4">Edit Variants</h2>
             {variants.map((variant, index) => (
-              <div key={index} className="border p-4 rounded-md mb-4">
-                <div className="flex justify-between items-center mb-2">
-                  <h4 className="text-lg">Variant {index + 1}</h4>
-                  <button
-                    type="button"
-                    onClick={() => removeVariant(index)}
-                    className="bg-red-500 text-white rounded-full px-2 py-1 text-sm"
-                  >
-                    Remove
-                  </button>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium">Name:</label>
+              <div key={index} className="flex items-center space-x-4">
+                <div className="flex-1">
                   <input
                     type="text"
-                    value={variant.variantName}
-                    onChange={(event) => updateVariant(index, 'variantName', event.target.value)}
+                    value={variant.name}
+                    onChange={(event) => updateVariant(index, 'name', event.target.value)}
+                    placeholder="Variant Name"
                     className="mt-1 block w-full px-3 py-2 border rounded-md"
                   />
-                </div>
-                <div className="mt-2">
-                  <label className="block text-sm font-medium">Description:</label>
-                  <textarea
+                  <input
+                    type="text"
                     value={variant.description}
                     onChange={(event) => updateVariant(index, 'description', event.target.value)}
+                    placeholder="Description"
                     className="mt-1 block w-full px-3 py-2 border rounded-md"
                   />
                 </div>
+                <button
+                  type="button"
+                  onClick={() => removeVariant(index)}
+                  className="bg-red-500 text-white rounded-md px-4 py-2"
+                >
+                  Remove
+                </button>
               </div>
             ))}
             <button
               type="button"
               onClick={addVariant}
-              className="bg-blue-500 text-white rounded-full px-4 py-2 mt-4"
+              className="bg-blue-500 text-white rounded-md px-4 py-2"
             >
               Add Variant
+            </button>
+            <button
+              type="button"
+              onClick={handleVariantSave}
+              className="bg-blue-500 text-white rounded-md px-4 py-2"
+            >
+              Save Variants
             </button>
           </div>
         </div>
 
-        <div className="flex justify-end mt-6">
-          <button
-            type="button"
-            onClick={handleSubmit}
-            className="bg-blue-500 text-white rounded-full px-4 py-2"
-          >
-            Submit
-          </button>
+        <div className="mt-6 flex justify-end">
           <button
             type="button"
             onClick={onClose}
-            className="ml-4 bg-gray-500 text-white rounded-full px-4 py-2"
+            className="bg-gray-500 text-white rounded-md px-4 py-2 mr-2"
           >
             Cancel
           </button>
@@ -281,4 +340,4 @@ const AddProductForm = ({ product, onClose}) => {
   );
 };
 
-export default AddProductForm;
+export default UpdateProductForm;
