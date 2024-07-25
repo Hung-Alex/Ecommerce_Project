@@ -9,6 +9,7 @@ namespace Domain.Entities.Banners
         public string Title { get; set; }
         public string Description { get; set; }
         public string LogoImageUrl { get; set; }
+        public string PublicIdImage { get; set; }//base 64
         public bool IsVisible { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }

@@ -18,6 +18,7 @@ namespace Domain.Entities.Users
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string AvatarImage { get; set; }
+        public string PublicIdImage { get; set; }//base 64
         public string City { get; set; }
         public string Region { get; set; }
         public string PostalCode { get; set; }
