@@ -37,7 +37,7 @@ namespace Application.Features.Roles.Command.CreateRole
             var intersect = PermisstionInDb.Select(x => x.Id).Intersect(request.Permissions).ToList();
             if (intersect.Count() != request.Permissions.Count())
             {
-                return Result<bool>.ResultFailures(ErrorConstants.PermissionError.DuplicatePermission);
+                return Result<bool>.ResultFailures(ErrorConstants.PermissionError.HaveAnyPermissionDontBelongApplication);
             }
             using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
