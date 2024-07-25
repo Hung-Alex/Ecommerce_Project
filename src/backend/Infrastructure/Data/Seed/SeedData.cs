@@ -107,7 +107,8 @@ namespace Infrastructure.Data.Seed
                     " Posuere morbi leo urna molestie at. Accumsan tortor posuere ac ut consequat semper viverra nam." +
                     " Faucibus vitae aliquet nec ullamcorper sit amet risus nullam. Pellentesque elit ullamcorper dignissim cras",
                     IsActive=true,
-                    Image="https://images.pexels.com/photos/257816/pexels-photo-257816.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                    Image="https://images.pexels.com/photos/257816/pexels-photo-257816.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                     PublicIdImage="test"
 
                 },
                 new()
@@ -120,7 +121,8 @@ namespace Infrastructure.Data.Seed
                     " Posuere morbi leo urna molestie at. Accumsan tortor posuere ac ut consequat semper viverra nam." +
                     " Faucibus vitae aliquet nec ullamcorper sit amet risus nullam. Pellentesque elit ullamcorper dignissim cras",
                     IsActive=false,
-                    Image="https://images.pexels.com/photos/319798/pexels-photo-319798.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                    Image="https://images.pexels.com/photos/319798/pexels-photo-319798.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                     PublicIdImage="test"
                 },
                 new()
                 {
@@ -132,7 +134,8 @@ namespace Infrastructure.Data.Seed
                     " Posuere morbi leo urna molestie at. Accumsan tortor posuere ac ut consequat semper viverra nam." +
                     " Faucibus vitae aliquet nec ullamcorper sit amet risus nullam. Pellentesque elit ullamcorper dignissim cras",
                     IsActive=false,
-                    Image="https://images.pexels.com/photos/2252584/pexels-photo-2252584.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                    Image="https://images.pexels.com/photos/2252584/pexels-photo-2252584.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                     PublicIdImage="test"
                 }
             };
             return slides;
