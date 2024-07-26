@@ -58,7 +58,7 @@ namespace WebMemoryzoneApi.Controllers
         {
             var result = await _mediator.Send(new DeleteSlideCommand(id));
             if (!result.IsSuccess) return NotFound(result);
-            return Ok();
+            return Ok(result);
         }
         [HttpPost]
         public async Task<IActionResult> AddSlide([FromForm] CreateSlideCommand command)
