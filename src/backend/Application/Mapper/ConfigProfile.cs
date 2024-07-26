@@ -10,6 +10,8 @@ using Application.DTOs.Responses.Product.Shared.CategoryProduct;
 using Application.DTOs.Responses.Product.Shared.Variants;
 using Application.DTOs.Responses.Rattings;
 using Application.DTOs.Responses.Sections;
+using Application.DTOs.Responses.Slides;
+using Application.Mapper.Resolve;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Entities.Banners;
@@ -18,6 +20,7 @@ using Domain.Entities.Category;
 using Domain.Entities.Posts;
 using Domain.Entities.Products;
 using Domain.Entities.Rattings;
+using Domain.Entities.Slides;
 
 namespace Application.Mapper
 {
@@ -25,13 +28,14 @@ namespace Application.Mapper
     {
         public ConfigProfile()
         {
-            CreateMap<Categories, CategoryDTO>().ReverseMap();
+            CreateMap<Categories, CategoryDTO>().ForMember(dest => dest.Image, opt => opt.MapFrom<UrlFromPublicIdResolver>()).ReverseMap();
             CreateMap<ProductInternal, ProductDTO>().ReverseMap();
-            CreateMap<Brand, BrandDTO>().ReverseMap();
+            CreateMap<Brand, BrandDTO>().ForMember(dest => dest.Image, opt => opt.MapFrom<UrlFromPublicIdResolver>()).ReverseMap();
             CreateMap<Product, ProductDTO>().ReverseMap();
+            CreateMap<Slide, SlideDTO>().ForMember(dest => dest.Image, opt => opt.MapFrom<UrlFromPublicIdResolver>()).ReverseMap();
             CreateMap<Ratting, RattingDTO>().ReverseMap();
-            CreateMap<Banner, BannerDTO>().ReverseMap();
-            CreateMap<Post, PostDetailDTO>();
+            CreateMap<Banner, BannerDTO>().ForMember(dest => dest.LogoImageUrl, opt => opt.MapFrom<UrlFromPublicIdResolver>()).ReverseMap();
+            CreateMap<Post, PostDetailDTO>().ForMember(dest => dest.ImageUrl, opt => opt.MapFrom<UrlFromPublicIdResolver>());
             CreateMap<CategoryProductDTO, Categories>().ReverseMap();
             CreateMap<BrandProductDTO, Brand>().ReverseMap();
             CreateMap<ProductSkus, VariantsDTO>().ReverseMap();

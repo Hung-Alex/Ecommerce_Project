@@ -52,7 +52,7 @@ namespace Application.Features.Authen.Commands.LoginWithGoogle
             {
                 return Result<AuthencationResponse>.ResultFailures(ErrorConstants.LoginError.LoginIsNotSuccessWithGoogle);
             }
-            return Result<AuthencationResponse>.ResultSuccess(new AuthencationResponse(token, refreshToken.Token, "Bearer", new UserAuthentication(user.Id, user.Name ?? "")));
+            return Result<AuthencationResponse>.ResultSuccess(new AuthencationResponse(token, refreshToken.Token, "Bearer", new UserAuthentication(user.Id, user.Name ?? "", user.ImageUrl)));
         }
     }
 }

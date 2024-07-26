@@ -6,6 +6,7 @@ using Domain.Constants;
 using Domain.Shared;
 using Domain.Entities.Posts;
 using Application.Features.Posts.Specification;
+using Application.Common.Exceptions;
 
 namespace Application.Features.Posts.Commands.UpdatePost
 {
@@ -37,19 +38,20 @@ namespace Application.Features.Posts.Commands.UpdatePost
             {
                 return Result<bool>.ResultFailures(ErrorConstants.UrlSlugIsExisted(request.UrlSlug));
             }
-            Result<ImageUpload> uploadResult = null;
-            if (!(request.Image is null))
+            if (request.Image is not null)
             {
-                uploadResult = await _media.UploadLoadImageAsync(request.Image, UploadFolderConstants.FolderCategory, cancellationToken);
+
+                Result<ImageUpload> uploadResult = await _media.UploadLoadImageAsync(request.Image, UploadFolderConstants.FolderPost);
+                if (uploadResult.IsSuccess is false)
+                {
+                    throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
+                }
+                post.ImageUrl = uploadResult.Data.PublicId;
             }
             post.UrlSlug = request.UrlSlug;
             post.ShortDescription = request.ShortDescription;
             post.Description = request.Description;
-            post.Title=request.Title;
-            if (!(uploadResult is null))
-            {
-                post.ImageUrl = uploadResult.Data.Url;
-            }
+            post.Title = request.Title;
             await _unitOfWork.Commit();
             return Result<bool>.ResultSuccess(true);
         }

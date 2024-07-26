@@ -60,5 +60,10 @@ namespace Infrastructure.Services.CloudinaryUpload
         {
             throw new NotImplementedException();
         }
+
+        public string GetUrl(string id)
+        {
+            return _cloudinary.Api.UrlImgUp.BuildUrl(id);
+        }
     }
 }

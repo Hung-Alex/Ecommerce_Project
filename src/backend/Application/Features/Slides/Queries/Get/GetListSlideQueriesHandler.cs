@@ -4,6 +4,7 @@ using MediatR;
 using Application.DTOs.Responses.Slides;
 using Domain.Entities.Slides;
 using Application.Features.Slides.Specification;
+using AutoMapper;
 
 
 namespace Application.Features.Slides.Queries.Get
@@ -11,9 +12,11 @@ namespace Application.Features.Slides.Queries.Get
     public class GetListSlideQueriesHandler : IRequestHandler<GetListSlideQuery, Result<IEnumerable<SlideDTO>>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        public GetListSlideQueriesHandler(IUnitOfWork unitOfWork)
+        private readonly IMapper _mapper;
+        public GetListSlideQueriesHandler(IUnitOfWork unitOfWork,IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
         public async Task<Result<IEnumerable<SlideDTO>>> Handle(GetListSlideQuery request, CancellationToken cancellationToken)
         {
@@ -21,17 +24,7 @@ namespace Application.Features.Slides.Queries.Get
             var getSlideSpecification = new GetSlidesSpecification(request.SlideFilter);
             var slides = await slideRepo.GetAllAsync(getSlideSpecification);
             var totalItems = await slideRepo.CountAsync(getSlideSpecification);
-            return new PagingResult<IEnumerable<SlideDTO>>(slides.Select(x => new SlideDTO()
-            {
-                Id = x.Id,
-                Title = x.Title,
-                IsActive = x.IsActive,
-                Description = x.Description,
-                Image = x.Image
-            })
-                , request.SlideFilter.PageNumber
-                , request.SlideFilter.PageSize
-                , totalItems); ;
+            return new PagingResult<IEnumerable<SlideDTO>>(_mapper.Map<IEnumerable<SlideDTO>>(slides),request.SlideFilter.PageNumber,request.SlideFilter.PageSize,totalItems);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Application.Common.Interface;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interface;
 using Application.DTOs.Internal;
 using Application.Features.Posts.Specification;
 using Domain.Constants;
@@ -32,10 +33,10 @@ namespace Application.Features.Posts.Commands.CreatePost
             {
                 return Result<bool>.ResultFailures(ErrorConstants.UrlSlugIsExisted(request.UrlSlug));
             }
-            Result<ImageUpload> image = null;
-            if (request.Image is not null)
+            Result<ImageUpload> uploadResult = await _media.UploadLoadImageAsync(request.Image, UploadFolderConstants.FolderCategory);
+            if (uploadResult.IsSuccess is false)
             {
-                image = await _media.UploadLoadImageAsync(request.Image, UploadFolderConstants.FolderPost);
+                throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
             }
             repo.Add(new Post()
             {
@@ -43,7 +44,7 @@ namespace Application.Features.Posts.Commands.CreatePost
                 ShortDescription = request.ShortDescription,
                 Description = request.Description,
                 UrlSlug = request.UrlSlug,
-                ImageUrl = image.Data.Url
+                ImageUrl = uploadResult.Data.PublicId
             });
             await _unitOfWork.Commit();
             return Result<bool>.ResultSuccess(true);

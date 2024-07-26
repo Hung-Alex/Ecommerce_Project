@@ -53,7 +53,6 @@ namespace Application.Features.Roles.Command.UpdateRole
                     throw new Exception("An error occurred in Process");
                 }
             }
-            throw new NotImplementedException();
         }
     }
 }

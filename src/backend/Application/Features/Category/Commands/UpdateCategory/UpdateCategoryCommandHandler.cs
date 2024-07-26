@@ -60,7 +60,7 @@ namespace Application.Features.Category.Commands.UpdateCategory
                 {
                     throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
                 }
-                category.Image = uploadResult.Data.Url;
+                category.Image = uploadResult.Data.PublicId;
             }
             category.UrlSlug = request.UrlSlug;
             category.Name = request.Name;

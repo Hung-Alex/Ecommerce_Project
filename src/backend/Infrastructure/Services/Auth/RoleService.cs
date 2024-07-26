@@ -1,6 +1,7 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interface.IdentityService;
 using Application.DTOs.Internal.Role;
+using Application.DTOs.Responses.Permissions;
 using Application.DTOs.Responses.Role;
 using Domain.Constants;
 using Domain.Shared;
@@ -123,13 +124,32 @@ namespace Infrastructure.Services.Auth
 
         public async Task<IEnumerable<RoleDTO>> GetAllRoleAsync(CancellationToken cancellationToken = default)
         {
-            var roles = await _roleManager.Roles.ToListAsync();
+            var roles = await _roleManager.Roles.AsNoTracking().ToListAsync();
             if (roles is null)
             {
                 return null;
             }
             return roles.Select(x => new RoleDTO { Id = x.Id, Name = x.Name });
 
+        }
+
+        public async Task<RoleDetail> GetRoleByIdAsync(Guid roleId, CancellationToken cancellationToken = default)
+        {
+            var role = await _roleManager.Roles.Include(x => x.Permissions).ThenInclude(x => x.Permission).FirstOrDefaultAsync(x => x.Id == roleId);
+            if (role is null)
+            {
+                return null;
+            }
+            return new RoleDetail
+            {
+                Id = role.Id,
+                Name = role.Name,
+                Permissions = role.Permissions.Select(x => new PermissionDTO
+                {
+                    Id = x.Permission.Id,
+                    Name = x.Permission.Name,
+                })
+            };
         }
     }
 }
