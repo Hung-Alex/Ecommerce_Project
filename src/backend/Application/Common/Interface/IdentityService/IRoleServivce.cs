@@ -7,6 +7,7 @@ namespace Application.Common.Interface.IdentityService
     public interface IRoleServivce
     {
         Task<Result<bool>> AssignmentRoleForUserAsync(Guid userId, string role, CancellationToken cancellationToken = default);
+        Task<Result<bool>> AssignmentRoleForUserAsync(Guid userId, IEnumerable<Guid> roles, CancellationToken cancellationToken = default);
         Task<Result<bool>> DeleteRoleFromUserAsync(Guid userId, Guid roleId, CancellationToken cancellationToken = default);
         Task<Result<Guid>> CreateRoleAsync(string name, CancellationToken cancellationToken = default);
         Task<Result<bool>> UpdateRoleAsync(Guid roleId, string name, CancellationToken cancellationToken = default);

@@ -11,6 +11,7 @@ using Application.DTOs.Responses.Product.Shared.Variants;
 using Application.DTOs.Responses.Rattings;
 using Application.DTOs.Responses.Sections;
 using Application.DTOs.Responses.Slides;
+using Application.DTOs.Responses.Users;
 using Application.Mapper.Resolve;
 using AutoMapper;
 using Domain.Entities;
@@ -21,6 +22,7 @@ using Domain.Entities.Posts;
 using Domain.Entities.Products;
 using Domain.Entities.Rattings;
 using Domain.Entities.Slides;
+using Domain.Entities.Users;
 
 namespace Application.Mapper
 {
@@ -30,6 +32,7 @@ namespace Application.Mapper
         {
             CreateMap<Categories, CategoryDTO>().ForMember(dest => dest.Image, opt => opt.MapFrom<UrlFromPublicIdResolver>()).ReverseMap();
             CreateMap<ProductInternal, ProductDTO>().ReverseMap();
+            CreateMap<User, UserDTO>().ReverseMap();
             CreateMap<Brand, BrandDTO>().ForMember(dest => dest.Image, opt => opt.MapFrom<UrlFromPublicIdResolver>()).ReverseMap();
             CreateMap<Product, ProductDTO>().ReverseMap();
             CreateMap<Slide, SlideDTO>().ForMember(dest => dest.Image, opt => opt.MapFrom<UrlFromPublicIdResolver>()).ReverseMap();

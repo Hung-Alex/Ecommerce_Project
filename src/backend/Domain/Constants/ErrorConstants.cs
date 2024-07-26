@@ -25,6 +25,8 @@ namespace Domain.Constants
         public static class RoleError
         {
             public static Error UserHaveBeenSameRole(string role) => new Error("User.HaveBeenSameRole", $"User have been same role {role}");
+            public static Error DuplicateRole => new Error("Duplicate.DuplicatePermission", "Duplicate Permission");
+            public static Error HaveAnyRoleDontBelongApplication => new Error("HaveAnyPermissionDontBelongApplication", "Have Any Permission Dont Belong Application");
         }
         public static class PermissionError
         {

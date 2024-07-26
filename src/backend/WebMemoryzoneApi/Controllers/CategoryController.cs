@@ -36,7 +36,7 @@ namespace WebMemoryzoneApi.Controllers
             return Ok(result);
         }
         [HttpPut("{id:Guid}")]
-        [FileValidatorFilter<UpdateCategoryCommand>([".png", ".jpg"],  1920*1080)]
+        [FileValidatorFilter<UpdateCategoryCommand>([".png", ".jpg"], 1920 * 1080)]
         public async Task<ActionResult> UpadateBrand(Guid id, [FromForm] UpdateCategoryCommand command)
         {
             if (id != command.Id)
@@ -52,12 +52,6 @@ namespace WebMemoryzoneApi.Controllers
         {
             var result = await _mediator.Send(new DeleteCategoryCommand(id));
             if (!result.IsSuccess) return NotFound(result);
-            return Ok();
-        }
-        [AllowAnonymous]
-        [HttpGet("{slug}")]
-        public async Task<ActionResult> GetCategoryByUrlSlug(string slug)
-        {
             return Ok();
         }
         [HttpPost]
