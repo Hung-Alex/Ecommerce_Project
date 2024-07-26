@@ -1,9 +1,14 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interface.IdentityService;
 using Application.DTOs.Internal.User;
+using Application.DTOs.Responses.ApplicationUsers;
+using Application.DTOs.Responses.Role;
 using Domain.Constants;
+using Domain.Shared;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Infrastructure.Services.Identity
 {
@@ -11,10 +16,13 @@ namespace Infrastructure.Services.Identity
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        public IdentityService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        private readonly RoleManager<ApplicationRole> _roleManager;
+
+        public IdentityService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<ApplicationRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
         public async Task<bool> AssignmentRoleForUserAsync(Guid userId, string role, CancellationToken cancellationToken = default)
         {
@@ -42,6 +50,19 @@ namespace Infrastructure.Services.Identity
             }
             return user.Id;
         }
+
+        public async Task<Result<Guid>> CreateUserAsync(string email, string password, string userName, Guid UserDomainId, bool lockAccount, CancellationToken cancellationToken = default)
+        {
+            var user = new ApplicationUser() { UserName = userName, Email = email, UserId = UserDomainId, LockoutEnabled = lockAccount };
+            var result = await _userManager.CreateAsync(user, password);
+            if (!result.Succeeded)
+            {
+                return Result<Guid>.ResultFailures(result.Errors.Select(x => new Error(x.Code, x.Description)));
+
+            }
+            return Result<Guid>.ResultSuccess(user.Id);
+        }
+
         public async Task<bool> DeleteRefreshTokenAsync(Guid userId, string provider, string tokenName)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
@@ -49,6 +70,28 @@ namespace Infrastructure.Services.Identity
             var result = await _userManager.RemoveAuthenticationTokenAsync(user, provider, tokenName);
             return result.Succeeded;
         }
+
+        public async Task<ApplicationUserDTO> GetApplicationUserByUserIdAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            var user = await _userManager.Users.Where(x => x.UserId == id).FirstOrDefaultAsync();
+            if (user is null) return null;
+            var roles = await _roleManager.Roles.Where(x => x.Id == user.Id).ToListAsync();
+            return new ApplicationUserDTO()
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                UserId = user.UserId,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                IsLockout = user.LockoutEnabled,
+                Roles = roles?.Select(x => new RoleDTO()
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                })
+            };
+        }
+
         public async Task<string> GetRefreshTokenAsync(Guid userId, string provider, string tokenName)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());

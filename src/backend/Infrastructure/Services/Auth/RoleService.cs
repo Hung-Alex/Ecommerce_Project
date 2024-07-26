@@ -151,5 +151,25 @@ namespace Infrastructure.Services.Auth
                 })
             };
         }
+
+        public async Task<Result<bool>> AssignmentRoleForUserAsync(Guid userId, IEnumerable<Guid> roles, CancellationToken cancellationToken = default)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user is null)
+            {
+                throw new NotFoundException(ErrorConstants.ApplicationUserError.UserNotFoundWithID(userId).Description);
+            }
+            var filterRole = await _roleManager.Roles.Where(x => roles.Contains(x.Id)).ToListAsync();
+            if (roles.Count() != filterRole.Count())
+            {
+                throw new NotFoundException(ErrorConstants.RoleError.HaveAnyRoleDontBelongApplication.Description);
+            }
+            var result = await _userManager.AddToRolesAsync(user, filterRole.Select(x => x.Name));
+            if (result.Succeeded is false)
+            {
+                return Result<bool>.ResultFailures(result.Errors.Select(x => new Error(x.Code, x.Description)));
+            }
+            return Result<bool>.ResultSuccess(true);
+        }
     }
 }
