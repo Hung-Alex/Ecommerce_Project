@@ -1,6 +1,7 @@
 ﻿using Application.Features.Roles.Command.CreateRole;
 using Application.Features.Roles.Command.DeleteRole;
 using Application.Features.Roles.Command.UpdateRole;
+using Application.Features.Roles.Queries.GetRoleById;
 using Application.Features.Roles.Queries.GetRoles;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -37,7 +38,7 @@ namespace WebMemoryzoneApi.Controllers
             return Ok(result);
         }
         [HttpPut("{id:Guid}")]
-        public async Task<IActionResult> UpdateRole([FromBody]UpdateRoleCommand command)
+        public async Task<IActionResult> UpdateRole([FromBody] UpdateRoleCommand command)
         {
             var result = await _mediator.Send(command);
             if (result.IsSuccess is false)
@@ -53,6 +54,16 @@ namespace WebMemoryzoneApi.Controllers
             if (result.IsSuccess is false)
             {
                 return BadRequest(result);
+            }
+            return Ok(result);
+        }
+        [HttpGet("{id:Guid}")]
+        public async Task<IActionResult> GetRoleById(Guid id)
+        {
+            var result = await _mediator.Send(new GetRoleByIdQuery(id));
+            if (result.IsSuccess is false)
+            {
+                return NotFound(result);
             }
             return Ok(result);
         }
