@@ -99,7 +99,7 @@ const Table = ({ columns, data = [], onEdit, onDelete, onAdd }) => {
                         key={colIndex}
                         className={`px-2 py-2 whitespace-nowrap text-gray-900 truncate max-w-[200px] overflow-hidden text-ellipsis ${colClass}`}
                       >
-                        {col.accessor === 'isVisible' ? (
+                        {col.accessor === 'isVisible' || col.accessor === 'isActive' ? (
                           <span
                             className={`px-2 py-1 rounded-full text-sm ${
                               cellValue ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
@@ -111,7 +111,7 @@ const Table = ({ columns, data = [], onEdit, onDelete, onAdd }) => {
                           <img
                             src={Array.isArray(cellValue) ? cellValue[0] : cellValue}
                             alt="Image"
-                            className="h-10 w-10 object-cover rounded-full"
+                            className="h-20 w-20 object-cover rounded-sm"
                           />
                         ) : (
                           cellValue

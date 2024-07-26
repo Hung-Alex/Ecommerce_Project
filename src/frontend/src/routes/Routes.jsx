@@ -18,6 +18,7 @@ import AdminBrands from "../pages/Admin/AdminBrands/AdminBrands";
 import AdminCategories from "../pages/Admin/AdminCategory/AdminCategory";
 import AdminBanners from "../pages/Admin/AdminBanner/AdminBanners";
 import AdminRoles from "../pages/Admin/AdminRoles/AdminRoles";
+import AdminSliders from "../pages/Admin/AdminSlider/AdminSliders";
 
 export const router = createBrowserRouter([
   {
@@ -112,6 +113,10 @@ export const router = createBrowserRouter([
       {
         path: "Roles",
         element: <AdminRoles />,
+      },
+      {
+        path: "Sliders",
+        element: <AdminSliders />,
       },
     ],
   },
