@@ -58,14 +58,14 @@ namespace WebMemoryzoneApi.Controllers
         {
             var result = await _mediator.Send(new DeleteSlideCommand(id));
             if (!result.IsSuccess) return NotFound(result);
-            return Ok();
+            return Ok(result);
         }
         [HttpPost]
         public async Task<IActionResult> AddSlide([FromForm] CreateSlideCommand command)
         {
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result);
-            return Ok();
+            return Ok(result);
         }
     }
 }
