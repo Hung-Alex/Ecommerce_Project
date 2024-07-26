@@ -13,19 +13,21 @@ import Brands from "./Brands/Brands";
 
 const HomePage = () => {
   return (
-    <div className="max-w-screen-xl mx-auto">
+    <>
       <HomeBanner />
       <Category />
-      <Product />
-      <Brands />
-      <Offer />
-      <About />
-      <Testimonial />
-      <ProductOffer />
-      <Our />
-      <News />
-      <Subscribe />
-    </div>
+      <div className="max-w-screen-xl mx-auto">
+        <Product />
+        <Brands />
+        <Offer />
+        <About />
+        <Testimonial />
+        <ProductOffer />
+        <Our />
+        <News />
+        <Subscribe />
+      </div>
+    </>
   );
 };
 

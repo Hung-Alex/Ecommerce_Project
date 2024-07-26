@@ -25,6 +25,9 @@ const Header = () => {
   return (
     <header className="flex flex-wrap items-center justify-between py-4 px-6 sm:px-12 sticky top-0 bg-[#EFF6F1] drop-shadow z-50">
       <div className="flex items-center justify-between w-full sm:w-auto">
+          <button onClick={toggleMobileMenu} className="text-gray-600 sm:hidden">
+            ☰
+          </button>
         <Link
           to="/"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -59,9 +62,6 @@ const Header = () => {
               Login
             </Link>
           )}
-          <button onClick={toggleMobileMenu} className="text-gray-600">
-            ☰
-          </button>
         </div>
       </div>
 
