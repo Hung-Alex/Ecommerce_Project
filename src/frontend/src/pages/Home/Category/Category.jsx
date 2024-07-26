@@ -1,52 +1,49 @@
-import React from "react";
-import { useCategoryContext } from "../../../context/CategoryContext.jsx";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css'; // Import core Swiper styles
-import 'swiper/css/navigation'; // Import navigation styles (optional)
-import 'swiper/css/pagination'; // Import pagination styles (optional)
-import CatCard from "../../../components/UI/Card/CatCard.jsx";
+// components/CategorySlider/CategorySlider.js
+import React from 'react';
+import ReusableSwiper from '../../../components/ReusableSwiper/ReusableSwiper';
+import { useCategoryContext } from '../../../context/CategoryContext';
+import CatCard from '../../../components/UI/Card/CatCard';
 
 const Category = () => {
-  const { categories, loading, error } = useCategoryContext();
+    const { categories, loading, error } = useCategoryContext();
 
-  const handleError = (error) => {
-    console.error("Error loading categories:", error); // Log the error for debugging
-    return <p>Error loading categories</p>;
-  };
+    // Handle loading and error states
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error loading categories: {error.message}</p>;
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return handleError(error);
-
-  return (
-    <div className="mt-12">
-      <div className="text-center">
-        <h3 className="text-[#7EB693] font-[Yellowtail] text-5xl">Categories</h3>
-      </div>
-      <div className="mt-16">
-        <Swiper
-          spaceBetween={20} // Optional: Spacing between slides (in pixels)
-          slidesPerView={1} // Default to 1 slide per view
-          breakpoints={{
+    const swiperOptions = {
+        loop: true,
+        autoplay: {
+            delay: 1000, // 1 second delay
+            disableOnInteraction: false,
+        },
+        breakpoints: {
+            // when window width is >= 640px
+            250: {
+                slidesPerView: 1, // Show 1 slide at a time
+            },
+            // when window width is >= 768px
             768: {
-              slidesPerView: 4, // Adjust for medium screens
+                slidesPerView: 2, // Show 2 slides at a time
             },
-            992: {
-              slidesPerView: 6, // Adjust for larger screens
+            // when window width is >= 1024px
+            1024: {
+                slidesPerView: 3, // Show 3 slides at a time
             },
-          }}
-          pagination={{ clickable: true }} // Optional: Enable pagination dots
-          loop={true}
-          modules={[ ]} // Register modules
-        >
-          {categories.map((item, index) => (
-            <SwiperSlide key={index} >
-              <CatCard  item={item} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
-    </div>
-  );
+            // when window width is >= 1280px
+            1280: {
+                slidesPerView: 4, // Show 4 slides at a time
+            },
+        },
+    };
+
+    return (
+        <ReusableSwiper options={swiperOptions}>
+            {categories.map((item) => (
+                <CatCard key={item.id} item={item} />
+            ))}
+        </ReusableSwiper>
+    );
 };
 
 export default Category;
