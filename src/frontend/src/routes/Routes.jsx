@@ -17,6 +17,7 @@ import AdminProducts from "../pages/Admin/AdminProducts/AdminProducts";
 import AdminBrands from "../pages/Admin/AdminBrands/AdminBrands";
 import AdminCategories from "../pages/Admin/AdminCategory/AdminCategory";
 import AdminBanners from "../pages/Admin/AdminBanner/AdminBanners";
+import AdminRoles from "../pages/Admin/AdminRoles/AdminRoles";
 
 export const router = createBrowserRouter([
   {
@@ -107,6 +108,10 @@ export const router = createBrowserRouter([
       {
         path: "category",
         element: <AdminCategories />,
+      },
+      {
+        path: "Roles",
+        element: <AdminRoles />,
       },
     ],
   },

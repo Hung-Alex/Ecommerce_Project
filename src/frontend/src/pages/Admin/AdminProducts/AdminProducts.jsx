@@ -63,7 +63,7 @@ const AdminProducts = () => {
   }, []);
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error loading products: {error.message}</p>;
+  if (error){console.log(error.message);}
 
   return (
     <DashboardLayout>

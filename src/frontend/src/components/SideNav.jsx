@@ -4,10 +4,12 @@ import { UserContext } from "../context/UserContext";
 import logo from '../assets/Logo.png'; // Đảm bảo bạn có đường dẫn đúng đến hình ảnh logo
 
 const navItems = [
+  { label: "HomePage", path: "/" },
   { label: "Products", path: "/admin/products" },
   { label: "Category", path: "/admin/Category" },
   { label: "Brand", path: "/admin/brands" },
-  { label: "Banner", path: "/admin/banner" }
+  { label: "Banner", path: "/admin/banner" },
+  { label: "Roles", path: "/admin/Roles" }
 ];
 
 const adminNavItems = [
