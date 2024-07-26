@@ -57,6 +57,7 @@ const CategoryContextProvider = ({ children }) => {
   const updateCategory = async (id, updatedCategory) => {
     try {
       const formData = new FormData();
+      formData.append("id", id);
       formData.append("name", updatedCategory.name);
       formData.append("urlSlug", updatedCategory.urlSlug);
       formData.append("description", updatedCategory.description);

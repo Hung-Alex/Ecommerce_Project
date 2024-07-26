@@ -57,6 +57,7 @@ const BrandContextProvider = ({ children }) => {
   const updateBrand = async (id, updatedBrand) => {
     try {
       const formData = new FormData();
+      formData.append("id", id);
       formData.append("name", updatedBrand.name);
       formData.append("urlSlug", updatedBrand.urlSlug);
       formData.append("description", updatedBrand.description);

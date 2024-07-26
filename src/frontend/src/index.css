@@ -11,6 +11,7 @@
 
 body {
   color: #274c5b;
+  overflow-x: hidden;
 }
 
 .about {
@@ -34,6 +35,7 @@ body {
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
+
 /*
   color:#274C5B
   color:#7EB693
@@ -44,22 +46,189 @@ input::-webkit-inner-spin-button {
   color:#EFF6F1
   */
 
-  /* Tailwind CSS media queries */
-@media (max-width: 1024px) { /* Tablet view */
-  .col-first, .col-second, .col-last {
+/* Tailwind CSS media queries */
+@media (max-width: 1024px) {
+
+  /* Tablet view */
+  .col-first,
+  .col-second,
+  .col-last {
     display: table-cell;
   }
+
   .col-hidden {
     display: none;
   }
 }
 
-@media (max-width: 768px) { /* Mobile view */
-  .col-first, .col-second, .col-last {
+@media (max-width: 768px) {
+
+  /* Mobile view */
+  .col-first,
+  .col-second,
+  .col-last {
     display: table-cell;
   }
+
   .col-hidden {
     display: none;
   }
 }
 
+/* animations.css */
+.fade-in {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fade-in.visible {
+  opacity: 1;
+}
+
+.slide-up {
+  transform: translateY(20px);
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.slide-up.visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.zoom-in {
+  transform: scale(0.9);
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.zoom-in.visible {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.rotate {
+  transform: rotate(-10deg);
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.rotate.visible {
+  transform: rotate(0);
+  opacity: 1;
+}
+
+.glow {
+  text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  transition: text-shadow 0.5s ease;
+}
+
+.glow.visible {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.flip {
+  transform: rotateY(180deg);
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.flip.visible {
+  transform: rotateY(0);
+  opacity: 1;
+}
+
+.blink {
+  opacity: 0;
+  animation: blink 1s infinite;
+}
+
+.blink.visible {
+  opacity: 1;
+  animation: none;
+}
+
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.expand {
+  transform: scale(0.8);
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.expand.visible {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.move {
+  transform: translateX(-20px);
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.move.visible {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.slide-in {
+  transform: translateX(100%);
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.slide-in.visible {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* AnimatedBackground.css */
+.animated-background {
+  height: 100vh;
+  /* Chiều cao toàn màn hình */
+  width: 100vw;
+  /* Chiều rộng toàn màn hình */
+  background-color: hsla(200, 40%, 30%, 0.4);
+  background-image:
+    url('https://78.media.tumblr.com/cae86e76225a25b17332dfc9cf8b1121/tumblr_p7n8kqHMuD1uy4lhuo1_540.png'),
+    url('https://78.media.tumblr.com/66445d34fe560351d474af69ef3f2fb0/tumblr_p7n908E1Jb1uy4lhuo1_1280.png'),
+    url('https://78.media.tumblr.com/8cd0a12b7d9d5ba2c7d26f42c25de99f/tumblr_p7n8kqHMuD1uy4lhuo2_1280.png'),
+    url('https://78.media.tumblr.com/5ecb41b654f4e8878f59445b948ede50/tumblr_p7n8on19cV1uy4lhuo1_1280.png'),
+    url('https://78.media.tumblr.com/28bd9a2522fbf8981d680317ccbf4282/tumblr_p7n8kqHMuD1uy4lhuo3_1280.png');
+  background-repeat: repeat-x;
+  background-position:
+    0 20%,
+    0 100%,
+    0 50%,
+    0 100%,
+    0 0;
+  background-size:
+    2300px,
+    800px,
+    500px 200px,
+    1000px,
+    400px 260px;
+  animation: 50s para infinite linear;
+}
+
+@keyframes para {
+  100% {
+    background-position:
+      -5000px 20%,
+      -800px 95%,
+      500px 50%,
+      1000px 100%,
+      400px 0;
+  }
+}

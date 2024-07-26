@@ -1,0 +1,29 @@
+.header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 60px;
+    /* Chiều cao của header */
+    background: transparent;
+    transition: background 0.3s ease;
+    z-index: 1000;
+    /* Đảm bảo header luôn ở trên cùng */
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+    /* Đảm bảo nó nằm dưới header */
+}
+
+.header.sticky::before {
+    opacity: 1;
+}

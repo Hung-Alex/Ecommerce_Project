@@ -15,7 +15,7 @@ const AdminNavbar = () => {
         <header className="flex items-center justify-between py-4 px-6 bg-gray-800 text-white sticky top-0 z-50">
             <div className="flex items-center gap-4">
                 <Link
-                    to="/"
+                    to="/admin"
                     className="flex items-center gap-1"
                     onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                 >
