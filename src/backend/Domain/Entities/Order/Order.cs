@@ -20,7 +20,7 @@ namespace Domain.Entities.Orders
         public OrderStatus OrderStatus { get; set; }//enum 
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
-        public ICollection<OrderItems> OrderItems { get; set; }
+        public virtual ICollection<OrderItems> OrderItems { get; set; }
         public Guid UserId { get; set; }
         public User User { get; set; }
     }

@@ -1,6 +1,7 @@
 ﻿using Application.Common.Implementation;
 using Application.Common.Interface;
 using Application.Common.Interface.IdentityService;
+using Domain.Constants;
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Infrastructure.Services.Auth;
@@ -46,7 +47,7 @@ namespace Infrastructure.Extensions.Services
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 6;
+                options.Password.RequiredLength = AccountConstants.MinimumLengthPassword;
                 options.Password.RequireLowercase = true;
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequireUppercase = true;
@@ -85,9 +86,9 @@ namespace Infrastructure.Extensions.Services
                     OnMessageReceived = context =>
                     {
                         // Kiểm tra nếu token có trong cookie
-                        if (context.Request.Cookies.ContainsKey("X-Access-Token"))
+                        if (context.Request.Cookies.ContainsKey(UserToken.AccessTokenCookies))
                         {
-                            context.Token = context.Request.Cookies["X-Access-Token"];
+                            context.Token = context.Request.Cookies[UserToken.AccessTokenCookies];
                         }
                         return Task.CompletedTask;
                     }

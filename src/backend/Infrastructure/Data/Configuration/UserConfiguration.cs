@@ -29,7 +29,6 @@ namespace Infrastructure.Data.Configuration
             builder.Property(x => x.City).IsRequired(false);
             builder.Property(x => x.Region).IsRequired(false);
             builder.Property(x => x.Country).IsRequired(false);
-            builder.Property(x => x.PostalCode).IsRequired(false);
             builder.Property(x => x.AvatarImage).IsRequired(false);
             builder.Property(x => x.City).IsRequired(false);
             builder.Property(x => x.FirstName).IsRequired(false);

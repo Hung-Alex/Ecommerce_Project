@@ -16,6 +16,12 @@ namespace Application.Utils
             Regex regex = new Regex(pattern);
             return regex.IsMatch(phone);
         }
+        public static async Task<bool> IsValidUsername(string username, CancellationToken cancellationToken = default)
+        {
+            string pattern = @"^[a-zA-Z0-9]{5,15}$";
+            Regex regex = new Regex(pattern);
+            return regex.IsMatch(username);
+        }
         public static async Task<bool> ValidateSlug(string slug, CancellationToken cancellationToken = default)
         {
             string pattern = @"^[a-z0-9]+(?:-[a-z0-9]+)*$";

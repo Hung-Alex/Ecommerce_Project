@@ -4,7 +4,6 @@ using Application.DTOs.Internal.User;
 using Application.DTOs.Responses.ApplicationUsers;
 using Application.DTOs.Responses.Role;
 using Domain.Constants;
-using Domain.Entities.Users;
 using Domain.Shared;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -76,7 +75,8 @@ namespace Infrastructure.Services.Identity
         {
             var user = await _userManager.Users.Where(x => x.UserId == id).FirstOrDefaultAsync();
             if (user is null) return null;
-            var roles = await _roleManager.Roles.Where(x => x.Id == user.Id).ToListAsync();
+            var rolesName = await _userManager.GetRolesAsync(user);
+            var roles = await _roleManager.Roles.Where(x => rolesName.Contains(x.Name)).ToListAsync();
             return new ApplicationUserDTO()
             {
                 Id = user.Id,
@@ -159,6 +159,20 @@ namespace Infrastructure.Services.Identity
             if (user is null) return false;
             var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
             return result.Succeeded;
+        }
+
+        public async Task<Result<Guid>> UpdateUserByUserIdAsync(Guid userId, string phoneNumber, bool isLock, CancellationToken cancellationToken = default)
+        {
+            var user = await _userManager.Users.Where(x => x.UserId == userId).FirstOrDefaultAsync();
+            if (user is null) return Result<Guid>.ResultFailures(ErrorConstants.ApplicationUserError.UserNotFoundWithID(userId));
+            user.LockoutEnabled = isLock;
+            user.PhoneNumber = phoneNumber;
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                return Result<Guid>.ResultFailures(result.Errors.Select(x => new Error(x.Code, x.Description)));
+            }
+            return Result<Guid>.ResultSuccess(user.Id);
         }
     }
 }

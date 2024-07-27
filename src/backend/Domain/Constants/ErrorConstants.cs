@@ -17,8 +17,12 @@ namespace Domain.Constants
         {
             public static Error PasswordNotMatch => new Error("User.PasswordNotMatch", "Password Not Match");
             public static Error UserNotFoundWithName(string name) => new Error("User.UserNotFoundWithName", $"Not found with name {name}");
-            public static Error UserNotFoundWithID(Guid userId) => new Error("User.NotFound", $"Not found user with id {userId}");  
+            public static Error UserNotFoundWithID(Guid userId) => new Error("User.NotFound", $"Not found user with id {userId}");
             public static Error EmailIsInvaild => new Error("User.EmailIsInvaild", "Email is invaild");
+            public static Error PhoneNumberIsInvaild => new Error("User.PhoneNumberIsInvaild", "Phone number is invaild");
+            public static Error InvalidUserName => new Error("User.InvalidUserName", "InvalidUserName");
+            public static Error MaximumLengthOfInvalidPassword(int maxLength) => new Error("User.InvalidPassword", $"Required Password must have maximum length {maxLength}");
+            public static Error MinimumLengthOfInvalidPassword(int minLength) => new Error("User.InvalidPassword", $"Required Password must have minimum length {minLength}");
         }
         public static class ApplicationUserError
         {
