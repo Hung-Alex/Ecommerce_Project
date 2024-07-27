@@ -53,12 +53,27 @@ namespace Infrastructure.Services.Identity
 
         public async Task<Result<Guid>> CreateUserAsync(string email, string password, string userName, Guid UserDomainId, bool lockAccount, CancellationToken cancellationToken = default)
         {
-            var user = new ApplicationUser() { UserName = userName, Email = email, UserId = UserDomainId, LockoutEnabled = lockAccount };
+            var user = new ApplicationUser
+            {
+                UserName = userName,
+                Email = email,
+                UserId = UserDomainId,
+                LockoutEnabled = true
+            };
+
             var result = await _userManager.CreateAsync(user, password);
             if (!result.Succeeded)
             {
                 return Result<Guid>.ResultFailures(result.Errors.Select(x => new Error(x.Code, x.Description)));
-
+            }
+            if (lockAccount)
+            {
+                user.LockoutEnd = DateTimeOffset.MaxValue;
+                var updateResult = await _userManager.UpdateAsync(user);
+                if (!updateResult.Succeeded)
+                {
+                    return Result<Guid>.ResultFailures(updateResult.Errors.Select(x => new Error(x.Code, x.Description)));
+                }
             }
             return Result<Guid>.ResultSuccess(user.Id);
         }
@@ -135,9 +150,20 @@ namespace Infrastructure.Services.Identity
 
         public async Task<Result<bool>> LockAccountAsync(Guid userId, bool isLock, CancellationToken cancellationToken = default)
         {
-            var user = await _userManager.Users.Where(x => x.UserId == userId).FirstOrDefaultAsync();
-            if (user is null) return Result<bool>.ResultFailures(ErrorConstants.ApplicationUserError.UserNotFoundWithID(userId));
-            user.LockoutEnabled = isLock;
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserId == userId, cancellationToken);
+            if (user is null)
+                return Result<bool>.ResultFailures(ErrorConstants.ApplicationUserError.UserNotFoundWithID(userId));
+
+            if (isLock)
+            {
+                // lock account
+                user.LockoutEnd = DateTimeOffset.MaxValue;
+            }
+            else
+            {
+                // Unlock account
+                user.LockoutEnd = null;
+            }
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)
             {
@@ -156,16 +182,39 @@ namespace Infrastructure.Services.Identity
         public async Task<bool> SignInAsync(string userName, string password, CancellationToken cancellationToken = default)
         {
             var user = await _userManager.FindByNameAsync(userName);
-            if (user is null) return false;
-            var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
-            return result.Succeeded;
+            if (user is null)
+            {
+                return false; // Người dùng không tồn tại
+            }
+
+            if (await _userManager.IsLockedOutAsync(user))
+            {
+                return false; // Tài khoản đã bị khóa
+            }
+
+            var result = await _signInManager.CheckPasswordSignInAsync(user, password, lockoutOnFailure: true);
+            if (result.Succeeded)
+            {
+                return true; // Đăng nhập thành công
+            }
+
+            return false; // Đăng nhập thất bại
         }
 
         public async Task<Result<Guid>> UpdateUserByUserIdAsync(Guid userId, string phoneNumber, bool isLock, CancellationToken cancellationToken = default)
         {
             var user = await _userManager.Users.Where(x => x.UserId == userId).FirstOrDefaultAsync();
             if (user is null) return Result<Guid>.ResultFailures(ErrorConstants.ApplicationUserError.UserNotFoundWithID(userId));
-            user.LockoutEnabled = isLock;
+            if (isLock)
+            {
+                // lock account
+                user.LockoutEnd = DateTimeOffset.MaxValue;
+            }
+            else
+            {
+                // Unlock account
+                user.LockoutEnd = null;
+            }
             user.PhoneNumber = phoneNumber;
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)
