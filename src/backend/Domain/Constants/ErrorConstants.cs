@@ -15,6 +15,9 @@ namespace Domain.Constants
         }
         public static class UserError
         {
+            public static Error PasswordNotMatch => new Error("User.PasswordNotMatch", "Password Not Match");
+            public static Error UserNotFoundWithName(string name) => new Error("User.UserNotFoundWithName", $"Not found with name {name}");
+            public static Error UserNotFoundWithID(Guid userId) => new Error("User.NotFound", $"Not found user with id {userId}");  
         }
         public static class ApplicationUserError
         {
