@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <Folder Include="Features\Brands\Queries\GetByUrlSlug\" />
-    <Folder Include="Features\Users\Commands\LockAccount\" />
   </ItemGroup>
 
 </Project>

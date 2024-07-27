@@ -32,7 +32,7 @@ namespace Application.Mapper
         {
             CreateMap<Categories, CategoryDTO>().ForMember(dest => dest.Image, opt => opt.MapFrom<UrlFromPublicIdResolver>()).ReverseMap();
             CreateMap<ProductInternal, ProductDTO>().ReverseMap();
-            CreateMap<User, UserDTO>().ReverseMap();
+            CreateMap<User, UserDTO>().ForMember(dest => dest.AvatarImage, opt => opt.MapFrom<UrlFromPublicIdResolver>()).ReverseMap();
             CreateMap<Brand, BrandDTO>().ForMember(dest => dest.Image, opt => opt.MapFrom<UrlFromPublicIdResolver>()).ReverseMap();
             CreateMap<Product, ProductDTO>().ReverseMap();
             CreateMap<Slide, SlideDTO>().ForMember(dest => dest.Image, opt => opt.MapFrom<UrlFromPublicIdResolver>()).ReverseMap();
