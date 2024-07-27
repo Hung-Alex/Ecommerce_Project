@@ -21,6 +21,7 @@ import AdminRoles from "../pages/Admin/AdminRoles/AdminRoles";
 import AdminSliders from "../pages/Admin/AdminSlider/AdminSliders";
 import News from "../pages/News/News";
 import NewsDetail from "../pages/News/NewsDetail";
+import AdminNews from "../pages/Admin/AdminNews/AdminNews";
 
 export const router = createBrowserRouter([
   {
@@ -127,6 +128,10 @@ export const router = createBrowserRouter([
       {
         path: "Sliders",
         element: <AdminSliders />,
+      },
+      {
+        path: "news",
+        element: <AdminNews />,
       },
     ],
   },
