@@ -60,6 +60,7 @@ namespace Application.Features.Posts.Commands.UpdatePost
             post.ShortDescription = request.ShortDescription;
             post.Description = request.Description;
             post.Title = request.Title;
+            post.Pulished = request.Pulished;
             await _unitOfWork.Commit();
             return Result<bool>.ResultSuccess(true);
         }

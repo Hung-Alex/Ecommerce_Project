@@ -9,7 +9,7 @@ using FluentValidation;
 using MediatR;
 using System.Transactions;
 
-namespace Application.Features.Users.Commands
+namespace Application.Features.Users.Commands.CreateUser
 {
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Result<bool>>
     {

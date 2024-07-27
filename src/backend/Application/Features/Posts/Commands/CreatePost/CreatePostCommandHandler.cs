@@ -56,7 +56,9 @@ namespace Application.Features.Posts.Commands.CreatePost
                 ShortDescription = request.ShortDescription,
                 Description = request.Description,
                 UrlSlug = request.UrlSlug,
-                ImageUrl = uploadResult.Data.PublicId
+                ImageUrl = uploadResult.Data.PublicId,
+                Pulished = request.Pulished,
+                ViewCount = 0
             });
             await _unitOfWork.Commit();
             return Result<bool>.ResultSuccess(true);

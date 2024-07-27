@@ -8,7 +8,7 @@ namespace Application.DTOs.Responses.Post
         public string ShortDescription { get; init; }
         public string Description { get; init; }
         public string ImageUrl { get; init; }
-        public bool? Pulished { get; init; }
+        public bool Pulished { get; init; }
         public int ViewCount { get; init; }
     }
 }

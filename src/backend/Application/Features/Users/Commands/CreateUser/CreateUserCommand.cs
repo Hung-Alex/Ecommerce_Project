@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
-namespace Application.Features.Users.Commands
+namespace Application.Features.Users.Commands.CreateUser
 {
     public record CreateUserCommand : IRequest<Result<bool>>
     {
