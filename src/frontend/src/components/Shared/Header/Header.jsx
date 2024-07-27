@@ -23,7 +23,7 @@ const Header = () => {
   };
 
   return (
-    <header className="flex flex-wrap items-center justify-between py-4 px-6 sm:px-12 fixed w-full top-0 bg-[#EFF6F1]  drop-shadow z-50">
+    <header className="flex flex-wrap items-center justify-between py-4 px-6 sm:px-12 sticky w-full top-0 bg-[#EFF6F1]  drop-shadow z-50">
       <div className="flex items-center justify-between w-full sm:w-auto">
           <button onClick={toggleMobileMenu} className="text-gray-600 sm:hidden">
             ☰
