@@ -4,6 +4,7 @@ using Domain.Constants;
 using Domain.Entities.Carts;
 using Domain.Entities.Users;
 using Domain.Shared;
+using FluentValidation;
 using MediatR;
 using System.Transactions;
 
@@ -15,6 +16,18 @@ namespace Application.Features.Users.Commands
         private readonly IRoleServivce _roleService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMedia media;
+        public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
+        {
+            public CreateUserCommandValidator()
+            {
+                RuleFor(x => x.Email).NotEmpty().WithMessage(nameof(CreateUserCommand.Email));
+                RuleFor(x => x.Password).NotEmpty().WithMessage(nameof(CreateUserCommand.Password));
+                RuleFor(x => x.ConfirmPassword).NotEmpty().WithMessage(nameof(CreateUserCommand.ConfirmPassword));
+                RuleFor(x => x.ConfirmPassword).Equal(x => x.Password).WithMessage(ErrorConstants.UserError.PasswordNotMatch.Description);
+                RuleFor(x => x.UserName).NotEmpty().WithMessage(nameof(CreateUserCommand.UserName));
+                RuleFor(x => x.Roles).NotEmpty().WithMessage(nameof(CreateUserCommand.Roles));
+            }
+        }
         public CreateUserCommandHandler(IIdentityService identityService, IRoleServivce roleService, IUnitOfWork unitOfWork, IMedia media)
         {
             _identityService = identityService;
@@ -57,7 +70,6 @@ namespace Application.Features.Users.Commands
                     throw ex;
                 }
             }
-
         }
         private async Task<Result<bool>> ValidationRole(IEnumerable<Guid> roles)
         {
@@ -76,7 +88,7 @@ namespace Application.Features.Users.Commands
         }
         private async Task<Result<Guid>> CreateApplicationUser(CreateUserCommand ApplicationUser, Guid userId)
         {
-            var isCreatedUser = await _identityService.CreateUserAsync(ApplicationUser.Email, ApplicationUser.Password, ApplicationUser.UserName, userId, ApplicationUser.Locked);
+            var isCreatedUser = await _identityService.CreateUserAsync(ApplicationUser.Email, ApplicationUser.Password, ApplicationUser.UserName, userId, ApplicationUser.IsActive);
             if (isCreatedUser.IsSuccess is false)
             {
                 return Result<Guid>.ResultFailures(isCreatedUser.Errors);

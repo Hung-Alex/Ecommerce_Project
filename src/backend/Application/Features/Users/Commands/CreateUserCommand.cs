@@ -16,7 +16,7 @@ namespace Application.Features.Users.Commands
         public string? LastName { get; init; }
         public string? City { get; init; }
         public string? Country { get; init; }
-        public bool Locked { get; init; }
+        public bool IsActive { get; init; }
         public IEnumerable<Guid> Roles { get; init; }
     }
 }
