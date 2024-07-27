@@ -5,5 +5,5 @@ using Microsoft.AspNetCore.Http;
 
 namespace Application.Features.Posts.Commands.CreatePost
 {
-    public record CreatePostCommand(string Title, string ShortDescription, string Description, string UrlSlug, bool Pulished, IFormFile Image) : IRequest<Result<bool>>, IValidatableRequest;
+    public record CreatePostCommand(string Title, string ShortDescription, string Description, string UrlSlug, bool Published, IFormFile Image) : IRequest<Result<bool>>, IValidatableRequest;
 }
