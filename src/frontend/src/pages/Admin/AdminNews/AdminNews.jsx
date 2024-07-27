@@ -33,7 +33,7 @@ const AdminNews = () => {
       formData.append("shortDescription", post.shortDescription);
       formData.append("description", post.description);
       formData.append("urlSlug", post.urlSlug);
-      formData.append("pulished", post.published);
+      formData.append("pulished", post.pulished);
       if (post.image) {
         formData.append("image", post.image);
       }

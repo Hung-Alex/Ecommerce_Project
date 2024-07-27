@@ -8,7 +8,7 @@ const AddNewsForm = ({ post, onClose, addPost, updatePost }) => {
   const [urlSlug, setUrlSlug] = useState(post ? post.urlSlug : "");
   const [shortDescription, setShortDescription] = useState(post ? post.shortDescription : "");
   const [description, setDescription] = useState(post ? post.description : "");
-  const [published, setPublished] = useState(post ? post.published : false); // Fixed typo
+  const [published, setPublished] = useState(post ? post.pulished : false); // Fixed typo
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(post ? post.imageUrl : null);
 

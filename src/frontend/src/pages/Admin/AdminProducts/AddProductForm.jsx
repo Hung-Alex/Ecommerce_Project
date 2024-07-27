@@ -1,9 +1,14 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import axios from '../../../utils/axios';
 import { useCategoryContext } from '../../../context/CategoryContext';
 import { useBrandContext } from '../../../context/BrandContext';
+import { titleToSlug } from '../../../utils/slugify';
 
-const AddProductForm = ({ product, onClose}) => {
+const AddProductForm = ({ product, onClose }) => {
+  const [files, setFiles] = useState([]);
+  const [error, setError] = useState(null);
+  const fileInputRef = useRef(null);
+
   const { categories, loading: categoriesLoading, error: categoriesError } = useCategoryContext();
   const { brands, loading: brandsLoading, error: brandsError } = useBrandContext();
 
@@ -15,12 +20,27 @@ const AddProductForm = ({ product, onClose}) => {
   const [brandId, setBrandId] = useState(product ? product.brandId : '');
   const [categoryId, setCategoryId] = useState(product ? product.categoryId : '');
   const [images, setImages] = useState(product ? product.images : []);
-  const [imagePreviews, setImagePreviews] = useState([]);
   const [variants, setVariants] = useState(product ? product.variants : [{ variantName: '', description: '' }]);
 
-  const fileInputRef = useRef(null);
+  useEffect(() => {
+    setUrlSlug(titleToSlug(name));
+  }, [name]);
 
-  const handleSubmit = async () => {
+  const handleFileChange = (e) => {
+    const selectedFiles = Array.from(e.target.files);
+    setFiles(prevFiles => [...prevFiles, ...selectedFiles]);
+
+    // Reset file input value
+    e.target.value = null;
+  };
+
+  const handleRemoveFile = (index) => {
+    setFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     const formData = new FormData();
     formData.append('name', name);
     formData.append('urlSlug', urlSlug);
@@ -30,48 +50,33 @@ const AddProductForm = ({ product, onClose}) => {
     formData.append('brandId', brandId);
     formData.append('categoryId', categoryId);
 
+    // Append each variant as a separate JSON object
+    variants.forEach((variant) => {
+      formData.append('Variant', JSON.stringify(variant));
+    });
+
     // Append images directly
-    images.forEach((file) => {
+    files.forEach((file) => {
       formData.append('images', file);
     });
 
-  // Append each variant as a separate JSON object
-  variants.forEach((variant) => {
-    formData.append('Variant', JSON.stringify(variant));
-  });
-
     try {
-      const response = await axios.post('/products', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      if (product) {
+        await axios.put(`/products/${product.id}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      } else {
+        await axios.post('/products', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      }
       onClose();
-    } catch (error) {
-      console.error('Error submitting product:', error);
-    }
-  };
-
-  const handleImageChange = (event) => {
-    const files = Array.from(event.target.files);
-    const newImages = [...images, ...files];
-    const imageUrls = newImages.map((file) => URL.createObjectURL(file));
-    setImages(newImages);
-    setImagePreviews(imageUrls);
-    event.target.value = null; // Clear the input field value
-  };
-
-  const removeImage = (index) => {
-    // Remove the image from the list
-    const updatedImages = images.filter((_, i) => i !== index);
-    const updatedPreviews = imagePreviews.filter((_, i) => i !== index);
-
-    setImages(updatedImages);
-    setImagePreviews(updatedPreviews);
-
-    // If needed, trigger file input to allow re-selection
-    if (fileInputRef.current) {
-      fileInputRef.current.value = null;
+    } catch (err) {
+      setError('Failed to submit product.');
     }
   };
 
@@ -102,179 +107,192 @@ const AddProductForm = ({ product, onClose}) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl w-full">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Image Section */}
-          <div className="space-y-4">
-            <div className="w-full bg-gray-100 rounded-md h-64 flex items-center justify-center">
-              {imagePreviews.length > 0 ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                  {imagePreviews.map((preview, index) => (
-                    <div key={index} className="relative w-full h-64 bg-gray-200 rounded-md flex items-center justify-center">
-                      <img src={preview} alt={`Preview ${index}`} className="w-full h-full object-cover rounded-md" />
+        {/* Image Upload Section */}
+        <div className="space-y-4">
+          <div className="max-w-4xl mx-auto p-4">
+            <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
+              <div
+                className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer transition-colors duration-200"
+                onClick={() => fileInputRef.current.click()}
+              >
+                <p className="text-gray-500">Drag & drop images here, or click to select</p>
+                <input
+                  type="file"
+                  id="fileInput"
+                  accept="image/*"
+                  multiple
+                  onChange={handleFileChange}
+                  ref={fileInputRef}
+                  className="hidden"
+                />
+              </div>
+
+              {files.length > 0 && (
+                <div className="mt-6">
+                  <h3 className="text-lg font-semibold mb-4">Selected Images:</h3>
+                  <div className="max-h-60 overflow-auto border border-gray-300 rounded-md p-2">
+                    <div className="flex flex-wrap gap-4">
+                      {files.map((file, index) => (
+                        <div key={index} className="relative">
+                          <img
+                            src={URL.createObjectURL(file)}
+                            alt={`preview-${index}`}
+                            className="w-32 h-32 object-cover rounded-md"
+                          />
+                          <button
+                            type="button"
+                            className="absolute top-1 right-1 bg-white text-red-500 rounded-full p-1 text-lg"
+                            onClick={() => handleRemoveFile(index)}
+                          >
+                            &times;
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {error && <p className="text-red-500 mt-4">{error}</p>}
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                {/* Form Data Section */}
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium">Name:</label>
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(event) => setName(event.target.value)}
+                      className="mt-1 block w-full px-3 py-2 border rounded-md"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium">URL Slug:</label>
+                    <input
+                      type="text"
+                      value={urlSlug}
+                      onChange={(event) => setUrlSlug(event.target.value)}
+                      className="mt-1 block w-full px-3 py-2 border rounded-md"
+                      readOnly
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium">Description:</label>
+                    <textarea
+                      value={description}
+                      onChange={(event) => setDescription(event.target.value)}
+                      className="mt-1 block w-full px-3 py-2 border rounded-md"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium">Price:</label>
+                    <input
+                      type="number"
+                      value={price}
+                      onChange={(event) => setPrice(event.target.value)}
+                      className="mt-1 block w-full px-3 py-2 border rounded-md"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium">Discount:</label>
+                    <input
+                      type="number"
+                      value={discount}
+                      onChange={(event) => setDiscount(event.target.value)}
+                      className="mt-1 block w-full px-3 py-2 border rounded-md"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium">Brand:</label>
+                    <select
+                      value={brandId}
+                      onChange={(event) => setBrandId(event.target.value)}
+                      className="mt-1 block w-full px-3 py-2 border rounded-md"
+                    >
+                      <option value="">Select a brand</option>
+                      {brands.map((brand) => (
+                        <option key={brand.id} value={brand.id}>
+                          {brand.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium">Category:</label>
+                    <select
+                      value={categoryId}
+                      onChange={(event) => setCategoryId(event.target.value)}
+                      className="mt-1 block w-full px-3 py-2 border rounded-md"
+                    >
+                      <option value="">Select a category</option>
+                      {categories.map((category) => (
+                        <option key={category.id} value={category.id}>
+                          {category.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Variants Section */}
+                <div className="space-y-4">
+                  <h2 className="text-2xl mb-4">Variants:</h2>
+                  {variants.map((variant, index) => (
+                    <div key={index} className="border p-4 rounded-md">
+                      <div>
+                        <label className="block text-sm font-medium">Variant Name:</label>
+                        <input
+                          type="text"
+                          value={variant.variantName}
+                          onChange={(event) => updateVariant(index, 'variantName', event.target.value)}
+                          className="mt-1 block w-full px-3 py-2 border rounded-md"
+                        />
+                      </div>
+                      <div className="mt-4">
+                        <label className="block text-sm font-medium">Description:</label>
+                        <textarea
+                          value={variant.description}
+                          onChange={(event) => updateVariant(index, 'description', event.target.value)}
+                          className="mt-1 block w-full px-3 py-2 border rounded-md"
+                        />
+                      </div>
                       <button
                         type="button"
-                        onClick={() => removeImage(index)}
-                        className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 text-sm"
+                        onClick={() => removeVariant(index)}
+                        className="mt-4 text-red-500 hover:text-red-700"
                       >
-                        ×
+                        Remove Variant
                       </button>
                     </div>
                   ))}
+                  <button
+                    type="button"
+                    onClick={addVariant}
+                    className="mt-4 w-full py-2 px-4 bg-blue-500 text-white rounded-md"
+                  >
+                    Add Variant
+                  </button>
                 </div>
-              ) : (
-                <p>No Images</p>
-              )}
-            </div>
-            <input
-              type="file"
-              multiple
-              onChange={handleImageChange}
-              ref={fileInputRef}
-              className="mt-1 block w-full px-3 py-2 border rounded-md"
-            />
-          </div>
+              </div>
 
-          {/* Form Data Section */}
-          <div className="space-y-4">
-            <h2 className="text-2xl mb-4">{product ? 'Edit Product' : 'Add Product'}</h2>
-            <form className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium">Name:</label>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border rounded-md"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">URL Slug:</label>
-                <input
-                  type="text"
-                  value={urlSlug}
-                  onChange={(event) => setUrlSlug(event.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border rounded-md"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">Description:</label>
-                <textarea
-                  value={description}
-                  onChange={(event) => setDescription(event.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border rounded-md"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">Price:</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={price}
-                  onChange={(event) => setPrice(event.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border rounded-md"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">Discount:</label>
-                <input
-                  type="number"
-                  value={discount}
-                  onChange={(event) => setDiscount(event.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border rounded-md"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">Brand:</label>
-                <select
-                  value={brandId}
-                  onChange={(event) => setBrandId(event.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border rounded-md"
+              <div className="mt-6 text-right">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md mr-4"
                 >
-                  <option value="">Select a Brand</option>
-                  {brands.map((brand) => (
-                    <option key={brand.id} value={brand.id}>
-                      {brand.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium">Category:</label>
-                <select
-                  value={categoryId}
-                  onChange={(event) => setCategoryId(event.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border rounded-md"
+                  Close
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-blue-500 text-white rounded-md"
                 >
-                  <option value="">Select a Category</option>
-                  {categories.map((category) => (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
+                  Save
+                </button>
               </div>
             </form>
           </div>
-
-          {/* Variants Section */}
-          <div className="space-y-4">
-            <h4 className="text-xl mb-2">Variants</h4>
-            {variants.map((variant, index) => (
-              <div key={index} className="border p-4 rounded-md mb-4">
-                <div className="flex justify-between items-center mb-2">
-                  <h4 className="text-lg">Variant {index + 1}</h4>
-                  <button
-                    type="button"
-                    onClick={() => removeVariant(index)}
-                    className="bg-red-500 text-white rounded-full px-2 py-1 text-sm"
-                  >
-                    Remove
-                  </button>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium">Name:</label>
-                  <input
-                    type="text"
-                    value={variant.variantName}
-                    onChange={(event) => updateVariant(index, 'variantName', event.target.value)}
-                    className="mt-1 block w-full px-3 py-2 border rounded-md"
-                  />
-                </div>
-                <div className="mt-2">
-                  <label className="block text-sm font-medium">Description:</label>
-                  <textarea
-                    value={variant.description}
-                    onChange={(event) => updateVariant(index, 'description', event.target.value)}
-                    className="mt-1 block w-full px-3 py-2 border rounded-md"
-                  />
-                </div>
-              </div>
-            ))}
-            <button
-              type="button"
-              onClick={addVariant}
-              className="bg-blue-500 text-white rounded-full px-4 py-2 mt-4"
-            >
-              Add Variant
-            </button>
-          </div>
-        </div>
-
-        <div className="flex justify-end mt-6">
-          <button
-            type="button"
-            onClick={handleSubmit}
-            className="bg-blue-500 text-white rounded-full px-4 py-2"
-          >
-            Submit
-          </button>
-          <button
-            type="button"
-            onClick={onClose}
-            className="ml-4 bg-gray-500 text-white rounded-full px-4 py-2"
-          >
-            Cancel
-          </button>
         </div>
       </div>
     </div>
