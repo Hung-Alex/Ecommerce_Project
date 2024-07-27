@@ -9,19 +9,24 @@ using Application.DTOs.Responses.Brands;
 using Domain.Entities.Brands;
 using Application.Common.Exceptions;
 using Application.Features.Brands.Specification;
+using Application.Utils;
+using Application.Features.Products.Commands.UpdateProduct;
 
 namespace Application.Features.Brands.Commands.UpdateBrand
 {
     public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, Result<BrandDTO>>
     {
-        internal class UpdateBrandCommandValidator : AbstractValidator<UpdateBrandCommand>
+        public class UpdateBrandCommandValidator : AbstractValidator<UpdateBrandCommand>
         {
             public UpdateBrandCommandValidator()
             {
                 RuleFor(x => x.Id).NotEmpty().WithMessage(nameof(UpdateBrandCommand.Id));
                 RuleFor(b => b.Name).NotEmpty().WithMessage(nameof(UpdateBrandCommand.Name));
                 RuleFor(b => b.Description).NotEmpty().WithMessage(nameof(UpdateBrandCommand.Name));
-                RuleFor(b => b.UrlSlug).NotEmpty().WithMessage(nameof(UpdateBrandCommand.UrlSlug));
+                RuleFor(b => b.UrlSlug).NotEmpty()
+                    .WithMessage(nameof(UpdateProductCommand.UrlSlug)).
+                    MustAsync(ValidationExtension.ValidateSlug)
+                    .WithMessage(ErrorConstants.UrlSlugInvalid.Description);
             }
         }
         private readonly IUnitOfWork _unitOfWork;

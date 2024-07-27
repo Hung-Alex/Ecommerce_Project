@@ -5,19 +5,23 @@ using Domain.Shared;
 using Domain.Constants;
 using Domain.Entities.Products;
 using Application.Features.Products.Specification;
+using Application.Utils;
 
 namespace Application.Features.Products.Commands.UpdateProduct
 {
     public sealed class UpdateProductCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<UpdateProductCommand, Result<bool>>
     {
-        internal class UpdateBrandCommandValidator : AbstractValidator<UpdateProductCommand>
+        public class UpdateBrandCommandValidator : AbstractValidator<UpdateProductCommand>
         {
             public UpdateBrandCommandValidator()
             {
                 RuleFor(x => x.Id).NotEmpty().WithMessage(nameof(UpdateProductCommand.Id));
                 RuleFor(b => b.Name).NotEmpty().WithMessage(nameof(UpdateProductCommand.Name));
                 RuleFor(b => b.Description).NotEmpty().WithMessage(nameof(UpdateProductCommand.Description));
-                RuleFor(b => b.UrlSlug).NotEmpty().WithMessage(nameof(UpdateProductCommand.UrlSlug));
+                RuleFor(b => b.UrlSlug).NotEmpty()
+                    .WithMessage(nameof(UpdateProductCommand.UrlSlug)).
+                    MustAsync(ValidationExtension.ValidateSlug)
+                    .WithMessage(ErrorConstants.UrlSlugInvalid.Description);
             }
         }
         public async Task<Result<bool>> Handle(UpdateProductCommand request, CancellationToken cancellationToken)

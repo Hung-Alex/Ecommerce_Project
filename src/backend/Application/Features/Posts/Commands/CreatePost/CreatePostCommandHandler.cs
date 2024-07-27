@@ -1,7 +1,9 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interface;
 using Application.DTOs.Internal;
+using Application.Features.Brands.Commands.CreateBrands;
 using Application.Features.Posts.Specification;
+using Application.Utils;
 using Domain.Constants;
 using Domain.Entities.Posts;
 using Domain.Shared;
@@ -13,9 +15,19 @@ namespace Application.Features.Posts.Commands.CreatePost
 {
     public sealed class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Result<bool>>
     {
-        internal class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCommandValidator>
+        public class CreatePostCommandValidator : AbstractValidator<CreatePostCommand>
         {
-
+            public CreatePostCommandValidator()
+            {
+                RuleFor(x => x.Title).NotEmpty().WithMessage(nameof(CreatePostCommand.Title));
+                RuleFor(x => x.ShortDescription).NotEmpty().WithMessage(nameof(CreatePostCommand.ShortDescription));
+                RuleFor(x => x.Description).NotEmpty().WithMessage(nameof(CreatePostCommand.Description));
+                RuleFor(x => x.UrlSlug)
+                     .NotEmpty()
+                     .WithMessage(nameof(CreateBrandCommand.UrlSlug))
+                     .MustAsync(ValidationExtension.ValidateSlug)
+                     .WithMessage(ErrorConstants.UrlSlugInvalid.Description);
+            }
         }
         private readonly IMedia _media;
         private readonly IUnitOfWork _unitOfWork;

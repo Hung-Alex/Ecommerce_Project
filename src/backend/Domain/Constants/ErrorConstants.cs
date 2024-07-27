@@ -18,6 +18,7 @@ namespace Domain.Constants
             public static Error PasswordNotMatch => new Error("User.PasswordNotMatch", "Password Not Match");
             public static Error UserNotFoundWithName(string name) => new Error("User.UserNotFoundWithName", $"Not found with name {name}");
             public static Error UserNotFoundWithID(Guid userId) => new Error("User.NotFound", $"Not found user with id {userId}");  
+            public static Error EmailIsInvaild => new Error("User.EmailIsInvaild", "Email is invaild");
         }
         public static class ApplicationUserError
         {
@@ -82,5 +83,6 @@ namespace Domain.Constants
         public static Error UrlSlugIsExisted(string url) => new Error("Url Slug Is Existed", $"Url slug is existed {url}");
         public static Error NotFound(string url) => new Error("NotFound", $"Url slug is existed {url}");
         public static Error NotFoundWithId(Guid id) => new Error("NotFound", $"Not Found With Id {id}");
+        public static Error UrlSlugInvalid => new Error("Url Slug Invalid", "Url slug is invalid");
     }
 }

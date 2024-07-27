@@ -3,6 +3,7 @@ using Application.Common.Interface;
 using Application.DTOs.Internal;
 using Application.Features.Brands.Commands.CreateBrands;
 using Application.Features.Category.Specification;
+using Application.Utils;
 using Domain.Constants;
 using Domain.Entities.Category;
 using Domain.Shared;
@@ -14,14 +15,18 @@ namespace Application.Features.Category.Commands.CreateCategory
 {
     public sealed class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, Result<bool>>
     {
-        internal class CreateCategoryCommandValidator : AbstractValidator<CreateBrandCommand>
+        public class CreateCategoryCommandValidator : AbstractValidator<CreateBrandCommand>
         {
             public CreateCategoryCommandValidator()
             {
                 RuleFor(x => x.Name).NotEmpty().WithMessage(nameof(CreateBrandCommand.Name));
                 RuleFor(x => x.Description).NotEmpty().WithMessage(nameof(CreateBrandCommand.Description));
                 RuleFor(x => x.FormFile).NotEmpty().WithMessage(nameof(CreateBrandCommand.FormFile));
-                RuleFor(x => x.UrlSlug).NotEmpty().WithMessage(nameof(CreateBrandCommand.UrlSlug));
+                RuleFor(x => x.UrlSlug)
+                    .NotEmpty()
+                    .WithMessage(nameof(CreateBrandCommand.UrlSlug))
+                    .MustAsync(ValidationExtension.ValidateSlug)
+                    .WithMessage(ErrorConstants.UrlSlugInvalid.Description);
             }
         }
         private readonly IMedia _media;

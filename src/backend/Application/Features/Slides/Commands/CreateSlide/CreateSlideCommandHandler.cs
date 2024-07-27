@@ -15,7 +15,11 @@ namespace Application.Features.Slides.Commands.CreateSlide
     {
         public class CreateSlideCommandValidator : AbstractValidator<CreateSlideCommand>
         {
-
+            public CreateSlideCommandValidator()
+            {
+                RuleFor(x => x.Title).NotEmpty().WithMessage(nameof(CreateSlideCommand.Title));
+                RuleFor(x => x.Description).NotEmpty().WithMessage(nameof(CreateSlideCommand.Description));
+            }
         }
         private readonly IUnitOfWork _unitOfWork;
 

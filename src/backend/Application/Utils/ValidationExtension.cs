@@ -4,44 +4,23 @@ namespace Application.Utils
 {
     public static class ValidationExtension
     {
-        public static bool ValidationEmail(string email)
+        public static async Task<bool> ValidateEmail(string email, CancellationToken cancellationToken = default)
         {
-            Regex regex = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
+            string pattern = @"^[^\s@]+@[^\s@]+\.[^\s@]+$";
+            Regex regex = new Regex(pattern);
             return regex.IsMatch(email);
         }
-        public static bool ValidationPhone(string phone)
+        public static bool ValidatePhone(string phone)
         {
-            Regex regex = new Regex(@"^0[0-9]{9}$");
+            string pattern = @"^[^\s@]+@[^\s@]+\.[^\s@]+$";
+            Regex regex = new Regex(pattern);
             return regex.IsMatch(phone);
         }
-        public static bool ValidationConfirmPassword(string password, string confirmPassword)
+        public static async Task<bool> ValidateSlug(string slug, CancellationToken cancellationToken = default)
         {
-            return password == confirmPassword;
-        }
-        public static bool validationSlug(string slug)
-        {
-            Regex regex = new Regex(@"^[a-z0-9-]{1,100}$");
+            string pattern = @"^[a-z0-9]+(?:-[a-z0-9]+)*$";
+            Regex regex = new Regex(pattern);
             return regex.IsMatch(slug);
-        }
-        public static bool ValidationAddress(string address)
-        {
-            Regex regex = new Regex(@"^[a-zA-Z0-9 ]{1,100}$");
-            return regex.IsMatch(address);
-        }
-        public static bool ValidationName(string name)
-        {
-            Regex regex = new Regex(@"^[a-zA-Z ]{1,50}$");
-            return regex.IsMatch(name);
-        }
-        public static bool ValidationUsername(string username)
-        {
-            Regex regex = new Regex(@"^[a-zA-Z0-9]{6,15}$");
-            return regex.IsMatch(username);
-        }
-        public static bool ValidationPassword(string password)
-        {
-            Regex regex = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,15}$");
-            return regex.IsMatch(password);
         }
     }
 }

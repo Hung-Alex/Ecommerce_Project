@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interface;
 using Application.Common.Interface.IdentityService;
+using Application.Utils;
 using Domain.Constants;
 using Domain.Entities.Carts;
 using Domain.Entities.Users;
@@ -20,7 +21,10 @@ namespace Application.Features.Users.Commands
         {
             public CreateUserCommandValidator()
             {
-                RuleFor(x => x.Email).NotEmpty().WithMessage(nameof(CreateUserCommand.Email));
+                RuleFor(x => x.Email).NotEmpty()
+                    .WithMessage(nameof(CreateUserCommand.Email))
+                    .MustAsync(ValidationExtension.ValidateEmail)
+                    .WithMessage(nameof(ErrorConstants.UserError.EmailIsInvaild.Description));
                 RuleFor(x => x.Password).NotEmpty().WithMessage(nameof(CreateUserCommand.Password));
                 RuleFor(x => x.ConfirmPassword).NotEmpty().WithMessage(nameof(CreateUserCommand.ConfirmPassword));
                 RuleFor(x => x.ConfirmPassword).Equal(x => x.Password).WithMessage(ErrorConstants.UserError.PasswordNotMatch.Description);

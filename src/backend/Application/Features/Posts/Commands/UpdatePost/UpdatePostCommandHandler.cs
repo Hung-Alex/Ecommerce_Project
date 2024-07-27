@@ -7,18 +7,26 @@ using Domain.Shared;
 using Domain.Entities.Posts;
 using Application.Features.Posts.Specification;
 using Application.Common.Exceptions;
+using Application.Features.Posts.Commands.CreatePost;
+using Application.Utils;
+using Application.Features.Brands.Commands.CreateBrands;
 
 namespace Application.Features.Posts.Commands.UpdatePost
 {
     public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, Result<bool>>
     {
-        internal class UpdateCategoryCommandValidator : AbstractValidator<UpdatePostCommand>
+        public class UpdateCategoryCommandValidator : AbstractValidator<UpdatePostCommand>
         {
             public UpdateCategoryCommandValidator()
             {
-                RuleFor(x => x.Id).NotEmpty().WithMessage("Not Null");
-                RuleFor(b => b.Description).NotEmpty().WithMessage("Not Null");
-                RuleFor(b => b.UrlSlug).NotEmpty().WithMessage("Not Null");
+                RuleFor(x => x.Title).NotEmpty().WithMessage(nameof(CreatePostCommand.Title));
+                RuleFor(x => x.ShortDescription).NotEmpty().WithMessage(nameof(CreatePostCommand.ShortDescription));
+                RuleFor(x => x.Description).NotEmpty().WithMessage(nameof(CreatePostCommand.Description));
+                RuleFor(x => x.UrlSlug)
+                     .NotEmpty()
+                     .WithMessage(nameof(CreateBrandCommand.UrlSlug))
+                     .MustAsync(ValidationExtension.ValidateSlug)
+                     .WithMessage(ErrorConstants.UrlSlugInvalid.Description);
             }
         }
         private readonly IUnitOfWork _unitOfWork;

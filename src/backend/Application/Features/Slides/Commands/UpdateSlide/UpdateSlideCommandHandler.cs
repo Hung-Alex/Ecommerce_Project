@@ -11,12 +11,13 @@ namespace Application.Features.Slides.Commands.UpdateSlide
 {
     public sealed class UpdateSlideCommandHandler : IRequestHandler<UpdateSlideCommand, Result<bool>>
     {
-        internal class UpdateBrandCommandValidator : AbstractValidator<UpdateSlideCommand>
+        public class UpdateBrandCommandValidator : AbstractValidator<UpdateSlideCommand>
         {
             public UpdateBrandCommandValidator()
             {
-                RuleFor(x => x.Id).NotEmpty().WithMessage("Not Null");
-                RuleFor(b => b.Description).NotEmpty().WithMessage("Not Null");
+                RuleFor(x => x.Id).NotEmpty().WithMessage(nameof(UpdateSlideCommand.Id));
+                RuleFor(b => b.Title).NotEmpty().WithMessage(nameof(UpdateSlideCommand.Title));
+                RuleFor(b => b.Description).NotEmpty().WithMessage(nameof(UpdateSlideCommand.Description));
             }
         }
         private readonly IUnitOfWork _unitOfWork;
