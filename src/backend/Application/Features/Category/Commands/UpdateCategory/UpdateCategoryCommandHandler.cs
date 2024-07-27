@@ -10,18 +10,23 @@ using Domain.Shared;
 using Application.Features.Brands.Commands.CreateBrands;
 using Application.Common.Exceptions;
 using Application.Features.Category.Specification;
+using Application.Utils;
+using Application.Features.Products.Commands.UpdateProduct;
 
 namespace Application.Features.Category.Commands.UpdateCategory
 {
     public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, Result<CategoryDTO>>
     {
-        internal class UpdateCategoryCommandValidator : AbstractValidator<UpdateCategoryCommand>
+        public class UpdateCategoryCommandValidator : AbstractValidator<UpdateCategoryCommand>
         {
             public UpdateCategoryCommandValidator()
             {
                 RuleFor(x => x.Name).NotEmpty().WithMessage(nameof(CreateBrandCommand.Name));
                 RuleFor(x => x.Description).NotEmpty().WithMessage(nameof(CreateBrandCommand.Description));
-                RuleFor(x => x.UrlSlug).NotEmpty().WithMessage(nameof(CreateBrandCommand.UrlSlug));
+                RuleFor(b => b.UrlSlug).NotEmpty()
+                     .WithMessage(nameof(UpdateProductCommand.UrlSlug)).
+                     MustAsync(ValidationExtension.ValidateSlug)
+                     .WithMessage(ErrorConstants.UrlSlugInvalid.Description);
             }
         }
         private readonly IUnitOfWork _unitOfWork;

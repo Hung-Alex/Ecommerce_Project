@@ -1,7 +1,9 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interface;
 using Application.DTOs.Internal;
+using Application.Features.Brands.Commands.CreateBrands;
 using Application.Features.Products.Specification;
+using Application.Utils;
 using Domain.Constants;
 using Domain.Entities;
 using Domain.Entities.Category;
@@ -18,15 +20,18 @@ namespace Application.Features.Products.Commands.CreateProduct
     {
         public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
         {
-
             public CreateProductCommandValidator()
             {
                 RuleFor(x => x.Name).NotEmpty().WithMessage(nameof(CreateProductCommand.Name));
-                RuleFor(x => x.UrlSlug).NotEmpty().WithMessage(nameof(CreateProductCommand.Name));
                 RuleFor(x => x.Description).NotEmpty().WithMessage(nameof(CreateProductCommand.Description));
                 RuleFor(x => x.Price).NotEmpty().WithMessage(nameof(CreateProductCommand.Price));
                 RuleFor(x => x.BrandId).NotEmpty().WithMessage(nameof(CreateProductCommand.BrandId));
                 RuleFor(x => x.CategoryId).NotEmpty().WithMessage(nameof(CreateProductCommand.CategoryId));
+                RuleFor(x => x.UrlSlug)
+                     .NotEmpty()
+                     .WithMessage(nameof(CreateBrandCommand.UrlSlug))
+                     .MustAsync(ValidationExtension.ValidateSlug)
+                     .WithMessage(ErrorConstants.UrlSlugInvalid.Description);
             }
         }
         public async Task<Result<bool>> Handle(CreateProductCommand request, CancellationToken cancellationToken)

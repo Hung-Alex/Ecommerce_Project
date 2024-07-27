@@ -1,5 +1,5 @@
 ﻿using Application.DTOs.Filters.Users;
-using Application.Features.Users.Commands;
+using Application.Features.Users.Commands.CreateUser;
 using Application.Features.Users.Queries.GetUserById;
 using Application.Features.Users.Queries.GetUsers;
 using MediatR;
