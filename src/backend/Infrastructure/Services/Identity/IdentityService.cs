@@ -4,6 +4,7 @@ using Application.DTOs.Internal.User;
 using Application.DTOs.Responses.ApplicationUsers;
 using Application.DTOs.Responses.Role;
 using Domain.Constants;
+using Domain.Entities.Users;
 using Domain.Shared;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -131,6 +132,20 @@ namespace Infrastructure.Services.Identity
                 Role = roles
             };
         }
+
+        public async Task<Result<bool>> LockAccountAsync(Guid userId, bool isLock, CancellationToken cancellationToken = default)
+        {
+            var user = await _userManager.Users.Where(x => x.UserId == userId).FirstOrDefaultAsync();
+            if (user is null) return Result<bool>.ResultFailures(ErrorConstants.ApplicationUserError.UserNotFoundWithID(userId));
+            user.LockoutEnabled = isLock;
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                return Result<bool>.ResultFailures(result.Errors.Select(x => new Error(x.Code, x.Description)));
+            }
+            return Result<bool>.ResultSuccess(true);
+        }
+
         public async Task<bool> SaveRefreshTokenAsync(Guid userId, string provider, string tokenName, string value)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());

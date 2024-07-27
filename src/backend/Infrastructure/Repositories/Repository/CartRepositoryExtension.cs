@@ -1,17 +1,16 @@
-﻿using Application.Common.Interface;
+﻿using Application.Common.Interface.RepositoryExtension;
 using Application.DTOs.Responses.Cart;
+using Domain.Entities.Carts;
 using Infrastructure.Data;
+using Infrastructure.Repositories.GenericRepository;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Services.Carts
+namespace Infrastructure.Repositories.Repository
 {
-    public class CartService : ICartService
+    public class CartRepositoryExtension : BaseRepository<Cart>, ICartRepositoryExtension
     {
-        private readonly StoreDbContext _context;
-        public CartService(StoreDbContext context)
-        {
-            _context = context;
-        }
+        public CartRepositoryExtension(StoreDbContext context) : base(context) { }
+
         public async Task<CartDTO> GetCartAsync(Guid CartId, CancellationToken cancellationToken = default)
         {
             var query = from c in _context.Carts
@@ -19,7 +18,7 @@ namespace Infrastructure.Services.Carts
                         select new CartDTO
                         {
                             Id = c.Id,
-                            Items = (from cartItem in _context.CartItems.Include(x=>x.ProductSkus)
+                            Items = (from cartItem in _context.CartItems.Include(x => x.ProductSkus)
                                      join product in _context.Products on cartItem.ProductId equals product.Id
                                      where cartItem.CartId == c.Id
                                      select new CartItemDTO

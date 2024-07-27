@@ -1,4 +1,6 @@
-﻿using Application.Common.Interface;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interface;
+using Application.DTOs.Internal;
 using Domain.Constants;
 using Domain.Entities.Users;
 using Domain.Shared;
@@ -17,8 +19,14 @@ namespace Application.Features.Users.Commands.UpdateImageProfile
             {
                 return Result<bool>.ResultFailures(ErrorConstants.UserError.UserNotFoundWithID(request.UserId));
             }
-            
-            throw new NotImplementedException();
+            Result<ImageUpload> uploadResult = await media.UploadLoadImageAsync(request.Image, UploadFolderConstants.FolderImage);
+            if (uploadResult.IsSuccess is false)
+            {
+                throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
+            }
+            user.AvatarImage = uploadResult.Data.PublicId;
+            await unitOfWork.Commit();
+            return Result<bool>.ResultSuccess(true);
         }
     }
 }

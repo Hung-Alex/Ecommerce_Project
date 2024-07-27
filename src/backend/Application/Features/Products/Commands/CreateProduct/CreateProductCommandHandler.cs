@@ -84,7 +84,6 @@ namespace Application.Features.Products.Commands.CreateProduct
                     ProductId = newProduct.Id
                 });
             });
-
             await Task.WhenAll(imageTasks);
             #endregion
             if (request.Variant is not null)

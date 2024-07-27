@@ -12,21 +12,19 @@ namespace Application.Features.Users.Queries.GetUserById
     public sealed class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, Result<UserDetailDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        public readonly IIdentityService _identityService;//use to get application User
-        public GetUserByIdQueryHandler(IUnitOfWork unitOfWork, IIdentityService identityService)
+        private readonly IIdentityService _identityService;//use to get application User
+        private readonly IMedia _media;
+        public GetUserByIdQueryHandler(IUnitOfWork unitOfWork, IIdentityService identityService, IMedia media)
         {
             _unitOfWork = unitOfWork;
             _identityService = identityService;
-
+            _media = media;
         }
         public async Task<Result<UserDetailDTO>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
             var repoUser = _unitOfWork.GetRepository<User>();
-            var userTask = repoUser.GetByIdAsync(request.UserId);
-            var applicationUserTask = _identityService.GetApplicationUserByUserIdAsync(request.UserId);
-            await Task.WhenAll(userTask, applicationUserTask);
-            var user = await userTask;
-            var applicationUser = await applicationUserTask;
+            var user= await repoUser.GetByIdAsync(request.UserId);
+            var applicationUser =  await _identityService.GetApplicationUserByUserIdAsync(request.UserId);       
             if (user is null || applicationUser is null)
             {
                 return Result<UserDetailDTO>.ResultFailures(ErrorConstants.NotFoundWithId(request.UserId));
@@ -43,7 +41,7 @@ namespace Application.Features.Users.Queries.GetUserById
                     PostalCode = user.PostalCode,
                     City = user.City,
                     LastName = user.LastName,
-                    AvatarImage = user.AvatarImage,
+                    AvatarImage = _media.GetUrl(user.AvatarImage),
                     Roles = applicationUser.Roles
                 }
             );

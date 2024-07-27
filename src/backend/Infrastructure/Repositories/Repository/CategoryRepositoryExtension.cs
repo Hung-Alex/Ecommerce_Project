@@ -1,21 +1,19 @@
-﻿using Application.Common.Interface;
+﻿using Application.Common.Interface.RepositoryExtension;
 using Application.DTOs.Responses.Product.Client;
 using Application.DTOs.Responses.Product.Shared.BrandProduct;
 using Application.DTOs.Responses.Product.Shared.CategoryProduct;
 using Application.DTOs.Responses.Sections;
-using AutoMapper;
+using Domain.Entities.Category;
 using Infrastructure.Data;
+using Infrastructure.Repositories.GenericRepository;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Services.Section
+namespace Infrastructure.Repositories.Repository
 {
-    public class SectionService : ISectionService
+    public class CategoryRepositoryExtension : BaseRepository<Categories>, ICategoryRepositoryExtension
     {
-        private readonly StoreDbContext _context;
-        public SectionService(StoreDbContext context)
-        {
-            _context = context;
-        }
+        public CategoryRepositoryExtension(StoreDbContext context) : base(context) { }
+
         public async Task<IEnumerable<SectionDTO>> GetSectionsAsync(int limitCategory = 5, int limitProduct = 5, CancellationToken cancellationToken = default)
         {
             var query = from cate in _context.Categories
