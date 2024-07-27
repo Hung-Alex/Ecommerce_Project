@@ -19,6 +19,9 @@ import AdminCategories from "../pages/Admin/AdminCategory/AdminCategory";
 import AdminBanners from "../pages/Admin/AdminBanner/AdminBanners";
 import AdminRoles from "../pages/Admin/AdminRoles/AdminRoles";
 import AdminSliders from "../pages/Admin/AdminSlider/AdminSliders";
+import News from "../pages/News/News";
+import NewsDetail from "../pages/News/NewsDetail";
+import AdminNews from "../pages/Admin/AdminNews/AdminNews";
 
 export const router = createBrowserRouter([
   {
@@ -37,6 +40,14 @@ export const router = createBrowserRouter([
       {
         path: "/category/:name",
         element: <ShopPage />,
+      },
+      {
+        path: "/news",
+        element: <News />,
+      },
+      {
+        path: "/news/:slug",
+        element: <NewsDetail />,
       },
       {
         path: "/products/:slug",
@@ -117,6 +128,10 @@ export const router = createBrowserRouter([
       {
         path: "Sliders",
         element: <AdminSliders />,
+      },
+      {
+        path: "news",
+        element: <AdminNews />,
       },
     ],
   },

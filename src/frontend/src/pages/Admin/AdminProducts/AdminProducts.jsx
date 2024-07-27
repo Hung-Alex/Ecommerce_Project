@@ -4,6 +4,7 @@ import Table from "../comp/Table.jsx";
 import AddProductForm from "./AddProductForm"; // Assuming you have a similar form component for products
 import axios from "../../../utils/axios";
 import UpdateProductForm from "./UpdateProductForm.jsx";
+import ImageUpload from "./UploadImg.jsx";
 
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);
@@ -68,6 +69,7 @@ const AdminProducts = () => {
   return (
     <DashboardLayout>
       <div className='p-6'>
+        <ImageUpload />
         <Table
           columns={[
             { header: 'ID', accessor: 'id' },

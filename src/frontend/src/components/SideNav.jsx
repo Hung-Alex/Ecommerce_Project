@@ -10,7 +10,8 @@ const navItems = [
   { label: "Brand", path: "/admin/brands" },
   { label: "Banner", path: "/admin/banner" },
   { label: "Sliders", path: "/admin/Sliders" },
-  { label: "Roles", path: "/admin/Roles" }
+  { label: "Roles", path: "/admin/Roles" },
+  { label: "News", path: "/admin/news" }
 ];
 
 const adminNavItems = [
