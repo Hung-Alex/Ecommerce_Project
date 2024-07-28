@@ -8,7 +8,7 @@ const AddNewsForm = ({ post, onClose, addPost, updatePost }) => {
   const [urlSlug, setUrlSlug] = useState(post ? post.urlSlug : "");
   const [shortDescription, setShortDescription] = useState(post ? post.shortDescription : "");
   const [description, setDescription] = useState(post ? post.description : "");
-  const [published, setPublished] = useState(post ? post.pulished : false); // Fixed typo
+  const [pulished, setpulished] = useState(post ? post.pulished : false); // Fixed typo
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(post ? post.imageUrl : null);
 
@@ -32,7 +32,7 @@ const AddNewsForm = ({ post, onClose, addPost, updatePost }) => {
       urlSlug,
       shortDescription,
       description,
-      published,
+      pulished,
       image
     };
     if (post) {
@@ -88,18 +88,18 @@ const AddNewsForm = ({ post, onClose, addPost, updatePost }) => {
                 <label className="inline-flex items-center cursor-pointer">
                   <input
                     type="checkbox"
-                    checked={published}
-                    onChange={(event) => setPublished(event.target.checked)}
+                    checked={pulished}
+                    onChange={(event) => setpulished(event.target.checked)}
                     className="sr-only"
                   />
                   <span className="relative">
                     <span className="block w-10 h-6 bg-gray-300 rounded-full shadow-inner"></span>
                     <span
-                      className={`absolute block w-4 h-4 mt-1 ml-1 rounded-full shadow inset-y-0 left-0 transform transition-transform ${published ? 'bg-green-600 translate-x-full' : 'bg-white'
+                      className={`absolute block w-4 h-4 mt-1 ml-1 rounded-full shadow inset-y-0 left-0 transform transition-transform ${pulished ? 'bg-green-600 translate-x-full' : 'bg-white'
                         }`}
                     ></span>
                   </span>
-                  <span className="ml-3 text-sm font-medium text-gray-700">Published</span>
+                  <span className="ml-3 text-sm font-medium text-gray-700">pulished</span>
                 </label>
               </div>
               <div>

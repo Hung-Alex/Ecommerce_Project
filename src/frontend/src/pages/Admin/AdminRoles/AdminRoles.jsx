@@ -2,10 +2,9 @@ import React, { useState, useEffect, useCallback } from "react";
 import DashboardLayout from "../../../layout/DashboardLayout.jsx";
 import Table from "../comp/Table.jsx";
 import AddRoleForm from "./AddRoleForm";
-import axios from "../../../utils/axios";
 import toast from "react-hot-toast"; // Import toast from react-hot-toast
 import {
-  fetchRolessData,
+  fetchRolesData,
   createRoles,
   updateRoles,
   deleteRoles
@@ -20,13 +19,12 @@ const AdminRoles = () => {
 
   const fetchRoles = useCallback(async () => {
     try {
-      const data = await fetchRolessData();
+      const data = await fetchRolesData();
       setRoles(data);
       setLoading(false);
     } catch (error) {
       setError(error);
       setLoading(false);
-      toast.error(`Error loading roles: ${error.message}`);
     }
   }, []);
 
@@ -35,49 +33,18 @@ const AdminRoles = () => {
   }, [fetchRoles]);
 
   const addRole = async (role) => {
-    try {
-      const response = await createRoles(role);
-      if (response.data.isSuccess) {
-        fetchRoles();
-        handleCloseForm();
-        toast.success("Role added successfully");
-      } else {
-        throw new Error("Failed to add role");
-      }
-    } catch (error) {
-      console.error("Error adding role:", error);
-      toast.error(`Error adding role: ${error.message}`);
-    }
+    await createRoles(role);
+    fetchRoles();
   };
 
   const updateRole = async (id, updatedRole) => {
-    try {
-      const response = await updateRoles(id, updatedRole);
-      if (response.data.isSuccess) {
-        fetchRoles();
-        toast.success("Role updated successfully");
-      } else {
-        throw new Error("Failed to update role");
-      }
-    } catch (error) {
-      console.error("Error updating role:", error);
-      toast.error(`Error updating role: ${error.message}`);
-    }
+    await updateRoles(id, updatedRole);
+    fetchRoles();
   };
 
   const deleteRole = async (id) => {
-    try {
-      const response = await deleteRoles(id);
-      if (response.data.isSuccess) {
-        setRoles((prevList) => prevList.filter((role) => role.id !== id));
-        toast.success("Role deleted successfully");
-      } else {
-        throw new Error("Failed to delete role");
-      }
-    } catch (error) {
-      console.error("Error deleting role:", error);
-      toast.error(`Error deleting role: ${error.message}`);
-    }
+    const response = await deleteRoles(id);
+    setRoles((prevList) => prevList.filter((role) => role.id !== id));
   };
 
   const handleEdit = useCallback((row) => {
@@ -89,7 +56,6 @@ const AdminRoles = () => {
     try {
       await deleteRole(row.id);
     } catch (error) {
-      console.error("Error deleting role:", error);
       toast.error(`Error deleting role: ${error.message}`);
     }
   }, []);
@@ -103,9 +69,6 @@ const AdminRoles = () => {
     setShowForm(false);
     setEditingRole(null);
   }, []);
-
-  if (loading) return <p>Loading...</p>;
-  if (error){console.log(error.message);}
 
   return (
     <DashboardLayout>
