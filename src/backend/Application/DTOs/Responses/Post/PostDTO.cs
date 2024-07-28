@@ -10,6 +10,7 @@ namespace Application.DTOs.Responses.Post
         public string Image { get; init; }
         public string UrlSlug { get; init; }
         public int ViewCount { get; init; }
+        public bool Published { get; init; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
         public string CreatedByName { get; set; }

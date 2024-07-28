@@ -1,6 +1,6 @@
 ﻿using Domain.Entities.Users;
 
-namespace Domain.Shared
+namespace Domain.Common
 {
     public interface ICreatedAndUpdatedBy
     {

@@ -5,7 +5,6 @@ using Domain.Entities.Banners;
 using Domain.Entities.Brands;
 using Domain.Entities.Category;
 using Domain.Entities.Posts;
-using Domain.Shared;
 
 namespace Application.Mapper.Resolvers
 {
