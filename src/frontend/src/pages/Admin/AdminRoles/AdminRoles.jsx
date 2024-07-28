@@ -4,6 +4,12 @@ import Table from "../comp/Table.jsx";
 import AddRoleForm from "./AddRoleForm";
 import axios from "../../../utils/axios";
 import toast from "react-hot-toast"; // Import toast from react-hot-toast
+import {
+  fetchRolessData,
+  createRoles,
+  updateRoles,
+  deleteRoles
+} from '../../../api/index';
 
 const AdminRoles = () => {
   const [roles, setRoles] = useState([]);
@@ -14,13 +20,9 @@ const AdminRoles = () => {
 
   const fetchRoles = useCallback(async () => {
     try {
-      const response = await axios.get("/roles");
-      if (response.data.isSuccess) { // Assuming the API response has an isSuccess field
-        setRoles(response.data.data);
-        setLoading(false);
-      } else {
-        throw new Error("Failed to fetch roles");
-      }
+      const data = await fetchRolessData();
+      setRoles(data);
+      setLoading(false);
     } catch (error) {
       setError(error);
       setLoading(false);
@@ -34,7 +36,7 @@ const AdminRoles = () => {
 
   const addRole = async (role) => {
     try {
-      const response = await axios.post("/roles", role);
+      const response = await createRoles(role);
       if (response.data.isSuccess) {
         fetchRoles();
         handleCloseForm();
@@ -50,7 +52,7 @@ const AdminRoles = () => {
 
   const updateRole = async (id, updatedRole) => {
     try {
-      const response = await axios.put(`/roles/${id}`, updatedRole);
+      const response = await updateRoles(id, updatedRole);
       if (response.data.isSuccess) {
         fetchRoles();
         toast.success("Role updated successfully");
@@ -65,7 +67,7 @@ const AdminRoles = () => {
 
   const deleteRole = async (id) => {
     try {
-      const response = await axios.delete(`/roles/${id}`);
+      const response = await deleteRoles(id);
       if (response.data.isSuccess) {
         setRoles((prevList) => prevList.filter((role) => role.id !== id));
         toast.success("Role deleted successfully");
