@@ -2,6 +2,7 @@
 using Application.DTOs.Responses.Banners;
 using Application.DTOs.Responses.Brands;
 using Application.DTOs.Responses.Category;
+using Application.DTOs.Responses.Comments;
 using Application.DTOs.Responses.Images;
 using Application.DTOs.Responses.Post;
 using Application.DTOs.Responses.Product.Client;
@@ -19,6 +20,7 @@ using Domain.Entities;
 using Domain.Entities.Banners;
 using Domain.Entities.Brands;
 using Domain.Entities.Category;
+using Domain.Entities.Comments;
 using Domain.Entities.Posts;
 using Domain.Entities.Products;
 using Domain.Entities.Rattings;
@@ -51,7 +53,10 @@ namespace Application.Mapper
             CreateMap<Post, PostDTO>()
                 .ForMember(dest => dest.Image, opt => opt.MapFrom<UrlFromPublicIdResolver>())
                  .ForMember(dest => dest.CreatedByName, opt => opt.MapFrom<CreatedByResolver>())
-                 .ForMember(dest => dest.ImageOfCreator, opt => opt.MapFrom<AvatarResolver>()); ;
+                 .ForMember(dest => dest.ImageOfCreator, opt => opt.MapFrom<AvatarResolver>());
+            CreateMap<Comment, CommentDTO>()
+                 .ForMember(dest => dest.CreatedByName, opt => opt.MapFrom<CreatedByResolver>())
+                 .ForMember(dest => dest.ImageOfCreator, opt => opt.MapFrom<AvatarResolver>());
         }
     }
 }
