@@ -45,5 +45,20 @@ namespace Infrastructure.Repositories.Repository
             var result = await query.Take(limitCategory).ToListAsync(cancellationToken);
             return result;
         }
+
+        public async Task SoftDeleteCategory(Guid categoryId, CancellationToken cancellationToken=default)
+        {
+            var category=await _context.Categories.FindAsync(categoryId);
+            if (category != null)
+            {
+                category.IsDeleted = true;
+            }
+            var products = await _context.Products.Where(x => x.CategoryId == categoryId).ToListAsync();// product is deleted then ,I think Not update category id
+            if (products.Any())
+            {
+                products.ForEach(x => x.CategoryId = null);
+                _context.UpdateRange(products);
+            }
+        }
     }
 }

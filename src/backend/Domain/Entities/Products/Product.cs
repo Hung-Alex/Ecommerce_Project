@@ -8,18 +8,18 @@ using Domain.Entities.Brands;
 using Domain.Entities.Category;
 namespace Domain.Entities.Products
 {
-    public class Product : BaseEntity, IDatedModification, IAggregateRoot, ICreatedAndUpdatedBy
+    public class Product : BaseEntity, IDatedModification, IAggregateRoot, ICreatedAndUpdatedBy, ISoftDelete
     {
         public Product() : base() { }
         public string Name { get; set; }
         public string Description { get; set; }
         public Decimal Price { get; set; }
-        public string UrlSlug { get; set; }     
+        public string UrlSlug { get; set; }
         public int? Discount { get; set; }
-        public Guid BrandId { get; set; }
-        public Brand Brand { get; set; }
+        public Guid? BrandId { get; set; }
+        public virtual Brand Brand { get; set; }
         public virtual Categories Category { get; set; }
-        public Guid CategoryId { get; set; }
+        public Guid? CategoryId { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
         public virtual IEnumerable<Image> Images { get; set; } = new List<Image>();
@@ -31,5 +31,7 @@ namespace Domain.Entities.Products
         public virtual User CreatedByUser { get; set; }
         public Guid? UpdatedByUserId { get; set; }
         public virtual User UpdatedByUser { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTimeOffset? DeletedAt { get; set; }
     }
 }

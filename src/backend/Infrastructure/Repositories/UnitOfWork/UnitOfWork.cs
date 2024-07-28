@@ -40,21 +40,37 @@ namespace Infrastructure.Repositories.UnitOfWork
             var user = _currentUserService.GetCurrentUser().Data?.Id;
             var entries = _dbContext.ChangeTracker
         .Entries()
-        .Where(e => (e.Entity is IDatedModification || e.Entity is ICreatedAndUpdatedBy) && (
-                e.State == EntityState.Added
-                || e.State == EntityState.Modified));
+        .Where(e =>
+                (e.Entity is IDatedModification
+                || e.Entity is ICreatedAndUpdatedBy
+                || e.Entity is ISoftDelete)
+                &&
+                (e.State == EntityState.Added
+                || e.State == EntityState.Modified
+                || e.State == EntityState.Deleted
+                ));
 
             foreach (var entityEntry in entries)
             {
                 var datedEntity = entityEntry.Entity as IDatedModification;
                 var createdUpdatedEntity = entityEntry.Entity as ICreatedAndUpdatedBy;
-
+                var deleteEntity = entityEntry.Entity as ISoftDelete;
                 if (datedEntity != null)
                 {
                     datedEntity.UpdatedAt = DateTimeOffset.Now;
                     if (entityEntry.State == EntityState.Added)
                     {
                         datedEntity.CreatedAt = DateTimeOffset.Now;
+                    }
+                }
+                if (deleteEntity != null)
+                {
+
+                    if (entityEntry.State == EntityState.Deleted)
+                    {
+                        entityEntry.State = EntityState.Modified;
+                        deleteEntity.IsDeleted = true;
+                        deleteEntity.DeletedAt = DateTimeOffset.Now;
                     }
                 }
 

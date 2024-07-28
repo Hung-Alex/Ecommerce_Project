@@ -9,6 +9,10 @@ namespace Infrastructure.Data.Configuration
         public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder.HasKey(x => x.Id);
+            builder.HasIndex(r => r.IsDeleted)
+                    .HasFilter("IsDeleted = 0");
+            builder.Property(c => c.IsDeleted).HasDefaultValue(false);
+            builder.HasQueryFilter(c => !c.IsDeleted);//negate the value of IsDeleted, true into false and false into true
             builder.HasMany(x => x.Images)
                 .WithOne(x => x.Product)
                 .HasForeignKey(x => x.ProductId);

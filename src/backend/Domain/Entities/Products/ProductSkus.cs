@@ -4,7 +4,7 @@ using Domain.Entities.Orders;
 
 namespace Domain.Entities.Products
 {
-    public class ProductSkus : BaseEntity, IDatedModification
+    public class ProductSkus : BaseEntity, IDatedModification, ISoftDelete
     {
         public ProductSkus() : base() { }
         public string Name { get; set; }
@@ -15,5 +15,7 @@ namespace Domain.Entities.Products
         public virtual ICollection<OrderItems> OrderItems { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTimeOffset? DeletedAt { get; set; }
     }
 }
