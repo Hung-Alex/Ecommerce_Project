@@ -7,6 +7,7 @@ namespace Application.Common.Interface.IdentityService
     public interface IIdentityService
     {
         Task<UserDTO> GetUserAsync(string userName, CancellationToken cancellationToken = default);
+        Task<Result<bool>> ChangePasswordAsync(Guid userId,string password, CancellationToken cancellationToken = default);
         Task<Result<Guid>> UpdateUserByUserIdAsync(Guid userId,string phoneNumber,bool isLock, CancellationToken cancellationToken = default);
         Task<Result<bool>> LockAccountAsync(Guid userId, bool isLock, CancellationToken cancellationToken = default);
         Task<Guid> CreateUserAsync(string email, string password, string userName, Guid UserDomainId, CancellationToken cancellationToken = default);

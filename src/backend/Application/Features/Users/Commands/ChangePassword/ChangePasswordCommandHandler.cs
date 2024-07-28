@@ -1,11 +1,12 @@
-﻿using Domain.Constants;
+﻿using Application.Common.Interface.IdentityService;
+using Domain.Constants;
 using Domain.Shared;
 using FluentValidation;
 using MediatR;
 
 namespace Application.Features.Users.Commands.ChangePassword
 {
-    public sealed class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, Result<bool>>
+    public sealed class ChangePasswordCommandHandler(IIdentityService identityService) : IRequestHandler<ChangePasswordCommand, Result<bool>>
     {
         public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCommand>
         {
@@ -22,9 +23,14 @@ namespace Application.Features.Users.Commands.ChangePassword
                     .WithMessage(nameof(ErrorConstants.UserError.PasswordNotMatch.Description));
             }
         }
-        public Task<Result<bool>> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
+        public async Task<Result<bool>> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var result = await identityService.ChangePasswordAsync(request.UserId, request.Password, cancellationToken);
+            if (result.IsSuccess is false)
+            {
+                return Result<bool>.ResultFailures(result.Errors);
+            }
+            return Result<bool>.ResultSuccess(true);
         }
     }
 }

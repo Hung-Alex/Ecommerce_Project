@@ -39,6 +39,23 @@ namespace Infrastructure.Services.Identity
             var result = await _userManager.AddToRoleAsync(user, role);
             return result.Succeeded;
         }
+
+        public async Task<Result<bool>> ChangePasswordAsync(Guid userId, string password, CancellationToken cancellationToken = default)
+        {
+            var user = await _userManager.Users.Where(x => x.UserId == userId).FirstOrDefaultAsync();
+            if (user is null)
+            {
+                return Result<bool>.ResultFailures(ErrorConstants.ApplicationUserError.UserNotFoundWithID(userId));
+            }
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var result = await _userManager.ResetPasswordAsync(user, token, password);
+            if (!result.Succeeded)
+            {
+                return Result<bool>.ResultFailures(result.Errors.Select(x => new Error(x.Code, x.Description)));
+            }
+            return Result<bool>.ResultSuccess(true);
+        }
+
         public async Task<Guid> CreateUserAsync(string email, string password, string userName, Guid UserDomainId, CancellationToken cancellationToken = default)
         {
             var user = new ApplicationUser() { UserName = userName, Email = email, UserId = UserDomainId };
