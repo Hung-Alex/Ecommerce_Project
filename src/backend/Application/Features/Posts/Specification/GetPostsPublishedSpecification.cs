@@ -1,26 +1,26 @@
-﻿using Domain.Specifications;
-using System.Linq.Expressions;
+﻿using Application.DTOs.Filters.Posts;
 using Application.Utils;
 using Domain.Entities.Posts;
-using Application.DTOs.Filters.Posts;
+using Domain.Specifications;
+using System.Linq.Expressions;
+
 
 namespace Application.Features.Posts.Specification
 {
-    public class GetPostsSpecification : BaseSpecification<Post>
+    public class GetPostsPublishedSpecification : BaseSpecification<Post>
     {
         private readonly PostFilter _filter;
-        public GetPostsSpecification(PostFilter filter)
+        public GetPostsPublishedSpecification(PostFilter filter)
         {
             _filter = filter;
             Handler();
         }
-        public override Expression<Func<Post, bool>> Criteria
-            => p
-            => (string.IsNullOrEmpty(_filter.Title) || p.Title.Contains(_filter.Title));
-
+        public override Expression<Func<Post, bool>> Criteria =>
+            p
+            => (string.IsNullOrEmpty(_filter.Title) || p.Title.Contains(_filter.Title)) && (p.Published == true);
         protected override void Handler()
         {
-            AddInclude(x=>x.CreatedByUser);
+            AddInclude(x => x.CreatedByUser);
             ApplyPaging(_filter.PageSize, _filter.PageNumber);
             if (PredicatedProperty.IsExitedProperty<Post>(_filter.SortColoumn))
             {

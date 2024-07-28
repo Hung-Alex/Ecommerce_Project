@@ -14,6 +14,7 @@ namespace Application.Common.Interface.IdentityService
         Task<bool> IsInRoleAsync(Guid userId, Guid roleId, CancellationToken cancellationToken = default);
         Task<RoleInternal> GetRoleAsync(Guid roleId, CancellationToken cancellationToken = default);
         Task<Result<bool>> DeleteAsync(Guid roleId, CancellationToken cancellationToken = default);
+        Task<Result<bool>> DeleteAllRolesByApplicationUserIdAsync(Guid applicationUserId,CancellationToken cancellationToken = default);
         Task<IEnumerable<RoleDTO>> GetAllRoleAsync(CancellationToken cancellationToken = default);
         Task<RoleDetail> GetRoleByIdAsync(Guid roleId, CancellationToken cancellationToken = default);
     }

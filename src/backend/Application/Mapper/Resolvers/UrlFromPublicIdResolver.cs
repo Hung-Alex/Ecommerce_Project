@@ -5,6 +5,7 @@ using Domain.Entities.Brands;
 using Domain.Entities.Category;
 using Domain.Entities.Posts;
 using Domain.Entities.Slides;
+using Domain.Entities.Users;
 using System;
 namespace Application.Mapper.Resolve
 {
@@ -34,6 +35,9 @@ namespace Application.Mapper.Resolve
                     break;
                 case Banner banner:
                     url = _media.GetUrl(banner.LogoImageUrl);
+                    break;
+                case User user:
+                    url = _media.GetUrl(user.AvatarImage);
                     break;
                 default:
                     break;

@@ -16,7 +16,6 @@ namespace Application.Features.Users.Commands.CreateUser
         private readonly IIdentityService _identityService;
         private readonly IRoleServivce _roleService;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMedia media;
         public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
         {
             public CreateUserCommandValidator()
@@ -28,16 +27,20 @@ namespace Application.Features.Users.Commands.CreateUser
                 RuleFor(x => x.Password).NotEmpty().WithMessage(nameof(CreateUserCommand.Password));
                 RuleFor(x => x.ConfirmPassword).NotEmpty().WithMessage(nameof(CreateUserCommand.ConfirmPassword));
                 RuleFor(x => x.ConfirmPassword).Equal(x => x.Password).WithMessage(ErrorConstants.UserError.PasswordNotMatch.Description);
-                RuleFor(x => x.UserName).NotEmpty().WithMessage(nameof(CreateUserCommand.UserName));
+                RuleFor(x => x.UserName).NotEmpty().WithMessage(nameof(CreateUserCommand.UserName))
+                    .MustAsync(ValidationExtension.IsValidUsername)
+                    .WithMessage(nameof(ErrorConstants.UserError.InvalidUserName.Description));
                 RuleFor(x => x.Roles).NotEmpty().WithMessage(nameof(CreateUserCommand.Roles));
+                RuleFor(x => x.PhoneNumber)
+                    .Must(x => string.IsNullOrEmpty(x) || ValidationExtension.ValidatePhone(x))
+                    .WithMessage(ErrorConstants.UserError.PhoneNumberIsInvaild.Description);
             }
         }
-        public CreateUserCommandHandler(IIdentityService identityService, IRoleServivce roleService, IUnitOfWork unitOfWork, IMedia media)
+        public CreateUserCommandHandler(IIdentityService identityService, IRoleServivce roleService, IUnitOfWork unitOfWork)
         {
             _identityService = identityService;
             _roleService = roleService;
             _unitOfWork = unitOfWork;
-            this.media = media;
         }
 
         public async Task<Result<bool>> Handle(CreateUserCommand request, CancellationToken cancellationToken)

@@ -171,5 +171,21 @@ namespace Infrastructure.Services.Auth
             }
             return Result<bool>.ResultSuccess(true);
         }
+
+        public async Task<Result<bool>> DeleteAllRolesByApplicationUserIdAsync(Guid applicationUserId, CancellationToken cancellationToken = default)
+        {
+            var user = await _userManager.FindByIdAsync(applicationUserId.ToString());
+            if (user is null)
+            {
+                return Result<bool>.ResultFailures(ErrorConstants.ApplicationUserError.UserNotFoundWithID(applicationUserId));
+            }
+            var roles = await _userManager.GetRolesAsync(user);
+            var result = await _userManager.RemoveFromRolesAsync(user, roles);
+            if (result.Succeeded is false)
+            {
+                return Result<bool>.ResultFailures(result.Errors.Select(x => new Error(x.Code, x.Description)));
+            }
+            return Result<bool>.ResultSuccess(true);
+        }
     }
 }

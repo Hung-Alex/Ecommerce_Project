@@ -57,7 +57,7 @@ namespace Application.Features.Posts.Commands.CreatePost
                 Description = request.Description,
                 UrlSlug = request.UrlSlug,
                 ImageUrl = uploadResult.Data.PublicId,
-                Pulished = request.Pulished,
+                Published = request.Published,
                 ViewCount = 0
             });
             await _unitOfWork.Commit();

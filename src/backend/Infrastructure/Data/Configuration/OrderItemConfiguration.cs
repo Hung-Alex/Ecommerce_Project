@@ -8,7 +8,7 @@ namespace Infrastructure.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<OrderItems> builder)
         {
-            builder.HasKey(x => x.OrderId);
+            builder.HasKey(x => x.Id);
         }
     }
 }

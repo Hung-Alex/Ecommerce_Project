@@ -15,7 +15,6 @@ namespace Application.DTOs.Responses.Users
         public string FristName { get; init; }
         public string LastName { get; init; }
         public string City { get; init; }
-        public string PostalCode { get; init; }
         public string Region { get; init; }
         public bool IsLockout { get; init; }// true is locked
         public string AvatarImage { get; init; }

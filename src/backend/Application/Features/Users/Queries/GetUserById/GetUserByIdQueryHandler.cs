@@ -38,8 +38,8 @@ namespace Application.Features.Users.Queries.GetUserById
                     PhoneNumber = applicationUser.PhoneNumber,
                     IsLockout = applicationUser.IsLockout,
                     Region = user.Region,
-                    PostalCode = user.PostalCode,
                     City = user.City,
+                    FristName = user.FirstName,
                     LastName = user.LastName,
                     AvatarImage = _media.GetUrl(user.AvatarImage),
                     Roles = applicationUser.Roles

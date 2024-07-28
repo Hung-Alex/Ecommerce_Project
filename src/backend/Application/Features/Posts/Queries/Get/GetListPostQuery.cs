@@ -5,5 +5,5 @@ using MediatR;
 
 namespace Application.Features.Posts.Queries.Get
 {
-    public record GetListPostQuery(PostFilter PostFilter) : IRequest<Result<IEnumerable<PostDetailDTO>>>;
+    public record GetListPostQuery(PostFilter PostFilter) : IRequest<Result<IEnumerable<PostDTO>>>;
 }
