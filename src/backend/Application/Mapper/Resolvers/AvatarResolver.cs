@@ -1,7 +1,6 @@
 ﻿using Application.Common.Interface;
 using AutoMapper;
 using Domain.Common;
-using Domain.Shared;
 
 
 namespace Application.Mapper.Resolvers
