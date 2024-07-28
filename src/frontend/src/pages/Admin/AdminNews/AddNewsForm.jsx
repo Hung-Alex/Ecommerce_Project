@@ -2,25 +2,50 @@ import React, { useState, useRef, useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Import Quill styles
 import { titleToSlug } from "../../../utils/slugify"; // Import hàm titleToSlug từ file riêng
+import {
+  fetchNewsId
+} from '../../../api'
 
-const AddNewsForm = ({ post, onClose, addPost, updatePost }) => {
-  const [title, setTitle] = useState(post ? post.title : "");
-  const [urlSlug, setUrlSlug] = useState(post ? post.urlSlug : "");
-  const [shortDescription, setShortDescription] = useState(post ? post.shortDescription : "");
-  const [description, setDescription] = useState(post ? post.description : "");
-  const [pulished, setpulished] = useState(post ? post.pulished : false); // Fixed typo
+const AddNewsForm = ({ postId, onClose, addPost, updatePost }) => {
+
+  const [post, setPost] = useState(null);
+  const [title, setTitle] = useState("");
+  const [urlSlug, setUrlSlug] = useState("");
+  const [shortDescription, setShortDescription] = useState("");
+  const [description, setDescription] = useState("");
+  const [published, setPublished] = useState(false);
   const [image, setImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(post ? post.imageUrl : null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   const fileInputRef = useRef(null);
 
   useEffect(() => {
-    if (post && post.imageUrl) {
-      setImagePreview(post.imageUrl);
+    const fetchPostData = async () => {
+      if (postId) {
+        try {
+          const data = await fetchNewsId(postId);
+          setPost(data);
+          setTitle(data.title || "");
+          setUrlSlug(data.urlSlug || "");
+          setShortDescription(data.shortDescription || "");
+          setDescription(data.description || "");
+          setPublished(data.published || false);
+          setImagePreview(data.imageUrl || null);
+        } catch (error) {
+          console.error("Failed to fetch post data:", error);
+        }
+      }
+    };
+
+    fetchPostData();
+  }, [postId]);
+
+  useEffect(() => {
+    if (post && post.image) {
+      setImagePreview(post.image);
     }
   }, [post]);
 
-  // Cập nhật URL slug khi tiêu đề thay đổi
   useEffect(() => {
     setUrlSlug(titleToSlug(title));
   }, [title]);
@@ -32,8 +57,8 @@ const AddNewsForm = ({ post, onClose, addPost, updatePost }) => {
       urlSlug,
       shortDescription,
       description,
-      pulished,
-      image
+      published,
+      image,
     };
     if (post) {
       await updatePost(post.id, postData);
@@ -55,10 +80,10 @@ const AddNewsForm = ({ post, onClose, addPost, updatePost }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl w-full">
+      <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl w-full max-h-[80vh] overflow-y-auto">
         <h2 className="text-2xl mb-6">{post ? "Edit Post" : "Add New Post"}</h2>
-        <div className="flex flex-col lg:flex-row">
-          <div className="flex-shrink-0 w-full lg:w-1/4 mb-4 lg:mb-0 lg:mr-6">
+        <div className=" justify-center items-start lg:items-center">
+          <div className="w-full mb-4 lg:mb-0 lg:mr-6">
             <div
               className="relative w-full h-64 bg-gray-100 rounded-lg overflow-hidden cursor-pointer"
               onClick={handleImageClick}
@@ -82,26 +107,8 @@ const AddNewsForm = ({ post, onClose, addPost, updatePost }) => {
               />
             </div>
           </div>
-          <div className="w-full lg:w-3/4">
+          <div className="w-full ">
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="flex items-center mt-4">
-                <label className="inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={pulished}
-                    onChange={(event) => setpulished(event.target.checked)}
-                    className="sr-only"
-                  />
-                  <span className="relative">
-                    <span className="block w-10 h-6 bg-gray-300 rounded-full shadow-inner"></span>
-                    <span
-                      className={`absolute block w-4 h-4 mt-1 ml-1 rounded-full shadow inset-y-0 left-0 transform transition-transform ${pulished ? 'bg-green-600 translate-x-full' : 'bg-white'
-                        }`}
-                    ></span>
-                  </span>
-                  <span className="ml-3 text-sm font-medium text-gray-700">pulished</span>
-                </label>
-              </div>
               <div>
                 <label className="block text-sm font-medium">Title:</label>
                 <input
@@ -138,9 +145,32 @@ const AddNewsForm = ({ post, onClose, addPost, updatePost }) => {
                 <ReactQuill
                   value={description}
                   onChange={setDescription}
-                  className="mt-1 block w-full border rounded-md"
+                  className="mt-1 block w-full h-96 rounded-md"
                 />
               </div>
+
+              <div className="block justify-end pt-12">
+                <label className="inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={published}
+                    onChange={(event) => setPublished(event.target.checked)}
+                    className="sr-only"
+                  />
+                  <span className="relative">
+                    <span className="block w-10 h-6 bg-gray-300 rounded-full shadow-inner"></span>
+                    <span
+                      className={`absolute block w-4 h-4 mt-1 ml-1 rounded-full shadow inset-y-0 left-0 transform transition-transform ${
+                        published ? "bg-green-600 translate-x-full" : "bg-white"
+                      }`}
+                    ></span>
+                  </span>
+                  <span className="ml-3 text-sm font-medium text-gray-700">
+                    Published
+                  </span>
+                </label>
+              </div>
+
               <div className="flex justify-end space-x-4 mt-6">
                 <button
                   type="button"

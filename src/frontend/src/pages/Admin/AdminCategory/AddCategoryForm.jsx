@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { titleToSlug } from '../../../utils/slugify';
 
 const AddCategoryForm = ({ category, onClose, addCategory, updateCategory }) => {
   const [name, setName] = useState(category ? category.name : "");
@@ -8,6 +9,10 @@ const AddCategoryForm = ({ category, onClose, addCategory, updateCategory }) => 
   const [imagePreview, setImagePreview] = useState(category ? category.image : null);
 
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    setUrlSlug(titleToSlug(name));
+  }, [name]);
 
   useEffect(() => {
     if (category && category.image) {
@@ -85,6 +90,7 @@ const AddCategoryForm = ({ category, onClose, addCategory, updateCategory }) => 
                 value={urlSlug}
                 onChange={(event) => setUrlSlug(event.target.value)}
                 className="mt-1 block w-full px-3 py-2 border rounded-md"
+                readOnly
               />
             </div>
             <div>

@@ -38,7 +38,7 @@ const AdminNews = () => {
       formData.append('shortDescription', post.shortDescription);
       formData.append('description', post.description);
       formData.append('urlSlug', post.urlSlug);
-      formData.append('pulished', post.pulished);
+      formData.append('published', post.published);
       if (post.image) formData.append('image', post.image);
 
       await createNews(formData);
@@ -60,7 +60,7 @@ const AdminNews = () => {
       formData.append('shortDescription', updatedPost.shortDescription);
       formData.append('description', updatedPost.description);
       formData.append('urlSlug', updatedPost.urlSlug);
-      formData.append('pulished', updatedPost.pulished);
+      formData.append('published', updatedPost.published);
       if (updatedPost.image) formData.append('image', updatedPost.image);
 
       await updateNews(id, formData);
@@ -83,8 +83,8 @@ const AdminNews = () => {
   };
 
   // Handle editing of a post
-  const handleEdit = useCallback((post) => {
-    setEditingPost(post);
+  const handleEdit = useCallback((row) => {
+    setEditingPost(row.id);
     setShowForm(true);
   }, []);
 
@@ -111,12 +111,11 @@ const AdminNews = () => {
         <Table
           columns={[
             { header: 'ID', accessor: 'id' },
-            { header: 'Image', accessor: 'imageUrl' },
+            { header: 'Image', accessor: 'image' },
             { header: 'Title', accessor: 'title' },
             { header: 'urlSlug', accessor: 'urlSlug' },
             { header: 'Short Description', accessor: 'shortDescription' },
-            { header: 'Description', accessor: 'description' },
-            { header: 'pulished', accessor: 'pulished' }
+            { header: 'published', accessor: 'published' }
           ]}
           data={posts}
           onEdit={handleEdit}
@@ -125,7 +124,7 @@ const AdminNews = () => {
         />
         {showForm && (
           <AddNewsForm
-            post={editingPost}
+            postId={editingPost}
             onClose={handleCloseForm}
             addPost={addPost}
             updatePost={updatePost}

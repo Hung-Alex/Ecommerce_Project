@@ -2,7 +2,7 @@ import React from 'react';
 import useIntersectionObserver from '../../../hooks/useIntersectionObserver'; // Đường dẫn đến hook của bạn
 
 const CatCard = ({ item, effect }) => {
-  const { image, name, description } = item;
+  const { image, name, urlSlug, description } = item;
   const [ref, isVisible] = useIntersectionObserver({ threshold: 0.8 });
 
   const effectClass = `${effect} ${isVisible ? 'visible' : ''}`;
@@ -12,7 +12,7 @@ const CatCard = ({ item, effect }) => {
       ref={ref}
       className={`relative overflow-hidden cursor-pointer h-96 w-full group ${isVisible ? 'opacity-100' : 'opacity-0'}`}
     >
-      <a href={`/category/${name}`} className="block h-full w-full">
+      <a href={`/category/${urlSlug}`} className="block h-full w-full">
         <div
           className={`relative h-full w-full bg-cover bg-center transition-transform duration-300 group-hover:scale-105 ${effectClass}`}
           style={{ backgroundImage: `url(${image})` }}

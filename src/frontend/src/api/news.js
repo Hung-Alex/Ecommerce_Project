@@ -1,5 +1,12 @@
 import axiosInstance from "../utils/axios.js"; // Import your axios instance for making API requests
 
+
+// Chuyển đổi đối tượng payload thành chuỗi truy vấn
+const toQueryString = (params) => {
+  return new URLSearchParams(params).toString();
+};
+
+
 /**
  * Fetch news data.
  * @returns {Promise<Array>} - A promise that resolves with an array of news data.
@@ -7,6 +14,45 @@ import axiosInstance from "../utils/axios.js"; // Import your axios instance for
 export const fetchNewsData = async () => {
   try {
     const response = await axiosInstance.get("/posts");
+    return response.data.data; // Assuming response.data.data contains the news data array
+  } catch (error) {
+    console.error('Error fetching news data:', error);
+  }
+};
+/**
+ * Fetch news data by id.
+ * @returns {Promise<Array>} - A promise that resolves with an array of news data.
+ */
+export const fetchNewsId = async (id) => {
+  try {
+    const response = await axiosInstance.get(`/posts/${id}`);
+    return response.data.data; // Assuming response.data.data contains the news data array
+  } catch (error) {
+    console.error('Error fetching news data:', error);
+  }
+};
+
+/**
+ * Fetch news data.
+ * @returns {Promise<Array>} - A promise that resolves with an array of news data.
+ */
+export const fetchNewsPublished = async (payload) => {
+  try {
+    const queryParams = toQueryString(payload);
+    const response = await axiosInstance.get(`/posts/published?${queryParams}`);
+    return response.data.data; // Assuming response.data.data contains the news data array
+  } catch (error) {
+    console.error('Error fetching news data:', error);
+  }
+};
+
+/**
+ * Fetch news data by urlSlug.
+ * @returns {Promise<Array>} - A promise that resolves with an array of news data.
+ */
+export const fetchNewsSlug = async (slug) => {
+  try {
+    const response = await axiosInstance.get(`/posts/${slug}`);
     return response.data.data; // Assuming response.data.data contains the news data array
   } catch (error) {
     console.error('Error fetching news data:', error);
