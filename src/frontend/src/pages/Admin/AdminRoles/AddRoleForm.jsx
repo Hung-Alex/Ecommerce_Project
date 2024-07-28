@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import axios from "../../../utils/axios";
+import {
+  fetchPermissionsData,
+  fetchRolessDataId
+} from '../../../api';
 
 const AddRoleForm = ({ role, onClose, addRole, updateRole }) => {
   const { register, handleSubmit, setValue } = useForm();
   const [permissions, setPermissions] = useState([]);
   const [loading, setLoading] = useState(false);
-console.log(role);
+
+  // Fetch permissions data and role details if editing
   useEffect(() => {
-    // Fetch permissions for the checkbox list
-    axios.get("/permissions")
+    // Fetch all available permissions
+    fetchPermissionsData()
       .then(response => {
-        setPermissions(response.data.data);
+        setPermissions(response);
       })
       .catch(error => {
         console.error("Error fetching permissions:", error);
@@ -20,9 +24,10 @@ console.log(role);
     // If editing a role, fetch its details
     if (role) {
       setLoading(true);
-      axios.get(`/roles/${role}`)
+      fetchRolessDataId(role)
         .then(response => {
-          const { name, permissions } = response.data.data;
+          const { name, permissions } = response;
+          // Set form values with fetched role data
           setValue("roleName", name);
           setValue("permissions", permissions.map(p => p.id));
           setLoading(false);
@@ -34,6 +39,7 @@ console.log(role);
     }
   }, [role, setValue]);
 
+  // Handle form submission
   const onSubmit = (data) => {
     const selectedPermissions = permissions
       .filter(permission => data.permissions.includes(permission.id))
@@ -45,12 +51,12 @@ console.log(role);
       permissions: selectedPermissions,
     };
 
+
     if (role) {
       updateRole(role, roleData);
     } else {
       addRole(roleData);
     }
-
     onClose();
   };
 

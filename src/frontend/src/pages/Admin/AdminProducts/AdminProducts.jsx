@@ -3,8 +3,11 @@ import DashboardLayout from "../../../layout/DashboardLayout.jsx";
 import Table from "../comp/Table.jsx";
 import AddProductForm from "./AddProductForm"; // Assuming you have a similar form component for products
 import axios from "../../../utils/axios";
-import UpdateProductForm from "./UpdateProductForm.jsx";
-import ImageUpload from "./UploadImg.jsx";
+import UpdateProductForm from "./UpdateProductForm";
+import {
+  fetchProductsData,
+  deleteProductId
+} from '../../../api/index';
 
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);
@@ -14,28 +17,28 @@ const AdminProducts = () => {
   const [showForm, setShowForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
 
-  const fetchProducts = useCallback(async () => {
+  const fetchProducts = useCallback(async (sortColumn = 'CreatedAt', sortBy = 'DESC') => {
     try {
-      const response = await axios.get("/products?SortColoumn=Name&SortBy=ASC");
-      setProducts(response.data.data);
+      const response = await fetchProductsData(sortColumn, sortBy);
+      setProducts(response.data);
       setLoading(false);
     } catch (error) {
-      setError(error);
+      setError(error.message);
       setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    fetchProducts();
+    fetchProducts(); // Calls with default parameters initially
   }, [fetchProducts]);
 
   const deleteProduct = async (id) => {
     try {
-      await axios.delete(`/products/${id}`);
-      setProducts(prevList => prevList.filter(product => product.id !== id));
+      await deleteProductId(id);
     } catch (error) {
       console.error("Error deleting product:", error);
     }
+    fetchProducts();
   };
 
   const handleDelete = useCallback(async (row) => {
@@ -69,7 +72,6 @@ const AdminProducts = () => {
   return (
     <DashboardLayout>
       <div className='p-6'>
-        <ImageUpload />
         <Table
           columns={[
             { header: 'ID', accessor: 'id' },

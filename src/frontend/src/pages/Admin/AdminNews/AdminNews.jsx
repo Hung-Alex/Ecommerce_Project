@@ -2,23 +2,27 @@ import React, { useState, useCallback, useEffect } from "react";
 import DashboardLayout from "../../../layout/DashboardLayout.jsx";
 import Table from "../comp/Table.jsx";
 import AddNewsForm from "./AddNewsForm";
-import axios from "../../../utils/axios";
+import {toast} from "react-hot-toast";
+import {
+  fetchNewsData,
+  updateNews,
+  deleteNews,
+  createNews
+} from "../../../api"
 
 const AdminNews = () => {
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [editingPost, setEditingPost] = useState(null);
 
+  // Fetch news data from the server
   const fetchPosts = useCallback(async () => {
     try {
-      const response = await axios.get("/posts");
-      setPosts(response.data.data);
-      setLoading(false);
+      const response = await fetchNewsData();
+      setPosts(response);
     } catch (error) {
-      setError(error);
-      setLoading(false);
+      toast.error('Error fetching posts');
+      console.error('Error fetching posts:', error);
     }
   }, []);
 
@@ -26,94 +30,80 @@ const AdminNews = () => {
     fetchPosts();
   }, [fetchPosts]);
 
+  // Add a new post
   const addPost = async (post) => {
     try {
       const formData = new FormData();
-      formData.append("title", post.title);
-      formData.append("shortDescription", post.shortDescription);
-      formData.append("description", post.description);
-      formData.append("urlSlug", post.urlSlug);
-      formData.append("pulished", post.pulished);
-      if (post.image) {
-        formData.append("image", post.image);
-      }
+      formData.append('title', post.title);
+      formData.append('shortDescription', post.shortDescription);
+      formData.append('description', post.description);
+      formData.append('urlSlug', post.urlSlug);
+      formData.append('pulished', post.pulished);
+      if (post.image) formData.append('image', post.image);
 
-      await axios.post("/posts", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data"
-        }
-      });
-
-      await fetchPosts();
+      await createNews(formData);
+      fetchPosts();
       handleCloseForm();
+      toast.success('Post created successfully');
     } catch (error) {
-      console.error("Error adding post:", error);
+      toast.error('Error creating post');
+      console.error('Error creating post:', error);
     }
   };
 
+  // Update an existing post
   const updatePost = async (id, updatedPost) => {
     try {
       const formData = new FormData();
-      formData.append("id", id);
-      formData.append("title", updatedPost.title);
-      formData.append("shortDescription", updatedPost.shortDescription);
-      formData.append("description", updatedPost.description);
-      formData.append("urlSlug", updatedPost.urlSlug);
-      formData.append("pulished", updatedPost.published);
-      if (updatedPost.image) {
-        formData.append("image", updatedPost.image);
-      }
+      formData.append('id', id);
+      formData.append('title', updatedPost.title);
+      formData.append('shortDescription', updatedPost.shortDescription);
+      formData.append('description', updatedPost.description);
+      formData.append('urlSlug', updatedPost.urlSlug);
+      formData.append('pulished', updatedPost.pulished);
+      if (updatedPost.image) formData.append('image', updatedPost.image);
 
-      const response = await axios.put(`/posts/${id}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data"
-        }
-      });
-
-      setPosts(prevList =>
-        prevList.map(post =>
-          post.id === id ? { ...post, ...response.data.data } : post
-        )
-      );
+      await updateNews(id, formData);
+      fetchPosts();
+      toast.success('Post updated successfully');
     } catch (error) {
-      console.error("Error updating post:", error);
+      toast.error('Error updating post');
     }
   };
 
+  // Delete a post
   const deletePost = async (id) => {
     try {
-      await axios.delete(`/posts/${id}`);
-      setPosts(prevList => prevList.filter(post => post.id !== id));
+      await deleteNews(id);
+      setPosts((prevList) => prevList.filter((post) => post.id !== id));
+      toast.success('Post deleted successfully');
     } catch (error) {
-      console.error("Error deleting post:", error);
+      toast.error('Error deleting post');
     }
   };
 
-  const handleEdit = useCallback((row) => {
-    setEditingPost(row);
+  // Handle editing of a post
+  const handleEdit = useCallback((post) => {
+    setEditingPost(post);
     setShowForm(true);
   }, []);
 
-  const handleDelete = useCallback(async (row) => {
-    try {
-      await deletePost(row.id);
-    } catch (error) {
-      console.error('Error deleting post:', error);
-    }
+  // Handle deletion of a post
+  const handleDelete = useCallback(async (post) => {
+    await deletePost(post.id);
   }, []);
 
+  // Show the form for adding a new post
   const handleAddPost = useCallback(() => {
     setEditingPost(null);
     setShowForm(true);
   }, []);
 
+  // Close the form and reset editing state
   const handleCloseForm = useCallback(() => {
     setShowForm(false);
     setEditingPost(null);
   }, []);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) console.log(error.message);
 
   return (
     <DashboardLayout>
@@ -123,9 +113,10 @@ const AdminNews = () => {
             { header: 'ID', accessor: 'id' },
             { header: 'Image', accessor: 'imageUrl' },
             { header: 'Title', accessor: 'title' },
+            { header: 'urlSlug', accessor: 'urlSlug' },
             { header: 'Short Description', accessor: 'shortDescription' },
             { header: 'Description', accessor: 'description' },
-            { header: 'Published', accessor: 'pulished' }
+            { header: 'pulished', accessor: 'pulished' }
           ]}
           data={posts}
           onEdit={handleEdit}
