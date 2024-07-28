@@ -3,6 +3,7 @@ import axios from '../../../utils/axios';
 import { useCategoryContext } from '../../../context/CategoryContext';
 import { useBrandContext } from '../../../context/BrandContext';
 import { titleToSlug } from '../../../utils/slugify';
+import { createProductData, updateProductData } from '../../../api';
 
 const AddProductForm = ({ product, onClose }) => {
   const [files, setFiles] = useState([]);
@@ -62,17 +63,11 @@ const AddProductForm = ({ product, onClose }) => {
 
     try {
       if (product) {
-        await axios.put(`/products/${product.id}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
+        await updateProductData(product.id, formData);
+        console.log('Product updated successfully');
       } else {
-        await axios.post('/products', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
+        await createProductData(formData);
+        console.log('Product created successfully');
       }
       onClose();
     } catch (err) {
