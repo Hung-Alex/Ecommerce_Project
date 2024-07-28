@@ -1,4 +1,6 @@
-﻿using Application.Features.Comments.Commands;
+﻿using Application.DTOs.Filters.Comments;
+using Application.Features.Comments.Commands;
+using Application.Features.Comments.Queries.GetCommentByPostId;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,5 +27,15 @@ namespace WebMemoryzoneApi.Controllers
             }
             return Ok(result);
         }
+        [HttpGet]
+        public async Task<IActionResult> GetCommentsByPostId([FromQuery] CommentFilter filter)
+        {
+            var result = await _mediator.Send(new GetCommentByPostIdQuery(filter));
+            if (result.IsSuccess is false)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }   
     }
 }

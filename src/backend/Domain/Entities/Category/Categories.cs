@@ -6,7 +6,7 @@ using Domain.Shared;
 
 namespace Domain.Entities.Category
 {
-    public class Categories : BaseEntity, IDatedModification, IAggregateRoot, ICreatedAndUpdatedBy
+    public class Categories : BaseEntity, IDatedModification, IAggregateRoot, ICreatedAndUpdatedBy, ISoftDelete
     {
         public Categories() { }
         private Categories(string name, string descripton, string urlSlug, string image, Guid? parrentId) : base()
@@ -31,5 +31,7 @@ namespace Domain.Entities.Category
         public virtual User CreatedByUser { get; set; }
         public Guid? UpdatedByUserId { get; set; }
         public virtual User UpdatedByUser { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTimeOffset? DeletedAt { get; set; }
     }
 }
