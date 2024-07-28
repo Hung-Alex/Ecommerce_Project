@@ -8,7 +8,19 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../../context/UserContext";
 
 const UpdateInformation = () => {
-  const { user, setUser } = useContext(UserContext);
+  // const { user, setUser } = useContext(UserContext);
+  const user = {
+    name: 'Tuan',
+    email: 'tuan@example.com',
+    address: {
+      city: 'HCMC',
+      street: '123 Nguyen Hue'
+    },
+    phone: '123-456-7890',
+    image: {
+      secure_url: '' // replace with actual image URL if available
+    }
+  };
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
