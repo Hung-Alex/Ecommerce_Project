@@ -9,7 +9,7 @@ using Application.Features.Posts.Specification;
 
 namespace Application.Features.Posts.Queries.Get
 {
-    public class GetListPostQueriesHandler : IRequestHandler<GetListPostQuery, Result<IEnumerable<PostDetailDTO>>>
+    public class GetListPostQueriesHandler : IRequestHandler<GetListPostQuery, Result<IEnumerable<PostDTO>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private IMapper _mapper;
@@ -18,13 +18,13 @@ namespace Application.Features.Posts.Queries.Get
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public async Task<Result<IEnumerable<PostDetailDTO>>> Handle(GetListPostQuery request, CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<PostDTO>>> Handle(GetListPostQuery request, CancellationToken cancellationToken)
         {
             var repo = _unitOfWork.GetRepository<Post>();
             var getPostSpecification = new GetPostsSpecification(request.PostFilter);
             var posts = await repo.GetAllAsync(getPostSpecification);
             var totalItems = await repo.CountAsync(getPostSpecification);
-            return new PagingResult<IEnumerable<PostDetailDTO>>(_mapper.Map<IEnumerable<PostDetailDTO>>(posts), request.PostFilter.PageNumber, request.PostFilter.PageSize, totalItems);
+            return new PagingResult<IEnumerable<PostDTO>>(_mapper.Map<IEnumerable<PostDTO>>(posts), request.PostFilter.PageNumber, request.PostFilter.PageSize, totalItems);
         }
     }
 }

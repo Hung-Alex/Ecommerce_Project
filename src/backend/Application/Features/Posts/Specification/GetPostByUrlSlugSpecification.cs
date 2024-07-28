@@ -10,6 +10,7 @@ namespace Application.Features.Posts.Specification
         public GetPostByUrlSlugSpecification(string urlSlug)
         {
             _urlSlug = urlSlug;
+            AddInclude(x => x.CreatedByUser);
         }
         public override Expression<Func<Post, bool>> Criteria => p => p.UrlSlug == _urlSlug;
     }

@@ -13,6 +13,7 @@ using Application.DTOs.Responses.Sections;
 using Application.DTOs.Responses.Slides;
 using Application.DTOs.Responses.Users;
 using Application.Mapper.Resolve;
+using Application.Mapper.Resolvers;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Entities.Banners;
@@ -38,13 +39,19 @@ namespace Application.Mapper
             CreateMap<Slide, SlideDTO>().ForMember(dest => dest.Image, opt => opt.MapFrom<UrlFromPublicIdResolver>()).ReverseMap();
             CreateMap<Ratting, RattingDTO>().ReverseMap();
             CreateMap<Banner, BannerDTO>().ForMember(dest => dest.LogoImageUrl, opt => opt.MapFrom<UrlFromPublicIdResolver>()).ReverseMap();
-            CreateMap<Post, PostDetailDTO>().ForMember(dest => dest.ImageUrl, opt => opt.MapFrom<UrlFromPublicIdResolver>());
             CreateMap<CategoryProductDTO, Categories>().ReverseMap();
             CreateMap<BrandProductDTO, Brand>().ReverseMap();
             CreateMap<ProductSkus, VariantsDTO>().ReverseMap();
             CreateMap<ImageDTO, Image>().ReverseMap();
             CreateMap<CatetgorySection, Categories>().ReverseMap();
-
+            CreateMap<Post, PostDetailDTO>()
+                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom<UrlFromPublicIdResolver>())
+                .ForMember(dest => dest.CreatedByName, opt => opt.MapFrom<CreatedByResolver>())
+                .ForMember(dest => dest.ImageOfCreator, opt => opt.MapFrom<AvatarResolver>());
+            CreateMap<Post, PostDTO>()
+                .ForMember(dest => dest.Image, opt => opt.MapFrom<UrlFromPublicIdResolver>())
+                 .ForMember(dest => dest.CreatedByName, opt => opt.MapFrom<CreatedByResolver>())
+                 .ForMember(dest => dest.ImageOfCreator, opt => opt.MapFrom<AvatarResolver>()); ;
         }
     }
 }

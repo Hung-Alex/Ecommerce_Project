@@ -5,6 +5,7 @@ using Application.Features.Posts.Commands.UpdatePost;
 using Application.Features.Posts.Queries.Get;
 using Application.Features.Posts.Queries.GetById;
 using Application.Features.Posts.Queries.GetByUrlSlug;
+using Application.Features.Posts.Queries.GetPostPublished;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +35,14 @@ namespace WebMemoryzoneApi.Controllers
         public async Task<ActionResult> GetPosts([FromQuery] PostFilter postFilter)
         {
             var result = await _mediator.Send(new GetListPostQuery(postFilter));
+            return Ok(result);
+        }
+        [AllowAnonymous]
+        [HttpGet("published")]
+        public async Task<ActionResult> GetLatestPosts([FromQuery] PostFilter postFilter)
+        {
+            var result = await _mediator.Send(new GetPostPublishedQuery(postFilter));
+            if (!result.IsSuccess) return BadRequest(result);
             return Ok(result);
         }
         [HttpPut("{id:Guid}")]
