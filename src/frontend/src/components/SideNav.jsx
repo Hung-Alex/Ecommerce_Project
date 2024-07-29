@@ -11,6 +11,7 @@ const navItems = [
   { label: "Banner", path: "/admin/banner" },
   { label: "Sliders", path: "/admin/Sliders" },
   { label: "Roles", path: "/admin/Roles" },
+  { label: "Users", path: "/admin/users" },
   { label: "News", path: "/admin/news" }
 ];
 

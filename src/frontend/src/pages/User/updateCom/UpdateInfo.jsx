@@ -8,7 +8,19 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../../context/UserContext";
 
 const UpdateInformation = () => {
-  const { user, setUser } = useContext(UserContext);
+  // const { user, setUser } = useContext(UserContext);
+  const user = {
+    name: 'Tuan',
+    email: 'tuan@example.com',
+    address: {
+      city: 'HCMC',
+      street: '123 Nguyen Hue'
+    },
+    phone: '123-456-7890',
+    image: {
+      secure_url: '' // replace with actual image URL if available
+    }
+  };
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
@@ -45,11 +57,32 @@ const UpdateInformation = () => {
       notify();
     }
   };
+
   return (
-    <div className="border-t-2 border-[#7eb693] shadow-md rounded bg-white max-w-2xl">
+    <div className=" max-h-[85vh] overflow-auto border-t-2 border-[#7eb693] shadow-md rounded bg-white max-w-[70vw]">
       <h3 className="text-xl p-3">Personal Information</h3>
-      <UpdatePhoto />
-      <form onSubmit={handleSubmit(onSubmit)}>
+      
+
+        {/* image section */}
+        <div className="p-3  border-t mt-3">
+          <form>
+            <label htmlFor="photo">Your Profile Photo</label>
+            <img
+              className="mt-2 rounded-full bg-slate-200 w-32 h-32 object-cover"
+              src=""
+              alt="photo"
+            />
+            <div className="mt-4">
+              <input
+                className="bg-[#7EB693] ml-4 px-4 py-1 rounded text-white cursor-pointer"
+                type="submit"
+                value="Save"
+              />
+            </div>
+          </form>
+        </div>
+
+        {/* User section */}
         <div>
           <div className="p-3 ">
             <span className="mb-6 block">
@@ -128,8 +161,41 @@ const UpdateInformation = () => {
             disabled={loading}
           />
         </div>
+
+        <div className="border-t mt-3 pb-4">
+      <h3 className="text-xl border-b p-3">Change Password</h3>
+      <form>
+        <div className="p-3 grid grid-cols-1 md:grid-cols-2 gap-3">
+          <span>
+            <label className="block mb-2" htmlFor="password">
+              Old password
+            </label>
+            <input
+              className="border bg-slate-50 w-full outline-none p-3 rounded-md text-sm mb-4"
+              type="password"
+             
+            />
+          </span>
+          <span>
+            <label className="block mb-2" htmlFor="password">
+              New password
+            </label>
+            <input
+              className="border bg-slate-50 w-full outline-none p-3 rounded-md text-sm"
+              type="password"
+              {...register("newPassword")}
+            />
+          </span>
+          <div>
+            <input
+              className="bg-[#7EB693]  px-4 py-2 rounded text-white cursor-pointer"
+              type="submit"
+              value="Save"
+            />
+          </div>
+        </div>
       </form>
-      <UpdatePassword />
+    </div>
     </div>
   );
 };

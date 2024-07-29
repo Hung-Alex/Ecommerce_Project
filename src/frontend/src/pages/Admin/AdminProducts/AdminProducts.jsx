@@ -66,9 +66,6 @@ const AdminProducts = () => {
     fetchProducts();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (error){console.log(error.message);}
-
   return (
     <DashboardLayout>
       <div className='p-6'>

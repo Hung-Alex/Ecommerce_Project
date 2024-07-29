@@ -1,15 +1,12 @@
-import { useContext } from "react";
-import { UserContext } from "../../../context/UserContext";
 
 const UpdatePhoto = () => {
-  const { user } = useContext(UserContext);
   return (
     <div className="p-3 border-t mt-3">
       <form>
         <label htmlFor="photo">Your Profile Photo</label>
         <img
           className="mt-2 rounded-full bg-slate-200 w-32 h-32 object-cover"
-          src={user?.image?.secure_url}
+          src=""
           alt="photo"
         />
         <div className="mt-4">

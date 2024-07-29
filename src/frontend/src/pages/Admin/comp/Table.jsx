@@ -107,7 +107,7 @@ const Table = ({ columns, data = [], onEdit, onDelete, onAdd }) => {
                           >
                             {cellValue ? 'True' : 'False'}
                           </span>
-                        ) : col.accessor === 'image' || col.accessor === 'images' || col.accessor === 'logoImageUrl' || col.accessor === 'imageUrl' ? (
+                        ) : col.accessor === 'image' || col.accessor === 'avatarImage' || col.accessor === 'images' || col.accessor === 'logoImageUrl' || col.accessor === 'imageUrl' ? (
                           <img
                             src={Array.isArray(cellValue) ? cellValue[0] : cellValue}
                             alt="Image"

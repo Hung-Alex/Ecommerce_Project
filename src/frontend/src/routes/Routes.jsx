@@ -22,6 +22,7 @@ import AdminSliders from "../pages/Admin/AdminSlider/AdminSliders";
 import News from "../pages/News/News";
 import NewsDetail from "../pages/News/NewsDetail";
 import AdminNews from "../pages/Admin/AdminNews/AdminNews";
+import AdminUsers from "../pages/Admin/AdminUser/AdminUser";
 
 export const router = createBrowserRouter([
   {
@@ -81,7 +82,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/user",
-    element: <PrivateRoute />, // Ensure all user routes are private
+    // element: <PrivateRoute />, // Ensure all user routes are private
     children: [
       {
         path: "profile",
@@ -124,6 +125,10 @@ export const router = createBrowserRouter([
       {
         path: "Roles",
         element: <AdminRoles />,
+      },
+      {
+        path: "users",
+        element: <AdminUsers />,
       },
       {
         path: "Sliders",

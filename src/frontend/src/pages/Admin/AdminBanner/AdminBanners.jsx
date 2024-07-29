@@ -67,7 +67,6 @@ const AdminBanners = () => {
         }
       });
 
-      console.log(response.data);
       setBanners(prevList =>
         prevList.map(banner =>
           banner.id === id ? { ...banner, ...response.data.data } : banner
