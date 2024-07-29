@@ -63,28 +63,33 @@ namespace Application.Features.Products.Commands.CreateProduct
             ,
                 BrandId = request.BrandId
             ,
+                OldPrice = request.OldPrice
+            ,
                 CategoryId = request.CategoryId
             };
             repoProduct.Add(newProduct);
 
             #region hanle Images
-            var imageTasks = request.Images.Select(async (item, index) =>
+            if (request.Images is not null)
             {
-                var uploadResult = await media.UploadLoadImageAsync(item, UploadFolderConstants.FolderProduct, cancellationToken);
-                if (!uploadResult.IsSuccess)
+                var imageTasks = request.Images.Select(async (item, index) =>
                 {
-                    throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
-                }
-                repoImage.Add(new Image
-                {
-                    ImageExtension = item.ContentType,
-                    ImageUrl = uploadResult.Data.Url,
-                    PublicId = uploadResult.Data.PublicId,
-                    OrderItem = index + 1,
-                    ProductId = newProduct.Id
+                    var uploadResult = await media.UploadLoadImageAsync(item, UploadFolderConstants.FolderProduct, cancellationToken);
+                    if (!uploadResult.IsSuccess)
+                    {
+                        throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
+                    }
+                    repoImage.Add(new Image
+                    {
+                        ImageExtension = item.ContentType,
+                        ImageUrl = uploadResult.Data.Url,
+                        PublicId = uploadResult.Data.PublicId,
+                        OrderItem = index + 1,
+                        ProductId = newProduct.Id
+                    });
                 });
-            });
-            await Task.WhenAll(imageTasks);
+                await Task.WhenAll(imageTasks);
+            }
             #endregion
             if (request.Variant is not null)
             {

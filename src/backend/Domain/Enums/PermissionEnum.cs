@@ -23,6 +23,14 @@
             CreateCategory,
             UpdateCategory,
             DeleteCategory,
+            UpdateOrder,
+            ChangeOrderStatus,
+            UpdateUser,
+            LockUser,
+            CreateRole,
+            UpdateRole,
+            DeleteRole,
+            AssignRole,
         }
     }
 }

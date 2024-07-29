@@ -12,7 +12,7 @@ using MediatR;
 
 namespace Application.Features.Products.Queries.GetByUrlSlug
 {
-    public sealed class GetProductByUrlSlugQueryHandler(IUnitOfWork unitOfWork,IMapper mapper) : IRequestHandler<GetProductByUrlSlugQuery, Result<ProductGetBySlugDTO>>
+    public sealed class GetProductByUrlSlugQueryHandler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<GetProductByUrlSlugQuery, Result<ProductGetBySlugDTO>>
     {
         public async Task<Result<ProductGetBySlugDTO>> Handle(GetProductByUrlSlugQuery request, CancellationToken cancellationToken)
         {
@@ -30,12 +30,13 @@ namespace Application.Features.Products.Queries.GetByUrlSlug
                 UrlSlug = product.UrlSlug,
                 Discount = product.Discount,
                 Price = product.Price,
+                OldPrice = product.OldPrice,
                 Brand = mapper.Map<BrandProductDTO>(product.Brand),
                 Category = mapper.Map<CategoryProductDTO>(product.Category),
                 Rate = product.Rattings.Count() > 0 ? product.Rattings.Average(r => r.Rate) : 0,
                 TotalRate = product.Rattings.Count(),
                 Images = product.Images.Select(p => p.ImageUrl).ToList(),
-                Variants=mapper.Map<IEnumerable<VariantsDTO>>(product.ProductSkus)
+                Variants = mapper.Map<IEnumerable<VariantsDTO>>(product.ProductSkus)
             };
             return Result<ProductGetBySlugDTO>.ResultSuccess(productDto);
         }

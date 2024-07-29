@@ -11,6 +11,7 @@ namespace Application.Features.Products.Commands.CreateProduct
         , string Description
         , string UrlSlug
         , decimal Price
+        , Decimal? OldPrice
         , int? Discount
         , Guid BrandId
         , Guid CategoryId

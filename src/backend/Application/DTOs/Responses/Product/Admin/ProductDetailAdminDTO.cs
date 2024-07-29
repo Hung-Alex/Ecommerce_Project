@@ -8,6 +8,7 @@ namespace Application.DTOs.Responses.Product.Admin
         public string Name { get; init; }
         public string Description { get; init; }
         public Decimal Price { get; init; }
+        public Decimal? OldPrice { get; set; }
         public string UrlSlug { get; init; }
         public int? Discount { get; init; }
         public Guid? BrandId { get; init; }

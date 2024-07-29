@@ -12,7 +12,7 @@ namespace Application.Features.Users.Commands.UpdateUser
         public string? LastName { get; init; }
         public string? City { get; init; }
         public string? Country { get; init; }
-        public bool IsActive { get; init; }
+        public bool IsLocked { get; init; }
         public IEnumerable<Guid>? Roles { get; init; }
     }
 }

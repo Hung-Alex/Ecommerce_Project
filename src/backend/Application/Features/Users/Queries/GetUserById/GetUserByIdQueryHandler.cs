@@ -36,11 +36,11 @@ namespace Application.Features.Users.Queries.GetUserById
                     UserName = applicationUser.UserName,
                     Email = applicationUser.Email,
                     PhoneNumber = applicationUser.PhoneNumber,
-                    IsLockout = applicationUser.IsLockout,
+                    IsLocked = applicationUser.IsLockout,
                     Region = user.Region,
                     City = user.City,
                     Country = user.Country,
-                    FristName = user.FirstName,
+                    FirstName = user.FirstName,
                     LastName = user.LastName,
                     AvatarImage = _media.GetUrl(user.AvatarImage),
                     Roles = applicationUser.Roles
