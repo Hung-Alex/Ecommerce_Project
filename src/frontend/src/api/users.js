@@ -14,6 +14,19 @@ export const fetchUsersData = async () => {
     }
 };
 
+/**
+ * Fetch users data.
+ * @returns {Promise<Array>} - A promise that resolves with an array of users data.
+ */
+export const fetchUsersId = async (id) => {
+    try {
+        const response = await axiosInstance.get(`/users/${id}`);
+        return response.data.data; // Return the users data
+    } catch (error) {
+        toast.error("Error fetching users data."); // Show error toast
+    }
+};
+
 
 /**
  * Update an existing user.
@@ -25,15 +38,16 @@ export const updateUser = async (userId, formData) => {
     try {
       const response = await axiosInstance.put(`/users/${userId}`, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+            'Content-Type': 'multipart/form-data', // Set header for form data including files
         },
-      });
+    });
+      toast.success("User Update successfully.");
       return response.data;
     } catch (error) {
-      console.error('Error updating user:', error);
-      throw error;
+      toast.error('Error updating user:', error);
     }
   };
+
 /**
  * create an existing user.
  * @param {number} userId - The ID of the user to create.
@@ -47,13 +61,20 @@ export const createUser = async (formData) => {
           'Content-Type': 'multipart/form-data',
         },
       });
+      toast.success("User created successfully.");
       return response.data;
     } catch (error) {
-      console.error('Error updating user:', error);
+      toast.error('Error add user:', error);
     }
   };
 
   // Delete an User by ID
-export const deleteUserId = async (id) => {
-    await axiosInstance.delete(`/users/${id}`);
+export const deleteUser = async (id) => {
+  try {
+    const res = await axiosInstance.delete(`/users/${id}`);
+    return res.data;
+  } catch (error) {
+    toast.error('Error delete user:', error);
+  }
   };
+

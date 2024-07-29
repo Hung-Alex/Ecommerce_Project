@@ -1,48 +1,44 @@
 import React, { useState, useEffect, useCallback } from "react";
 import DashboardLayout from "../../../layout/DashboardLayout.jsx";
 import Table from "../comp/Table.jsx";
-import AddUserForm from "./AddUserForm"; // Assuming you have a form component for users
+import AddUserForm from "./AddUserForm";
 import toast from "react-hot-toast";
 import {
     fetchUsersData,
-    createUser,
-    updateUser,
+    createUser ,
+    updateUser ,
     deleteUser
-} from '../../../api/index';
+} from '../../../api';
+import UpdateUserForm from "./UpdateUserForm.jsx";
 
 const AdminUsers = () => {
     const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const [showForm, setShowForm] = useState(false);
+    const [showUpdateForm, setShowUpdateForm] = useState(false);
     const [editingUser, setEditingUser] = useState(null);
 
     const fetchUsers = useCallback(async () => {
-        try {
             const data = await fetchUsersData();
             setUsers(data);
-            setLoading(false);
-        } catch (error) {
-            setError(error);
-            setLoading(false);
-        }
     }, []);
 
     useEffect(() => {
         fetchUsers();
-    }, [fetchUsers]);
+    }, [fetchUsers, showUpdateForm, showForm]);
 
     const addUser = async (user) => {
-        await createUser(user);
-        fetchUsers();
+        const res = await createUser(user);
+        return res;
+        await fetchUsers();
     };
 
-    const updateUser = async (id, updatedUser) => {
-        await updateUser(id, updatedUser);
-        fetchUsers();
+    const handleUpdateUser = async (id, updatedUser) => {
+            const res = await updateUser(id, updatedUser);
+            return res;
+            fetchUsers();
     };
 
-    const deleteUser = async (id) => {
+    const handleDeleteUser = async (id) => {
         try {
             await deleteUser(id);
             setUsers((prevList) => prevList.filter((user) => user.id !== id));
@@ -52,16 +48,12 @@ const AdminUsers = () => {
     };
 
     const handleEdit = useCallback((row) => {
-        setEditingUser(row.id);
-        setShowForm(true);
+        setEditingUser(row);
+        setShowUpdateForm(true);
     }, []);
 
     const handleDelete = useCallback(async (row) => {
-        try {
-            await deleteUser(row.id);
-        } catch (error) {
-            toast.error(`Error deleting user: ${error.message}`);
-        }
+        await handleDeleteUser(row.id);
     }, []);
 
     const handleAddUser = useCallback(() => {
@@ -71,6 +63,7 @@ const AdminUsers = () => {
 
     const handleCloseForm = useCallback(() => {
         setShowForm(false);
+        setShowUpdateForm(false);
         setEditingUser(null);
     }, []);
 
@@ -83,9 +76,9 @@ const AdminUsers = () => {
                         { header: 'Avatar', accessor: 'avatarImage' },
                         { header: 'First Name', accessor: 'firstName' },
                         { header: 'Last Name', accessor: 'lastName' },
-                        { header: 'city', accessor: 'city' },
-                        { header: 'region', accessor: 'region' },
-                        { header: 'country', accessor: 'country' },
+                        { header: 'City', accessor: 'city' },
+                        { header: 'Region', accessor: 'region' },
+                        { header: 'Country', accessor: 'country' },
                     ]}
                     data={users}
                     onEdit={handleEdit}
@@ -94,10 +87,15 @@ const AdminUsers = () => {
                 />
                 {showForm && (
                     <AddUserForm
-                        user={editingUser}
                         onClose={handleCloseForm}
                         addUser={addUser}
-                        updateUser={updateUser}
+                    />
+                )}
+                {showUpdateForm && (
+                    <UpdateUserForm
+                        userId={editingUser.id}
+                        onClose={handleCloseForm}
+                        updateUserData={handleUpdateUser}
                     />
                 )}
             </div>

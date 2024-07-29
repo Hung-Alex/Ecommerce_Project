@@ -8,5 +8,6 @@ export * from './products.js';
 export * from './slider.js';
 export * from './roles.js';
 export * from './users.js';
+export * from './images.js';
 
 // export { default as axiosInstance } from './axiosInstance';

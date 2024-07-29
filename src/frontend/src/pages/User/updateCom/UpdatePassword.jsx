@@ -16,7 +16,7 @@ const UpdatePassword = () => {
             <input
               className="border bg-slate-50 w-full outline-none p-3 rounded-md text-sm mb-4"
               type="password"
-              {...register("oldPassword")}
+             
             />
           </span>
           <span>
