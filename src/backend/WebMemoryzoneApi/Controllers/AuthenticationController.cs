@@ -39,7 +39,7 @@ namespace WebMemoryzoneApi.Controllers
             SetCookies(result.Data.AccessToken
                   , result.Data.RefreshToken
                   , result.Data.User
-                  , JWTHelper.GetExpiresRefreshToken(_jwtSetting.ExpiredToken)
+                  , JWTHelper.GetExpiresAccessToken(_jwtSetting.ExpiredToken)
                   , JWTHelper.GetExpiresRefreshToken(_jwtSetting.ExpiredRefreshToken));
             return Ok(result);
         }
@@ -64,8 +64,8 @@ namespace WebMemoryzoneApi.Controllers
             SetCookies(result.Data.AccessToken
                  , result.Data.RefreshToken
                  , result.Data.User
-                 , DateTime.Now.AddMinutes(_jwtSetting.ExpiredToken)
-                 , DateTime.Now.AddDays(_jwtSetting.ExpiredRefreshToken));
+                  , JWTHelper.GetExpiresAccessToken(_jwtSetting.ExpiredToken)
+                  , JWTHelper.GetExpiresRefreshToken(_jwtSetting.ExpiredRefreshToken));
             return Ok(result);
         }
         [HttpGet("logout")]
@@ -102,7 +102,7 @@ namespace WebMemoryzoneApi.Controllers
             SetCookies(result.Data.AccessToken
                 , result.Data.RefreshToken
                 , result.Data.User
-                , JWTHelper.GetExpiresRefreshToken(_jwtSetting.ExpiredToken)
+                , JWTHelper.GetExpiresAccessToken(_jwtSetting.ExpiredToken)
                 , JWTHelper.GetExpiresRefreshToken(_jwtSetting.ExpiredRefreshToken)
                 );
             return Ok(result);
