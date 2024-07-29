@@ -7,7 +7,7 @@ namespace Application.DTOs.Responses.Comments
     {
         public Guid? ParentId { get; set; }
         public string Content { get; set; }
-        // public virtual IEnumerable<CommentDTO> Replies { get; set; }
+        //public virtual IEnumerable<CommentDTO> Replies { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
         public Guid PostId { get; set; }
