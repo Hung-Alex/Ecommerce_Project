@@ -16,5 +16,14 @@ namespace Application.Helper
                 ExpriedTime = exprired,
             };
         }
+
+        public static DateTime GetExpiresAccessToken(double time)
+        {
+            return DateTime.Now.AddMinutes(time);
+        }
+        public static DateTime GetExpiresRefreshToken(double time)
+        {
+            return DateTime.Now.AddDays(time);
+        }
     }
 }

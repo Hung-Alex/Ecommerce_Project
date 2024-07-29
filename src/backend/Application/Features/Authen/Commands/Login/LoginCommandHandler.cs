@@ -42,7 +42,7 @@ namespace Application.Features.Authen.Commands.Login
             }
             var token = await _jwtProvider.GenerateTokenAsync(user.Id);
             //generate refresh token
-            var refreshToken = JWTHelper.GenerateRefreshToken(DateTime.Now.AddDays(_jwtSetting.ExpiredRefreshToken));
+            var refreshToken = JWTHelper.GenerateRefreshToken(JWTHelper.GetExpiresRefreshToken(_jwtSetting.ExpiredRefreshToken));
             //convert the refresh token to json containing the expiration time, Token. After saving it
             var convertRefreshIntoJson = JsonSerializer.Serialize<RefreshToken>(refreshToken);
             var isSuccess= await _identityService.SaveRefreshTokenAsync(user.Id, UserToken.Provider, UserToken.RefreshToken, convertRefreshIntoJson);

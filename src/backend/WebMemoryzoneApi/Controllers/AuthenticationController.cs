@@ -5,6 +5,7 @@ using Application.Features.Authen.Commands.LoginWithGoogle;
 using Application.Features.Authen.Commands.Logout;
 using Application.Features.Authen.Commands.Refresh;
 using Application.Features.Authen.Commands.Register;
+using Application.Helper;
 using Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -38,8 +39,8 @@ namespace WebMemoryzoneApi.Controllers
             SetCookies(result.Data.AccessToken
                   , result.Data.RefreshToken
                   , result.Data.User
-                  , DateTime.Now.AddMinutes(_jwtSetting.ExpiredToken)
-                  , DateTime.Now.AddDays(_jwtSetting.ExpiredRefreshToken));
+                  , JWTHelper.GetExpiresRefreshToken(_jwtSetting.ExpiredToken)
+                  , JWTHelper.GetExpiresRefreshToken(_jwtSetting.ExpiredRefreshToken));
             return Ok(result);
         }
         [HttpPost("register")]
@@ -82,7 +83,8 @@ namespace WebMemoryzoneApi.Controllers
             SetCookies(""
                 , ""
                 , null
-                , DateTime.Now.AddYears(-100), DateTime.Now.AddYears(-100));
+                , DateTime.Now.AddYears(-100)
+                , DateTime.Now.AddYears(-100));
             return Ok(result);
         }
         [HttpPost("refresh")]
@@ -100,8 +102,8 @@ namespace WebMemoryzoneApi.Controllers
             SetCookies(result.Data.AccessToken
                 , result.Data.RefreshToken
                 , result.Data.User
-                , DateTime.Now.AddMinutes(_jwtSetting.ExpiredToken)
-                , DateTime.Now.AddDays(_jwtSetting.ExpiredRefreshToken)
+                , JWTHelper.GetExpiresRefreshToken(_jwtSetting.ExpiredToken)
+                , JWTHelper.GetExpiresRefreshToken(_jwtSetting.ExpiredRefreshToken)
                 );
             return Ok(result);
         }
