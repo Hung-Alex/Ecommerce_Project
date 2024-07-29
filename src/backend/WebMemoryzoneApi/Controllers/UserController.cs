@@ -73,7 +73,7 @@ namespace WebMemoryzoneApi.Controllers
             return Ok(result);
         }
         [HttpPut("{id:Guid}")]
-        public async Task<IActionResult> UpdateUser([FromRoute] Guid id, [FromBody] UpdateUserCommand command)
+        public async Task<IActionResult> UpdateUser([FromRoute] Guid id, [FromForm] UpdateUserCommand command)
         {
             if (id != command.UserId)
             {

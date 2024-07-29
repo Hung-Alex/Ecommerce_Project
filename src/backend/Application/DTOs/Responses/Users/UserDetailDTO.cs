@@ -16,6 +16,7 @@ namespace Application.DTOs.Responses.Users
         public string LastName { get; init; }
         public string City { get; init; }
         public string Region { get; init; }
+        public string Country { get; init; }
         public bool IsLockout { get; init; }// true is locked
         public string AvatarImage { get; init; }
         public IEnumerable<RoleDTO> Roles { get; init; }

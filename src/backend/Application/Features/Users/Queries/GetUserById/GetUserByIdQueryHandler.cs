@@ -39,6 +39,7 @@ namespace Application.Features.Users.Queries.GetUserById
                     IsLockout = applicationUser.IsLockout,
                     Region = user.Region,
                     City = user.City,
+                    Country = user.Country,
                     FristName = user.FirstName,
                     LastName = user.LastName,
                     AvatarImage = _media.GetUrl(user.AvatarImage),
