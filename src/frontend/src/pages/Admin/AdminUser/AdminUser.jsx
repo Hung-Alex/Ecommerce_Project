@@ -19,7 +19,7 @@ const AdminUsers = () => {
 
     const fetchUsers = useCallback(async () => {
             const data = await fetchUsersData();
-            setUsers(data);
+            setUsers(data.data);
     }, []);
 
     useEffect(() => {
@@ -52,10 +52,6 @@ const AdminUsers = () => {
         setShowUpdateForm(true);
     }, []);
 
-    const handleDelete = useCallback(async (row) => {
-        await handleDeleteUser(row.id);
-    }, []);
-
     const handleAddUser = useCallback(() => {
         setEditingUser(null);
         setShowForm(true);
@@ -82,7 +78,6 @@ const AdminUsers = () => {
                     ]}
                     data={users}
                     onEdit={handleEdit}
-                    onDelete={handleDelete}
                     onAdd={handleAddUser}
                 />
                 {showForm && (

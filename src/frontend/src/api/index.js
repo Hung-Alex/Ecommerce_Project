@@ -1,5 +1,6 @@
 // Export functions and objects from different API modules
 // Export functions and objects from different API modules
+export * from './method.js';
 export * from './banner.js';
 export * from './brands.js';
 export * from './categories.js';
@@ -9,5 +10,6 @@ export * from './slider.js';
 export * from './roles.js';
 export * from './users.js';
 export * from './images.js';
+
 
 // export { default as axiosInstance } from './axiosInstance';

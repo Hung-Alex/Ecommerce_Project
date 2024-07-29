@@ -1,32 +1,25 @@
-import axiosInstance from "../utils/axios.js"; // Import your axios instance
-import { toast } from 'react-hot-toast'; // Import toast from react-toastify
+// api/users.js
+
+import { get_api, post_api, delete_api, put_api } from './method.js';
 
 /**
  * Fetch users data.
  * @returns {Promise<Array>} - A promise that resolves with an array of users data.
  */
 export const fetchUsersData = async () => {
-    try {
-        const response = await axiosInstance.get("/users");
-        return response.data.data; // Return the users data
-    } catch (error) {
-        toast.error("Error fetching users data."); // Show error toast
-    }
+  const data = await get_api("/users");
+  return data;
 };
 
 /**
- * Fetch users data.
- * @returns {Promise<Array>} - A promise that resolves with an array of users data.
+ * Fetch user data by ID.
+ * @param {number} id - The ID of the user.
+ * @returns {Promise<Object>} - A promise that resolves with the user data.
  */
 export const fetchUsersId = async (id) => {
-    try {
-        const response = await axiosInstance.get(`/users/${id}`);
-        return response.data.data; // Return the users data
-    } catch (error) {
-        toast.error("Error fetching users data."); // Show error toast
-    }
+  const data = await get_api(`/users/${id}`);
+  return data;
 };
-
 
 /**
  * Update an existing user.
@@ -35,46 +28,26 @@ export const fetchUsersId = async (id) => {
  * @returns {Promise} - A promise that resolves with the response.
  */
 export const updateUser = async (userId, formData) => {
-    try {
-      const response = await axiosInstance.put(`/users/${userId}`, formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data', // Set header for form data including files
-        },
-    });
-      toast.success("User Update successfully.");
-      return response.data;
-    } catch (error) {
-      toast.error('Error updating user:', error);
-    }
-  };
+  const data = await put_api(`/users/${userId}`, formData);
+  return data;
+};
 
 /**
- * create an existing user.
- * @param {number} userId - The ID of the user to create.
- * @param {Object} formData - The created user data including images.
+ * Create a new user.
+ * @param {Object} formData - The data for the new user including images.
  * @returns {Promise} - A promise that resolves with the response.
  */
 export const createUser = async (formData) => {
-    try {
-      const response = await axiosInstance.post(`/users`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      toast.success("User created successfully.");
-      return response.data;
-    } catch (error) {
-      toast.error('Error add user:', error);
-    }
-  };
+  const data = await post_api("/users", formData);
+  return data;
+};
 
-  // Delete an User by ID
+/**
+ * Delete a user by ID.
+ * @param {number} id - The ID of the user to delete.
+ * @returns {Promise} - A promise that resolves with the response.
+ */
 export const deleteUser = async (id) => {
-  try {
-    const res = await axiosInstance.delete(`/users/${id}`);
-    return res.data;
-  } catch (error) {
-    toast.error('Error delete user:', error);
-  }
-  };
-
+  const data = await delete_api(`/users/${id}`);
+  return data;
+};
