@@ -2,6 +2,7 @@
 using Domain.Entities.Users;
 using Domain.Common;
 using Domain.Shared;
+using Domain.Entities.Payments;
 
 namespace Domain.Entities.Orders
 {
@@ -15,9 +16,13 @@ namespace Domain.Entities.Orders
             Note = note;
             UserId = userId;
         }
+        public string CancelReason { get; set; }
+        public Guid PaymentId { get; set; }
+        public Payment Payment { get; set; }
+        public Guid StatusId { get; set; }
+        public Status Status { get; set; }
         public ShipAddress ShipAddress { get; set; }
         public string Note { get; set; }
-        public OrderStatus OrderStatus { get; set; }//enum 
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
         public virtual ICollection<OrderItems> OrderItems { get; set; }
