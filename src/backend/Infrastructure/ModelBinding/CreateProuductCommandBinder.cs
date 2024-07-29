@@ -1,7 +1,6 @@
 ﻿using Application.Features.Products.Commands.CreateProduct;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
-using System.Text.RegularExpressions;
 
 
 namespace Infrastructure.ModelBinding
@@ -25,6 +24,10 @@ namespace Infrastructure.ModelBinding
                 if (!decimal.TryParse(form["Price"].FirstOrDefault(), out var price))
                 {
                     throw new ArgumentException("Invalid Price");
+                }
+                if (!decimal.TryParse(form["OldPrice"].FirstOrDefault(), out var oldPrice))
+                {
+                    throw new ArgumentException("Invalid Old Price");
                 }
                 var discount = int.TryParse(form["Discount"].FirstOrDefault(), out var disc) ? disc : (int?)null;
                 if (!Guid.TryParse(form["BrandId"].FirstOrDefault(), out var brandId))
@@ -71,6 +74,7 @@ namespace Infrastructure.ModelBinding
                         description,
                         urlSlug,
                         price,
+                        oldPrice,
                         discount,
                         brandId,
                         categoryId,

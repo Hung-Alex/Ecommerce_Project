@@ -45,7 +45,7 @@ namespace Application.Features.Users.Commands.UpdateUser
                 try
                 {
                     UpdateUser(user, request, repo);
-                    var applicationUserId = await identityService.UpdateUserByUserIdAsync(request.UserId, request.PhoneNumber, request.IsActive);
+                    var applicationUserId = await identityService.UpdateUserByUserIdAsync(request.UserId, request.PhoneNumber, request.IsLocked);
                     if (applicationUserId.IsSuccess is false)
                     {
                         transactionScope.Dispose();

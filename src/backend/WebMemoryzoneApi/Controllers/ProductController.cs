@@ -9,10 +9,12 @@ using Application.Features.Products.Commands.UpdateProductVariants;
 using Application.Features.Products.Queries.Get;
 using Application.Features.Products.Queries.GetById;
 using Application.Features.Products.Queries.GetByUrlSlug;
+using Infrastructure.Services.Auth.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using static Domain.Enums.PermissionEnum;
 
 namespace WebMemoryzoneApi.Controllers
 {
@@ -84,6 +86,7 @@ namespace WebMemoryzoneApi.Controllers
             if (!result.IsSuccess) return BadRequest(result);
             return Ok();
         }
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddProduct([FromForm] CreateProductCommand command)
         {

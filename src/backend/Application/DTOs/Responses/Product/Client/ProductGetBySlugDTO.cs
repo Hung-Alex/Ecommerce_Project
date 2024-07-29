@@ -11,6 +11,7 @@ namespace Application.DTOs.Responses.Product.Client
         public string UrlSlug { get; init; }
         public int? Discount { get; init; }
         public decimal Price { get; init; }
+        public Decimal? OldPrice { get; set; }
         public double Rate { get; init; }
         public int TotalRate { get; init; }
         public CategoryProductDTO Category { get; init; }

@@ -3,5 +3,5 @@ using MediatR;
 
 namespace Application.Features.Users.Commands.LockAccount
 {
-    public record LockAccountCommand(bool IsLock, Guid UserId) : IRequest<Result<bool>>;
+    public record LockAccountCommand(bool IsLocked, Guid UserId) : IRequest<Result<bool>>;
 }

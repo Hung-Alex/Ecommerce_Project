@@ -8,7 +8,7 @@ namespace Application.Features.Users.Commands.LockAccount
     {
         public async Task<Result<bool>> Handle(LockAccountCommand request, CancellationToken cancellationToken)
         {
-            var result = await identityService.LockAccountAsync(request.UserId, request.IsLock, cancellationToken);
+            var result = await identityService.LockAccountAsync(request.UserId, request.IsLocked, cancellationToken);
             if (result.IsSuccess is false)
             {
                 return Result<bool>.ResultFailures(new Error("LockAccount", "Lock account failed"));
