@@ -50,7 +50,7 @@ namespace Application.Features.Authen.Commands.Login
             {
                 return Result<AuthencationResponse>.ResultFailures(ErrorConstants.LoginError.LoginIsNotSuccess(request.UserName));
             }
-            return Result<AuthencationResponse>.ResultSuccess(new AuthencationResponse(token, refreshToken.Token, "Bearer",new UserAuthentication(user.Id, user.Name??"",user.ImageUrl)));
+            return Result<AuthencationResponse>.ResultSuccess(new AuthencationResponse(token, refreshToken.Token, "Bearer",user));
         }
     }
 }

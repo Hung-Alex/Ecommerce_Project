@@ -57,7 +57,7 @@ namespace Application.Features.Authen.Commands.Refresh
             var refreshTokenJson = JsonSerializer.Serialize<RefreshToken>(newRefreshToken);
             var user = await _identityService.GetUserByIdAsync(userId);
             await _identityService.SaveRefreshTokenAsync(userId, UserToken.Provider, UserToken.RefreshToken, refreshTokenJson);
-            return Result<AuthencationResponse>.ResultSuccess(new AuthencationResponse(token, newRefreshToken.Token, "Bearer", new AuthencationResponse.UserAuthentication(user.Id, user.Name ?? "", user.ImageUrl)));
+            return Result<AuthencationResponse>.ResultSuccess(new AuthencationResponse(token, newRefreshToken.Token, "Bearer", user));
         }
     }
 }

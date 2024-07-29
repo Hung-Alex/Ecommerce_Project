@@ -132,36 +132,50 @@ namespace Infrastructure.Services.Identity
             string token = await _userManager.GetAuthenticationTokenAsync(user, provider, tokenName);
             return token;
         }
+
+        // cái này có thể gây nhầm lần sau nên cần xem xét lại// ApplicationUserId và userId
         public async Task<UserDTO> GetUserAsync(string userName, CancellationToken cancellationToken = default)
         {
-            var user = await _userManager.FindByNameAsync(userName);
-            if (user is null) return null;
-            var roles = await _userManager.GetRolesAsync(user);
+            var applicatonUser = await _userManager.Users.Include(x => x.User).Where(x => x.UserName == userName).FirstOrDefaultAsync();
+            if (applicatonUser is null) return null;
+            var roles = await _userManager.GetRolesAsync(applicatonUser);
             return new UserDTO()
             {
-                Id = user.Id
+                Id = applicatonUser.Id
             ,
-                Name = user.UserName
+                Name = applicatonUser.UserName
             ,
-                Email = user.Email
+                Email = applicatonUser.Email
             ,
                 Role = roles
+            ,
+                ImageUrl = applicatonUser.User.AvatarImage
+            ,
+                City = applicatonUser.User.City
+            ,
+                Country = applicatonUser.User.Country
             };
         }
         public async Task<UserDTO> GetUserByIdAsync(Guid Id, CancellationToken cancellationToken = default)
         {
-            var user = await _userManager.FindByIdAsync(Id.ToString());
-            if (user is null) return null;
-            var roles = await _userManager.GetRolesAsync(user);
+            var applicatonUser = await _userManager.Users.Include(x => x.User).Where(x => x.Id == Id).FirstOrDefaultAsync();
+            if (applicatonUser is null) return null;
+            var roles = await _userManager.GetRolesAsync(applicatonUser);
             return new UserDTO()
             {
-                Id = user.Id
-            ,
-                Name = user.UserName
-            ,
-                Email = user.Email
-            ,
+                Id = applicatonUser.Id
+             ,
+                Name = applicatonUser.UserName
+             ,
+                Email = applicatonUser.Email
+             ,
                 Role = roles
+             ,
+                ImageUrl = applicatonUser.User.AvatarImage
+             ,
+                City = applicatonUser.User.City
+             ,
+                Country = applicatonUser.User.Country
             };
         }
 
