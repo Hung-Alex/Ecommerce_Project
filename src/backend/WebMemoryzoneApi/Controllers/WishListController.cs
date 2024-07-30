@@ -33,7 +33,7 @@ namespace WebMemoryzoneApi.Controllers
             var claimUser = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimUser.UserId);
             var result = await _mediator.Send(new AddFavoriteProductCommand(Guid.Parse(claimUser.Value), productId));
             if (!result.IsSuccess) return BadRequest(result);
-            return Ok();
+            return Ok(result);
         }
         [HttpGet]
         public async Task<ActionResult> GetWishList([FromQuery] WishListFilter filter)

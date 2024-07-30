@@ -51,14 +51,14 @@ namespace WebMemoryzoneApi.Controllers
         {
             var result = await _mediator.Send(new DeleteRattingCommand(id));
             if (!result.IsSuccess) return NotFound(result);
-            return Ok();
+            return Ok(result);
         }
         [HttpPost]
         public async Task<IActionResult> AddRatting([FromBody] CreateRattingCommand command)
         {
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result);
-            return Ok();
+            return Ok(result);
         }
     }
 }

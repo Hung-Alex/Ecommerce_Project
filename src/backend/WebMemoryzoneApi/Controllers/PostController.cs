@@ -61,7 +61,7 @@ namespace WebMemoryzoneApi.Controllers
         {
             var result = await _mediator.Send(new DeletePostCommand(id));
             if (!result.IsSuccess) return NotFound(result);
-            return Ok();
+            return Ok(result);
         }
         [AllowAnonymous]
         [HttpGet("{slug}")]
@@ -77,7 +77,7 @@ namespace WebMemoryzoneApi.Controllers
         {
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result);
-            return Ok();
+            return Ok(result);
         }
     }
 }

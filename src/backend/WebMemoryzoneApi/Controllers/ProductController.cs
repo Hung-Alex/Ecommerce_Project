@@ -83,7 +83,7 @@ namespace WebMemoryzoneApi.Controllers
         {
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result);
-            return Ok();
+            return Ok(result);
         }
 
     }
