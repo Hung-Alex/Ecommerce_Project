@@ -13,6 +13,7 @@ namespace Application.DTOs.Responses.Product.Client
         public Decimal? OldPrice { get; set; }
         public double Rate { get; init; }
         public int TotalRate {  get; init; }
+        public bool IsStock { get; set; }
         public CategoryProductDTO Category { get; init; }
         public BrandProductDTO Brand { get; init; }
         public IEnumerable<string> Images { get; set; }

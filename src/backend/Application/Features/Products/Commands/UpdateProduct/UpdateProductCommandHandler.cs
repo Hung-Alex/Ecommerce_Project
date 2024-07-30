@@ -40,6 +40,7 @@ namespace Application.Features.Products.Commands.UpdateProduct
             product.Price = request.Price;
             product.BrandId = request.BrandId;
             product.CategoryId = request.CategoryId;
+            product.IsStock = request.IsStock;
             if (request.Discount is not null)
             {
                 product.Discount = request.Discount;

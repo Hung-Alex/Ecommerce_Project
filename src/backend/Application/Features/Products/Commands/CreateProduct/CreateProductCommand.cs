@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Http;
 
 namespace Application.Features.Products.Commands.CreateProduct
 {
-    public record CreateProductSkus(string VariantName
-        , string Description);
     public record CreateProductCommand(string Name
         , string Description
         , string UrlSlug
@@ -15,7 +13,7 @@ namespace Application.Features.Products.Commands.CreateProduct
         , int? Discount
         , Guid BrandId
         , Guid CategoryId
-        , IEnumerable<CreateProductSkus> Variant
+        , bool IsStock
         , IFormFileCollection? Images
         ) : IRequest<Result<bool>>, IValidatableRequest;
 }

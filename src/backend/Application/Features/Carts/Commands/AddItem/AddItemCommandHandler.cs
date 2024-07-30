@@ -31,21 +31,8 @@ namespace Application.Features.Carts.Commands.AddItem
             var repoProduct = unitOfWork.GetRepository<Product>();
             var product = await repoProduct.FindOneAsync(new GetProductWithVariantsSpecification(request.ProductId));
             if (product is null) { return Result<bool>.ResultFailures(ErrorConstants.CartError.CartNotFound); }
-            if (request.ProductSkusId is not null)
-            {
-                var variant = product.ProductSkus.FirstOrDefault(x => x.Id == request.ProductSkusId);
-                if (variant is null)
-                {
-                    return Result<bool>.ResultFailures(ErrorConstants.NotFoundWithId((Guid)request.ProductSkusId));
-                }
-                var item = cart.CreateCartItem(request.ProductId, request.ProductSkusId, request.Quantity);
-                cart.AddItems(item);
-            }
-            else
-            {
-                var item = cart.CreateCartItem(request.ProductId, request.ProductSkusId, request.Quantity);
-                cart.AddItems(item);
-            }
+            var item = cart.CreateCartItem(request.ProductId, request.Quantity);
+            cart.AddItems(item);
             await unitOfWork.Commit();
             return Result<bool>.ResultSuccess(true);
         }

@@ -1,6 +1,5 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interface;
-using Application.DTOs.Internal;
 using Application.Features.Brands.Commands.CreateBrands;
 using Application.Features.Products.Specification;
 using Application.Utils;
@@ -66,10 +65,11 @@ namespace Application.Features.Products.Commands.CreateProduct
                 OldPrice = request.OldPrice
             ,
                 CategoryId = request.CategoryId
+            ,
+                IsStock = request.IsStock
             };
             repoProduct.Add(newProduct);
 
-            #region hanle Images
             if (request.Images is not null)
             {
                 var imageTasks = request.Images.Select(async (item, index) =>
@@ -90,14 +90,7 @@ namespace Application.Features.Products.Commands.CreateProduct
                 });
                 await Task.WhenAll(imageTasks);
             }
-            #endregion
-            if (request.Variant is not null)
-            {
-                newProduct.ProductSkus = request
-               .Variant
-               .Select(x => new ProductSkus() { Name = x.VariantName, Description = x.Description })
-               .ToList();
-            }
+
             await unitOfWork.Commit();
             return Result<bool>.ResultSuccess(true);
         }

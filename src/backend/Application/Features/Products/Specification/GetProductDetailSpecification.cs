@@ -14,7 +14,6 @@ namespace Application.Features.Products.Specification
         }
         protected override void Handler()
         {
-            AddInclude(x => x.ProductSkus);
             AddInclude(x => x.Images);
             AddInclude(x => x.Category);
 

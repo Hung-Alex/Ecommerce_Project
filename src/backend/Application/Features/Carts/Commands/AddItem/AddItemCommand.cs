@@ -4,5 +4,5 @@ using MediatR;
 
 namespace Application.Features.Carts.Commands.AddItem
 {
-    public record AddItemCommand(Guid UserId, Guid ProductId, Guid? ProductSkusId, int Quantity) : IRequest<Result<bool>>,IValidatableRequest;
+    public record AddItemCommand(Guid UserId, Guid ProductId, int Quantity) : IRequest<Result<bool>>,IValidatableRequest;
 }

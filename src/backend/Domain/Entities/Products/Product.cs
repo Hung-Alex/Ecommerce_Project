@@ -17,6 +17,7 @@ namespace Domain.Entities.Products
         public Decimal Price { get; set; }
         public Decimal? OldPrice { get; set; }
         public int? Discount { get; set; }
+        public bool IsStock { get; set; }
         public Guid? BrandId { get; set; }
         public virtual Brand Brand { get; set; }
         public virtual Categories Category { get; set; }
@@ -24,7 +25,6 @@ namespace Domain.Entities.Products
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
         public virtual IEnumerable<Image> Images { get; set; } = new List<Image>();
-        public virtual ICollection<ProductSkus> ProductSkus { get; set; } = new List<ProductSkus>();
         public virtual IEnumerable<CartItem> CartItems { get; set; }
         public virtual IEnumerable<Ratting> Rattings { get; set; }
         public virtual IEnumerable<WishList> WishLists { get; set; }

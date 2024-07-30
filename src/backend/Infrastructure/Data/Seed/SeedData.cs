@@ -84,10 +84,8 @@ namespace Infrastructure.Data.Seed
             await _dbContext.AddRangeAsync(product);
             foreach (var item in product)
             {
-                var images = AssignedImageForProduct(item);
-                var variants = AssignedVariantForProduct(item);
-                await _dbContext.AddRangeAsync(images);
-                await _dbContext.AddRangeAsync(variants);
+                var images = AssignedImageForProduct(item);    
+                await _dbContext.AddRangeAsync(images);             
             }
             var slidesData = SlideInit();
             await _dbContext.AddRangeAsync(slidesData);     
@@ -137,31 +135,7 @@ namespace Infrastructure.Data.Seed
             };
             return slides;
         }
-        private List<ProductSkus> AssignedVariantForProduct(Product product)
-        {
-            List<ProductSkus> images = new List<ProductSkus>()
-            {
-                new()
-                {
-                    ProductId=product.Id,
-                    Name="5 KG",
-                    Description="Oganic"
-                },
-                new()
-                {
-                    ProductId=product.Id,
-                    Name="4 KG",
-                    Description="Sea Food"
-                },
-                new()
-                {
-                   ProductId=product.Id,
-                    Name="3 KG",
-                    Description="Craw Fish"
-                }
-            };
-            return images;
-        }       
+        
         private List<Image> AssignedImageForProduct(Product product)
         {
             int arrayLength = this.ImageProduct.Length;
