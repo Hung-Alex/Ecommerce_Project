@@ -46,22 +46,22 @@ const Header = () => {
               </span>
             )}
           </Link>
-          {cart ? (
-            <div className="relative">
-              <button onClick={toggleDropdown} className="border-4 shadow-lg rounded-full">
-                <img
-                  className="w-8 h-8 rounded-full"
-                  src={user?.image || "https://cdn-icons-png.flaticon.com/512/149/149071.png"}
-                  alt="User avatar"
-                />
-              </button>
-              {isDropdownOpen && <UserDropdown />}
-            </div>
-          ) : (
-            <Link className="text-lg drop-shadow-xl py-2 px-3 rounded-full hover:bg-[#274C5B] hover:text-white transition-all duration-500 ease-in-out" to="/login">
-              Login
-            </Link>
-          )}
+          {user ? (
+          <div className="relative">
+            <button onClick={toggleDropdown} className="border-4 shadow-lg rounded-full">
+              <img
+                className="w-10 h-10 rounded-full"
+                src={user?.ImageUrl || "https://cdn-icons-png.flaticon.com/512/149/149071.png"}
+                alt="User avatar"
+              />
+            </button>
+            {isDropdownOpen && <UserDropdown />}
+          </div>
+        ) : (
+          <Link className="text-lg drop-shadow-xl py-2 px-3 rounded-full hover:bg-[#274C5B] hover:text-white transition-all duration-500 ease-in-out" to="/login">
+            Login
+          </Link>
+        )}
         </div>
       </div>
 
@@ -87,7 +87,7 @@ const Header = () => {
             <button onClick={toggleDropdown} className="border-4 shadow-lg rounded-full">
               <img
                 className="w-10 h-10 rounded-full"
-                src={user?.image || "https://cdn-icons-png.flaticon.com/512/149/149071.png"}
+                src={user?.ImageUrl || "https://cdn-icons-png.flaticon.com/512/149/149071.png"}
                 alt="User avatar"
               />
             </button>

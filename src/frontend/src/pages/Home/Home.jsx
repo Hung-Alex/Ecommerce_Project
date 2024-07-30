@@ -2,7 +2,6 @@ import HomeBanner from "./Banner/HomeBanner";
 import Offer from "./Offer/Offer";
 import About from "./AboutUs/About";
 import Product from "./Product/Product";
-import Testimonial from "./Testimonial/Testimonial";
 import ProductOffer from "./Offer/ProductOffer";
 import Our from "./Our/Our";
 import Category from "./Category/Category";
@@ -20,14 +19,13 @@ const HomePage = () => {
       <Category />
       <div className="max-w-screen-xl mx-auto">
         <Product />
+        {/* <Offer /> */}
         <Brands />
-        <Offer />
-        <About />
-        <Testimonial />
-        <ProductOffer />
-        <Our />
-        <News />
-        <Subscribe />
+        {/* <About /> */}
+        {/* <ProductOffer /> */}
+        {/* <Our /> */}
+        {/* <News /> */}
+        {/* <Subscribe /> */}
       </div>
     </>
   );

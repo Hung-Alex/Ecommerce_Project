@@ -10,8 +10,8 @@ const HomeBanner = () => {
   return (
     <div
       ref={ref}
-      className={`animated-background bg-[#f1eff0] h-[520px] flex flex-col justify-center bg-center bg-cover pl-20 ${isVisible ? 'slide-up visible' : 'slide-up'}`}
-      // style={{ backgroundImage: `url(${img})` }}
+      className={` bg-[#f1eff0] h-[520px] flex flex-col justify-center bg-center bg-cover pl-20 ${isVisible ? 'slide-up visible' : 'slide-up'}`}
+      style={{ backgroundImage: `url(${img})` }}
     >
       <div className={`${isVisible ? 'fade-in visible' : 'fade-in'}`}>
         <p className="font-[Yellowtail] text-[#68A47F] text-4xl">

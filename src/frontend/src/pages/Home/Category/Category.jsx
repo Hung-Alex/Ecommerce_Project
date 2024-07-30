@@ -7,10 +7,6 @@ import CatCard from '../../../components/UI/Card/CatCard';
 const Category = () => {
     const { categories, loading, error } = useCategoryContext();
 
-    // Handle loading and error states
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error loading categories: {error.message}</p>;
-
     const swiperOptions = {
         loop: true,
         autoplay: {
