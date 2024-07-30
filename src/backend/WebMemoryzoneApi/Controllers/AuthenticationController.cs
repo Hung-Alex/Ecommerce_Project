@@ -115,7 +115,7 @@ namespace WebMemoryzoneApi.Controllers
             Response.Cookies.Append(UserToken.RefreshTokenCookiesCanRead, refreshToken, new CookieOptions() { SameSite = SameSiteMode.None, Secure = true, IsEssential = true, Expires = expiredTimeRefreshToken });
             Response.Cookies.Append(UserToken.UserInfoNoneBlock, userInfo, new CookieOptions() { SameSite = SameSiteMode.None, Secure = true, IsEssential = true, Expires = expiredTimeAccestoken });
             //http only
-            Response.Cookies.Append(UserToken.AccessTokenCookies, accessToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.None, Secure = true, IsEssential = true, Expires = expiredTimeAccestoken });
+            Response.Cookies.Append(UserToken.AccessTokenCookies, accessToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.None, Secure = true, IsEssential = true, Expires = expiredTimeRefreshToken });
             Response.Cookies.Append(UserToken.RefreshTokenCookies, refreshToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.None, Secure = true, IsEssential = true, Expires = expiredTimeRefreshToken });
         }
     }

@@ -54,10 +54,10 @@ namespace Application.Features.Authen.Commands.Refresh
             var newRefreshToken = JWTHelper.GenerateRefreshToken(JWTHelper.GetExpiresRefreshToken(_jwtSetting.ExpiredRefreshToken));
             var token = await _jwtProvider.GenerateTokenAsync(userId);
             //convert refresh token into json then save it
-            var refreshTokenJson = JsonSerializer.Serialize<RefreshToken>(newRefreshToken);
+            //var refreshTokenJson = JsonSerializer.Serialize<RefreshToken>(newRefreshToken);
             var user = await _identityService.GetUserByIdAsync(userId);
-            await _identityService.SaveRefreshTokenAsync(userId, UserToken.Provider, UserToken.RefreshToken, refreshTokenJson);
-            return Result<AuthencationResponse>.ResultSuccess(new AuthencationResponse(token, newRefreshToken.Token, "Bearer", user));
+            //await _identityService.SaveRefreshTokenAsync(userId, UserToken.Provider, UserToken.RefreshToken, refreshTokenJson);
+            return Result<AuthencationResponse>.ResultSuccess(new AuthencationResponse(token, request.RefreshToken, "Bearer", user));
         }
     }
 }

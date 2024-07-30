@@ -9,6 +9,8 @@ namespace Infrastructure.Data.Configuration
         public void Configure(EntityTypeBuilder<Payment> builder)
         {
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.PaymentMethod)
+                .HasConversion<int>();
         }
     }
 }
