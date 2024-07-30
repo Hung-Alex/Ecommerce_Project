@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { UploadUserAvatar as UploadUserAvatarapi } from '../../../api';
+import { DEFAULT_IMAGE_URLS } from '../../../constants/imageUrls';
 
 const UploadUserAvatar = ({ userId, currentAvatar }) => {
     const [previewUrl, setPreviewUrl] = useState(currentAvatar);
@@ -43,7 +44,7 @@ const UploadUserAvatar = ({ userId, currentAvatar }) => {
         <div className="flex justify-center relative mt-2">
             <img
                 className="rounded-full bg-slate-200 w-32 h-32 object-cover"
-                src={previewUrl || '/default-avatar.png'} // Default avatar if none selected
+                src={previewUrl || DEFAULT_IMAGE_URLS.avatar} // Default avatar if none selected
                 alt="User Avatar"
             />
             <input

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { AiOutlinePlus } from 'react-icons/ai';
+import { DEFAULT_IMAGE_URLS } from '../../../constants/imageUrls';
 
 const Table = ({ columns, data = [], onEdit, onDelete, onAdd }) => {
   const [search, setSearch] = useState('');
@@ -119,7 +120,7 @@ const Table = ({ columns, data = [], onEdit, onDelete, onAdd }) => {
                           </span>
                         ) : imageAccessorsSet.has(col.accessor) ? (
                           <img
-                            src={Array.isArray(cellValue) ? cellValue[0] : cellValue}
+                            src={Array.isArray(cellValue) ? cellValue[0] : cellValue || DEFAULT_IMAGE_URLS.avatar}
                             alt="Image"
                             className="h-14 w-14 object-cover rounded-full"
                           />

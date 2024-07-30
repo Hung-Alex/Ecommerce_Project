@@ -9,11 +9,13 @@ import Category from "./Category/Category";
 import News from "./News/News";
 import Subscribe from "./Subscribe/Subscribe";
 import Brands from "./Brands/Brands";
+import TokenChecker from "../../Test";
 
 
 const HomePage = () => {
   return (
     <>
+    <TokenChecker/>
       <HomeBanner />
       <Category />
       <div className="max-w-screen-xl mx-auto">
