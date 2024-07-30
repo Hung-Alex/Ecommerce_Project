@@ -33,16 +33,12 @@ const UserProvider = ({ children }) => {
         if (userFromCookies) {
           setUser(userFromCookies);
         }
-        // Check if token needs to be refreshed (less than 1 minute left)
-        if (expirationStatus.includes('Token còn hiệu lực trong') && parseInt(expirationStatus.match(/\d+/)[0]) < 1) {
-          await refreshToken();
+      }else{
+        if (refreshToken) {
+          await refreshToken(); // Try refreshing the token
+          await checkAuthStatus(); // Retry checking status
         } else {
-          // Check authentication status when component mounts
-          const userFromCookies = getUserFromCookies();
-          if (userFromCookies) {
-            setUser(userFromCookies);
-          }
-          return;
+          setUser(null); // No token available
         }
       }
     } catch (error) {
