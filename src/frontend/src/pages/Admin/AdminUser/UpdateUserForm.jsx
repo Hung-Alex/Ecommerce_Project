@@ -104,7 +104,7 @@ const UpdateUserForm = ({ userId, updateUserData, onClose }) => {
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white border-t-2 border-[#7eb693] shadow-md rounded max-w-3xl w-full max-h-[85vh] overflow-auto">
-                <h3 className="text-xl p-3">Personal Information</h3>
+                <h3 className="text-xl p-3">Personal Information<br/>{userName}</h3>
                     <UploadUserAvatar userId={userId} currentAvatar={currentAvatar} />
                 {/* User section */}
                 <form onSubmit={handleSubmit}>
