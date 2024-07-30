@@ -1,9 +1,14 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { UploadUserAvatar as UploadUserAvatarapi } from '../../../api';
+import { DEFAULT_IMAGE_URLS } from '../../../constants/imageUrls';
 
-const UploadUserAvatar = ({ userId }) => {
-    const [previewUrl, setPreviewUrl] = useState(null);
+const UploadUserAvatar = ({ userId, currentAvatar }) => {
+    const [previewUrl, setPreviewUrl] = useState(currentAvatar);
     const fileInputRef = useRef(null);
+
+    useEffect(() => {
+        setPreviewUrl(currentAvatar);
+    }, [currentAvatar]);
 
     const handleFileChange = () => {
         const file = fileInputRef.current.files[0];
@@ -20,6 +25,8 @@ const UploadUserAvatar = ({ userId }) => {
         if (file) {
             try {
                 await UploadUserAvatarapi(userId, file);
+                // Assuming the API returns the new avatar URL
+                setPreviewUrl(URL.createObjectURL(file)); // Update with new avatar URL if needed
                 // Handle successful upload, e.g., show a success message or update the UI
             } catch (error) {
                 console.error('Error uploading avatar:', error);
@@ -31,32 +38,33 @@ const UploadUserAvatar = ({ userId }) => {
     };
 
     return (
-        <div>
-            <div className="p-3 border-t mt-3">
-                <form onSubmit={handleUpload}>
-                    <label htmlFor="photo">Your Profile Photo</label>
-                    <img
-                        className="mt-2 rounded-full bg-slate-200 w-32 h-32 object-cover"
-                        src={previewUrl || '/default-avatar.png'} // Default avatar if none selected
-                        alt="User Avatar"
-                    />
-                    <div className="mt-4">
-                        <input
-                            type="file"
-                            id="photo"
-                            ref={fileInputRef}
-                            // className="bg-[#7EB693] ml-4 px-4 py-1 rounded text-white cursor-pointer"
-                            onChange={handleFileChange}
-                        />
-                        <input
-                            className="bg-[#7EB693] ml-4 px-4 py-1 rounded text-white cursor-pointer"
-                            type="submit"
-                            value="Save"
-                        />
-                    </div>
-                </form>
-            </div>
+        <div className="p-3 border-t mt-3">
+    <form onSubmit={handleUpload} className="relative">
+        <label htmlFor="photo" className="flex justify-center text-lg font-semibold">Your Profile Photo</label>
+        <div className="flex justify-center relative mt-2">
+            <img
+                className="rounded-full bg-slate-200 w-32 h-32 object-cover"
+                src={previewUrl || DEFAULT_IMAGE_URLS.avatar} // Default avatar if none selected
+                alt="User Avatar"
+            />
+            <input
+                type="file"
+                id="photo"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                className="absolute inset-0 opacity-0 cursor-pointer"
+            />
         </div>
+        <div className="flex justify-center mt-4">
+            <input
+                className="bg-[#7EB693] w-[50%] px-4 py-1 rounded text-white cursor-pointer"
+                type="submit"
+                value="Upload"
+            />
+        </div>
+    </form>
+</div>
+
     );
 };
 

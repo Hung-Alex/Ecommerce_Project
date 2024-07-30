@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../../../utils/axios';
 import {
+    fetchRolesData,
     fetchUsersId,
     updateUser,
     deleteUser
@@ -10,13 +11,14 @@ import UploadUserAvatar from '../comp/UploadUserAvatar';
 const UpdateUserForm = ({ userId, updateUserData, onClose }) => {
     const [userName, setUserName] = useState('');
     const [email, setEmail] = useState('');
+    const [currentAvatar, setCurrentAvatar] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [region, setRegion] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [city, setCity] = useState('');
     const [country, setCountry] = useState('');
-    const [isActive, setIsActive] = useState(false);
+    const [isLocked, setIsLocked] = useState(false);
     const [roleOptions, setRoleOptions] = useState([]);
     const [roles, setRoles] = useState([]);
     const [error, setError] = useState(null);
@@ -24,17 +26,18 @@ const UpdateUserForm = ({ userId, updateUserData, onClose }) => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get(`/users/${userId}`);
-                const userData = response.data.data;
+                const response = await fetchUsersId(userId);
+                const userData = response.data;
                 setUserName(userData.userName);
                 setEmail(userData.email);
+                setCurrentAvatar(userData.avatarImage)
                 setPhoneNumber(userData.phoneNumber);
                 setRegion(userData.region);
                 setFirstName(userData.firstName);
                 setLastName(userData.lastName);
                 setCity(userData.city);
                 setCountry(userData.country);
-                setIsActive(userData.isLockout); // Assuming 'isLockout' is used for active status
+                setIsLocked(userData.isLocked); // Assuming 'isLocked' is used for Locked status
                 setRoles(userData.roles.map(role => role.id)); // Map to array of role IDs
             } catch (err) {
                 console.error('Error fetching user data:', err);
@@ -44,8 +47,8 @@ const UpdateUserForm = ({ userId, updateUserData, onClose }) => {
 
         const fetchRoles = async () => {
             try {
-                const response = await axios.get('/roles');
-                setRoleOptions(response.data.data); // Ensure this is an array
+                const response = await fetchRolesData();
+                setRoleOptions(response); // Ensure this is an array
             } catch (err) {
                 console.error('Error fetching roles:', err);
                 setError('Failed to fetch roles.');
@@ -67,7 +70,7 @@ const UpdateUserForm = ({ userId, updateUserData, onClose }) => {
         formData.append('lastName', lastName);
         formData.append('city', city);
         formData.append('country', country);
-        formData.append('isActive', isActive ? true : false);
+        formData.append('isLocked', isLocked ? true : false);
         formData.append('userId', userId);
 
         // Convert the roles array to a JSON string and append it
@@ -102,7 +105,7 @@ const UpdateUserForm = ({ userId, updateUserData, onClose }) => {
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white border-t-2 border-[#7eb693] shadow-md rounded max-w-3xl w-full max-h-[85vh] overflow-auto">
                 <h3 className="text-xl p-3">Personal Information</h3>
-                    <UploadUserAvatar userId={userId} />
+                    <UploadUserAvatar userId={userId} currentAvatar={currentAvatar} />
                 {/* User section */}
                 <form onSubmit={handleSubmit}>
                     <div className="p-3 grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -225,16 +228,15 @@ const UpdateUserForm = ({ userId, updateUserData, onClose }) => {
                     </div>
 
                     <div className="flex justify-end m-5">
-                        {/* isActive Checkbox */}
+                        {/* isLocked Checkbox */}
                         <div className="flex justify-end mx-5">
                             <label className="inline-flex items-center cursor-pointer">
                                 <input
                                     type="checkbox"
-                                    checked={isActive}
-                                    onChange={(event) => setIsActive(event.target.checked)}
-                                    className="form-checkbox"
+                                    checked={isLocked}
+                                    onChange={(event) => setIsLocked(event.target.checked)}
+                                    className="form-checkbox hidden"
                                 />
-                                <span className="ml-2">Active</span>
                             </label>
                         </div>
                         <button

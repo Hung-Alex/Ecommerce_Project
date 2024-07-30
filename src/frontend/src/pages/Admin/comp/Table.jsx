@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { AiOutlinePlus } from 'react-icons/ai';
+import { DEFAULT_IMAGE_URLS } from '../../../constants/imageUrls';
 
 const Table = ({ columns, data = [], onEdit, onDelete, onAdd }) => {
   const [search, setSearch] = useState('');
@@ -8,6 +9,16 @@ const Table = ({ columns, data = [], onEdit, onDelete, onAdd }) => {
   const rowsPerPage = 10;
 
   const hiddenColumns = new Set(['id']);
+  const imageAccessorsSet = new Set([
+    'image',
+    'avatarImage',
+    'images',
+    'logoImageUrl',
+    'imageUrl'
+  ]);
+  const booleanAccessorsSet = new Set([
+    "isVisible","published","isActive"
+  ]);
 
   const filteredData = Array.isArray(data) ? data.filter(row =>
     columns.some(col =>
@@ -99,7 +110,7 @@ const Table = ({ columns, data = [], onEdit, onDelete, onAdd }) => {
                         key={colIndex}
                         className={`px-2 py-2 whitespace-nowrap text-gray-900 truncate max-w-[200px] overflow-hidden text-ellipsis ${colClass}`}
                       >
-                        {col.accessor === 'isVisible' || col.accessor === 'isActive' || col.accessor === 'published' ? (
+                        {booleanAccessorsSet.has(col.accessor) ? (
                           <span
                             className={`px-2 py-1 rounded-full text-sm ${
                               cellValue ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
@@ -107,9 +118,9 @@ const Table = ({ columns, data = [], onEdit, onDelete, onAdd }) => {
                           >
                             {cellValue ? 'True' : 'False'}
                           </span>
-                        ) : col.accessor === 'image' || col.accessor === 'avatarImage' || col.accessor === 'images' || col.accessor === 'logoImageUrl' || col.accessor === 'imageUrl' ? (
+                        ) : imageAccessorsSet.has(col.accessor) ? (
                           <img
-                            src={Array.isArray(cellValue) ? cellValue[0] : cellValue}
+                            src={Array.isArray(cellValue) ? cellValue[0] : cellValue || DEFAULT_IMAGE_URLS.avatar}
                             alt="Image"
                             className="h-14 w-14 object-cover rounded-full"
                           />

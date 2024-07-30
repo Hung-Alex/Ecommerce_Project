@@ -6,7 +6,8 @@ import 'swiper/css/pagination'; // Import pagination styles (optional)
 import CatCard from "../../../components/UI/Card/CatCard.jsx";
 import { useBrandContext } from "../../../context/BrandContext.jsx";
 
-const Brands = () => {
+
+export default function Brands() {
   const { brands, loading, error } = useBrandContext();
 
   const handleError = (error) => {
@@ -48,5 +49,3 @@ const Brands = () => {
     </div>
   );
 };
-
-export default Brands;
