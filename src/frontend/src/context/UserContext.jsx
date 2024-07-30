@@ -82,7 +82,6 @@ const UserProvider = ({ children }) => {
   };
   
   useEffect(() => {
-    refreshToken();
     checkAuthStatus();
   }, []);
   
