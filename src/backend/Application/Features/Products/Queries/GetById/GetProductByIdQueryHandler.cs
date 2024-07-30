@@ -25,6 +25,8 @@ namespace Application.Features.Products.Queries.GetById
                 Description = product.Description,
                 Price = product.Price,
                 Discount = product.Discount,
+                IsStock = product.IsStock,
+                OldPrice = product.OldPrice,
                 UrlSlug = product.UrlSlug,
                 CategoryId = product.CategoryId,
                 BrandId = product.BrandId,

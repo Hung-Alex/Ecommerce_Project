@@ -38,6 +38,7 @@ namespace Application.Features.Products.Commands.UpdateProduct
             product.Name = request.Name;
             product.Description = request.Description;
             product.Price = request.Price;
+            product.OldPrice = request.OldPrice;
             product.BrandId = request.BrandId;
             product.CategoryId = request.CategoryId;
             product.IsStock = request.IsStock;

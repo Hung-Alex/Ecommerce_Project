@@ -28,6 +28,7 @@ namespace Application.Features.Products.Queries.Get
                 Discount = x.Discount,
                 Price = x.Price,
                 OldPrice = x.OldPrice,
+                IsStock=x.IsStock,
                 Brand = mapper.Map<BrandProductDTO>(x.Brand),
                 Category = mapper.Map<CategoryProductDTO>(x.Category),
                 Rate = x.Rattings.Count() > 0 ? x.Rattings.Average(r => r.Rate) : 0,

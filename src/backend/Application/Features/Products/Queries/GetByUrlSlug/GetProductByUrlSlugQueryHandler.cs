@@ -30,6 +30,7 @@ namespace Application.Features.Products.Queries.GetByUrlSlug
                 Discount = product.Discount,
                 Price = product.Price,
                 OldPrice = product.OldPrice,
+                IsStock = product.IsStock,
                 Brand = mapper.Map<BrandProductDTO>(product.Brand),
                 Category = mapper.Map<CategoryProductDTO>(product.Category),
                 Rate = product.Rattings.Count() > 0 ? product.Rattings.Average(r => r.Rate) : 0,
