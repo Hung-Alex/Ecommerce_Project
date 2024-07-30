@@ -37,21 +37,13 @@ const UserProvider = ({ children }) => {
         if (expirationStatus.includes('Token còn hiệu lực trong') && parseInt(expirationStatus.match(/\d+/)[0]) < 1) {
           await refreshToken();
         } else {
-         // Check authentication status when component mounts
-        const userFromCookies = getUserFromCookies();
-        if (userFromCookies) {
-          setUser(userFromCookies);
-        }
+          // Check authentication status when component mounts
+          const userFromCookies = getUserFromCookies();
+          if (userFromCookies) {
+            setUser(userFromCookies);
+          }
           return;
         }
-      }
-
-      const refreshToken = Cookies.get('refresh-token');
-      if (refreshToken) {
-        await refreshToken(); // Try refreshing the token
-        await checkAuthStatus(); // Retry checking status
-      } else {
-        setUser(null); // No token available
       }
     } catch (error) {
       console.error("Failed to check authentication status: ", error);
@@ -61,15 +53,11 @@ const UserProvider = ({ children }) => {
 
   const refreshToken = async () => {
     try {
-      const response = await axios.post("/authentications/refresh");
-      // Check authentication status when component mounts
-      const userFromCookies = getUserFromCookies();
-      if (userFromCookies) {
-        setUser(userFromCookies);
-      }
+      await axios.post("/authentications/refresh");
+      await checkAuthStatus();
     } catch (error) {
       console.error("Failed to refresh token: ", error);
-      logout(); // Handle token refresh failure
+      // logout(); // Handle token refresh failure
       throw error; // Re-throw error for further handling
     }
   };
@@ -98,6 +86,7 @@ const UserProvider = ({ children }) => {
   };
   
   useEffect(() => {
+    refreshToken();
     checkAuthStatus();
   }, []);
   
