@@ -22,25 +22,13 @@ const ProductInfo = () => {
     }
   }, [productData]);
 
-  const handleDecrement = () => {
-    if (quantity > 1) setQuantity(prev => prev - 1);
-  };
-
-  const handleIncrement = () => {
-    if (quantity < 10) setQuantity(prev => prev + 1);
-  };
-
   const handleAddToCart = async () => {
     if (!user) {
       toast.error("You need to log in to add items to the cart.");
       return;
     }
-    if (!selectedVariant) {
-      toast.error("Please select a variant.");
-      return;
-    }
     try {
-      await addToCart({ productId: productData.id, quantity, variantId: selectedVariant.id });
+      await addToCart({ productId: productData.id, quantity });
       toast.success("Added to cart");
     } catch (error) {
       toast.error("Error adding product to cart");
@@ -107,7 +95,7 @@ const ProductImages = ({ images, mainImage, setMainImage }) => (
 const ProductDetails = ({ product, quantity, setQuantity, selectedVariant, setSelectedVariant, tooltip, setTooltip, onAddToCart }) => (
   <div className="w-full md:w-1/2 px-4">
     <h2 className="text-3xl font-bold mb-2">{product?.name || "Product Name"}</h2>
-    <p className="text-gray-600 mb-4">SKU: {product?.sku || "N/A"}</p>
+    {/* <p className="text-gray-600 mb-4">SKU: {product?.sku || "N/A"}</p> */}
     <div className="mb-4">
       <span className="text-2xl font-bold mr-2">${product?.price || "0.00"}</span>
       <span className="text-gray-500 line-through">${product?.oldPrice || "0.00"}</span>
@@ -118,7 +106,7 @@ const ProductDetails = ({ product, quantity, setQuantity, selectedVariant, setSe
     </div>
     <p className="text-gray-700 mb-6">{product?.description || "No description available"}</p>
 
-    <div className="mb-6">
+    {/* <div className="mb-6">
       <h3 className="text-lg font-semibold mb-2">Select Option:</h3>
       <div className="relative">
         <div className="flex flex-wrap gap-2 mt-2">
@@ -141,14 +129,14 @@ const ProductDetails = ({ product, quantity, setQuantity, selectedVariant, setSe
           ))}
         </div>
       </div>
-    </div>
+    </div> */}
 
-    <QuantitySelector quantity={quantity} onDecrement={() => setQuantity(q => q - 1)} onIncrement={() => setQuantity(q => q + 1)} />
+      <QuantitySelector quantity={quantity} onDecrement={() => setQuantity(q => q - 1)} onIncrement={() => setQuantity(q => q + 1)} />
 
-    <div className="flex space-x-4 mb-6">
-      <ActionButtons onAddToCart={onAddToCart} />
+      <div className="flex space-x-4 mb-6">
+        <ActionButtons onAddToCart={onAddToCart} />
+      </div>
     </div>
-  </div>
 );
 
 const QuantitySelector = ({ quantity, onDecrement, onIncrement }) => (
@@ -159,6 +147,7 @@ const QuantitySelector = ({ quantity, onDecrement, onIncrement }) => (
         type="button"
         className="w-8 h-8 flex items-center justify-center bg-gray-300 rounded-md text-gray-700 hover:bg-gray-400"
         onClick={onDecrement}
+        disabled={quantity <= 1}
       >
         -
       </button>
@@ -193,14 +182,14 @@ const ActionButtons = ({ onAddToCart }) => (
       </svg>
       Add to Cart
     </button>
-    <button
+    {/* <button
       className="flex gap-2 items-center text-[#4fb373] border border-[#4fb373] px-6 py-2 rounded-md hover:bg-[#f0fff4] focus:outline-none focus:ring-2 focus:ring-offset-2"
     >
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 21.75c4.287 0 7.75-3.463 7.75-7.75S16.287 6.25 12 6.25 4.25 9.713 4.25 14s3.463 7.75 7.75 7.75zm0-15a5.25 5.25 0 1 1 0 10.5A5.25 5.25 0 0 1 12 6.75zm-1.25 5.25a1.25 1.25 0 1 1 2.5 0 1.25 1.25 0 0 1-2.5 0z" />
       </svg>
       View Details
-    </button>
+    </button> */}
   </>
 );
 

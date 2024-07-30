@@ -7,7 +7,7 @@ import { UserContext } from "../../context/UserContext";
 import axios from "../../utils/axios";
 
 const GoogleLoginButton = () => {
-  const { login } = useContext(UserContext);
+  const { checkAuthStatus } = useContext(UserContext);
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/";
@@ -20,9 +20,7 @@ const GoogleLoginButton = () => {
       });
       if (res.data) {
         toast.success("Login successfully");
-        localStorage.setItem("accessToken", res.data.data.accessToken);
-        localStorage.setItem("refreshToken", res.data.data.refreshToken);
-        login(res.data.data);
+        checkAuthStatus();
         navigate(from, { replace: true });
       }
     } catch (error) {
