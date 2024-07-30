@@ -14,6 +14,7 @@ namespace Domain.Entities.Payments
         public DateTime TransactionDate { get; set; }
         public decimal Fee { get; set; }
         public Guid StatusId { get; set; }
+        public virtual Status Status { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
         public string CreatedBy { get; set; }

@@ -6,7 +6,7 @@ using Domain.Entities.Payments;
 
 namespace Domain.Entities.Orders
 {
-    public class Order : BaseEntity, IDatedModification, IAggregateRoot
+    public class Order : BaseEntity, IDatedModification, IAggregateRoot, ISoftDelete
     {
         public Order() : base() { }
         public Order(ShipAddress shipAddress, List<OrderItems> items, string note, Guid userId) : base()
@@ -28,5 +28,7 @@ namespace Domain.Entities.Orders
         public virtual ICollection<OrderItems> OrderItems { get; set; }
         public Guid UserId { get; set; }
         public User User { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTimeOffset? DeletedAt { get; set; }
     }
 }
