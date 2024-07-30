@@ -2,6 +2,7 @@ import { createContext, useState, useEffect } from "react";
 import axios from "../utils/axios";
 import Cookies from 'js-cookie';
 import { checkTokenExpiration } from '../utils/tokenUtils'; // Import hàm kiểm tra thời hạn token
+import { toast } from 'react-hot-toast'; // Thư viện thông báo
 
 export const UserContext = createContext({
   user: null,
@@ -25,6 +26,7 @@ const UserProvider = ({ children }) => {
   const checkAuthStatus = async () => {
     try {
       const accessToken = Cookies.get('access-token');
+      console.log(accessToken);
       if (accessToken) {
         const expirationStatus = checkTokenExpiration(accessToken);
         console.log(expirationStatus); // Optional: Log the token expiration status
@@ -34,6 +36,8 @@ const UserProvider = ({ children }) => {
           setUser(userFromCookies);
         }
       }else{
+        const refreshToken = Cookies.get('refresh-token');
+        console.log(refreshToken);
         if (refreshToken) {
           await refreshToken(); // Try refreshing the token
           await checkAuthStatus(); // Retry checking status
@@ -54,6 +58,7 @@ const UserProvider = ({ children }) => {
     } catch (error) {
       console.error("Failed to refresh token: ", error);
       // logout(); // Handle token refresh failure
+      // toast.error('login lại đi'); // Hiển thị thông báo lỗi
       throw error; // Re-throw error for further handling
     }
   };
@@ -93,8 +98,7 @@ const UserProvider = ({ children }) => {
     refreshToken,
     checkAuthStatus,
   };
-  
-  console.log(user);
+
   return (
     <UserContext.Provider value={userInfo}>{children}</UserContext.Provider>
   );
