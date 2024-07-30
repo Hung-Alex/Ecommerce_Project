@@ -26,19 +26,20 @@ const UserProvider = ({ children }) => {
   const checkAuthStatus = async () => {
     try {
       const accessToken = Cookies.get('access-token');
-      console.log(accessToken);
+
       if (accessToken) {
-        const expirationStatus = checkTokenExpiration(accessToken);
-        console.log(expirationStatus); // Optional: Log the token expiration status
+        // const expirationStatus = checkTokenExpiration(accessToken);
+        // console.log(expirationStatus); // Optional: Log the token expiration status
+
         // Check authentication status when component mounts
         const userFromCookies = getUserFromCookies();
         if (userFromCookies) {
           setUser(userFromCookies);
         }
-      }else{
-        const refreshToken = Cookies.get('refresh-token');
-        console.log(refreshToken);
-        if (refreshToken) {
+      } else {
+        const refreshTokens = Cookies.get('refresh-token');
+
+        if (refreshTokens) {
           await refreshToken(); // Try refreshing the token
           await checkAuthStatus(); // Retry checking status
         } else {
@@ -49,6 +50,7 @@ const UserProvider = ({ children }) => {
       console.error("Failed to check authentication status: ", error);
       setUser(null);
     }
+
   };
 
   const refreshToken = async () => {
@@ -65,7 +67,7 @@ const UserProvider = ({ children }) => {
   const login = async (data) => {
     try {
       const response = await axios.post("/authentications/login", data);
-      if(response){
+      if (response) {
         const userFromCookies = getUserFromCookies();
         if (userFromCookies) {
           setUser(userFromCookies);
@@ -75,7 +77,7 @@ const UserProvider = ({ children }) => {
       console.error("Login failed: ", error);
     }
   };
-  
+
   const logout = async () => {
     try {
       await axios.get("/authentications/logout");
@@ -85,11 +87,11 @@ const UserProvider = ({ children }) => {
       setUser(null);
     }
   };
-  
+
   useEffect(() => {
     checkAuthStatus();
   }, []);
-  
+
   const userInfo = {
     user,
     setUser,

@@ -7,7 +7,7 @@ const PrivateRoute = ({ children }) => {
 
   const { user } = useContext(UserContext);
 
-  if (loading) {
+  if (user) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
         <span className="loading loading-bars loading-md text-[#8810d8]"></span>
@@ -15,7 +15,7 @@ const PrivateRoute = ({ children }) => {
     );
   }
 
-  if (user) {
+  if (!user) {
     return children;
   }
 

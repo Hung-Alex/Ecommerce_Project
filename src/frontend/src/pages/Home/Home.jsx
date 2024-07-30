@@ -24,7 +24,7 @@ const HomePage = () => {
         {/* <About /> */}
         {/* <ProductOffer /> */}
         {/* <Our /> */}
-        {/* <News /> */}
+        <News />
         {/* <Subscribe /> */}
       </div>
     </>

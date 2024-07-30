@@ -14,7 +14,7 @@ const News = () => {
             Discover weekly content about <br /> organic food, & more
           </h2>
         </div>
-        <Button className="w-[150px] border border-[#274c5b] text-[#274c5b]">
+        <Button href='/news' className="w-[150px] border border-[#274c5b] text-[#274c5b]">
           More News{" "}
           <BsArrowRightShort className="bg-[#335B6B] text-white rounded-full ml-1" />
         </Button>

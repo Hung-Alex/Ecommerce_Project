@@ -15,10 +15,10 @@ function SignUp() {
   const onSubmit = async (data) => {
     try {
       const response = await axios.post("/authentications/register", data);
-      if (response.data) {
+      if (response.data.isSuccess === true) {
         const notify = () => toast.success("Signup successfully");
         notify();
-        login(response.data.data);
+        login(data);
         navigate(from, { replace: true });
       }
     } catch (error) {
