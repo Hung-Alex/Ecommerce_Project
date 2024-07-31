@@ -47,7 +47,7 @@ const Table = ({ columns, data = [], onEdit, onDelete, onAdd }) => {
   };
 
   return (
-    <div className="p-6">
+    <div className="">
       <div className="mb-4 flex items-center">
         <button
           onClick={onAdd}
