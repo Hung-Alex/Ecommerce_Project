@@ -5,9 +5,7 @@ import AddNewsForm from "./AddNewsForm";
 import {toast} from "react-hot-toast";
 import {
   fetchNewsData,
-  updateNews,
   deleteNews,
-  createNews
 } from "../../../api"
 
 const AdminNews = () => {
