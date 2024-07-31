@@ -1,6 +1,6 @@
 // api/users.js
 
-import { get_api, post_api, delete_api, put_api } from './method.js';
+import { get_api, post_json, post_form, put_json, put_form, delete_api } from './method.js';
 
 /**
  * Fetch users data.
@@ -28,7 +28,7 @@ export const fetchUsersId = async (id) => {
  * @returns {Promise} - A promise that resolves with the response.
  */
 export const updateUser = async (userId, formData) => {
-  const data = await put_api(`/users/${userId}`, formData);
+  const data = await put_form(`/users/${userId}`, formData);
   return data;
 };
 
@@ -38,7 +38,7 @@ export const updateUser = async (userId, formData) => {
  * @returns {Promise} - A promise that resolves with the response.
  */
 export const createUser = async (formData) => {
-  const data = await post_api("/users", formData);
+  const data = await post_form("/users", formData);
   return data;
 };
 
