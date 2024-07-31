@@ -1,21 +1,24 @@
 // authService.js
-import { useContext } from 'react';
-import { toast } from 'react-hot-toast'; // Thư viện thông báo
-import { UserContext } from '../context/UserContext.jsx';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
-const useAuthService = () => {
-  const { checkAuthStatus } = useContext(UserContext);
-
-  const getAuthStatus = async () => {
-      try {
-          await checkAuthStatus();
-          toast.success('gửi thành công'); // Hiển thị thông báo lỗi
-    } catch (error) {
-      toast.error('Đã xảy ra lỗi khi kiểm tra trạng thái xác thực.'); // Hiển thị thông báo lỗi
-    }
-  };
-
-  return { getAuthStatus };
+const checkAuthStatus = async () => {
+  try {
+    // Implement your logic to check authentication status
+    const response = await axios.get('/auth/status'); // Example endpoint
+    return response.data; // Assuming it returns some auth data
+  } catch (error) {
+    console.error('Error checking auth status:', error);
+    return null;
+  }
 };
 
-export default useAuthService;
+const handleUnauthorized = async () => {
+  const status = await checkAuthStatus();
+  if (!status) {
+    toast.error('Authentication failed. Please log in.');
+    // Redirect or perform other actions as needed
+  }
+};
+
+export { handleUnauthorized };
