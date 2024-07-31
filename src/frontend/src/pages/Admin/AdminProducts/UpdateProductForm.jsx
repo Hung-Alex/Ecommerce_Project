@@ -1,33 +1,30 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from '../../../utils/axios';
 import { useCategoryContext } from '../../../context/CategoryContext';
 import { useBrandContext } from '../../../context/BrandContext';
 import { titleToSlug } from '../../../utils/slugify';
 import {
   fetchProductData,
   updateProduct,
-  saveVariants,
   uploadImages,
   deleteImage,
   fetchUpdatedImages,
-  deleteVariant
 } from '../../../api/index'; // Adjust the import path as needed
 
 const UpdateProductForm = ({ productId, onClose }) => {
   const { categories } = useCategoryContext();
   const { brands } = useBrandContext();
-
+  const [isStock, setIsStock] = useState(false);
   const [productData, setProductData] = useState(null);
   const [name, setName] = useState('');
   const [urlSlug, setUrlSlug] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
+  const [oldPrice, setOldPrice] = useState('');
   const [discount, setDiscount] = useState('');
   const [brandId, setBrandId] = useState('');
   const [categoryId, setCategoryId] = useState('');
   const [images, setImages] = useState([]);
   const [files, setFiles] = useState([]);
-  const [variants, setVariants] = useState([]);
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -37,12 +34,15 @@ const UpdateProductForm = ({ productId, onClose }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetchProductData(productId);
+        const res = await fetchProductData(productId);
+        const data = res.data;
         setProductData(data);
         setName(data.name);
         setUrlSlug(data.urlSlug);
         setDescription(data.description);
+        setIsStock(data.isStock);
         setPrice(data.price);
+        setOldPrice(data.oldPrice);
         setDiscount(data.discount);
         setBrandId(data.brandId);
         setCategoryId(data.categoryId);
@@ -57,21 +57,11 @@ const UpdateProductForm = ({ productId, onClose }) => {
   }, [productId]);
 
   const handleProductSave = async () => {
-    try {
-      await updateProduct(productId, { id: productId, name, urlSlug, description, price, discount, brandId, categoryId });
-      console.log('Product details updated successfully');
-    } catch (error) {
-      console.error('Error updating product details:', error);
-    }
-  };
-
-  const handleVariantSave = async () => {
-    try {
-      await saveVariants(productId, variants);
-      console.log('Variants updated successfully');
-    } catch (error) {
-      console.error('Error updating variants:', error);
-    }
+    updateProduct(productId, { id: productId, name, urlSlug, description, price, oldPrice, isStock, discount, brandId, categoryId }).then(res => {
+      if (res?.isSuccess) {
+        onClose();
+      }
+    })
   };
 
   const handleFileChange = (e) => {
@@ -104,32 +94,6 @@ const UpdateProductForm = ({ productId, onClose }) => {
       console.error('Error deleting image:', error);
     }
   };
-
-  const addVariant = () => {
-    setVariants([...variants, { productId, name: '', description: '' }]);
-  };
-
-  const removeVariant = async (index) => {
-    const variant = variants[index];
-    if (variant.id) {
-      try {
-        await deleteVariant(productId, variant.id);
-      } catch (error) {
-        console.error('Error deleting variant:', error);
-      }
-    }
-    setVariants(variants.filter((_, i) => i !== index));
-  };
-
-  const updateVariant = (index, key, value) => {
-    setVariants(variants.map((variant, i) =>
-      i === index ? { ...variant, [key]: value } : variant
-    ));
-  };
-
-  if (!productData) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 overflow-y-auto">
@@ -205,158 +169,121 @@ const UpdateProductForm = ({ productId, onClose }) => {
             ))}
           </div>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-          {/* Product Section */}
+          {/* Form Data Section */}
           <div className="space-y-4">
-            <h2 className="text-2xl mb-4">Edit Product</h2>
-            <form className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium">Name:</label>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border rounded-md"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">URL Slug:</label>
-                <input
-                  type="text"
-                  value={urlSlug}
-                  onChange={(event) => setUrlSlug(event.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border rounded-md"
-                  readOnly
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">Description:</label>
-                <textarea
-                  value={description}
-                  onChange={(event) => setDescription(event.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border rounded-md"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">Price:</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={price}
-                  onChange={(event) => setPrice(event.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border rounded-md"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">Discount:</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={discount}
-                  onChange={(event) => setDiscount(event.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border rounded-md"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">Brand:</label>
-                <select
-                  value={brandId}
-                  onChange={(event) => setBrandId(event.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border rounded-md"
-                >
-                  {brands.map((brand) => (
-                    <option key={brand.id} value={brand.id}>
-                      {brand.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium">Category:</label>
-                <select
-                  value={categoryId}
-                  onChange={(event) => setCategoryId(event.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border rounded-md"
-                >
-                  {categories.map((category) => (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <button
-                type="button"
-                onClick={handleProductSave}
-                className={`w-full block px-5 py-3 rounded-lg text-white transition-duration-300 ease-in-out shadow-lg hover:shadow-xl bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              >
-                Save Product
-              </button>
-            </form>
+            <div>
+              <label className="block text-sm font-medium">Name:</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                className="mt-1 block w-full px-3 py-2 border rounded-md"
+              />
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium">Brand:</label>
+            <select
+              value={brandId}
+              onChange={(event) => setBrandId(event.target.value)}
+              className="mt-1 block w-full px-3 py-2 border rounded-md"
+            >
+              <option value="">Select a brand</option>
+              {brands.map((brand) => (
+                <option key={brand.id} value={brand.id}>
+                  {brand.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium">URL Slug:</label>
+            <input
+              type="text"
+              value={urlSlug}
+              onChange={(event) => setUrlSlug(event.target.value)}
+              className="mt-1 block w-full px-3 py-2 border rounded-md"
+              readOnly
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium">Category:</label>
+            <select
+              value={categoryId}
+              onChange={(event) => setCategoryId(event.target.value)}
+              className="mt-1 block w-full px-3 py-2 border rounded-md"
+            >
+              <option value="">Select a category</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium">Price:</label>
+            <input
+              type="number"
+              value={price}
+              onChange={(event) => setPrice(event.target.value)}
+              className="mt-1 block w-full px-3 py-2 border rounded-md"
+            />
           </div>
 
-          {/* Variant Section */}
-          <div className="space-y-4">
-            <h2 className="text-2xl mb-4">Edit Variants</h2>
-            {variants.map((variant, index) => (
-              <div key={index} className="border p-4 rounded-md space-y-4">
-                <div>
-                  <label className="block text-sm font-medium">Variant Name:</label>
-                  <input
-                    type="text"
-                    value={variant.name}
-                    onChange={(event) =>
-                      updateVariant(index, 'name', event.target.value)
-                    }
-                    className="mt-1 block w-full px-3 py-2 border rounded-md"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium">Variant Description:</label>
-                  <input
-                    type="text"
-                    value={variant.description}
-                    onChange={(event) =>
-                      updateVariant(index, 'description', event.target.value)
-                    }
-                    className="mt-1 block w-full px-3 py-2 border rounded-md"
-                  />
-                </div>
-                <button
-                  type="button"
-                  onClick={() => removeVariant(index)}
-                  className={`mt-2 w-full block px-5 py-2 rounded-lg text-white transition-duration-300 ease-in-out shadow-lg hover:shadow-xl bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-400`}
-                >
-                  Remove Variant
-                </button>
-              </div>
-            ))}
-            <button
-              type="button"
-              onClick={addVariant}
-              className={`mt-4 w-full block px-5 py-3 rounded-lg text-white transition-duration-300 ease-in-out shadow-lg hover:shadow-xl bg-green-400 focus:outline-none focus:ring-2 focus:ring-green-400`}
-            >
-              Add Variant
-            </button>
-            <button
-              type="button"
-              onClick={handleVariantSave}
-              className={`w-full block px-5 py-3 rounded-lg text-white transition-duration-300 ease-in-out shadow-lg hover:shadow-xl bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500`}
-            >
-              Save Variants
-            </button>
+          <div>
+            <label className="block text-sm font-medium">OldPrice:</label>
+            <input
+              type="number"
+              value={oldPrice}
+              onChange={(event) => setOldPrice(event.target.value)}
+              className="mt-1 block w-full px-3 py-2 border rounded-md"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium">Description:</label>
+            <textarea
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
+              className="mt-1 block w-full px-3 py-2 border min-h-10 rounded-md"
+            />
           </div>
         </div>
-
-        {/* Cancel Button */}
-        <div className="mt-6">
+        <div className="flex justify-end mt-6 text-right">
+          {/* isStock */}
+          <div className="flex px-5 ">
+            <label className="inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={isStock}
+                onChange={(event) => setIsStock(event.target.checked)}
+                className="sr-only"
+              />
+              <span className="relative">
+                <span className="block w-10 h-6 bg-gray-300 rounded-full shadow-inner"></span>
+                <span
+                  className={`absolute block w-4 h-4 mt-1 ml-1 rounded-full shadow inset-y-0 left-0 transform transition-transform ${isStock ? "bg-green-600 translate-x-full" : "bg-white"
+                    }`}
+                ></span>
+              </span>
+              <span className="ml-3 text-sm font-medium text-gray-700">
+                IsStock
+              </span>
+            </label>
+          </div>
           <button
             type="button"
             onClick={onClose}
-            className={`w-full block px-5 py-3 rounded-lg text-white transition-duration-300 ease-in-out shadow-lg hover:shadow-xl bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500`}
+            className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md mr-4"
           >
-            Cancel
+            Close
+          </button>
+          <button
+            onClick={handleProductSave}
+            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+          >
+            Save
           </button>
         </div>
       </div>

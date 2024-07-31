@@ -42,7 +42,6 @@ const AdminNews = () => {
           setPosts((prevList) => prevList.filter((post) => row.id !== post.id));
         }
     })
-
   }, []);
 
   // Show the form for adding a new post

@@ -12,41 +12,24 @@ import {
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);
   const [EditProduct, setEditingProduct] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
 
   const fetchProducts = useCallback(async (sortColumn = 'CreatedAt', sortBy = 'DESC') => {
-    try {
       const response = await fetchProductsData(sortColumn, sortBy);
       setProducts(response.data);
-      setLoading(false);
-    } catch (error) {
-      setError(error.message);
-      setLoading(false);
-    }
   }, []);
 
   useEffect(() => {
     fetchProducts(); // Calls with default parameters initially
   }, [fetchProducts]);
 
-  const deleteProduct = async (id) => {
-    try {
-      await deleteProductId(id);
-    } catch (error) {
-      console.error("Error deleting product:", error);
-    }
-    fetchProducts();
-  };
-
   const handleDelete = useCallback(async (row) => {
-    try {
-      await deleteProduct(row.id);
-    } catch (error) {
-      console.error('Error deleting product:', error);
-    }
+    deleteProductId(row.id).then(res => {
+        if (res?.isSuccess) {
+          fetchProducts();
+        }
+    })
   }, []);
 
   const handleAddProduct = useCallback(() => {
