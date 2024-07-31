@@ -9,11 +9,7 @@ import { toast } from 'react-hot-toast';
  */
 export async function post_json(url, data) {
   try {
-    const response = await axios.post(url, data, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await axios.post(url, data);
     return response.data;
   } catch (error) {
     toast.error(`Error creating data: ${error.message}`);
@@ -49,11 +45,7 @@ export async function post_form(url, data) {
  */
 export async function put_json(url, data) {
   try {
-    const response = await axios.put(url, data, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await axios.put(url, data);
     const responseData = response.data;
     if (responseData.isSuccess) {
       toast.success('Updated successfully!');
@@ -118,6 +110,7 @@ export async function get_api(url) {
 export async function delete_api(url) {
   try {
     const response = await axios.delete(url);
+    toast.success('Delete successfully!');
     return response.data;
   } catch (error) {
     toast.error(`Error deleting data: ${error.message}`);

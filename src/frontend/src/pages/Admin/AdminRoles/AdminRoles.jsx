@@ -5,45 +5,25 @@ import AddRoleForm from "./AddRoleForm";
 import toast from "react-hot-toast"; // Import toast from react-hot-toast
 import {
   fetchRolesData,
-  createRoles,
-  updateRoles,
-  deleteRoles
+ deleteRole
 } from '../../../api/index';
 
 const AdminRoles = () => {
   const [roles, setRoles] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [editingRole, setEditingRole] = useState(null);
 
   const fetchRoles = useCallback(async () => {
-    try {
-      const data = await fetchRolesData();
-      setRoles(data);
-      setLoading(false);
-    } catch (error) {
-      setError(error);
-      setLoading(false);
-    }
-  }, []);
+      const res = await fetchRolesData();
+      setRoles(res.data);
+  }, [showForm]);
 
   useEffect(() => {
     fetchRoles();
   }, [fetchRoles]);
 
-  const addRole = async (role) => {
-    await createRoles(role);
-    fetchRoles();
-  };
-
-  const updateRole = async (id, updatedRole) => {
-    await updateRoles(id, updatedRole);
-    fetchRoles();
-  };
-
-  const deleteRole = async (id) => {
-    const response = await deleteRoles(id);
+  const deleteRoles = async (id) => {
+    const response = await deleteRole(id);
     setRoles((prevList) => prevList.filter((role) => role.id !== id));
   };
 
@@ -54,7 +34,7 @@ const AdminRoles = () => {
 
   const handleDelete = useCallback(async (row) => {
     try {
-      await deleteRole(row.id);
+      await deleteRoles(row.id);
     } catch (error) {
       toast.error(`Error deleting role: ${error.message}`);
     }
@@ -87,8 +67,6 @@ const AdminRoles = () => {
           <AddRoleForm
             role={editingRole}
             onClose={handleCloseForm}
-            addRole={addRole}
-            updateRole={updateRole}
           />
         )}
       </div>
