@@ -48,7 +48,7 @@ const UpdateUserForm = ({ userId, updateUserData, onClose }) => {
         const fetchRoles = async () => {
             try {
                 const response = await fetchRolesData();
-                setRoleOptions(response); // Ensure this is an array
+                setRoleOptions(response.data); // Ensure this is an array
             } catch (err) {
                 console.error('Error fetching roles:', err);
                 setError('Failed to fetch roles.');

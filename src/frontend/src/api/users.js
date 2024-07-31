@@ -7,8 +7,7 @@ import { get_api, post_json, post_form, put_json, put_form, delete_api } from '.
  * @returns {Promise<Array>} - A promise that resolves with an array of users data.
  */
 export const fetchUsersData = async () => {
-  const data = await get_api("/users");
-  return data;
+  return get_api("/users");
 };
 
 /**
@@ -17,8 +16,7 @@ export const fetchUsersData = async () => {
  * @returns {Promise<Object>} - A promise that resolves with the user data.
  */
 export const fetchUsersId = async (id) => {
-  const data = await get_api(`/users/${id}`);
-  return data;
+  return get_api(`/users/${id}`);
 };
 
 /**
@@ -28,8 +26,7 @@ export const fetchUsersId = async (id) => {
  * @returns {Promise} - A promise that resolves with the response.
  */
 export const updateUser = async (userId, formData) => {
-  const data = await put_form(`/users/${userId}`, formData);
-  return data;
+  return put_form(`/users/${userId}`, formData);
 };
 
 /**
@@ -38,8 +35,7 @@ export const updateUser = async (userId, formData) => {
  * @returns {Promise} - A promise that resolves with the response.
  */
 export const createUser = async (formData) => {
-  const data = await post_form("/users", formData);
-  return data;
+  return post_form("/users", formData);
 };
 
 /**
@@ -48,6 +44,5 @@ export const createUser = async (formData) => {
  * @returns {Promise} - A promise that resolves with the response.
  */
 export const deleteUser = async (id) => {
-  const data = await delete_api(`/users/${id}`);
-  return data;
+  return delete_api(`/users/${id}`);
 };

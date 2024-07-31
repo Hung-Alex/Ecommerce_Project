@@ -1,3 +1,5 @@
+import Footer from "../../components/Shared/Footer/Footer";
+import Header from "../../components/Shared/Header/Header";
 import AboutUs from "./AboutUs/AboutUs";
 import AboutBanner from "./Banner/AboutBanner";
 import ChooseUs from "./ChooseUs/ChooseUs";
@@ -7,11 +9,13 @@ import OurTeam from "./OurTeam/OurTeam";
 const AboutPage = () => {
   return (
     <div>
+      <Header />
       <AboutBanner />
       <AboutUs />
       <ChooseUs />
       <OurTeam />
       <AboutOffer />
+      <Footer />
     </div>
   );
 };

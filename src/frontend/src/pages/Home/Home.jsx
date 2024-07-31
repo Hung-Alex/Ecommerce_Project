@@ -9,11 +9,14 @@ import News from "./News/News";
 import Subscribe from "./Subscribe/Subscribe";
 import Brands from "./Brands/Brands";
 import TokenChecker from "../../Test";
+import Header from "../../components/Shared/Header/Header";
+import Footer from "../../components/Shared/Footer/Footer";
 
 
 const HomePage = () => {
   return (
     <>
+    <Header />
     <TokenChecker/>
       <HomeBanner />
       <Category />
@@ -27,6 +30,7 @@ const HomePage = () => {
         <News />
         {/* <Subscribe /> */}
       </div>
+      <Footer />
     </>
   );
 };

@@ -100,7 +100,7 @@ const UserProvider = ({ children }) => {
     refreshToken,
     checkAuthStatus,
   };
-
+console.log(user);
   return (
     <UserContext.Provider value={userInfo}>{children}</UserContext.Provider>
   );

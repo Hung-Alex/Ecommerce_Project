@@ -21,7 +21,7 @@ const AddUserForm = ({ user, addUser, onClose }) => {
         const fetchRoles = async () => {
             try {
                 const fetchedRoles = await fetchRolesData();
-                setRoleOptions(fetchedRoles);
+                setRoleOptions(fetchedRoles.data);
             } catch (err) {
                 setError('Failed to fetch roles.');
             }
@@ -52,7 +52,7 @@ const AddUserForm = ({ user, addUser, onClose }) => {
 
         const res = await addUser(formData);
         if (res?.isSuccess) {
-            onClose();
+            // onClose();
         }
     };
 
