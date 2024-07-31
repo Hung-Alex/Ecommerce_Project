@@ -68,13 +68,14 @@ namespace Infrastructure.Services.Identity
             return user.Id;
         }
 
-        public async Task<Result<Guid>> CreateUserAsync(string email, string password, string userName, Guid UserDomainId, bool lockAccount, CancellationToken cancellationToken = default)
+        public async Task<Result<Guid>> CreateUserAsync(string email, string password, string userName, Guid UserDomainId, string phoneNumber, bool lockAccount, CancellationToken cancellationToken = default)
         {
             var user = new ApplicationUser
             {
                 UserName = userName,
                 Email = email,
                 UserId = UserDomainId,
+                PhoneNumber = phoneNumber,
                 LockoutEnabled = true
             };
 
