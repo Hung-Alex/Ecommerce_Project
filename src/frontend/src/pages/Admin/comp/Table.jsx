@@ -1,195 +1,271 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import axios from '../../../utils/axios';
 import PropTypes from 'prop-types';
+import debounce from 'lodash.debounce';
 import { AiOutlinePlus } from 'react-icons/ai';
-import { DEFAULT_IMAGE_URLS } from '../../../constants/imageUrls';
 
-const Table = ({ columns, data = [], onEdit, onDelete, onAdd }) => {
-  const [search, setSearch] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 10;
+const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam }) => {
+  const [data, setData] = useState([]);
+  const [pageIndex, setPageIndex] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortColumn, setSortColumn] = useState(columns[0]?.accessor || 'id');
+  const [sortBy, setSortBy] = useState('ASC');
+  const [loading, setLoading] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [error, setError] = useState(null);
 
   const hiddenColumns = new Set(['id']);
-  const imageAccessorsSet = new Set([
-    'image',
-    'avatarImage',
-    'images',
-    'logoImageUrl',
-    'imageUrl'
-  ]);
-  const booleanAccessorsSet = new Set([
-    "isVisible","published","isActive"
-  ]);
+  const imageAccessorsSet = new Set(['image', 'avatarImage', 'images', 'logoImageUrl', 'imageUrl']);
+  const booleanAccessorsSet = new Set(["isVisible", "published", "isActive"]);
 
-  const filteredData = Array.isArray(data) ? data.filter(row =>
-    columns.some(col =>
-      row[col.accessor]
-        .toString()
-        .toLowerCase()
-        .includes(search.toLowerCase())
-    )
-  ) : [];
+  const fetchData = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await axios.get(apiUrl, {
+        params: {
+          [searchParam]: searchTerm,
+          PageSize: pageSize,
+          PageNumber: pageIndex + 1,
+          SortColumn: sortColumn,
+          SortBy: sortBy,
+        },
+      });
 
-  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-  const paginatedData = filteredData.slice(
-    (currentPage - 1) * rowsPerPage,
-    currentPage * rowsPerPage
-  );
-
-  const handleSearchChange = (e) => {
-    setSearch(e.target.value);
-    setCurrentPage(1);
-  };
-
-  const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setCurrentPage(newPage);
+      const { data } = response.data;
+      setData(data || []);
+      setTotalPages(response.data.totalPages);
+      setTotalItems(response.data.totalItems);
+    } catch (error) {
+      setError('Error fetching data');
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
+  const debouncedSearch = useCallback(
+    debounce((term) => {
+      setSearchTerm(term);
+      setPageIndex(0);
+    }, 500),
+    []
+  );
+
+  useEffect(() => {
+    fetchData();
+  }, [searchTerm, pageIndex, sortColumn, sortBy]);
+
+  const getPageNumbers = () => {
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, i) => i);
+    }
+
+    const left = Math.max(0, pageIndex - 3);
+    const right = Math.min(totalPages - 1, pageIndex + 3);
+    const pages = [];
+
+    for (let i = left; i <= right; i++) {
+      pages.push(i);
+    }
+
+    return pages;
+  };
+
+  const handlePageChange = (index) => {
+    if (index === '...') return;
+    setPageIndex(index);
+    setDropdownOpen(false);
+  };
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
+  const renderTableHeaders = () => (
+    <tr className="border-b border-gray-200">
+      {columns.map(({ header, accessor }, index) => {
+        if (hiddenColumns.has(accessor)) return null;
+
+        let headerClass = '';
+        if (index === 0) headerClass = 'col-first';
+        else if (index === 1) headerClass = 'col-second';
+        else if (index === columns.length - 1) headerClass = 'col-last';
+        else headerClass = 'col-hidden';
+
+        return (
+          <th key={accessor} className={`p-4 text-left ${headerClass}`}>
+            {header}
+          </th>
+        );
+      })}
+
+      {(onEdit || onDelete) && <th className="p-4 text-left">Actions</th>}
+    </tr>
+  );
+
+  const renderTableRows = () => (
+    data.map((row) => (
+      <tr key={row.id} className="border-b border-gray-200">
+        {columns.map((col, index) => {
+          if (hiddenColumns.has(col.accessor)) return null;
+
+          let colClass = '';
+          if (index === 0) colClass = 'col-first';
+          else if (index === 1) colClass = 'col-second';
+          else if (index === columns.length - 1) colClass = 'col-last';
+          else colClass = 'col-hidden';
+
+          let content = row[col.accessor];
+
+          if (imageAccessorsSet.has(col.accessor)) {
+            if (Array.isArray(content) && content.length > 0) {
+              content = content[0];
+            }
+            content = <img src={content} alt="" className="w-16 h-16 object-cover rounded-full" />;
+          } else if (booleanAccessorsSet.has(col.accessor)) {
+            content = content ? 'Yes' : 'No';
+          }
+
+          return (
+            <td key={col.accessor} className={`p-4 ${colClass}`}>
+              {content}
+            </td>
+          );
+        })}
+
+        {(onEdit || onDelete) && (
+          <td className="px-2 py-2 whitespace-nowrap text-gray-500 col-last">
+            {onEdit && (
+              <button
+                onClick={() => onEdit(row)}
+                className="text-blue-500 hover:text-blue-700 mr-2 text-xs"
+              >
+                Edit
+              </button>
+            )}
+            {onDelete && (
+              <button
+                onClick={() => onDelete(row)}
+                className="text-red-500 hover:text-red-700 text-xs"
+              >
+                Delete
+              </button>
+            )}
+          </td>
+        )}
+      </tr>
+    ))
+  );
+
+  const pageNumbers = getPageNumbers();
+
   return (
-    <div className="">
-      <div className="mb-4 flex items-center">
+    <div className="container mx-auto p-4 w-full">
+      <h1 className="text-2xl font-bold mb-4">Dynamic Table</h1>
+
+      <div className="mb-4 md:flex flex-col md:flex-row md:items-center">
         <button
           onClick={onAdd}
-          className="mr-4 p-2 bg-green-500 text-white rounded-3xl shadow-md hover:bg-green-600 transition-colors duration-200"
+          className="mr-4 p-2 bg-green-500 text-white w-9 rounded-3xl shadow-md hover:bg-green-600 transition-colors duration-200"
         >
           <AiOutlinePlus size={20} />
         </button>
         <input
           type="text"
-          value={search}
-          onChange={handleSearchChange}
-          placeholder="Search..."
-          className="shadow-md p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          onChange={(e) => debouncedSearch(e.target.value)}
+          placeholder="Search"
+          className="p-2 border border-gray-300 rounded-md mb-2 md:mb-0 md:mr-4"
         />
-      </div>
-      <div className="overflow-x-auto">
-        <div className="max-w-screen-lg mx-auto">
-          <table className="min-w-full divide-y divide-gray-200 bg-white shadow-md rounded-lg">
-            <thead className="bg-gray-50">
-              <tr>
-                {columns.map((col, index) => {
-                  if (hiddenColumns.has(col.accessor)) return null;
-                  let colClass = '';
-                  if (index === 0) colClass = 'col-first';
-                  else if (index === 1) colClass = 'col-second';
-                  else if (index === columns.length - 1) colClass = 'col-last';
-                  else colClass = 'col-hidden';
 
-                  return (
-                    <th
-                      key={index}
-                      className={`px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[120px] max-w-[200px] overflow-hidden text-ellipsis ${colClass}`}
-                    >
-                      {col.header}
-                    </th>
-                  );
-                })}
-                {(onEdit || onDelete) && (
-                  <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[80px] max-w-[100px] overflow-hidden text-ellipsis col-last">
-                    Actions
-                  </th>
-                )}
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {paginatedData.map((row, rowIndex) => (
-                <tr key={rowIndex} className="text-sm">
-                  {columns.map((col, colIndex) => {
-                    if (hiddenColumns.has(col.accessor)) return null;
+        <div className="flex mb-2 md:mb-0 md:mr-4">
+          <label className="mr-2">Sort By:</label>
+          <select
+            value={sortColumn}
+            onChange={(e) => setSortColumn(e.target.value)}
+            className="p-2 border border-gray-300 rounded-md w-14 md:w-28"
+          >
+            {columns.map(({ accessor }) => (
+              <option key={accessor} value={accessor}>
+                {accessor.charAt(0).toUpperCase() + accessor.slice(1)}
+              </option>
+            ))}
+            <option value="createdAt">Created At</option>
+          </select>
 
-                    let colClass = '';
-                    if (colIndex === 0) colClass = 'col-first';
-                    else if (colIndex === 1) colClass = 'col-second';
-                    else if (colIndex === columns.length - 1) colClass = 'col-last';
-                    else colClass = 'col-hidden';
-
-                    const cellValue = row[col.accessor];
-                    return (
-                      <td
-                        key={colIndex}
-                        className={`px-2 py-2 whitespace-nowrap text-gray-900 truncate max-w-[200px] overflow-hidden text-ellipsis ${colClass}`}
-                      >
-                        {booleanAccessorsSet.has(col.accessor) ? (
-                          <span
-                            className={`px-2 py-1 rounded-full text-sm ${
-                              cellValue ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                            }`}
-                          >
-                            {cellValue ? 'True' : 'False'}
-                          </span>
-                        ) : imageAccessorsSet.has(col.accessor) ? (
-                          <img
-                            src={Array.isArray(cellValue) ? cellValue[0] : cellValue || DEFAULT_IMAGE_URLS.avatar}
-                            alt="Image"
-                            className="h-14 w-14 object-cover rounded-full"
-                          />
-                        ) : (
-                          cellValue
-                        )}
-                      </td>
-                    );
-                  })}
-                  {(onEdit || onDelete) && (
-                    <td className="px-2 py-2 whitespace-nowrap text-gray-500 col-last">
-                      {onEdit && (
-                        <button
-                          onClick={() => onEdit(row)}
-                          className="text-blue-500 hover:text-blue-700 mr-2 text-xs"
-                        >
-                          Edit
-                        </button>
-                      )}
-                      {onDelete && (
-                        <button
-                          onClick={() => onDelete(row)}
-                          className="text-red-500 hover:text-red-700 text-xs"
-                        >
-                          Delete
-                        </button>
-                      )}
-                    </td>
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <label className="mr-2">Sort Order:</label>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="p-2 border border-gray-300 rounded-md"
+          >
+            <option value="ASC">Ascending</option>
+            <option value="DESC">Descending</option>
+          </select>
         </div>
       </div>
-      <div className="flex justify-end mt-4">
+
+      {loading ? (
+        <div>Loading...</div>
+      ) : error ? (
+        <div className="text-red-500">{error}</div>
+      ) : (
+        <table className="min-w-full bg-white block rounded-lg shadow-md">
+          <thead>
+            {renderTableHeaders()}
+          </thead>
+          <tbody>
+            {renderTableRows()}
+          </tbody>
+        </table>
+      )}
+
+      <div className="flex justify-center mt-4 items-center">
         <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md shadow-sm hover:bg-gray-400 disabled:opacity-50"
-          disabled={currentPage === 1}
+          onClick={() => setPageIndex((prev) => Math.max(0, prev - 1))}
+          className={`px-4 py-2 border border-gray-300 rounded-md mx-1 ${pageIndex === 0 ? 'cursor-not-allowed opacity-50' : 'bg-white'}`}
+          disabled={pageIndex === 0}
         >
-          {'<'}
+          Previous
         </button>
-        <span className="mx-2 text-sm text-gray-600">
-          Page {currentPage} of {totalPages}
-        </span>
+
+        {pageNumbers.map((pageNumber, index) => (
+          <button
+            key={index}
+            onClick={() => handlePageChange(pageNumber)}
+            className={`px-4 py-2 border border-gray-300 rounded-md mx-1 ${pageNumber === pageIndex ? 'bg-blue-500 text-white' : 'bg-white'}`}
+          >
+            {pageNumber + 1}
+          </button>
+        ))}
+
         <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md shadow-sm hover:bg-gray-400 disabled:opacity-50"
-          disabled={currentPage === totalPages}
+          onClick={() => setPageIndex((prev) => Math.min(totalPages - 1, prev + 1))}
+          className={`px-4 py-2 border border-gray-300 rounded-md mx-1 ${pageIndex === totalPages - 1 ? 'cursor-not-allowed opacity-50' : 'bg-white'}`}
+          disabled={pageIndex === totalPages - 1}
         >
-          {'>'}
+          Next
         </button>
       </div>
     </div>
   );
 };
 
-Table.propTypes = {
+PaginationTable.propTypes = {
+  apiUrl: PropTypes.string.isRequired,
   columns: PropTypes.arrayOf(
     PropTypes.shape({
-      header: PropTypes.string.isRequired,
-      accessor: PropTypes.string.isRequired
+      header: PropTypes.string,
+      accessor: PropTypes.string,
     })
   ).isRequired,
-  data: PropTypes.arrayOf(PropTypes.object), // Validate data as an array
   onEdit: PropTypes.func,
   onDelete: PropTypes.func,
-  onAdd: PropTypes.func.isRequired
+  onAdd: PropTypes.func,
+  searchParam: PropTypes.string.isRequired,
 };
 
-export default Table;
+export default PaginationTable;

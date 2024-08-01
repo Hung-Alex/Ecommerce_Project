@@ -16,8 +16,8 @@ const AdminProducts = () => {
   const [showEditForm, setShowEditForm] = useState(false);
 
   const fetchProducts = useCallback(async (sortColumn = 'CreatedAt', sortBy = 'DESC') => {
-      const response = await fetchProductsData(sortColumn, sortBy);
-      setProducts(response.data);
+    const response = await fetchProductsData(sortColumn, sortBy);
+    setProducts(response.data);
   }, []);
 
   useEffect(() => {
@@ -26,9 +26,9 @@ const AdminProducts = () => {
 
   const handleDelete = useCallback(async (row) => {
     deleteProductId(row.id).then(res => {
-        if (res?.isSuccess) {
-          fetchProducts();
-        }
+      if (res?.isSuccess) {
+        fetchProducts();
+      }
     })
   }, []);
 
@@ -53,6 +53,7 @@ const AdminProducts = () => {
     <DashboardLayout>
       <div className='p-6'>
         <Table
+          apiUrl="/products"
           columns={[
             { header: 'ID', accessor: 'id' },
             { header: 'Image', accessor: 'images' },
@@ -60,10 +61,10 @@ const AdminProducts = () => {
             { header: 'URL Slug', accessor: 'urlSlug' },
             { header: 'Description', accessor: 'description' },
           ]}
-          data={products}
           onEdit={handleEdit}
           onDelete={handleDelete}
           onAdd={handleAddProduct}
+          searchParam="Name" // Specify the search parameter name as per the API requirement
         />
         {showForm && (
           <AddProductForm
