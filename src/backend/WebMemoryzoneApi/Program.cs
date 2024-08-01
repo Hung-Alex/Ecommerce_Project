@@ -3,6 +3,7 @@ using Infrastructure;
 using Infrastructure.Data.Seed;
 using Infrastructure.Middleware;
 using Infrastructure.ModelBinding;
+using Infrastructure.PaymentService.Extension;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,7 @@ builder.Services.AddControllers(options =>
 builder.Services.AddApplicationServices();
 // Add Swagger services
 builder.Services.AddInfrastructureServices(configuration);
+builder.Services.AddVnpayExtension();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -45,7 +47,7 @@ if (app.Environment.IsDevelopment())
 app.UseExceptionHandler();
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
-app.UseAuthorization();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

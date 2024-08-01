@@ -1,12 +1,6 @@
 ﻿using Domain.Entities;
-using Domain.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Data.Configuration
 {
@@ -27,6 +21,79 @@ namespace Infrastructure.Data.Configuration
                 .WithOne(x => x.Status)
                 .HasForeignKey(x => x.StatusId)
                 .OnDelete(DeleteBehavior.Restrict);
+            #region status data
+            builder.HasData(
+                               new Status
+                               {
+                                   Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                                   Type = "Order",
+                                   Display = "Pending",
+                                   Code = "PENDING",
+                                   CreatedAt = DateTimeOffset.Now,
+                                   UpdatedAt = DateTimeOffset.Now,
+                                   IsDeleted = false
+                               },
+                               new Status
+                               {
+                                   Id = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+                                   Type = "Order",
+                                   Display = "Processing",
+                                   Code = "PROCESSING",
+                                   CreatedAt = DateTimeOffset.Now,
+                                   UpdatedAt = DateTimeOffset.Now,
+                                   IsDeleted = false
+                               },
+                               new Status
+                               {
+                                   Id = Guid.Parse("00000000-0000-0000-0000-000000000003"),
+                                   Type = "Order",
+                                   Display = "Completed",
+                                   Code = "COMPLETED",
+                                   CreatedAt = DateTimeOffset.Now,
+                                   UpdatedAt = DateTimeOffset.Now,
+                                   IsDeleted = false
+                               },
+                               new Status
+                               {
+                                   Id = Guid.Parse("00000000-0000-0000-0000-000000000004"),
+                                   Type = "Order",
+                                   Display = "Cancelled",
+                                   Code = "CANCELLED",
+                                   CreatedAt = DateTimeOffset.Now,
+                                   UpdatedAt = DateTimeOffset.Now,
+                                   IsDeleted = false
+                               },
+                                new Status
+                                {
+                                    Id = Guid.Parse("00000000-0000-0000-0000-000000000005"),
+                                    Type = "Payment",
+                                    Display = "Pending",
+                                    Code = "PENDING",
+                                    CreatedAt = DateTimeOffset.Now,
+                                    UpdatedAt = DateTimeOffset.Now,
+                                    IsDeleted = false
+                                },
+                                 new Status
+                                 {
+                                     Id = Guid.Parse("00000000-0000-0000-0000-000000000006"),
+                                     Type = "Payment",
+                                     Display = "Processing",
+                                     Code = "PROCESSING",
+                                     CreatedAt = DateTimeOffset.Now,
+                                     UpdatedAt = DateTimeOffset.Now,
+                                     IsDeleted = false
+                                 },
+                                  new Status
+                                  {
+                                      Id = Guid.Parse("00000000-0000-0000-0000-000000000007"),
+                                      Type = "Payment",
+                                      Display = "Completed",
+                                      Code = "COMPLETED",
+                                      CreatedAt = DateTimeOffset.Now,
+                                      UpdatedAt = DateTimeOffset.Now,
+                                      IsDeleted = false
+                                  });
+            #endregion
         }
     }
 }

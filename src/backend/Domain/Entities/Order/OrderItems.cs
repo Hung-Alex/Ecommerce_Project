@@ -5,6 +5,15 @@ namespace Domain.Entities.Orders
 {
     public class OrderItems : BaseEntity, IDatedModification
     {
+        public OrderItems() : base() { }
+        public OrderItems(Guid orderId, Guid productId, int quantity, Decimal price, string? unitPrice)
+        {
+            OrderId = orderId;
+            ProductId = productId;
+            Quantity = quantity;
+            Price = price;
+            UnitPrice = unitPrice;
+        }
         public Guid OrderId { get; set; }
         public Order Order { get; set; }
         public Guid ProductId { get; set; }

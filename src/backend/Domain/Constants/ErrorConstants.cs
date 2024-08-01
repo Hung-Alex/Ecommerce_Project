@@ -13,6 +13,10 @@ namespace Domain.Constants
         public static class BrandError
         {
         }
+        public static class ProcessError
+        {
+            public static Error StatusPendingNotFound => new Error("Process.StatusPendingNotFound", "Status Pending Not Found");
+        }
         public static class UserError
         {
             public static Error PasswordNotMatch => new Error("User.PasswordNotMatch", "Password Not Match");
@@ -58,6 +62,7 @@ namespace Domain.Constants
         public static class CartError
         {
             public static readonly Error CartNotFound = new Error("Cart.CartNotFound", "Cart Not Found");
+            public static readonly Error ProductOutOfStock = new Error("Cart.ProductOutOfStock", "Product Out Of Stock");
         }
         public static class UploadImageError
         {
