@@ -1,32 +1,14 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import DashboardLayout from "../../../layout/DashboardLayout.jsx";
 import Table from "../comp/Table.jsx";
 import AddNewsForm from "./AddNewsForm";
-import {toast} from "react-hot-toast";
-import {
-  fetchNewsData,
-  deleteNews,
-} from "../../../api"
+import { toast } from "react-hot-toast";
+import { deleteNews } from "../../../api";
 
 const AdminNews = () => {
-  const [posts, setPosts] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingPost, setEditingPost] = useState(null);
-
-  // Fetch news data from the server
-  const fetchPosts = useCallback(async () => {
-    try {
-      const response = await fetchNewsData();
-      setPosts(response.data);
-    } catch (error) {
-      toast.error('Error fetching posts');
-      console.error('Error fetching posts:', error);
-    }
-  }, [showForm  ]);
-
-  useEffect(() => {
-    fetchPosts();
-  }, [fetchPosts]);
+  const [refresh, setRefresh] = useState(""); // State to trigger refresh
 
   // Handle editing of a post
   const handleEdit = useCallback((row) => {
@@ -36,12 +18,11 @@ const AdminNews = () => {
 
   // Handle deletion of a post
   const handleDelete = useCallback(async (row) => {
-    deleteNews(row.id).then(res => {
-      // console.log(res);
-        if (res?.isSuccess) {
-          setPosts((prevList) => prevList.filter((post) => row.id !== post.id));
-        }
-    })
+    const res = await deleteNews(row.id);
+    if (res?.isSuccess) {
+      setRefresh(prev => !prev); // Trigger refresh
+      toast.success('Post deleted successfully');
+    }
   }, []);
 
   // Show the form for adding a new post
@@ -54,24 +35,26 @@ const AdminNews = () => {
   const handleCloseForm = useCallback(() => {
     setShowForm(false);
     setEditingPost(null);
+    setRefresh(prev => !prev); // Trigger refresh
   }, []);
 
   return (
     <DashboardLayout>
       <div className='p-6'>
         <Table
+          apiUrl="/posts" // Specify the API URL directly in the Table component
           columns={[
             { header: 'ID', accessor: 'id' },
             { header: 'Image', accessor: 'image' },
             { header: 'Title', accessor: 'title' },
-            { header: 'urlSlug', accessor: 'urlSlug' },
+            { header: 'URL Slug', accessor: 'urlSlug' },
             { header: 'Short Description', accessor: 'shortDescription' },
-            { header: 'published', accessor: 'published' }
+            { header: 'Published', accessor: 'published' }
           ]}
-          data={posts}
           onEdit={handleEdit}
           onDelete={handleDelete}
           onAdd={handleAddPost}
+          refresh={refresh} // Pass refresh state to Table component if needed
         />
         {showForm && (
           <AddNewsForm

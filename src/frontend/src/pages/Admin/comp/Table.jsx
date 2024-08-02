@@ -12,7 +12,7 @@ const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam
   const [totalItems, setTotalItems] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const [pageSize, setPageSize] = useState(8);
-  const [sortColumn, setSortColumn] = useState(columns[0]?.accessor || 'id');
+  const [sortColumn, setSortColumn] = useState(columns[0]?.accessor || 'createdAt');
   const [sortBy, setSortBy] = useState('ASC');
   const [loading, setLoading] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -228,7 +228,7 @@ const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam
       </div>
 
 
-        <table className="min-w-full bg-white block rounded-lg shadow-md">
+        <table className="min-w-full bg-white rounded-lg shadow-md divide-y divide-gray-200">
           <thead>
             {renderTableHeaders()}
           </thead>
