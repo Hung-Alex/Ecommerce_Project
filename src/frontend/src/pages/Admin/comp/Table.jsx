@@ -154,7 +154,7 @@ const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam
             {onEdit && (
               <button
                 onClick={() => handleEdit(row)}
-                className="text-blue-500 hover:text-blue-700 mr-2 text-xs"
+                className="text-blue-500 hover:text-blue-700 text-xs"
               >
                 Edit
               </button>
@@ -162,7 +162,7 @@ const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam
             {onDelete && (
               <button
                 onClick={() => handleDelete(row)}
-                className="text-red-500 hover:text-red-700 text-xs"
+                className="text-red-500 hover:text-red-700 ml-2 text-xs"
               >
                 Delete
               </button>

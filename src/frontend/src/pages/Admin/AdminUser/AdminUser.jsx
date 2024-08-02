@@ -1,72 +1,53 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import DashboardLayout from "../../../layout/DashboardLayout.jsx";
 import Table from "../comp/Table.jsx";
 import AddUserForm from "./AddUserForm";
+import UpdateUserForm from "./UpdateUserForm";
 import toast from "react-hot-toast";
 import {
     fetchUsersData,
-    createUser ,
-    updateUser ,
+    createUser,
+    updateUser,
     deleteUser
 } from '../../../api';
-import UpdateUserForm from "./UpdateUserForm.jsx";
 
 const AdminUsers = () => {
-    const [users, setUsers] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [showUpdateForm, setShowUpdateForm] = useState(false);
+    const [refresh, setRefresh] = useState(false); // State to trigger refresh
     const [editingUser, setEditingUser] = useState(null);
-
-    const fetchUsers = useCallback(async () => {
-            const data = await fetchUsersData();
-            setUsers(data.data);
-    }, []);
-
-    useEffect(() => {
-        fetchUsers();
-    }, [fetchUsers, showUpdateForm, showForm]);
-
-    const addUser = async (user) => {
-        const res = await createUser(user);
-        return res;
-        await fetchUsers();
-    };
-
-    const handleUpdateUser = async (id, updatedUser) => {
-            const res = await updateUser(id, updatedUser);
-            return res;
-            fetchUsers();
-    };
-
-    const handleDeleteUser = async (id) => {
-        try {
-            await deleteUser(id);
-            setUsers((prevList) => prevList.filter((user) => user.id !== id));
-        } catch (error) {
-            toast.error(`Error deleting user: ${error.message}`);
-        }
-    };
-
-    const handleEdit = useCallback((row) => {
-        setEditingUser(row);
-        setShowUpdateForm(true);
-    }, []);
 
     const handleAddUser = useCallback(() => {
         setEditingUser(null);
         setShowForm(true);
     }, []);
 
+    const handleEdit = useCallback((row) => {
+        setEditingUser(row);
+        setShowUpdateForm(true);
+    }, []);
+
+    const handleDeleteUser = useCallback(async (row) => {
+        try {
+            await deleteUser(row.id);
+            setRefresh(prev => !prev); // Trigger refresh
+        } catch (error) {
+            toast.error(`Error deleting user: ${error.message}`);
+        }
+    }, []);
+
     const handleCloseForm = useCallback(() => {
         setShowForm(false);
         setShowUpdateForm(false);
         setEditingUser(null);
+        setRefresh(prev => !prev); // Trigger refresh
     }, []);
 
     return (
         <DashboardLayout>
-            <div className='p-6'>
+            <div className='md:p-6'>
                 <Table
+                    apiUrl="/users"
                     columns={[
                         { header: 'ID', accessor: 'id' },
                         { header: 'Avatar', accessor: 'avatarImage' },
@@ -76,21 +57,25 @@ const AdminUsers = () => {
                         { header: 'Region', accessor: 'region' },
                         { header: 'Country', accessor: 'country' },
                     ]}
-                    data={users}
                     onEdit={handleEdit}
                     onAdd={handleAddUser}
+                    refresh={refresh} // Pass refresh state to Table component
                 />
                 {showForm && (
-                    <AddUserForm
-                        onClose={handleCloseForm}
-                        addUser={addUser}
-                    />
+                    <AddUserForm onClose={handleCloseForm} />
                 )}
                 {showUpdateForm && (
                     <UpdateUserForm
                         userId={editingUser.id}
                         onClose={handleCloseForm}
-                        updateUserData={handleUpdateUser}
+                        updateUserData={async (updatedUser) => {
+                            try {
+                                await updateUser(editingUser.id, updatedUser);
+                                handleCloseForm();
+                            } catch (error) {
+                                toast.error(`Error updating user: ${error.message}`);
+                            }
+                        }}
                     />
                 )}
             </div>
