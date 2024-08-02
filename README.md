@@ -1,68 +1,105 @@
-Oganic Store
-Veefe Store là một cửa hàng trực tuyến nơi bạn có thể mua sắm các sản phẩm tươi ngon và chất lượng. Dự án này được phát triển bằng React.js cho frontend và ASP.NET Core cho backend.
+# Project Name
 
-Giới thiệu
-Veefe Store cung cấp một nền tảng trực tuyến cho người dùng mua sắm các loại rau củ quả và các sản phẩm tươi sống khác. Người dùng có thể duyệt qua danh mục sản phẩm, thêm sản phẩm vào giỏ hàng, và thanh toán với nhiều phương thức thanh toán khác nhau.
+## Introduction
+This project is a full-stack web application built using modern web technologies. It features a responsive frontend and a robust backend to handle various functionalities.
 
-Tính năng
-Duyệt sản phẩm: Xem danh sách các sản phẩm có sẵn và các chi tiết liên quan.
-Giỏ hàng: Thêm, xóa và cập nhật sản phẩm trong giỏ hàng.
-Thanh toán: Hỗ trợ nhiều phương thức thanh toán.
-Quản lý tài khoản: Đăng ký, đăng nhập, và quản lý thông tin cá nhân.
-Quản lý đơn hàng: Theo dõi và quản lý đơn hàng.
-Công nghệ sử dụng
-Frontend
-React.js: Thư viện JavaScript để xây dựng giao diện người dùng.
-React Bootstrap: Thư viện giao diện người dùng dựa trên Bootstrap cho React.
-Axios: Thư viện để thực hiện các yêu cầu HTTP.
-Backend
-ASP.NET Core: Framework để xây dựng các ứng dụng web và API.
-Entity Framework Core: ORM để làm việc với cơ sở dữ liệu.
-SQL Server: Cơ sở dữ liệu được sử dụng để lưu trữ dữ liệu.
-Khác
-VNPay: Dịch vụ thanh toán trực tuyến được sử dụng để xử lý các giao dịch.
-Cài đặt
-Yêu cầu hệ thống
-Node.js
-.NET Core SDK
-SQL Server
-Hướng dẫn cài đặt
-Clone repo này:
+## Features
+- Responsive design with TailwindCSS
+- Component-based architecture with React
+- Material UI for pre-styled components
+- State management
+- PostCSS for processing CSS
+- RESTful API backend
 
-bash
-Sao chép mã
-git clone https://github.com/username/veefe-store.git
-Cài đặt các gói phụ thuộc:
+## Technologies Used
 
-bash
-Sao chép mã
-cd veefe-store/frontend
-npm install
-bash
-Sao chép mã
-cd veefe-store/backend
-dotnet restore
-Cấu hình cơ sở dữ liệu:
+### Frontend
+- [React](https://reactjs.org/) (v18.2)
+- [MUI (Material-UI)](https://mui.com/) (v5.13)
+- [TailwindCSS](https://tailwindcss.com/) (v3.1)
+- [PostCSS](https://postcss.org/) (v8.4)
+- [Emotion](https://emotion.sh/docs/introduction) (v11.11)
+- [npm](https://www.npmjs.com/)
 
-Cập nhật chuỗi kết nối trong appsettings.json để kết nối với cơ sở dữ liệu SQL Server của bạn.
+### Backend
+- [Node.js](https://nodejs.org/)
+- [Express](https://expressjs.com/)
+- [MongoDB](https://www.mongodb.com/)
+- [Mongoose](https://mongoosejs.com/)
 
-Chạy ứng dụng:
+## Author
+- **Name**: [Your Name]
+- **Email**: [your.email@example.com]
+- **GitHub**: [Your GitHub Profile](https://github.com/yourusername)
 
-Backend:
+## Installation
+To set up the project locally, follow these steps:
 
-bash
-Sao chép mã
-cd veefe-store/backend
-dotnet run
-Frontend:
+### Frontend
 
-bash
-Sao chép mã
-cd Oganic-Store/frontend
-npm start
-Tác giả
-Hồ Trương Huệ Nhật (Frontend)
-Phạm Ngọc Hưng (Backend)
+1. **Clone the repository**:
+    ```sh
+    git clone https://github.com/yourusername/your-repo-name.git
+    cd your-repo-name/frontend
+    ```
 
-License
-Dự án này được cấp phép theo Giấy phép MIT. Xem tệp LICENSE để biết thêm chi tiết.
+2. **Install dependencies**:
+    ```sh
+    npm install
+    ```
+
+3. **Start the development server**:
+    ```sh
+    npm start
+    ```
+
+4. **Build for production**:
+    ```sh
+    npm run build
+    ```
+
+### Backend
+
+1. **Navigate to the backend directory**:
+    ```sh
+    cd ../backend
+    ```
+
+2. **Install dependencies**:
+    ```sh
+    npm install
+    ```
+
+3. **Start the development server**:
+    ```sh
+    npm start
+    ```
+
+## Folder Structure
+The project structure is as follows:
+your-repo-name/ ├── frontend/ │ ├── public/ │ │ ├── index.html │ │ └── ... │ ├── src/ │ │ ├── assets/ │ │ ├── components/ │ │ ├── pages/ │ │ ├── App.js │ │ ├── index.js │ │ └── ... │ ├── .gitignore │ ├── package.json │ ├── postcss.config.js │ ├── tailwind.config.js │ └── README.md ├── backend/ │ ├── controllers/ │ ├── models/ │ ├── routes/ │ ├── app.js │ ├── server.js │ ├── .gitignore │ ├── package.json │ └── README.md ├── .gitignore ├── README.md └── LICENSE
+
+
+
+### Frontend
+- **public/**: Contains the static files.
+- **src/**: Contains the source code of the application.
+  - **assets/**: Contains images, fonts, and other assets.
+  - **components/**: Contains reusable React components.
+  - **pages/**: Contains the main pages of the application.
+- **App.js**: The root component.
+- **index.js**: The entry point of the application.
+- **postcss.config.js**: Configuration file for PostCSS.
+- **tailwind.config.js**: Configuration file for TailwindCSS.
+- **package.json**: Contains the project dependencies and scripts.
+
+### Backend
+- **controllers/**: Contains the logic for handling requests.
+- **models/**: Contains the database schemas.
+- **routes/**: Contains the route definitions.
+- **app.js**: The main application file.
+- **server.js**: The entry point of the backend server.
+- **package.json**: Contains the project dependencies and scripts.
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
