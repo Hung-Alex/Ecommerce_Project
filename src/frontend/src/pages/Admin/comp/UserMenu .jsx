@@ -19,9 +19,8 @@ const UserMenu = ({ onLogout }) => {
             {({ active }) => (
               <Link
                 to="/admin/profile"
-                className={`${
-                  active ? "bg-gray-100 text-gray-900" : "text-gray-700"
-                } group flex items-center px-2 py-2 text-sm`}
+                className={`${active ? "bg-gray-100 text-gray-900" : "text-gray-700"
+                  } group flex items-center px-2 py-2 text-sm`}
               >
                 <CogIcon className="h-5 w-5 mr-2" />
                 Profile
@@ -32,9 +31,8 @@ const UserMenu = ({ onLogout }) => {
             {({ active }) => (
               <button
                 onClick={onLogout}
-                className={`${
-                  active ? "bg-gray-100 text-gray-900" : "text-gray-700"
-                } group flex items-center px-2 py-2 text-sm w-full text-left`}
+                className={`${active ? "bg-gray-100 text-gray-900" : "text-gray-700"
+                  } group flex items-center px-2 py-2 text-sm w-full text-left`}
               >
                 <LogoutIcon className="h-5 w-5 mr-2" />
                 Logout
