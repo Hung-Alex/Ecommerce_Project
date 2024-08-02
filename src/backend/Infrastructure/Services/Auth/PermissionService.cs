@@ -1,7 +1,7 @@
 ﻿using Application.Common.Interface;
 using Application.DTOs.Responses.Permissions;
-using Infrastructure.Data;
-using Infrastructure.Identity;
+using Infrastructure.Persistence.Identity;
+using Infrastructure.Persistence.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Services.Auth

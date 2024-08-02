@@ -1,9 +1,9 @@
 using Application;
 using Infrastructure;
-using Infrastructure.Data.Seed;
 using Infrastructure.Middleware;
 using Infrastructure.ModelBinding;
 using Infrastructure.PaymentService.Extension;
+using Infrastructure.Persistence.Persistence.Data.Seed;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);

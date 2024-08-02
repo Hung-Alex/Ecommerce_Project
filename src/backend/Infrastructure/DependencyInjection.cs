@@ -1,6 +1,6 @@
-﻿using Infrastructure.Data;
-using Infrastructure.Extensions.Repo;
-using Infrastructure.Extensions.Services;
+﻿using Infrastructure.Extensions.Services;
+using Infrastructure.Persistence.Extensions.Repo;
+using Infrastructure.Persistence.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

@@ -5,7 +5,7 @@ using Application.DTOs.Responses.Permissions;
 using Application.DTOs.Responses.Role;
 using Domain.Constants;
 using Domain.Shared;
-using Infrastructure.Identity;
+using Infrastructure.Persistence.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
