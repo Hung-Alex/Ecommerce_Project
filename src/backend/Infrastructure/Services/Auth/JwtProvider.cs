@@ -2,6 +2,7 @@
 using Application.Common.Interface;
 using Application.DTOs.Internal;
 using Application.DTOs.Internal.Authen;
+using Application.Helper;
 using Domain.Constants;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -51,7 +52,7 @@ namespace Infrastructure.Services.Auth
                 issuer: _jwtSetting.Issuer,
                 audience: _jwtSetting.Audience,
                 claims: claims,
-                expires: DateTime.Now.AddSeconds(_jwtSetting.ExpiredToken),
+                expires: JWTHelper.GetExpiresAccessToken(_jwtSetting.ExpiredToken),
                 signingCredentials: signingCredentials);
 
             var encode = new JwtSecurityTokenHandler().WriteToken(token);

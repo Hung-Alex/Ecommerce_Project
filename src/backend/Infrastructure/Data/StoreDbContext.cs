@@ -39,7 +39,6 @@ namespace Infrastructure.Data
         public DbSet<WishList> WishLists { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Ratting> Rattings { get; set; }
-        public DbSet<ProductSkus> ProductSkus { get; set; }
         public DbSet<Comment> Comments { get; set; }
         #endregion
         protected override void OnModelCreating(ModelBuilder builder)

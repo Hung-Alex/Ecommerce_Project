@@ -1,6 +1,8 @@
 ﻿using Application.Common.Implementation;
 using Application.Common.Interface;
 using Application.Common.Interface.IdentityService;
+using Application.DTOs.Internal;
+using Application.Helper;
 using Domain.Constants;
 using Infrastructure.Data;
 using Infrastructure.Identity;
@@ -58,7 +60,7 @@ namespace Infrastructure.Extensions.Services
         }
         internal static IServiceCollection AddAuthencationExtension(this IServiceCollection services, IConfiguration configuration)
         {
-            var jwtSettings = configuration.GetSection("JwtSetting");
+            var jwtSettings = configuration.GetSection("JwtSetting").Get<JwtSetting>();
             services.AddAuthentication(cfg =>
             {
                 cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -74,10 +76,10 @@ namespace Infrastructure.Extensions.Services
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = jwtSettings.GetValue<string>("Issuer"),
-                    ValidAudience = jwtSettings.GetValue<string>("Audience"),
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.GetValue<string>("SecretKey"))),
-                    ClockSkew = TimeSpan.FromMinutes(int.Parse(jwtSettings.GetValue<string>("ExpiredToken"))),
+                    ValidIssuer = jwtSettings.Issuer,
+                    ValidAudience = jwtSettings.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
+                    ClockSkew = TimeSpan.FromMinutes(jwtSettings.ExpiredToken)
                 };
                 options.SaveToken = true;
                 options.Events = new JwtBearerEvents();
@@ -101,7 +103,7 @@ namespace Infrastructure.Extensions.Services
             services.AddCors(options => options.AddPolicy("AllowAll",
                 policies
                 => policies
-                .WithOrigins("http://localhost:3000")
+                .WithOrigins("http://localhost:3000", "https://d5d4-2405-4802-a1f1-8c30-500c-ec57-ce2b-ba62.ngrok-free.app")
                 .AllowCredentials()
                 .SetIsOriginAllowedToAllowWildcardSubdomains()
                 .AllowAnyHeader()

@@ -60,7 +60,7 @@ namespace WebMemoryzoneApi.Controllers
         {
             var result = await _mediator.Send(new DeleteBannerCommand(id));
             if (!result.IsSuccess) return NotFound(result);
-            return Ok();
+            return Ok(result);
         }
         [HttpPost]
         [FileValidatorFilter<CreateBannerCommand>([".png", ".jpg"], 1024 * 1024)]
@@ -68,7 +68,7 @@ namespace WebMemoryzoneApi.Controllers
         {
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result);
-            return Ok();
+            return Ok(result);
         }
     }
 }

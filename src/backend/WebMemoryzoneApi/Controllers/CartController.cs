@@ -32,7 +32,7 @@ namespace WebMemoryzoneApi.Controllers
         public async Task<ActionResult> AddItemInCart([FromBody] CartItemRequest cartItem)
         {
             var claimUser = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimUser.UserId);
-            var result = await _mediator.Send(new AddItemCommand(Guid.Parse(claimUser.Value), cartItem.ProductId, cartItem.ProductSkusId, cartItem.Quantity));
+            var result = await _mediator.Send(new AddItemCommand(Guid.Parse(claimUser.Value), cartItem.ProductId, cartItem.Quantity));
             if (result.IsSuccess is false) return BadRequest(result);
             return Ok(result);
         }

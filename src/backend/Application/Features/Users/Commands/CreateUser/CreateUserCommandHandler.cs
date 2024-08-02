@@ -95,7 +95,7 @@ namespace Application.Features.Users.Commands.CreateUser
         }
         private async Task<Result<Guid>> CreateApplicationUser(CreateUserCommand ApplicationUser, Guid userId)
         {
-            var isCreatedUser = await _identityService.CreateUserAsync(ApplicationUser.Email, ApplicationUser.Password, ApplicationUser.UserName, userId, ApplicationUser.IsLocked);
+            var isCreatedUser = await _identityService.CreateUserAsync(ApplicationUser.Email, ApplicationUser.Password, ApplicationUser.UserName, userId, ApplicationUser.PhoneNumber, ApplicationUser.IsLocked);
             if (isCreatedUser.IsSuccess is false)
             {
                 return Result<Guid>.ResultFailures(isCreatedUser.Errors);

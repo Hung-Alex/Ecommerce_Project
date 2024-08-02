@@ -8,5 +8,6 @@
         public int? Discount { get; set; }
         public decimal Price { get; set; }
         public string Image { get; set; }
+        public bool IsStock { get; set; }
     }
 }

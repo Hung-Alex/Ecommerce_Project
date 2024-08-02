@@ -1,6 +1,5 @@
 ﻿using Application.DTOs.Responses.Product.Shared.BrandProduct;
 using Application.DTOs.Responses.Product.Shared.CategoryProduct;
-using Application.DTOs.Responses.Product.Shared.Variants;
 
 namespace Application.DTOs.Responses.Product.Client
 {
@@ -14,9 +13,9 @@ namespace Application.DTOs.Responses.Product.Client
         public Decimal? OldPrice { get; set; }
         public double Rate { get; init; }
         public int TotalRate { get; init; }
+        public bool IsStock { get; set; }
         public CategoryProductDTO Category { get; init; }
         public BrandProductDTO Brand { get; init; }
-        public IEnumerable<VariantsDTO> Variants { get; init; }
         public IEnumerable<string> Images { get; set; }
     }
 }

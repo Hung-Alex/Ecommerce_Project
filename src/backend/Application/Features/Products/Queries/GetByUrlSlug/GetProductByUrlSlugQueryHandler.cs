@@ -2,7 +2,6 @@
 using Application.DTOs.Responses.Product.Client;
 using Application.DTOs.Responses.Product.Shared.BrandProduct;
 using Application.DTOs.Responses.Product.Shared.CategoryProduct;
-using Application.DTOs.Responses.Product.Shared.Variants;
 using Application.Features.Products.Specification;
 using AutoMapper;
 using Domain.Constants;
@@ -31,12 +30,12 @@ namespace Application.Features.Products.Queries.GetByUrlSlug
                 Discount = product.Discount,
                 Price = product.Price,
                 OldPrice = product.OldPrice,
+                IsStock = product.IsStock,
                 Brand = mapper.Map<BrandProductDTO>(product.Brand),
                 Category = mapper.Map<CategoryProductDTO>(product.Category),
                 Rate = product.Rattings.Count() > 0 ? product.Rattings.Average(r => r.Rate) : 0,
                 TotalRate = product.Rattings.Count(),
                 Images = product.Images.Select(p => p.ImageUrl).ToList(),
-                Variants = mapper.Map<IEnumerable<VariantsDTO>>(product.ProductSkus)
             };
             return Result<ProductGetBySlugDTO>.ResultSuccess(productDto);
         }

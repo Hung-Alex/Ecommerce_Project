@@ -11,7 +11,7 @@ namespace Application.Common.Interface.IdentityService
         Task<Result<Guid>> UpdateUserByUserIdAsync(Guid userId,string phoneNumber,bool isLock, CancellationToken cancellationToken = default);
         Task<Result<bool>> LockAccountAsync(Guid userId, bool isLock, CancellationToken cancellationToken = default);
         Task<Guid> CreateUserAsync(string email, string password, string userName, Guid UserDomainId, CancellationToken cancellationToken = default);
-        Task<Result<Guid>> CreateUserAsync(string email, string password, string userName, Guid UserDomainId, bool lockAccount, CancellationToken cancellationToken = default);
+        Task<Result<Guid>> CreateUserAsync(string email, string password, string userName, Guid UserDomainId,string phoneNumber, bool lockAccount, CancellationToken cancellationToken = default);
         Task<UserDTO> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default);
         Task<ApplicationUserDTO> GetApplicationUserByUserIdAsync(Guid id, CancellationToken cancellationToken = default);
         Task<bool> SignInAsync(string userName, string password, CancellationToken cancellationToken = default);

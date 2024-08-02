@@ -51,13 +51,13 @@ namespace Application.Features.Authen.Commands.Refresh
                 return Result<AuthencationResponse>.ResultFailures(ErrorConstants.AuthenticationError.AuthRefreshTokenDoesNotMatchOrExpired);
             }
             //generate new refresh token and access token
-            var newRefreshToken = JWTHelper.GenerateRefreshToken(DateTime.Now.AddDays(_jwtSetting.ExpiredRefreshToken));
+            var newRefreshToken = JWTHelper.GenerateRefreshToken(JWTHelper.GetExpiresRefreshToken(_jwtSetting.ExpiredRefreshToken));
             var token = await _jwtProvider.GenerateTokenAsync(userId);
             //convert refresh token into json then save it
-            var refreshTokenJson = JsonSerializer.Serialize<RefreshToken>(newRefreshToken);
+            //var refreshTokenJson = JsonSerializer.Serialize<RefreshToken>(newRefreshToken);
             var user = await _identityService.GetUserByIdAsync(userId);
-            await _identityService.SaveRefreshTokenAsync(userId, UserToken.Provider, UserToken.RefreshToken, refreshTokenJson);
-            return Result<AuthencationResponse>.ResultSuccess(new AuthencationResponse(token, newRefreshToken.Token, "Bearer", new AuthencationResponse.UserAuthentication(user.Id, user.Name ?? "", user.ImageUrl)));
+            //await _identityService.SaveRefreshTokenAsync(userId, UserToken.Provider, UserToken.RefreshToken, refreshTokenJson);
+            return Result<AuthencationResponse>.ResultSuccess(new AuthencationResponse(token, request.RefreshToken, "Bearer", user));
         }
     }
 }

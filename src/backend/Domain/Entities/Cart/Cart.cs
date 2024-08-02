@@ -14,9 +14,9 @@ namespace Domain.Entities.Carts
         public User User { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
-        public CartItem CreateCartItem(Guid productId, Guid? productSkusId, int quantity)
+        public CartItem CreateCartItem(Guid productId, int quantity)
         {
-            return new CartItem(Id, productId, productSkusId, quantity);
+            return new CartItem(Id, productId, quantity);
         }
         public void AddItems(CartItem cartItem)
         {

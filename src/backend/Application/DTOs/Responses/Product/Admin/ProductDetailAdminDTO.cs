@@ -1,5 +1,4 @@
 ﻿using Application.DTOs.Responses.Images;
-using Application.DTOs.Responses.Product.Shared.Variants;
 
 namespace Application.DTOs.Responses.Product.Admin
 {
@@ -13,7 +12,7 @@ namespace Application.DTOs.Responses.Product.Admin
         public int? Discount { get; init; }
         public Guid? BrandId { get; init; }
         public Guid? CategoryId { get; init; }
+        public bool IsStock { get; set; }
         public virtual IEnumerable<ImageDTO> Images { get; init; } 
-        public virtual IEnumerable<VariantsDTO> Variants { get; init; } 
     }
 }

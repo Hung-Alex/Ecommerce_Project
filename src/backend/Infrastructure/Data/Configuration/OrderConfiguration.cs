@@ -13,8 +13,6 @@ namespace Infrastructure.Data.Configuration
                     .WithOne(x => x.Order)
                     .HasForeignKey(x => x.OrderId)
                     .OnDelete(DeleteBehavior.Cascade);
-            builder.Property(x => x.OrderStatus)
-                .HasConversion<int>();
             builder.OwnsOne(o => o.ShipAddress);
         }
     }

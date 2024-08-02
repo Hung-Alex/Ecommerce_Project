@@ -2,5 +2,5 @@
 
 namespace Application.DTOs.Request
 {
-    public record CartItemRequest(Guid ProductId, Guid? ProductSkusId, int Quantity);
+    public record CartItemRequest(Guid ProductId, int Quantity);
 }

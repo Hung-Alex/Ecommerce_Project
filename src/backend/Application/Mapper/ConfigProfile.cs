@@ -8,7 +8,6 @@ using Application.DTOs.Responses.Post;
 using Application.DTOs.Responses.Product.Client;
 using Application.DTOs.Responses.Product.Shared.BrandProduct;
 using Application.DTOs.Responses.Product.Shared.CategoryProduct;
-using Application.DTOs.Responses.Product.Shared.Variants;
 using Application.DTOs.Responses.Rattings;
 using Application.DTOs.Responses.Sections;
 using Application.DTOs.Responses.Slides;
@@ -43,7 +42,6 @@ namespace Application.Mapper
             CreateMap<Banner, BannerDTO>().ForMember(dest => dest.LogoImageUrl, opt => opt.MapFrom<UrlFromPublicIdResolver>()).ReverseMap();
             CreateMap<CategoryProductDTO, Categories>().ReverseMap();
             CreateMap<BrandProductDTO, Brand>().ReverseMap();
-            CreateMap<ProductSkus, VariantsDTO>().ReverseMap();
             CreateMap<ImageDTO, Image>().ReverseMap();
             CreateMap<CatetgorySection, Categories>().ReverseMap();
             CreateMap<Post, PostDetailDTO>()

@@ -1,15 +1,11 @@
 ﻿using Application.DTOs.Filters.Product;
 using Application.Features.Products.Commands.AddProductImage;
-using Application.Features.Products.Commands.AddProductVariant;
 using Application.Features.Products.Commands.CreateProduct;
 using Application.Features.Products.Commands.DeleteProduct;
-using Application.Features.Products.Commands.DeleteProductVariants;
 using Application.Features.Products.Commands.UpdateProduct;
-using Application.Features.Products.Commands.UpdateProductVariants;
 using Application.Features.Products.Queries.Get;
 using Application.Features.Products.Queries.GetById;
 using Application.Features.Products.Queries.GetByUrlSlug;
-using Infrastructure.Services.Auth.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -52,17 +48,7 @@ namespace WebMemoryzoneApi.Controllers
             if (result.IsSuccess is false) return BadRequest(result);
             return Ok(result);
         }
-        [HttpPut("{productId:Guid}/{variantId:Guid}")]
-        public async Task<ActionResult> UpadateProductVariant(Guid productId, [FromBody] UpdateProductVariantsCommand command)
-        {
-            if (productId != command.ProductId)
-            {
-                return BadRequest();
-            }
-            var result = await _mediator.Send(command);
-            if (result.IsSuccess is false) return BadRequest(result);
-            return Ok(result);
-        }
+
 
         [HttpDelete("{id:Guid}")]
         public async Task<ActionResult> DeleteProduct(Guid id)
@@ -79,13 +65,7 @@ namespace WebMemoryzoneApi.Controllers
             if (result.IsSuccess is false) return NotFound(result);
             return Ok(result);
         }
-        [HttpDelete("{productId:Guid}/{variantId:Guid}")]
-        public async Task<IActionResult> DeleteVariant(Guid productId, Guid variantId)
-        {
-            var result = await _mediator.Send(new DeleteProductVariantsCommand(productId, variantId));
-            if (!result.IsSuccess) return BadRequest(result);
-            return Ok();
-        }
+
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddProduct([FromForm] CreateProductCommand command)
@@ -103,14 +83,8 @@ namespace WebMemoryzoneApi.Controllers
         {
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result);
-            return Ok();
-        }
-        [HttpPost("add-variant")]
-        public async Task<ActionResult> AddProductVariant([FromBody] AddProductVariantCommand command)
-        {
-            var result = await _mediator.Send(command);
-            if (result.IsSuccess is false) return BadRequest(result);
             return Ok(result);
         }
+
     }
 }

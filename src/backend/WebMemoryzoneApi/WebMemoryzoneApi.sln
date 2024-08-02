@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "..\Applicati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "..\Infrastructure\Infrastructure.csproj", "{CF212327-ADFE-4605-8E97-644802F2FD21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.PaymentService", "..\Infrastructure.PaymentService\Infrastructure.PaymentService.csproj", "{DAD65749-D9B0-4CCD-85B4-3D321D171419}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.PaymentService", "..\Infrastructure.PaymentService\Infrastructure.PaymentService.csproj", "{8FA23E49-EC61-40CC-A7FE-476C529AB8A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{CF212327-ADFE-4605-8E97-644802F2FD21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF212327-ADFE-4605-8E97-644802F2FD21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF212327-ADFE-4605-8E97-644802F2FD21}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DAD65749-D9B0-4CCD-85B4-3D321D171419}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DAD65749-D9B0-4CCD-85B4-3D321D171419}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DAD65749-D9B0-4CCD-85B4-3D321D171419}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DAD65749-D9B0-4CCD-85B4-3D321D171419}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FA23E49-EC61-40CC-A7FE-476C529AB8A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FA23E49-EC61-40CC-A7FE-476C529AB8A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FA23E49-EC61-40CC-A7FE-476C529AB8A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FA23E49-EC61-40CC-A7FE-476C529AB8A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

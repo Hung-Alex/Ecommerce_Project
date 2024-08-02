@@ -52,7 +52,7 @@ namespace WebMemoryzoneApi.Controllers
         {
             var result = await _mediator.Send(new DeleteCategoryCommand(id));
             if (!result.IsSuccess) return NotFound(result);
-            return Ok();
+            return Ok(result);
         }
         [HttpPost]
         [FileValidatorFilter<CreateCategoryCommand>([".png", ".jpg"], 1920 * 1080)]
@@ -60,7 +60,7 @@ namespace WebMemoryzoneApi.Controllers
         {
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result);
-            return Ok();
+            return Ok(result);
         }
     }
 }

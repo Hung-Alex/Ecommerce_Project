@@ -21,7 +21,6 @@ namespace Application.Features.Search.Specification
              && (string.IsNullOrEmpty(_filter.ProductName) || p.Name.Contains(_filter.ProductName));
         protected override void Handler()
         {
-            AddInclude(x => x.ProductSkus);
             AddInclude(x => x.Images);
             AddInclude(x => x.Category);
             AddInclude(x => x.Brand);

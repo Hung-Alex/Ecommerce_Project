@@ -7,7 +7,6 @@ using Application.Features.Products.Specification;
 using Domain.Entities.Products;
 using Application.DTOs.Responses.Product.Admin;
 using Application.DTOs.Responses.Images;
-using Application.DTOs.Responses.Product.Shared.Variants;
 
 namespace Application.Features.Products.Queries.GetById
 {
@@ -26,11 +25,12 @@ namespace Application.Features.Products.Queries.GetById
                 Description = product.Description,
                 Price = product.Price,
                 Discount = product.Discount,
+                IsStock = product.IsStock,
+                OldPrice = product.OldPrice,
                 UrlSlug = product.UrlSlug,
                 CategoryId = product.CategoryId,
                 BrandId = product.BrandId,
                 Images = mapper.Map<IEnumerable<ImageDTO>>(product.Images),
-                Variants = mapper.Map<IEnumerable<VariantsDTO>>(product.ProductSkus)
             };
             return Result<ProductDetailAdminDTO>.ResultSuccess(productDTO);
         }

@@ -1,12 +1,15 @@
 ﻿using Application.DTOs.Internal;
+using Application.DTOs.Internal.User;
 using Application.Features.Authen.Commands.Login;
 using Application.Features.Authen.Commands.LoginWithGoogle;
 using Application.Features.Authen.Commands.Logout;
 using Application.Features.Authen.Commands.Refresh;
 using Application.Features.Authen.Commands.Register;
+using Application.Helper;
 using Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 
 namespace WebMemoryzoneApi.Controllers
@@ -35,10 +38,9 @@ namespace WebMemoryzoneApi.Controllers
             }
             SetCookies(result.Data.AccessToken
                   , result.Data.RefreshToken
-                  , result.Data.User.Name
-                  , result.Data.User.ImageUrl
-                  , DateTime.Now.AddMinutes(_jwtSetting.ExpiredToken)
-                  , DateTime.Now.AddDays(_jwtSetting.ExpiredRefreshToken));
+                  , result.Data.User
+                  , JWTHelper.GetExpiresAccessToken(_jwtSetting.ExpiredToken)
+                  , JWTHelper.GetExpiresRefreshToken(_jwtSetting.ExpiredRefreshToken));
             return Ok(result);
         }
         [HttpPost("register")]
@@ -61,10 +63,9 @@ namespace WebMemoryzoneApi.Controllers
             }
             SetCookies(result.Data.AccessToken
                  , result.Data.RefreshToken
-                 , result.Data.User.Name
-                 , result.Data.User.ImageUrl
-                 , DateTime.Now.AddMinutes(_jwtSetting.ExpiredToken)
-                 , DateTime.Now.AddDays(_jwtSetting.ExpiredRefreshToken));
+                 , result.Data.User
+                  , JWTHelper.GetExpiresAccessToken(_jwtSetting.ExpiredToken)
+                  , JWTHelper.GetExpiresRefreshToken(_jwtSetting.ExpiredRefreshToken));
             return Ok(result);
         }
         [HttpGet("logout")]
@@ -81,9 +82,9 @@ namespace WebMemoryzoneApi.Controllers
             }
             SetCookies(""
                 , ""
-                , ""
-                , ""
-                , DateTime.Now.AddYears(-100), DateTime.Now.AddYears(-100));
+                , null
+                , DateTime.Now.AddYears(-100)
+                , DateTime.Now.AddYears(-100));
             return Ok(result);
         }
         [HttpPost("refresh")]
@@ -100,20 +101,54 @@ namespace WebMemoryzoneApi.Controllers
             }
             SetCookies(result.Data.AccessToken
                 , result.Data.RefreshToken
-                , result.Data.User.Name
-                , result.Data.User.ImageUrl
-                , DateTime.Now.AddMinutes(_jwtSetting.ExpiredToken)
-                , DateTime.Now.AddDays(_jwtSetting.ExpiredRefreshToken)
+                , result.Data.User
+                , JWTHelper.GetExpiresAccessToken(_jwtSetting.ExpiredToken)
+                , JWTHelper.GetExpiresRefreshToken(_jwtSetting.ExpiredRefreshToken)
                 );
             return Ok(result);
         }
-        private void SetCookies(string accessToken, string refreshToken, string userName, string image, DateTime expiredTimeAccestoken, DateTime expiredTimeRefreshToken)
+        private void SetCookies(string accessToken, string refreshToken, UserDTO user, DateTime expiredTimeAccestoken, DateTime expiredTimeRefreshToken)
         {
-            Response.Cookies.Append(UserToken.UserInfoNoneBlock, userName, new CookieOptions() { SameSite = SameSiteMode.None, Secure = true, IsEssential = true, Expires = expiredTimeAccestoken });
-            Response.Cookies.Append(UserToken.ImageDefault, image ?? UserToken.ImageDefaultValue, new CookieOptions() { SameSite = SameSiteMode.None, IsEssential = true, Secure = true, Expires = expiredTimeAccestoken });
-            Response.Cookies.Append(UserToken.AccessTokenCookies, accessToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.None, Secure = true, IsEssential = true, Expires = expiredTimeAccestoken });
-            Response.Cookies.Append(UserToken.RefreshTokenCookies, refreshToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.None, Secure = true, IsEssential = true, Expires = expiredTimeRefreshToken });
-            Response.Cookies.Append(UserToken.UserInfoCookies, userName, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.None, Secure = true, IsEssential = true, Expires = expiredTimeRefreshToken });
+            var userInfo = JsonSerializer.Serialize(user);
+            //can read
+            Response.Cookies.Append(UserToken.AccessTokenCookiesCanRead, accessToken, new CookieOptions()
+            {
+                SameSite = SameSiteMode.None,
+                Secure = true,
+                IsEssential = true,
+                Expires = expiredTimeAccestoken,
+            });
+            Response.Cookies.Append(UserToken.RefreshTokenCookiesCanRead, refreshToken, new CookieOptions()
+            {
+                SameSite = SameSiteMode.None,
+                Secure = true,
+                IsEssential = true,
+                Expires = expiredTimeRefreshToken,
+            });
+            Response.Cookies.Append(UserToken.UserInfoNoneBlock, userInfo, new CookieOptions()
+            {
+                SameSite = SameSiteMode.None,
+                Secure = true,
+                IsEssential = true,
+                Expires = expiredTimeAccestoken,
+            });
+            //http only
+            Response.Cookies.Append(UserToken.AccessTokenCookies, accessToken, new CookieOptions()
+            {
+                HttpOnly = true,
+                SameSite = SameSiteMode.None,
+                Secure = true,
+                IsEssential = true,
+                Expires = expiredTimeRefreshToken,
+            });
+            Response.Cookies.Append(UserToken.RefreshTokenCookies, refreshToken, new CookieOptions()
+            {
+                HttpOnly = true,
+                SameSite = SameSiteMode.None,
+                Secure = true,
+                IsEssential = true,
+                Expires = expiredTimeRefreshToken,
+            });
         }
     }
 }

@@ -18,18 +18,17 @@ namespace Infrastructure.Repositories.Repository
                         select new CartDTO
                         {
                             Id = c.Id,
-                            Items = (from cartItem in _context.CartItems.Include(x => x.ProductSkus)
+                            Items = (from cartItem in _context.CartItems
                                      join product in _context.Products on cartItem.ProductId equals product.Id
                                      where cartItem.CartId == c.Id
                                      select new CartItemDTO
                                      {
                                          Id = cartItem.Id,
                                          ProductId = product.Id,
-                                         ProductSkusId = cartItem.ProductSkus != null ? cartItem.ProductSkus.Id : (Guid?)null,
                                          ProductName = product.Name,
-                                         VariantName = cartItem.ProductSkus != null ? cartItem.ProductSkus.Name : null,
                                          Price = product.Price,
                                          Quantity = cartItem.Quantity,
+                                         IsStock = product.IsStock,
                                          Image = _context.Images
                                                  .Where(x => product.Id == x.ProductId)
                                                  .Select(x => x.ImageUrl)
