@@ -21,7 +21,7 @@ const AdminNavbar = () => {
     <>
       <header className="flex flex-wrap items-center justify-between py-4 px-6 sm:px-12 sticky w-full top-0 bg-black drop-shadow z-50">
         <div className="flex items-center justify-between w-full sm:w-auto">
-          <button onClick={toggleMobileMenu} className="text-gray-300 sm:hidden">
+          <button onClick={toggleMobileMenu} className="text-gray-300 p-2 md:hidden">
             ☰
           </button>
           <Link to="/admin" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-1">
@@ -49,7 +49,7 @@ const AdminNavbar = () => {
           </div>
         </div>
 
-        <div className="hidden sm:flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-4">
           <div className="relative">
             <BiSearch className="absolute bg-dark text-white text-4xl top-1 right-1 p-[8px] rounded-full" />
             <input
@@ -83,7 +83,7 @@ const AdminNavbar = () => {
 
       {/* Mobile Dropdown Menu */}
       {isMobileMenuOpen && (
-        <div className=" absolute bg-white sm:hidden w-full max-w-[100vw] overflow-auto">
+        <div className=" absolute bg-white md:hidden w-full max-w-[100vw] overflow-auto">
           <AdminNavList />
         </div>
       )}

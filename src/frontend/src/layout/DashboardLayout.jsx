@@ -7,7 +7,7 @@ const DashboardLayout = ({ children }) => {
     <>
     <div className=" min-h-screen  bg-slate-100">
       <AdminNavbar />
-      <div className="flex justify-center items-start">
+      <div className="flex justify-center items-start w-full">
       <SideNav />
       {children}
       </div>

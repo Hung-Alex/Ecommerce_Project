@@ -61,7 +61,7 @@ const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam
   }, [searchTerm, pageIndex, pageSize, sortColumn, sortBy, refresh]);
 
   const getPageNumbers = () => {
-    if (totalPages <= 7) {
+    if (totalPages <= 5) {
       return Array.from({ length: totalPages }, (_, i) => i);
     }
 
@@ -104,7 +104,6 @@ const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam
         if (index === 0) headerClass = 'col-first';
         else if (index === 1) headerClass = 'col-second';
         else if (index === 2) headerClass = 'col-second';
-        else if (index === columns.length - 1) headerClass = 'col-last';
         else headerClass = 'col-hidden';
 
         return (
@@ -128,7 +127,6 @@ const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam
           if (index === 0) colClass = 'col-first';
           else if (index === 1) colClass = 'col-second';
           else if (index === 2) colClass = 'col-second';
-          else if (index === columns.length - 1) colClass = 'col-last';
           else colClass = 'col-hidden';
 
           let content = row[col.accessor];
@@ -187,7 +185,7 @@ const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam
     <div className="container mx-auto m-4 w-full">
       <p className="text-xs text-gray-500">({totalItems} <n />Item)</p>
 
-      <div className="mb-4 m-2 md:flex flex-col md:flex-row md:items-center">
+      <div className="m-4 md:flex flex-col md:flex-row md:items-center">
         <button
           onClick={handleAdd}
           className="mr-4 p-2 bg-green-500 text-white w-9 rounded-3xl shadow-md hover:bg-green-600 transition-colors duration-200"
@@ -251,15 +249,33 @@ const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam
           Previous
         </button>
 
-        {pageNumbers.map((pageNumber, index) => (
-          <button
-            key={index}
-            onClick={() => handlePageChange(pageNumber)}
-            className={`px-4 py-2 border border-gray-300 rounded-md mx-1 ${pageNumber === pageIndex ? 'bg-blue-500 text-white' : 'bg-white'}`}
-          >
-            {pageNumber + 1}
-          </button>
-        ))}
+        <div className="flex">
+          {/* Group for screens larger than md (shows all pages) */}
+          <div className="hidden md:flex ">
+            {pageNumbers.map((pageNumber, index) => (
+              <button
+                key={index}
+                onClick={() => handlePageChange(pageNumber)}
+                className={`px-4 py-2 border border-gray-300 rounded-md mx-1 ${pageNumber === pageIndex ? 'bg-blue-500 text-white' : 'bg-white'}`}
+              >
+                {pageNumber + 1}
+              </button>
+            ))}
+          </div>
+
+          {/* Group for screens smaller than md (shows first 3 pages) */}
+          <div className="flex md:hidden">
+            {pageNumbers.slice(0, 3).map((pageNumber, index) => (
+              <button
+                key={index}
+                onClick={() => handlePageChange(pageNumber)}
+                className={`px-4 py-2 border border-gray-300 rounded-md mx-1 ${pageNumber === pageIndex ? 'bg-blue-500 text-white' : 'bg-white'}`}
+              >
+                {pageNumber + 1}
+              </button>
+            ))}
+          </div>
+        </div>
 
         <button
           onClick={() => setPageIndex((prev) => Math.min(totalPages - 1, prev + 1))}
