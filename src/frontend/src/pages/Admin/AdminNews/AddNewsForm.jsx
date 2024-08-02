@@ -74,7 +74,6 @@ const AddNewsForm = ({ postId, onClose, addPost, updatePost }) => {
     } else {
       createNews(formData)
       .then(res => {
-        // console.log(res);
           if (res?.isSuccess) {
               onClose();
           }

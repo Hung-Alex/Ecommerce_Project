@@ -12,7 +12,7 @@ const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam
   const [totalItems, setTotalItems] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const [pageSize, setPageSize] = useState(8);
-  const [sortColumn, setSortColumn] = useState(columns[0]?.accessor || 'createdAt');
+  const [sortColumn, setSortColumn] = useState('createdAt');
   const [sortBy, setSortBy] = useState('ASC');
   const [loading, setLoading] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -58,7 +58,7 @@ const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam
 
   useEffect(() => {
     fetchData();
-  }, [searchTerm, pageIndex, sortColumn, sortBy, refresh]);
+  }, [searchTerm, pageIndex, pageSize, sortColumn, sortBy, refresh]);
 
   const getPageNumbers = () => {
     if (totalPages <= 7) {
@@ -177,7 +177,7 @@ const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam
 
   // Generate options for the page size
   const generatePageSizeOptions = () => {
-    const options = [5, 10, 20, 50];
+    const options = [1, 5, 10, 20, 50];
     return options.filter(option => option <= totalItems);
   };
 
@@ -185,6 +185,7 @@ const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam
 
   return (
     <div className="container mx-auto m-4 w-full">
+      <p className="text-xs text-gray-500">({totalItems} <n />Item)</p>
 
       <div className="mb-4 m-2 md:flex flex-col md:flex-row md:items-center">
         <button
@@ -203,20 +204,20 @@ const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam
         <div className="ml-auto flex">
           <div>
 
-          <label className="mr-2">Sort By:</label>
-          <select
-            value={sortColumn}
-            onChange={(e) => setSortColumn(e.target.value)}
-            className="p-2 border border-gray-300 rounded-md w-20 md:w-28"
+            <label className="mr-2">Sort By:</label>
+            <select
+              value={sortColumn}
+              onChange={(e) => setSortColumn(e.target.value)}
+              className="p-2 border border-gray-300 rounded-md w-20 md:w-28"
             >
-            {columns.map(({ accessor }) => (
-              <option key={accessor} value={accessor}>
-                {accessor.charAt(0).toUpperCase() + accessor.slice(1)}
-              </option>
-            ))}
-            <option value="createdAt">Created At</option>
-          </select>
-            </ div>
+              {columns.map(({ accessor }) => (
+                <option key={accessor} value={accessor}>
+                  {accessor.charAt(0).toUpperCase() + accessor.slice(1)}
+                </option>
+              ))}
+              <option value="createdAt">Created At</option>
+            </select>
+          </ div>
           <div>
             <label className="mx-2">Sort Order:</label>
             <select
@@ -244,7 +245,7 @@ const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam
       <div className="flex justify-center mt-4 items-center">
         <button
           onClick={() => setPageIndex((prev) => Math.max(0, prev - 1))}
-          className={`px-4 py-2 border border-gray-300 -z-10 rounded-md mx-1 ${pageIndex === 0 ? 'cursor-not-allowed opacity-50' : 'bg-white'}`}
+          className={`px-4 py-2 border border-gray-300 -z-1 rounded-md mx-1 ${pageIndex === 0 ? 'cursor-not-allowed opacity-50' : 'bg-white'}`}
           disabled={pageIndex === 0}
         >
           Previous
@@ -262,17 +263,17 @@ const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam
 
         <button
           onClick={() => setPageIndex((prev) => Math.min(totalPages - 1, prev + 1))}
-          className={`px-4 py-2 border border-gray-300 rounded-md mx-1 ${pageIndex === totalPages - 1 ? 'cursor-not-allowed opacity-50' : 'bg-white'}`}
+          className={`px-4 py-2 border border-gray-300 -z-1 rounded-md mx-1 ${pageIndex === totalPages - 1 ? 'cursor-not-allowed opacity-50' : 'bg-white'}`}
           disabled={pageIndex === totalPages - 1}
         >
           Next
         </button>
 
-        <div className="ml-auto mt-2 ">
+        <div className="ml-auto ">
           <label className="mr-2">Page Size</label>
           <select
             value={pageSize}
-            onChange={(e) => setPageSize(Number(e.target.value))}
+            onChange={(e) => setPageSize(e.target.value)}
             className="p-2 border border-gray-300 rounded-md"
           >
             {pageSizeOptions.map(size => (

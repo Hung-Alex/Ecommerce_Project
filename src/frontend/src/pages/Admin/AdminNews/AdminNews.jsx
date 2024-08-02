@@ -18,11 +18,8 @@ const AdminNews = () => {
 
   // Handle deletion of a post
   const handleDelete = useCallback(async (row) => {
-    const res = await deleteNews(row.id);
-    if (res?.isSuccess) {
-      setRefresh(prev => !prev); // Trigger refresh
-      toast.success('Post deleted successfully');
-    }
+    await deleteNews(row.id);
+    setRefresh(prev => !prev); // Trigger refresh
   }, []);
 
   // Show the form for adding a new post
