@@ -1,33 +1,56 @@
 import React, { useState, useRef, useEffect } from "react";
-import { titleToSlug } from '../../../utils/slugify';
+import { updateBrand, createBrand, fetchBrandDataById } from '../../../api';
+import { titleToSlug } from "../../../utils/slugify"; // Import hàm titleToSlug từ file riêng
 
-const AddBrandForm = ({ brand, onClose, addBrand, updateBrand }) => {
-  const [name, setName] = useState(brand ? brand.name : "");
-  const [urlSlug, setUrlSlug] = useState(brand ? brand.urlSlug : "");
-  const [description, setDescription] = useState(brand ? brand.description : "");
+
+const AddBrandForm = ({ brandId, onClose }) => {
+  const [name, setName] = useState("");
+  const [urlSlug, setUrlSlug] = useState("");
+  const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
-  const [imagePreview, setImagePreview] = useState(brand ? brand.image : null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   const fileInputRef = useRef(null);
 
   useEffect(() => {
-    setUrlSlug(titleToSlug(name));
-  }, [name]);
+    const fetchData = async () => {
+      if (brandId) {
+        const fetchedBrand = await fetchBrandDataById(brandId);
+        if (fetchedBrand) {
+          setName(fetchedBrand.name);
+          setUrlSlug(fetchedBrand.urlSlug);
+          setDescription(fetchedBrand.description);
+          setImagePreview(fetchedBrand.image);
+        }
+      }
+    };
 
-  useEffect(() => {
-    if (brand && brand.image) {
-      setImagePreview(brand.image);
-    }
-  }, [brand]);
+    fetchData();
+  }, [brandId]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (brand) {
-      await updateBrand(brand.id, { name, urlSlug, description, image });
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("urlSlug", urlSlug);
+    formData.append("description", description);
+
+    if (brandId) {
+      if (image) formData.append("image", image);
+      formData.append("id", brandId);
+      await updateBrand(brandId, formData).then(res => {
+        if (res?.isSuccess) {
+          onClose();
+        }
+      });
     } else {
-      await addBrand({ name, urlSlug, description, image });
+      if (image) formData.append("FormFile", image);
+      await createBrand(formData).then(res => {
+        if (res?.isSuccess) {
+          onClose();
+        }
+      });
     }
-    onClose();
   };
 
   const handleImageChange = (event) => {
@@ -39,11 +62,13 @@ const AddBrandForm = ({ brand, onClose, addBrand, updateBrand }) => {
   const handleImageClick = () => {
     fileInputRef.current.click();
   };
+  useEffect(() => {
+    setUrlSlug(titleToSlug(name));
+  }, [name]);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg max-w-3xl w-full flex">
-        {/* Image Section */}
         <div className="flex-shrink-0 w-1/4 mr-6">
           <div
             className="relative w-full h-64 bg-gray-100 rounded-lg overflow-hidden cursor-pointer"
@@ -70,9 +95,8 @@ const AddBrandForm = ({ brand, onClose, addBrand, updateBrand }) => {
           </div>
         </div>
 
-        {/* Form Section */}
         <div className="w-3/4">
-          <h2 className="text-2xl mb-4">{brand ? "Edit Brand" : "Add Brand"}</h2>
+          <h2 className="text-2xl mb-4">{brandId ? "Edit Brand" : "Add Brand"}</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium">Name:</label>
@@ -90,7 +114,7 @@ const AddBrandForm = ({ brand, onClose, addBrand, updateBrand }) => {
                 value={urlSlug}
                 onChange={(event) => setUrlSlug(event.target.value)}
                 className="mt-1 block w-full px-3 py-2 border rounded-md"
-                readOnly
+                disabled
               />
             </div>
             <div>
@@ -98,7 +122,7 @@ const AddBrandForm = ({ brand, onClose, addBrand, updateBrand }) => {
               <textarea
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
-                className="mt-1 block w-full px-3 py-2 border rounded-md"
+                className="mt-1 block max-h-56 min-h-44 w-full px-3 py-2 border rounded-md"
               />
             </div>
             <div className="flex justify-end space-x-4">
