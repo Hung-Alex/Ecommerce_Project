@@ -6,10 +6,10 @@ using Domain.Shared;
 
 namespace Domain.Entities.Payments
 {
-    public class Payment : BaseEntity, IDatedModification, IAggregateRoot, ISoftDelete,ICreatedAndUpdatedBy
+    public class Payment : BaseEntity, IDatedModification, IAggregateRoot, ISoftDelete, ICreatedAndUpdatedBy
     {
         public Payment() : base() { }
-        public Payment(decimal amount, PaymentMethod paymentMethod, DateTimeOffset transactionDate, decimal fee, Guid statusId):base()
+        public Payment(decimal amount, PaymentMethod paymentMethod, DateTimeOffset transactionDate, decimal fee, Guid statusId) : base()
         {
             Amount = amount;
             PaymentMethod = paymentMethod;
@@ -26,10 +26,9 @@ namespace Domain.Entities.Payments
         public virtual Status Status { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
-    
         public bool IsDeleted { get; set; }
         public DateTimeOffset? DeletedAt { get; set; }
-        public ICollection<Order> Orders { get; set; }= new List<Order>();
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
         public Guid? CreatedByUserId { get; set; }
         public User CreatedByUser { get; set; }
         public Guid? UpdatedByUserId { get; set; }

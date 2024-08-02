@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Infrastructure.PaymentService.VnPay.Lib
 {
-    internal class PayLib
+    public class PayLib
     {
         private SortedList<String, String> _requestData = new SortedList<String, String>(new VnPayCompare());
         public void AddRequestData(string key, string value)
@@ -58,7 +58,13 @@ namespace Infrastructure.PaymentService.VnPay.Lib
 
             return hash.ToString();
         }
+        public static bool ValidateSignature(string rspraw, string inputHash, string secretKey)
+        {
+            string myChecksum = PayLib.HmacSHA512(secretKey, rspraw);
+            return myChecksum.Equals(inputHash, StringComparison.InvariantCultureIgnoreCase);
+        }
     }
+
     public class VnPayCompare : IComparer<string>
     {
         public int Compare(string x, string y)

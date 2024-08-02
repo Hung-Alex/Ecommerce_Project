@@ -1,13 +1,15 @@
-﻿using System;
+﻿using Infrastructure.PaymentService.VnPay.Lib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Infrastructure.PaymentService.VnPay.Response
 {
-    public class VnpayResonse
-    {
+    public class VnpayResponse
+    {     
         public string vnp_TmnCode { get; set; } = string.Empty;
         public string vnp_BankCode { get; set; } = string.Empty;
         public string vnp_BankTranNo { get; set; } = string.Empty;
@@ -20,6 +22,6 @@ namespace Infrastructure.PaymentService.VnPay.Response
         public string vnp_SecureHash { get; set; } = string.Empty;
         public int? vnp_Amount { get; set; }
         public string? vnp_ResponseCode { get; set; }
-        public string vnp_PayDate { get; set; } = string.Empty;
+        public string vnp_PayDate { get; set; } = string.Empty;      
     }
 }

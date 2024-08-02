@@ -92,8 +92,28 @@ namespace Infrastructure.Data.Configuration
                                       CreatedAt = DateTimeOffset.Now,
                                       UpdatedAt = DateTimeOffset.Now,
                                       IsDeleted = false
-                                  });
-            #endregion
-        }
+                                  },
+                                  new Status
+                                  {
+                                      Id = Guid.Parse("00000000-0000-0000-0000-000000000008"),
+                                      Type = "Order",
+                                      Display = "Failed",
+                                      Code = "FAILED",
+                                      CreatedAt = DateTimeOffset.Now,
+                                      UpdatedAt = DateTimeOffset.Now,
+                                      IsDeleted = false
+                                  },
+                                    new Status
+                                    {
+                                        Id = Guid.Parse("00000000-0000-0000-0000-000000000009"),
+                                        Type = "Payment",
+                                        Display = "Failed",
+                                        Code = "FAILED",
+                                        CreatedAt = DateTimeOffset.Now,
+                                        UpdatedAt = DateTimeOffset.Now,
+                                        IsDeleted = false
+                                    });
+                                            #endregion
+                                        }
     }
 }

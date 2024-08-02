@@ -1,10 +1,9 @@
 ﻿using Domain.Shared;
 using MediatR;
-using System.Transactions;
 
 namespace Application.Features.Payments.Commands
 {
-    public class IPNVnPayCommand : IRequest<Result<bool>>
+    public record IPNVnPayCommand : IRequest<Result<bool>>
     {
         public Guid OrderId { get; set; }
         public string Code { get; set; }
