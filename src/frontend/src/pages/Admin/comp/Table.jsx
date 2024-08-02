@@ -58,7 +58,7 @@ const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam
 
   useEffect(() => {
     fetchData();
-  }, [ searchTerm, pageIndex, sortColumn, sortBy, refresh]);
+  }, [searchTerm, pageIndex, sortColumn, sortBy, refresh]);
 
   const getPageNumbers = () => {
     if (totalPages <= 7) {
@@ -200,13 +200,15 @@ const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam
           className="p-2 border border-gray-300 rounded-md mb-2 md:mb-0 md:mr-4"
         />
 
-        <div className="ml-auto">
+        <div className="ml-auto flex">
+          <div>
+
           <label className="mr-2">Sort By:</label>
           <select
             value={sortColumn}
             onChange={(e) => setSortColumn(e.target.value)}
-            className="p-2 border border-gray-300 rounded-md w-24 md:w-28"
-          >
+            className="p-2 border border-gray-300 rounded-md w-20 md:w-28"
+            >
             {columns.map(({ accessor }) => (
               <option key={accessor} value={accessor}>
                 {accessor.charAt(0).toUpperCase() + accessor.slice(1)}
@@ -214,28 +216,30 @@ const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam
             ))}
             <option value="createdAt">Created At</option>
           </select>
-
-          <label className="mx-2">Sort Order:</label>
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="p-2 border border-gray-300 rounded-md"
-          >
-            <option value="ASC">Ascending</option>
-            <option value="DESC">Descending</option>
-          </select>
+            </ div>
+          <div>
+            <label className="mx-2">Sort Order:</label>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="p-2 border border-gray-300 w-24 rounded-md"
+            >
+              <option value="ASC">Ascending</option>
+              <option value="DESC">Descending</option>
+            </select>
+          </div>
         </div>
       </div>
 
 
-        <table className="min-w-full bg-white rounded-lg shadow-md divide-y divide-gray-200">
-          <thead>
-            {renderTableHeaders()}
-          </thead>
-          <tbody>
-            {renderTableRows()}
-          </tbody>
-        </table>
+      <table className="min-w-full bg-white rounded-lg shadow-md divide-y divide-gray-200">
+        <thead>
+          {renderTableHeaders()}
+        </thead>
+        <tbody>
+          {renderTableRows()}
+        </tbody>
+      </table>
 
       <div className="flex justify-center mt-4 items-center">
         <button
@@ -265,17 +269,17 @@ const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam
         </button>
 
         <div className="ml-auto mt-2 ">
-        <label className="mr-2">Page Size</label>
-        <select
-          value={pageSize}
-          onChange={(e) => setPageSize(Number(e.target.value))}
-          className="p-2 border border-gray-300 rounded-md"
-        >
-          {pageSizeOptions.map(size => (
-            <option key={size} value={size}>{size}</option>
-          ))}
-        </select>
-      </div>
+          <label className="mr-2">Page Size</label>
+          <select
+            value={pageSize}
+            onChange={(e) => setPageSize(Number(e.target.value))}
+            className="p-2 border border-gray-300 rounded-md"
+          >
+            {pageSizeOptions.map(size => (
+              <option key={size} value={size}>{size}</option>
+            ))}
+          </select>
+        </div>
       </div>
     </div>
   );

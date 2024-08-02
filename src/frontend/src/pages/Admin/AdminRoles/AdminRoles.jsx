@@ -1,43 +1,18 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import DashboardLayout from "../../../layout/DashboardLayout.jsx";
 import Table from "../comp/Table.jsx";
 import AddRoleForm from "./AddRoleForm";
-import toast from "react-hot-toast"; // Import toast from react-hot-toast
-import {
-  fetchRolesData,
- deleteRole
-} from '../../../api/index';
+import { deleteRole } from '../../../api/index'; // Import the API function to delete a role
 
 const AdminRoles = () => {
-  const [roles, setRoles] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
+  const [refresh, setRefresh] = useState(""); // State to trigger refresh
   const [editingRole, setEditingRole] = useState(null);
 
-  const fetchRoles = useCallback(async () => {
-      const res = await fetchRolesData();
-      setRoles(res.data);
-  }, [showForm]);
-
-  useEffect(() => {
-    fetchRoles();
-  }, [fetchRoles]);
-
-  const deleteRoles = async (id) => {
-    const response = await deleteRole(id);
-    setRoles((prevList) => prevList.filter((role) => role.id !== id));
-  };
-
-  const handleEdit = useCallback((row) => {
-    setEditingRole(row.id);
-    setShowForm(true);
-  }, []);
-
   const handleDelete = useCallback(async (row) => {
-    try {
-      await deleteRoles(row.id);
-    } catch (error) {
-      toast.error(`Error deleting role: ${error.message}`);
-    }
+      await deleteRole(row.id);
+      setRefresh((prev) => !prev); // Trigger refresh
   }, []);
 
   const handleAddRole = useCallback(() => {
@@ -45,23 +20,31 @@ const AdminRoles = () => {
     setShowForm(true);
   }, []);
 
+  const handleEdit = useCallback((row) => {
+    setEditingRole(row.id);
+    setShowForm(true);
+  }, []);
+
   const handleCloseForm = useCallback(() => {
     setShowForm(false);
     setEditingRole(null);
+    setRefresh((prev) => !prev); // Trigger refresh
   }, []);
 
   return (
     <DashboardLayout>
-      <div className='p-6'>
+      <div className=''>
         <Table
+          apiUrl="/roles" // Assuming you have an API endpoint for roles
           columns={[
-            { header: 'ID', accessor: 'id' },
+            { header: 'id', accessor: 'id' },
             { header: 'Role Name', accessor: 'name' }
           ]}
-          data={roles}
           onEdit={handleEdit}
           onDelete={handleDelete}
           onAdd={handleAddRole}
+          searchParam="Name"
+          refresh={refresh} // Pass refresh state to Table component
         />
         {showForm && (
           <AddRoleForm
