@@ -1,4 +1,4 @@
-﻿using Application.Common.Interface.Payment;
+﻿using Application.Common.Interface.Payments;
 using Infrastructure.PaymentService.VnPay.Handle;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,7 +8,7 @@ namespace Infrastructure.PaymentService.Extension
     {
         public static IServiceCollection AddVnpayExtension(this IServiceCollection services)
         {
-            services.AddScoped<IPaymentStrategy, VnPayStrategy>();
+            services.AddScoped<IVnPayService, VnPayService>();
             return services;
         }
     }

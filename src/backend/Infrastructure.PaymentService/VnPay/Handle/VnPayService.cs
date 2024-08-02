@@ -1,43 +1,39 @@
-﻿using Application.Common.Interface.Payment;
+﻿using Application.Common.Interface.Payments;
 using Application.DTOs.Responses.Payments;
 using Domain.Entities.Orders;
+using Domain.Entities.Payments;
 using Domain.Shared;
 using Infrastructure.PaymentService.VnPay.Config;
 using Infrastructure.PaymentService.VnPay.Lib;
 using Infrastructure.PaymentService.VnPay.Request;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using System;
-using System.Security.Cryptography;
-using System.Text;
-using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace Infrastructure.PaymentService.VnPay.Handle
 {
-    public class VnPayStrategy : IPaymentStrategy
+    public class VnPayService : IVnPayService
     {
         private readonly VnPaySetting _vnpaySetting;
         private readonly IConfiguration _configuration;
-        public VnPayStrategy(IConfiguration configuration)
+        public VnPayService(IConfiguration configuration)
         {
             _configuration = configuration;
             _vnpaySetting = _configuration.GetSection("vnPay").Get<VnPaySetting>();
         }
 
-        public async Task<Result<PaymentsResultDTO>> CreatePaymentUrl(Order order, CancellationToken cancellationToken)
+        public async Task<Result<PaymentsResultDTO>> CreatePaymentUrl(Order order, Payment payment, decimal amount, CancellationToken cancellationToken)
         {
             VnPayRequest vnPayRequest = new VnPayRequest
             {
                 Vnp_TmnCode = _vnpaySetting.Vnp_TmnCode,
-                Vnp_Amount = (10000*100).ToString(), // Chuyển đổi số tiền sang đơn vị nhỏ nhất (đồng)
+                Vnp_Amount = ((int)amount*100).ToString(), 
                 Vnp_CreateDate = long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")),
                 Vnp_IpAddr = "127.0.0.1",
                 Vnp_Locale = "vn",
-                Vnp_OrderInfo = "thanhtoandonhang".ToString(),
+                Vnp_OrderInfo = $"Thanh Toan Don Hang".ToString(),
                 Vnp_OrderType = "other",
                 Vnp_ReturnUrl = _vnpaySetting.Vnp_Returnurl,
                 Vnp_ExpireDate = long.Parse(DateTime.Now.AddMinutes(15).ToString("yyyyMMddHHmmss")),
-                Vnp_TxnRef = Guid.NewGuid().ToString()
+                Vnp_TxnRef = order.Id.ToString()
             };
             var pay = new PayLib();
 
@@ -58,7 +54,7 @@ namespace Infrastructure.PaymentService.VnPay.Handle
             return Result<PaymentsResultDTO>.ResultSuccess(new PaymentsResultDTO
             {
                 PaymentUrl = paymentUrl
-            }); 
+            });
         }
     }
 }
