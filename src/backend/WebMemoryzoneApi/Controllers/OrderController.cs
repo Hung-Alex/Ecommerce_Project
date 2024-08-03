@@ -1,5 +1,9 @@
-﻿using Application.DTOs.Request;
+﻿using Application.DTOs.Filters.Orders;
+using Application.DTOs.Request;
+using Application.Features.Orders.Commands.CancelOrder;
+using Application.Features.Orders.Commands.ChangeStatusOrder;
 using Application.Features.Orders.Commands.CreateOrder;
+using Application.Features.Orders.Queries.GetOrders;
 using Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -34,6 +38,35 @@ namespace WebMemoryzoneApi.Controllers
             }
             return Ok(result);
         }
-
+        [HttpGet]
+        public async Task<IActionResult> GetOrders([FromQuery] OrderFilter orderFilter)
+        {
+            var result = await _mediator.Send(new GetOrdersQuery(orderFilter));
+            if (result.IsSuccess is false)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+        [HttpPost("cancel-order")]
+        public async Task<IActionResult> CancelOrder([FromBody] CancelOrderCommand cancelOrderCommand)
+        {
+            var result = await _mediator.Send(cancelOrderCommand);
+            if (result.IsSuccess is false)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+        [HttpPost("change-status-order")]
+        public async Task<IActionResult> ChangeStatusOrder([FromBody] ChangeStatusOrderCommand command)
+        {
+            var result = await _mediator.Send(command);
+            if (result.IsSuccess is false)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
     }
 }

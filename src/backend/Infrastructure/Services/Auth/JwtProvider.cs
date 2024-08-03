@@ -4,7 +4,7 @@ using Application.DTOs.Internal;
 using Application.DTOs.Internal.Authen;
 using Application.Helper;
 using Domain.Constants;
-using Infrastructure.Identity;
+using Infrastructure.Persistence.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

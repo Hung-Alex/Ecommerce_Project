@@ -5,7 +5,7 @@ using Domain.Entities.Carts;
 using Domain.Entities.Users;
 using Domain.Shared;
 using Google.Apis.Auth;
-using Infrastructure.Identity;
+using Infrastructure.Persistence.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using System.Transactions;
