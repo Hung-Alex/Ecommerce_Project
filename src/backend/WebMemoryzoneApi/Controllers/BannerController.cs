@@ -5,6 +5,7 @@ using Application.Features.Banners.Commands.UpdateBanner;
 using Application.Features.Banners.Queries.Get;
 using Application.Features.Banners.Queries.GetBannerIsVisiable;
 using Application.Features.Banners.Queries.GetById;
+using Infrastructure.Services.Auth.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,7 @@ namespace WebMemoryzoneApi.Controllers
             _mediator = mediator;
         }
         [HttpGet("{id:Guid}")]
+        [HasPermission(Domain.Enums.PermissionEnum.Permission.CreateBanner)]
         public async Task<ActionResult> GetById(Guid id)
         {
             var result = await _mediator.Send(new GetBannerByIdQuery(id));

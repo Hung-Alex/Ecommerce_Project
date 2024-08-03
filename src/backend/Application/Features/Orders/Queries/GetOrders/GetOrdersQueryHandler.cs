@@ -21,6 +21,7 @@ namespace Application.Features.Orders.Queries.GetOrders
                 Status = x.Status.Display,
                 OrderItems = x.OrderItems.Select(x => new OrderItemsDTO
                 {
+                    Id = x.Id,
                     ProductId = x.ProductId,
                     ProductName = x.Product.Name,
                     Quantity = x.Quantity,
