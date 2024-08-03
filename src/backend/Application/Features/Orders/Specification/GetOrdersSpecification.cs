@@ -15,9 +15,9 @@ namespace Application.Features.Orders.Specification
             Handler();
         }
         public override Expression<Func<Order, bool>> Criteria =>
-            p => (string.IsNullOrEmpty(_filter.Search) || p.ShipAddress.Name.ToLower().Contains(_filter.Search.ToLower())) &&
-                 (string.IsNullOrEmpty(_filter.ShipAddress) || p.ShipAddress.Address.ToLower().Contains(_filter.ShipAddress.ToLower())) &&
-            (((!_filter.Status.HasValue && _filter.Status == Guid.Empty) || p.StatusId == _filter.Status));
+           p => (string.IsNullOrEmpty(_filter.Search) || p.ShipAddress.Name.ToLower().Contains(_filter.Search.ToLower())) &&
+         (string.IsNullOrEmpty(_filter.ShipAddress) || p.ShipAddress.Address.ToLower().Contains(_filter.ShipAddress.ToLower())) &&
+         (_filter.Status.HasValue && _filter.Status != Guid.Empty ? p.StatusId == _filter.Status : true);
         protected override void Handler()
         {
             AddIncludeString("OrderItems.Product");
