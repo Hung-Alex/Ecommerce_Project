@@ -1,6 +1,6 @@
 // Export functions and objects from different API modules
 // Export functions and objects from different API modules
-export * from './method.js';
+export * from './methods.js';
 export * from './banner.js';
 export * from './brands.js';
 export * from './categories.js';

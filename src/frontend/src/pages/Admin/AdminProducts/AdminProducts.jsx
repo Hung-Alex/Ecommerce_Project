@@ -1,75 +1,39 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import DashboardLayout from "../../../layout/DashboardLayout.jsx";
 import Table from "../comp/Table.jsx";
 import AddProductForm from "./AddProductForm"; // Assuming you have a similar form component for products
-import axios from "../../../utils/axios";
 import UpdateProductForm from "./UpdateProductForm";
-import {
-  fetchProductsData,
-  deleteProductId
-} from '../../../api/index';
+import { deleteProductId } from '../../../api/index';
 
 const AdminProducts = () => {
-  const [products, setProducts] = useState([]);
-  const [EditProduct, setEditingProduct] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
-
-  const fetchProducts = useCallback(async (sortColumn = 'CreatedAt', sortBy = 'DESC') => {
-    try {
-      const response = await fetchProductsData(sortColumn, sortBy);
-      setProducts(response.data);
-      setLoading(false);
-    } catch (error) {
-      setError(error.message);
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchProducts(); // Calls with default parameters initially
-  }, [fetchProducts]);
-
-  const deleteProduct = async (id) => {
-    try {
-      await deleteProductId(id);
-    } catch (error) {
-      console.error("Error deleting product:", error);
-    }
-    fetchProducts();
-  };
+  const [refresh, setRefresh] = useState(""); // State to trigger refresh
 
   const handleDelete = useCallback(async (row) => {
-    try {
-      await deleteProduct(row.id);
-    } catch (error) {
-      console.error('Error deleting product:', error);
-    }
+    const res = await deleteProductId(row.id);
+      setRefresh((prev) => !prev); // Trigger refresh
   }, []);
 
   const handleAddProduct = useCallback(() => {
-    setEditingProduct(null);
     setShowForm(true);
   }, []);
 
   const handleEdit = useCallback((row) => {
     setShowEditForm(row.id);
-    setShowForm(true);
   }, []);
 
   const handleCloseForm = useCallback(() => {
     setShowForm(false);
     setShowEditForm(false);
-    setEditingProduct(null);
-    fetchProducts();
+    setRefresh((prev) => !prev); // Trigger refresh
   }, []);
 
   return (
     <DashboardLayout>
-      <div className='p-6'>
+      <div className='md:p-6'>
         <Table
+          apiUrl="/products"
           columns={[
             { header: 'ID', accessor: 'id' },
             { header: 'Image', accessor: 'images' },
@@ -77,15 +41,14 @@ const AdminProducts = () => {
             { header: 'URL Slug', accessor: 'urlSlug' },
             { header: 'Description', accessor: 'description' },
           ]}
-          data={products}
           onEdit={handleEdit}
           onDelete={handleDelete}
           onAdd={handleAddProduct}
+          searchParam="Name" // Specify the search parameter name as per the API requirement
+          refresh={refresh} // Pass refresh state to Table component
         />
         {showForm && (
-          <AddProductForm
-            onClose={handleCloseForm}
-          />
+          <AddProductForm onClose={handleCloseForm} />
         )}
         {showEditForm && (
           <UpdateProductForm

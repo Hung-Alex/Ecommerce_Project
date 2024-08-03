@@ -1,99 +1,58 @@
-import axiosInstance from "../utils/axios.js"; // Import your axios instance for making API requests
-
-
-// Chuyển đổi đối tượng payload thành chuỗi truy vấn
-const toQueryString = (params) => {
-  return new URLSearchParams(params).toString();
-};
-
+import { post_json, post_form, put_json, put_form, get_api, delete_api } from './methods.js';
 
 /**
- * Fetch news data.
+ * Fetch all news data.
  * @returns {Promise<Array>} - A promise that resolves with an array of news data.
  */
 export const fetchNewsData = async () => {
-  try {
-    const response = await axiosInstance.get("/posts");
-    return response.data.data; // Assuming response.data.data contains the news data array
-  } catch (error) {
-    console.error('Error fetching news data:', error);
-  }
-};
-/**
- * Fetch news data by id.
- * @returns {Promise<Array>} - A promise that resolves with an array of news data.
- */
-export const fetchNewsId = async (id) => {
-  try {
-    const response = await axiosInstance.get(`/posts/${id}`);
-    return response.data.data; // Assuming response.data.data contains the news data array
-  } catch (error) {
-    console.error('Error fetching news data:', error);
-  }
+    return get_api("/posts");
 };
 
 /**
- * Fetch news data.
+ * Fetch news data by id.
+ * @param {string} id - The ID of the news item to fetch.
+ * @returns {Promise<Object>} - A promise that resolves with the news data.
+ */
+export const fetchNewsId = async (id) => {
+    return get_api(`/posts/${id}`);
+};
+
+/**
+ * Fetch published news data with query parameters.
+ * @param {Object} payload - The query parameters to filter the published news.
  * @returns {Promise<Array>} - A promise that resolves with an array of news data.
  */
 export const fetchNewsPublished = async (payload) => {
-  try {
     const queryParams = toQueryString(payload);
-    const response = await axiosInstance.get(`/posts/published?${queryParams}`);
-    return response.data.data; // Assuming response.data.data contains the news data array
-  } catch (error) {
-    console.error('Error fetching news data:', error);
-  }
+    return get_api(`/posts/published?${queryParams}`);
 };
 
 /**
  * Fetch news data by urlSlug.
- * @returns {Promise<Array>} - A promise that resolves with an array of news data.
+ * @param {string} slug - The slug of the news item to fetch.
+ * @returns {Promise<Object>} - A promise that resolves with the news data.
  */
 export const fetchNewsSlug = async (slug) => {
-  try {
-    const response = await axiosInstance.get(`/posts/${slug}`);
-    return response.data.data; // Assuming response.data.data contains the news data array
-  } catch (error) {
-    console.error('Error fetching news data:', error);
-  }
+    return get_api(`/posts/${slug}`);
 };
 
 /**
  * Update an existing news item.
  * @param {string} id - The ID of the news item to update.
- * @param {Object} formData - The updated news data including images.
+ * @param {FormData} formData - The updated news data including images.
  * @returns {Promise<Object>} - A promise that resolves with the response data.
  */
 export const updateNews = async (id, formData) => {
-  try {
-    const response = await axiosInstance.put(`/posts/${id}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data', // Set header for form data including files
-      },
-    });
-    return response.data; // Assuming response.data contains the updated news item
-  } catch (error) {
-    console.error('Error updating news:', error);
-  }
+    return put_form(`/posts/${id}`, formData);
 };
 
 /**
  * Create a new news item.
- * @param {Object} formData - The news data including images.
+ * @param {FormData} formData - The news data including images.
  * @returns {Promise<Object>} - A promise that resolves with the response data.
  */
 export const createNews = async (formData) => {
-  try {
-    const response = await axiosInstance.post('/posts', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data', // Set header for form data including files
-      },
-    });
-    return response.data; // Assuming response.data contains the newly created news item
-  } catch (error) {
-    console.error('Error creating news:', error);
-  }
+    return post_form('/posts', formData);
 };
 
 /**
@@ -102,10 +61,14 @@ export const createNews = async (formData) => {
  * @returns {Promise<Object>} - A promise that resolves with the response data.
  */
 export const deleteNews = async (id) => {
-  try {
-    const response = await axiosInstance.delete(`/posts/${id}`);
-    return response.data; // Assuming response.data contains a success message or confirmation
-  } catch (error) {
-    console.error('Error deleting news:', error);
-  }
+    return delete_api(`/posts/${id}`);
+};
+
+/**
+ * Convert an object to a query string.
+ * @param {Object} params - The object to convert.
+ * @returns {string} - The query string.
+ */
+const toQueryString = (params) => {
+    return new URLSearchParams(params).toString();
 };

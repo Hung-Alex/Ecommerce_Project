@@ -39,31 +39,31 @@ const UploadUserAvatar = ({ userId, currentAvatar }) => {
 
     return (
         <div className="p-3 border-t mt-3">
-    <form onSubmit={handleUpload} className="relative">
-        <label htmlFor="photo" className="flex justify-center text-lg font-semibold">Your Profile Photo</label>
-        <div className="flex justify-center relative mt-2">
-            <img
-                className="rounded-full bg-slate-200 w-32 h-32 object-cover"
-                src={previewUrl || DEFAULT_IMAGE_URLS.avatar} // Default avatar if none selected
-                alt="User Avatar"
-            />
-            <input
-                type="file"
-                id="photo"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                className="absolute inset-0 opacity-0 cursor-pointer"
-            />
+            <form onSubmit={handleUpload} className="relative">
+                <label htmlFor="photo" className="flex justify-center text-lg font-semibold">Your Profile Photo</label>
+                <div className="flex justify-center relative mt-2">
+                    <img
+                        className="rounded-full bg-slate-200 w-32 h-32 object-cover"
+                        src={previewUrl || DEFAULT_IMAGE_URLS.avatar} // Default avatar if none selected
+                        alt="User Avatar"
+                    />
+                    <input
+                        type="file"
+                        id="photo"
+                        ref={fileInputRef}
+                        onChange={handleFileChange}
+                        className="absolute inset-0 opacity-0 cursor-pointer"
+                    />
+                </div>
+                <div className="flex justify-center mt-4">
+                    <input
+                        className="bg-[#7EB693] w-[50%] px-4 py-1 rounded text-white cursor-pointer"
+                        type="submit"
+                        value="Upload"
+                    />
+                </div>
+            </form>
         </div>
-        <div className="flex justify-center mt-4">
-            <input
-                className="bg-[#7EB693] w-[50%] px-4 py-1 rounded text-white cursor-pointer"
-                type="submit"
-                value="Upload"
-            />
-        </div>
-    </form>
-</div>
 
     );
 };

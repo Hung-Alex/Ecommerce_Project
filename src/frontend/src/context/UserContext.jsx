@@ -2,6 +2,7 @@ import { createContext, useState, useEffect } from "react";
 import axios from "../utils/axios";
 import Cookies from 'js-cookie';
 import { checkTokenExpiration } from '../utils/tokenUtils'; // Import hàm kiểm tra thời hạn token
+import { toast } from 'react-hot-toast'; // Thư viện thông báo
 
 export const UserContext = createContext({
   user: null,
@@ -25,58 +26,48 @@ const UserProvider = ({ children }) => {
   const checkAuthStatus = async () => {
     try {
       const accessToken = Cookies.get('access-token');
+
       if (accessToken) {
-        const expirationStatus = checkTokenExpiration(accessToken);
-        console.log(expirationStatus); // Optional: Log the token expiration status
+        // const expirationStatus = checkTokenExpiration(accessToken);
+        // console.log(expirationStatus); // Optional: Log the token expiration status
+
         // Check authentication status when component mounts
         const userFromCookies = getUserFromCookies();
         if (userFromCookies) {
           setUser(userFromCookies);
         }
-        // Check if token needs to be refreshed (less than 1 minute left)
-        if (expirationStatus.includes('Token còn hiệu lực trong') && parseInt(expirationStatus.match(/\d+/)[0]) < 1) {
-          await refreshToken();
-        } else {
-         // Check authentication status when component mounts
-        const userFromCookies = getUserFromCookies();
-        if (userFromCookies) {
-          setUser(userFromCookies);
-        }
-          return;
-        }
-      }
-
-      const refreshToken = Cookies.get('refresh-token');
-      if (refreshToken) {
-        await refreshToken(); // Try refreshing the token
-        await checkAuthStatus(); // Retry checking status
       } else {
-        setUser(null); // No token available
+        const refreshTokens = Cookies.get('refresh-token');
+
+        if (refreshTokens) {
+          await refreshToken(); // Try refreshing the token
+          await checkAuthStatus(); // Retry checking status
+        } else {
+          setUser(null); // No token available
+        }
       }
     } catch (error) {
       console.error("Failed to check authentication status: ", error);
       setUser(null);
     }
+
   };
 
   const refreshToken = async () => {
     try {
-      const response = await axios.post("/authentications/refresh");
-      // Check authentication status when component mounts
-      const userFromCookies = getUserFromCookies();
-      if (userFromCookies) {
-        setUser(userFromCookies);
-      }
+      await axios.post("/authentications/refresh");
+      await checkAuthStatus();
     } catch (error) {
       console.error("Failed to refresh token: ", error);
-      logout(); // Handle token refresh failure
+      // logout(); // Handle token refresh failure
+      // toast.error('login lại đi'); // Hiển thị thông báo lỗi
       throw error; // Re-throw error for further handling
     }
   };
   const login = async (data) => {
     try {
       const response = await axios.post("/authentications/login", data);
-      if(response){
+      if (response) {
         const userFromCookies = getUserFromCookies();
         if (userFromCookies) {
           setUser(userFromCookies);
@@ -86,7 +77,7 @@ const UserProvider = ({ children }) => {
       console.error("Login failed: ", error);
     }
   };
-  
+
   const logout = async () => {
     try {
       await axios.get("/authentications/logout");
@@ -96,11 +87,11 @@ const UserProvider = ({ children }) => {
       setUser(null);
     }
   };
-  
+
   useEffect(() => {
     checkAuthStatus();
   }, []);
-  
+
   const userInfo = {
     user,
     setUser,
@@ -109,8 +100,7 @@ const UserProvider = ({ children }) => {
     refreshToken,
     checkAuthStatus,
   };
-  
-  console.log(user);
+console.log(user);
   return (
     <UserContext.Provider value={userInfo}>{children}</UserContext.Provider>
   );

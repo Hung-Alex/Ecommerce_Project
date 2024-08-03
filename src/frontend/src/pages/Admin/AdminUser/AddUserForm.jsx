@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchRolesData } from '../../../api';
+import { fetchRolesData, createUser } from '../../../api';
 
 const AddUserForm = ({ user, addUser, onClose }) => {
     const [userName, setUserName] = useState(user ? user.userName : '');
@@ -21,7 +21,7 @@ const AddUserForm = ({ user, addUser, onClose }) => {
         const fetchRoles = async () => {
             try {
                 const fetchedRoles = await fetchRolesData();
-                setRoleOptions(fetchedRoles);
+                setRoleOptions(fetchedRoles.data);
             } catch (err) {
                 setError('Failed to fetch roles.');
             }
@@ -50,9 +50,9 @@ const AddUserForm = ({ user, addUser, onClose }) => {
             formData.append('roles', (role.roleId));
         });
 
-        const res = await addUser(formData);
+        const res = await createUser(formData);
         if (res?.isSuccess) {
-            onClose();
+            // onClose();
         }
     };
 

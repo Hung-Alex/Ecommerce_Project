@@ -6,6 +6,8 @@ import { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import axios from "../../utils/axios";
 import GoogleLoginButton from "./GoogleLoginButton";
+import Header from "../../components/Shared/Header/Header";
+import Footer from "../../components/Shared/Footer/Footer";
 
 function Login() {
   const [loading, setLoading] = useState(false);
@@ -36,6 +38,7 @@ function Login() {
 
   return (
     <GoogleOAuthProvider clientId="57958274400-e0226k4bdrb3b5bp3hrq4fp1p9rebeo6.apps.googleusercontent.com">
+      <Header />
       <section className="flex justify-center pt-12 mb-12">
         <div className="border p-4 rounded shadow-md">
           <div className="mb-8 my-4">
@@ -101,6 +104,7 @@ function Login() {
           </p>
         </div>
       </section>
+      <Footer />
     </GoogleOAuthProvider>
   );
 }

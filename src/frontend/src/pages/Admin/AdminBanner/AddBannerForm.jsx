@@ -1,29 +1,53 @@
 import React, { useState, useRef, useEffect } from "react";
+import { updateBanner, createBanner, fetchBannerDataById } from '../../../api';
 
-const AddBannerForm = ({ banner, onClose, addBanner, updateBanner }) => {
-  const [title, setTitle] = useState(banner ? banner.title : "");
-  const [urlSlug, setUrlSlug] = useState(banner ? banner.urlSlug : "");
-  const [description, setDescription] = useState(banner ? banner.description : "");
-  const [visible, setVisible] = useState(banner ? banner.isVisible : false);
+const AddBannerForm = ({ bannerId, onClose }) => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [visible, setVisible] = useState(false);
   const [image, setImage] = useState("");
-  const [imagePreview, setImagePreview] = useState(banner ? banner.logoImageUrl : null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   const fileInputRef = useRef(null);
 
   useEffect(() => {
-    if (banner && banner.logoImageUrl) {
-      setImagePreview(banner.logoImageUrl);
-    }
-  }, [banner]);
+    const fetchData = async () => {
+      if (bannerId) {
+        const fetchedBanner = await fetchBannerDataById(bannerId);
+        if (fetchedBanner) {
+          setTitle(fetchedBanner.title);
+          setDescription(fetchedBanner.description);
+          setVisible(fetchedBanner.isVisible);
+          setImagePreview(fetchedBanner.logoImageUrl);
+        }
+      }
+    };
+
+    fetchData();
+  }, [bannerId]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (banner) {
-      await updateBanner(banner.id, { title, description, visible, image });
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("Visible", visible);
+    if (image) formData.append("FormFile", image);
+
+    if (bannerId) {
+      formData.append("id", bannerId);
+      await updateBanner(bannerId, formData).then(res => {
+        if (res?.isSuccess) {
+          onClose();
+        }
+      });
     } else {
-      await addBanner({ title, description, visible, image });
+      await createBanner(formData).then(res => {
+        if (res?.isSuccess) {
+          onClose();
+        }
+      });
     }
-    onClose();
   };
 
   const handleImageChange = (event) => {
@@ -66,7 +90,7 @@ const AddBannerForm = ({ banner, onClose, addBanner, updateBanner }) => {
         </div>
 
         <div className="w-3/4">
-          <h2 className="text-2xl mb-4">{banner ? "Edit Banner" : "Add Banner"}</h2>
+          <h2 className="text-2xl mb-4">{bannerId ? "Edit Banner" : "Add Banner"}</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium">Title:</label>

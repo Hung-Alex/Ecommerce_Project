@@ -1,33 +1,60 @@
 import React, { useState, useRef, useEffect } from "react";
 import { titleToSlug } from '../../../utils/slugify';
+import { createCategory, updateCategory, fetchCategoryDataById } from '../../../api';
 
-const AddCategoryForm = ({ category, onClose, addCategory, updateCategory }) => {
-  const [name, setName] = useState(category ? category.name : "");
-  const [urlSlug, setUrlSlug] = useState(category ? category.urlSlug : "");
-  const [description, setDescription] = useState(category ? category.description : "");
+const AddCategoryForm = ({ categoryId, onClose }) => {
+  const [name, setName] = useState("");
+  const [urlSlug, setUrlSlug] = useState("");
+  const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
-  const [imagePreview, setImagePreview] = useState(category ? category.image : null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (categoryId) {
+        const fetchedCategory = await fetchCategoryDataById(categoryId);
+        if (fetchedCategory) {
+          setName(fetchedCategory.name);
+          setUrlSlug(fetchedCategory.urlSlug);
+          setDescription(fetchedCategory.description);
+          setImagePreview(fetchedCategory.image);
+        }
+      }
+    };
+
+    fetchData();
+  }, [categoryId]);
 
   useEffect(() => {
     setUrlSlug(titleToSlug(name));
   }, [name]);
 
-  useEffect(() => {
-    if (category && category.image) {
-      setImagePreview(category.image);
-    }
-  }, [category]);
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (category) {
-      await updateCategory(category.id, { name, urlSlug, description, image });
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("urlSlug", urlSlug);
+    formData.append("description", description);
+
+
+    if (categoryId) {
+      if (image) { formData.append("Image", image); }
+      formData.append("id", categoryId);
+      await updateCategory(categoryId, formData).then(res => {
+        if (res?.isSuccess) {
+          onClose();
+        }
+      });
     } else {
-      await addCategory({ name, urlSlug, description, image });
+      if (image) { formData.append("FormFile", image); }
+      await createCategory(formData).then(res => {
+        if (res?.isSuccess) {
+          onClose();
+        }
+      });
     }
-    onClose();
   };
 
   const handleImageChange = (event) => {
@@ -43,7 +70,6 @@ const AddCategoryForm = ({ category, onClose, addCategory, updateCategory }) => 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg max-w-3xl w-full flex">
-        {/* Image Section */}
         <div className="flex-shrink-0 w-1/4 mr-6">
           <div
             className="relative w-full h-64 bg-gray-100 rounded-lg overflow-hidden cursor-pointer"
@@ -70,9 +96,8 @@ const AddCategoryForm = ({ category, onClose, addCategory, updateCategory }) => 
           </div>
         </div>
 
-        {/* Form Section */}
         <div className="w-3/4">
-          <h2 className="text-2xl mb-4">{category ? "Edit Category" : "Add Category"}</h2>
+          <h2 className="text-2xl mb-4">{categoryId ? "Edit Category" : "Add Category"}</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium">Name:</label>
@@ -90,7 +115,7 @@ const AddCategoryForm = ({ category, onClose, addCategory, updateCategory }) => 
                 value={urlSlug}
                 onChange={(event) => setUrlSlug(event.target.value)}
                 className="mt-1 block w-full px-3 py-2 border rounded-md"
-                readOnly
+                disabled
               />
             </div>
             <div>
@@ -98,7 +123,7 @@ const AddCategoryForm = ({ category, onClose, addCategory, updateCategory }) => 
               <textarea
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
-                className="mt-1 block w-full px-3 py-2 border rounded-md"
+                className="mt-1 block max-h-56 min-h-44 w-full px-3 py-2 border rounded-md"
               />
             </div>
             <div className="flex justify-end space-x-4">

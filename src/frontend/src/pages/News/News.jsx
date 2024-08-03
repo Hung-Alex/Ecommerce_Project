@@ -3,6 +3,8 @@ import NewsSection from './NewsSection';
 import NewsBanner from './NewsBanner';
 
 import { fetchNewsPublished } from '../../api';
+import Header from '../../components/Shared/Header/Header';
+import Footer from '../../components/Shared/Footer/Footer';
 
 const News = () => {
   const [newsData, setNewsData] = useState([]);
@@ -30,8 +32,10 @@ const News = () => {
 
   return (
     <div>
+      <Header />
       <NewsBanner newsData={newsData} />
       <NewsSection newsData={newsData} />
+      <Footer />
     </div>
   );
 };

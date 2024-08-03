@@ -1,86 +1,14 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import DashboardLayout from "../../../layout/DashboardLayout.jsx";
 import Table from "../comp/Table.jsx";
 import AddNewsForm from "./AddNewsForm";
-import {toast} from "react-hot-toast";
-import {
-  fetchNewsData,
-  updateNews,
-  deleteNews,
-  createNews
-} from "../../../api"
+import { toast } from "react-hot-toast";
+import { deleteNews } from "../../../api";
 
 const AdminNews = () => {
-  const [posts, setPosts] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingPost, setEditingPost] = useState(null);
-
-  // Fetch news data from the server
-  const fetchPosts = useCallback(async () => {
-    try {
-      const response = await fetchNewsData();
-      setPosts(response);
-    } catch (error) {
-      toast.error('Error fetching posts');
-      console.error('Error fetching posts:', error);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchPosts();
-  }, [fetchPosts]);
-
-  // Add a new post
-  const addPost = async (post) => {
-    try {
-      const formData = new FormData();
-      formData.append('title', post.title);
-      formData.append('shortDescription', post.shortDescription);
-      formData.append('description', post.description);
-      formData.append('urlSlug', post.urlSlug);
-      formData.append('published', post.published);
-      if (post.image) formData.append('image', post.image);
-
-      await createNews(formData);
-      fetchPosts();
-      handleCloseForm();
-      toast.success('Post created successfully');
-    } catch (error) {
-      toast.error('Error creating post');
-      console.error('Error creating post:', error);
-    }
-  };
-
-  // Update an existing post
-  const updatePost = async (id, updatedPost) => {
-    try {
-      const formData = new FormData();
-      formData.append('id', id);
-      formData.append('title', updatedPost.title);
-      formData.append('shortDescription', updatedPost.shortDescription);
-      formData.append('description', updatedPost.description);
-      formData.append('urlSlug', updatedPost.urlSlug);
-      formData.append('published', updatedPost.published);
-      if (updatedPost.image) formData.append('image', updatedPost.image);
-
-      await updateNews(id, formData);
-      fetchPosts();
-      toast.success('Post updated successfully');
-    } catch (error) {
-      toast.error('Error updating post');
-    }
-  };
-
-  // Delete a post
-  const deletePost = async (id) => {
-    try {
-      await deleteNews(id);
-      setPosts((prevList) => prevList.filter((post) => post.id !== id));
-      toast.success('Post deleted successfully');
-    } catch (error) {
-      toast.error('Error deleting post');
-    }
-  };
+  const [refresh, setRefresh] = useState(""); // State to trigger refresh
 
   // Handle editing of a post
   const handleEdit = useCallback((row) => {
@@ -89,8 +17,9 @@ const AdminNews = () => {
   }, []);
 
   // Handle deletion of a post
-  const handleDelete = useCallback(async (post) => {
-    await deletePost(post.id);
+  const handleDelete = useCallback(async (row) => {
+    await deleteNews(row.id);
+    setRefresh(prev => !prev); // Trigger refresh
   }, []);
 
   // Show the form for adding a new post
@@ -103,31 +32,31 @@ const AdminNews = () => {
   const handleCloseForm = useCallback(() => {
     setShowForm(false);
     setEditingPost(null);
+    setRefresh(prev => !prev); // Trigger refresh
   }, []);
 
   return (
     <DashboardLayout>
       <div className='p-6'>
         <Table
+          apiUrl="/posts" // Specify the API URL directly in the Table component
           columns={[
             { header: 'ID', accessor: 'id' },
             { header: 'Image', accessor: 'image' },
             { header: 'Title', accessor: 'title' },
-            { header: 'urlSlug', accessor: 'urlSlug' },
+            { header: 'URL Slug', accessor: 'urlSlug' },
             { header: 'Short Description', accessor: 'shortDescription' },
-            { header: 'published', accessor: 'published' }
+            { header: 'Published', accessor: 'published' }
           ]}
-          data={posts}
           onEdit={handleEdit}
           onDelete={handleDelete}
           onAdd={handleAddPost}
+          refresh={refresh} // Pass refresh state to Table component if needed
         />
         {showForm && (
           <AddNewsForm
             postId={editingPost}
             onClose={handleCloseForm}
-            addPost={addPost}
-            updatePost={updatePost}
           />
         )}
       </div>

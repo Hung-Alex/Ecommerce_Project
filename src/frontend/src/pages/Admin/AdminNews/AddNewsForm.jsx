@@ -3,7 +3,10 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Import Quill styles
 import { titleToSlug } from "../../../utils/slugify"; // Import hàm titleToSlug từ file riêng
 import {
-  fetchNewsId
+  fetchNewsId,
+  updateNews,
+  createNews
+
 } from '../../../api'
 
 const AddNewsForm = ({ postId, onClose, addPost, updatePost }) => {
@@ -23,8 +26,9 @@ const AddNewsForm = ({ postId, onClose, addPost, updatePost }) => {
     const fetchPostData = async () => {
       if (postId) {
         try {
-          const data = await fetchNewsId(postId);
-          setPost(data);
+          const res = await fetchNewsId(postId);
+          const data = res.data;
+          setPost(data.data);
           setTitle(data.title || "");
           setUrlSlug(data.urlSlug || "");
           setShortDescription(data.shortDescription || "");
@@ -52,20 +56,29 @@ const AddNewsForm = ({ postId, onClose, addPost, updatePost }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const postData = {
-      title,
-      urlSlug,
-      shortDescription,
-      description,
-      published,
-      image,
-    };
-    if (post) {
-      await updatePost(post.id, postData);
+    const formData = new FormData();
+      formData.append('title',  title);
+      formData.append('shortDescription',  shortDescription);
+      formData.append('description',  description);
+      formData.append('urlSlug',  urlSlug);
+      formData.append('published',  published);
+      if ( image) formData.append('image',  image);
+
+    if (postId) {
+      formData.append('id', postId);
+      updateNews(postId, formData).then(res => {
+        if (res?.isSuccess) {
+          onClose();
+        }
+      })
     } else {
-      await addPost(postData);
+      createNews(formData)
+      .then(res => {
+          if (res?.isSuccess) {
+              onClose();
+          }
+      })
     }
-    onClose();
   };
 
   const handleImageChange = (event) => {

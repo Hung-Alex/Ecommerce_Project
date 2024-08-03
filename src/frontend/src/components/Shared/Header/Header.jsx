@@ -102,7 +102,7 @@ const Header = () => {
 
       {/* Mobile Dropdown Menu */}
       {isMobileMenuOpen && (
-        <div className="sm:hidden w-full mt-4">
+        <div className="2xl:hidden w-full mt-4">
           <NavList />
         </div>
       )}

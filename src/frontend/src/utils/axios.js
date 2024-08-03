@@ -1,4 +1,5 @@
 import axios from "axios";
+import { handleUnauthorized } from "../service/authService.js"; // Adjust the path
 
 const axiosInstance = axios.create({
   baseURL: "https://localhost:7113/api",
@@ -10,6 +11,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
+    // You can modify request config here if needed
     return config;
   },
   (error) => {
@@ -17,11 +19,23 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-axios.interceptors.response.use(
+axiosInstance.interceptors.response.use(
   (response) => {
     return response;
   },
-  (error) => {
+  async (error) => {
+    if (error.response) {
+      if (error.response.status === 401) {
+        await handleUnauthorized(); // Handle 401 error
+      } else if (error.response.status >= 500) {
+        if (!sessionStorage.getItem('hasReloaded')) {
+          sessionStorage.setItem('hasReloaded', 'true'); // Mark as reloaded
+          window.location.reload(); // Reload the page
+        }
+      }
+    } else {
+      console.error("An unexpected error occurred.");
+    }
     return Promise.reject(error);
   }
 );

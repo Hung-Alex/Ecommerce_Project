@@ -5,10 +5,12 @@ import AdminNavbar from "../pages/Admin/comp/AdminNavbar";
 const DashboardLayout = ({ children }) => {
   return (
     <>
+    <div className=" min-h-screen  bg-slate-100">
       <AdminNavbar />
-    <div className="flex h-svh justify-center items-start bg-slate-100">
+      <div className="flex justify-center items-start w-full">
       <SideNav />
       {children}
+      </div>
     </div>
     </>
   );

@@ -33,7 +33,7 @@ const Product = () => {
   return (
     <div className=" mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
       <div className="text-center">
-        <h3 className="text-[#7EB693] font-[Yellowtail] text-5xl">Brands</h3>
+        <h3 className="text-[#7EB693] font-[Yellowtail] text-5xl">Products</h3>
       </div>
       <div className="category-list flex justify-center my-8">
         {data.map((categoryData, index) => (

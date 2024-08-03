@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   fetchPermissionsData,
-  fetchRolessDataId
+  fetchRoleDataById,
+  createRole,
+  updateRole,
 } from '../../../api';
 
-const AddRoleForm = ({ role, onClose, addRole, updateRole }) => {
+const AddRoleForm = ({ role, onClose }) => {
   const { register, handleSubmit, setValue } = useForm();
   const [permissions, setPermissions] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -24,7 +26,7 @@ const AddRoleForm = ({ role, onClose, addRole, updateRole }) => {
     // If editing a role, fetch its details
     if (role) {
       setLoading(true);
-      fetchRolessDataId(role)
+      fetchRoleDataById(role)
         .then(response => {
           const { name, permissions } = response;
           // Set form values with fetched role data
@@ -53,11 +55,19 @@ const AddRoleForm = ({ role, onClose, addRole, updateRole }) => {
 
 
     if (role) {
-      updateRole(role, roleData);
+      updateRole(role, roleData).then(res => {
+        if (res?.isSuccess) {
+            onClose();
+        }
+    })
     } else {
-      addRole(roleData);
+      createRole(roleData)
+      .then(res => {
+          if (res?.isSuccess) {
+              onClose();
+          }
+      })
     }
-    onClose();
   };
 
   if (loading) return <p>Loading...</p>;

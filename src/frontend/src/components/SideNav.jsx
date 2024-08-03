@@ -26,7 +26,7 @@ const SideNav = () => {
   const { user } = useContext(UserContext);
 
   return (
-    <div className="mt-12 bg-white w-52 shadow-md rounded-lg">
+    <div className="mt-12 bg-white w-52 shadow-md rounded-lg hidden md:block">
       <div className="mt-4">
         {navItems.map((item, index) => (
           <Link

@@ -2,43 +2,37 @@ import React, { useState, useCallback } from "react";
 import DashboardLayout from "../../../layout/DashboardLayout.jsx";
 import Table from "../comp/Table";
 import AddBrandForm from "./AddBrands";
-import { useBrandContext } from "../../../context/BrandContext.jsx";
+import { deleteBrand } from "../../../api";
 
 const AdminBrands = () => {
-  const { brands, loading, error, addBrand, updateBrand, deleteBrand } = useBrandContext();
   const [showForm, setShowForm] = useState(false);
   const [editingBrand, setEditingBrand] = useState(null);
-
-  const handleEdit = useCallback((row) => {
-    setEditingBrand(row);
-    setShowForm(true);
-  }, []);
-
-  const handleDelete = useCallback(async (row) => {
-    try {
-      await deleteBrand(row.id);
-    } catch (error) {
-      console.error('Error deleting brand:', error);
-    }
-  }, [deleteBrand]);
+  const [refresh, setRefresh] = useState(""); // State to trigger refresh
 
   const handleAddBrand = useCallback(() => {
     setEditingBrand(null);
     setShowForm(true);
   }, []);
 
+  const handleEdit = useCallback((row) => {
+    setEditingBrand(row.id);
+    setShowForm(true);
+  }, []);
+  const handleDelete = useCallback(async (row) => {
+    await deleteBrand(row.id);
+    setRefresh(prev => !prev); // Trigger refresh
+  }, [deleteBrand]);
   const handleCloseForm = useCallback(() => {
+    setRefresh(prev => !prev); // Trigger refresh
     setShowForm(false);
     setEditingBrand(null);
   }, []);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error loading brands: {error.message}</p>;
 
   return (
     <DashboardLayout>
       <div className='p-6'>
         <Table
+          apiUrl="/brands"
           columns={[
             { header: 'ID', accessor: 'id' },
             { header: 'Image', accessor: 'image' },
@@ -46,17 +40,16 @@ const AdminBrands = () => {
             { header: 'URL Slug', accessor: 'urlSlug' },
             { header: 'Description', accessor: 'description' },
           ]}
-          data={brands}
           onEdit={handleEdit}
           onDelete={handleDelete}
           onAdd={handleAddBrand}
+          refresh={refresh} // Pass refresh state to Table component if needed
+          searchParam="Name"
         />
         {showForm && (
           <AddBrandForm
-            brand={editingBrand}
+            brandId={editingBrand}
             onClose={handleCloseForm}
-            addBrand={addBrand}
-            updateBrand={updateBrand}
           />
         )}
       </div>
