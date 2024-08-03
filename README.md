@@ -1,4 +1,4 @@
-# Project Name
+# Oganic-Store
 
 ## Introduction
 This project is a full-stack web application built using modern web technologies. It features a responsive frontend and a robust backend to handle various functionalities.
@@ -10,6 +10,42 @@ This project is a full-stack web application built using modern web technologies
 - State management
 - PostCSS for processing CSS
 - RESTful API backend
+  ### Backend
+  Product Management:
+    Add, delete, and edit products.
+    Manage product information such as name, price, description, images, and stock status.
+  Category Management:
+    Add, delete, and edit product categories.
+  Brand Management:
+    Add, delete, and edit product brands.
+    News Management:
+    Add, delete, and edit news and blog posts.
+  Slide Management:
+    Add, delete, and edit promotional slides on the homepage.
+  Wishlist:
+    Add products to the wishlist.
+    Remove products from the wishlist.
+  Banner Management:
+    Add, delete, and edit promotional banners on the website.
+  User Authentication:
+    Login, registration.
+    JWT authentication.
+    OAuth with Google.
+    Dynamic Authorization:
+    Manage user access rights based on roles and permissions.
+  Order Management:
+    View, cancel, and track order status.
+  Cart Management:
+    Add products to the cart.
+    Remove and edit product quantities in the cart.
+    Account Suspension: 
+    Suspend and reactivate user accounts.
+  User Management:
+    Manage user information and roles.
+  Reviews and Comments:
+    Allow users to review and comment on products.
+  Payment:
+    Integrate payment processing through VNPay.
 
 ## Technologies Used
 
