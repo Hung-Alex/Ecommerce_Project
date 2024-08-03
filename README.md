@@ -46,6 +46,22 @@ This project is a full-stack web application built using modern web technologies
     Allow users to review and comment on products.
   Payment:
     Integrate payment processing through VNPay.
+Frontend
+Product Management: Implement UI for adding, deleting, and editing product details, including name, price, description, images, and stock status.
+Category Management: Create interfaces for managing product categories.
+Brand Management: Design UI for managing product brands.
+News Management: Develop components for adding, deleting, and editing news and blog posts.
+Slide Management: Build interfaces for managing promotional slides on the homepage.
+Wishlist: Implement functionality for adding and removing products from the wishlist.
+Banner Management: Create UI for managing promotional banners on the website.
+User Authentication: Develop login and registration forms, JWT authentication, and OAuth with Google integration.
+Dynamic Authorization: Design user role and permission management features.
+Order Management: Build interfaces for viewing, canceling, and tracking order status.
+Cart Management: Implement cart functionality for adding, removing, and editing product quantities.
+Account Suspension: Develop features for suspending and reactivating user accounts.
+User Management: Create UI for managing user information and roles.
+Reviews and Comments: Implement components for user reviews and comments on products.
+Payment Integration: Build interfaces for integrating payment processing with VNPay.
 
 ## Technologies Used
 
