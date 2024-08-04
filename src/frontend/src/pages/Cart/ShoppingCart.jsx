@@ -2,8 +2,6 @@ import React, { useContext, useState, useEffect } from "react";
 import { BsCheck2 } from "react-icons/bs";
 import { CartContext } from "../../context/CartContext";
 import { Link } from "react-router-dom";
-import Header from "../../components/Shared/Header/Header";
-import Footer from "../../components/Shared/Footer/Footer";
 
 
 const ShoppingCart = () => {
