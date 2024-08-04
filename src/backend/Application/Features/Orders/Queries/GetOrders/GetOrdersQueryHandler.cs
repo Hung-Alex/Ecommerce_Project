@@ -20,6 +20,7 @@ namespace Application.Features.Orders.Queries.GetOrders
                 ShipAddress = x.ShipAddress,
                 Status = x.Status.Display,
                 PaymentStatus = x.Payment.Status.Display,
+                PaymentMethod = x.Payment.PaymentMethod.ToString(),
                 OrderItems = x.OrderItems.Select(x => new OrderItemsDTO
                 {
                     Id = x.Id,

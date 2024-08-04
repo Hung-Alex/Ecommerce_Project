@@ -10,5 +10,6 @@ namespace Application.DTOs.Responses.Orders
         public string Note { get; init; }
         public IEnumerable<OrderItemsDTO> OrderItems { get; init; }
         public string PaymentStatus { get; init; }
+        public string PaymentMethod { get; init; }
     }
 }

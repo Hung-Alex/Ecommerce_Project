@@ -16,7 +16,7 @@ using MediatR;
 
 namespace Application.Features.Orders.Commands.CreateOrder
 {
-    public sealed class CreateOrderCommandHandler(IUnitOfWork unitOfWork, ICartRepositoryExtension cartRepository,IVnPayService vnPayService) : IRequestHandler<CreateOrderCommand, Result<PaymentsResultDTO>>
+    public sealed class CreateOrderCommandHandler(IUnitOfWork unitOfWork, ICartRepositoryExtension cartRepository, IVnPayService vnPayService) : IRequestHandler<CreateOrderCommand, Result<PaymentsResultDTO>>
     {
         public class CreateOrderCommandValidator : AbstractValidator<CreateOrderCommand>
         {
@@ -34,8 +34,10 @@ namespace Application.Features.Orders.Commands.CreateOrder
             var repoOrder = unitOfWork.GetRepository<Order>();
             var repoPayment = unitOfWork.GetRepository<Payment>();
             var repoStatus = unitOfWork.GetRepository<Status>();
-            var statusPending = await repoStatus.FindOneAsync(new GetStateByCodeSpecification("PENDING"));
-            if (statusPending == null)
+            var statusOrderPending = await repoStatus.FindOneAsync(new GetStateByTypeAndCodeSpecification("Order", "PENDING"));
+            var statusPaymentPending = await repoStatus.FindOneAsync(new GetStateByTypeAndCodeSpecification("Payment", "PENDING"));
+
+            if (statusOrderPending == null || statusPaymentPending == null)
             {
                 return Result<PaymentsResultDTO>.ResultFailures(ErrorConstants.ProcessError.StatusPendingNotFound);
             }
@@ -52,14 +54,14 @@ namespace Application.Features.Orders.Commands.CreateOrder
                 return Result<PaymentsResultDTO>.ResultFailures(ErrorConstants.CartError.ProductOutOfStock);
             }
             // Create and add payment
-            var payment = new Payment(totalAmount, request.PaymentMethod, DateTime.Now, 5000m, statusPending.Id);
+            var payment = new Payment(totalAmount, request.PaymentMethod, DateTime.Now, 5000m, statusPaymentPending.Id);
             // Create and add order
             var order = new Order(
                 new ShipAddress(request.Name, request.Email, request.Phone, request.Address),
                 request.Note,
                 request.UserId,
                 payment.Id,
-                statusPending.Id
+                statusOrderPending.Id
             );
             var orderItems = getCartItems.Items.Select(x => new OrderItems(order.Id, x.ProductId, x.Quantity, x.Price, "VND")).ToList();
             order.AddOrderItems(orderItems);
@@ -70,9 +72,9 @@ namespace Application.Features.Orders.Commands.CreateOrder
             cartRepository.Update(cart);  // Persist changes to database
             // Commit transaction
             await unitOfWork.Commit();
-            if (request.PaymentMethod==PaymentMethod.VnPay)
+            if (request.PaymentMethod == PaymentMethod.VnPay)
             {
-                var url= await vnPayService.CreatePaymentUrl(order, payment, totalAmount, cancellationToken);
+                var url = await vnPayService.CreatePaymentUrl(order, payment, totalAmount, cancellationToken);
                 return Result<PaymentsResultDTO>.ResultSuccess(new PaymentsResultDTO
                 {
                     PaymentUrl = url.Data.PaymentUrl
