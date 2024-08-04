@@ -1,8 +1,6 @@
 import React, { useState, useCallback } from "react";
-import DashboardLayout from "../../../layout/DashboardLayout.jsx";
 import Table from "../comp/Table.jsx";
 import AddBannerForm from "./AddBannerForm";
-import axios from "../../../utils/axios";
 import { deleteBanner } from '../../../api';
 
 const AdminBanners = () => {
@@ -32,7 +30,6 @@ const AdminBanners = () => {
   }, []);
 
   return (
-    <DashboardLayout>
       <div className='md:p-6'>
         <Table
           apiUrl="/banners"
@@ -56,7 +53,6 @@ const AdminBanners = () => {
           />
         )}
       </div>
-    </DashboardLayout>
   );
 };
 

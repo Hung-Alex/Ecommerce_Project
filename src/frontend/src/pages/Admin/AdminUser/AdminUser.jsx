@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from "react";
-import DashboardLayout from "../../../layout/DashboardLayout.jsx";
 import Table from "../comp/Table.jsx";
 import AddUserForm from "./AddUserForm";
 import UpdateUserForm from "./UpdateUserForm";
@@ -44,42 +43,41 @@ const AdminUsers = () => {
     }, []);
 
     return (
-        <DashboardLayout>
-            <div className='md:p-6'>
-                <Table
-                    apiUrl="/users"
-                    columns={[
-                        { header: 'ID', accessor: 'id' },
-                        { header: 'Avatar', accessor: 'avatarImage' },
-                        { header: 'First Name', accessor: 'firstName' },
-                        { header: 'Last Name', accessor: 'lastName' },
-                        { header: 'City', accessor: 'city' },
-                        { header: 'Region', accessor: 'region' },
-                        { header: 'Country', accessor: 'country' },
-                    ]}
-                    onEdit={handleEdit}
-                    onAdd={handleAddUser}
-                    refresh={refresh} // Pass refresh state to Table component
+        <div className='md:p-6'>
+            <Table
+                apiUrl="/users"
+                columns={[
+                    { header: 'ID', accessor: 'id' },
+                    { header: 'Avatar', accessor: 'avatarImage' },
+                    { header: 'First Name', accessor: 'firstName' },
+                    { header: 'Last Name', accessor: 'lastName' },
+                    { header: 'City', accessor: 'city' },
+                    { header: 'Region', accessor: 'region' },
+                    { header: 'Country', accessor: 'country' },
+                ]}
+                onEdit={handleEdit}
+                onAdd={handleAddUser}
+                searchParam="Name"
+                refresh={refresh} // Pass refresh state to Table component
+            />
+            {showForm && (
+                <AddUserForm onClose={handleCloseForm} />
+            )}
+            {showUpdateForm && (
+                <UpdateUserForm
+                    userId={editingUser.id}
+                    onClose={handleCloseForm}
+                    updateUserData={async (updatedUser) => {
+                        try {
+                            await updateUser(editingUser.id, updatedUser);
+                            handleCloseForm();
+                        } catch (error) {
+                            toast.error(`Error updating user: ${error.message}`);
+                        }
+                    }}
                 />
-                {showForm && (
-                    <AddUserForm onClose={handleCloseForm} />
-                )}
-                {showUpdateForm && (
-                    <UpdateUserForm
-                        userId={editingUser.id}
-                        onClose={handleCloseForm}
-                        updateUserData={async (updatedUser) => {
-                            try {
-                                await updateUser(editingUser.id, updatedUser);
-                                handleCloseForm();
-                            } catch (error) {
-                                toast.error(`Error updating user: ${error.message}`);
-                            }
-                        }}
-                    />
-                )}
-            </div>
-        </DashboardLayout>
+            )}
+        </div>
     );
 };
 

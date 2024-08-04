@@ -1,11 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
-import DashboardLayout from "../../../layout/DashboardLayout.jsx";
 import Table from "../comp/Table.jsx";
 import AddSlideForm from "./AddSlideForm";
 import { deleteSlide, fetchSlides } from '../../../api';
-import axios from "../../../utils/axios";
-import toast from "react-hot-toast";
-import { useParams } from "react-router-dom";
 
 const AdminSlides = () => {
   const [showForm, setShowForm] = useState(false);
@@ -34,31 +30,29 @@ const AdminSlides = () => {
   }, []);
 
   return (
-    <DashboardLayout>
-      <div className='md:p-6'>
-        <Table
-          apiUrl="/slides"
-          columns={[
-            { header: 'ID', accessor: 'id' },
-            { header: 'Image', accessor: 'image' },
-            { header: 'Title', accessor: 'title' },
-            { header: 'Description', accessor: 'description' },
-            { header: 'Active', accessor: 'isActive' }
-          ]}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          onAdd={handleAdd}
-          searchParam="Title" // Specify the search parameter name as per the API requirement
-          refresh={refresh} // Pass refresh state to Table component
+    <div className='md:p-6'>
+      <Table
+        apiUrl="/slides"
+        columns={[
+          { header: 'ID', accessor: 'id' },
+          { header: 'Image', accessor: 'image' },
+          { header: 'Title', accessor: 'title' },
+          { header: 'Description', accessor: 'description' },
+          { header: 'Active', accessor: 'isActive' }
+        ]}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+        onAdd={handleAdd}
+        searchParam="Title" // Specify the search parameter name as per the API requirement
+        refresh={refresh} // Pass refresh state to Table component
+      />
+      {showForm && (
+        <AddSlideForm
+          slideId={editingSlide}
+          onClose={handleCloseForm}
         />
-        {showForm && (
-          <AddSlideForm
-            slideId={editingSlide}
-            onClose={handleCloseForm}
-          />
-        )}
-      </div>
-    </DashboardLayout>
+      )}
+    </div>
   );
 };
 

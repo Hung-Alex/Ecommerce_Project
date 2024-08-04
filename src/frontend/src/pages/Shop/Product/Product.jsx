@@ -4,6 +4,8 @@ import useFetch from "../../../hooks/useFetch";
 import ProductBanner from "./Banner/ProductBanner";
 import ProductInfo from "./ProductInfo";
 import RelatedProducts from "./RelatedProducts/RelatedProducts";
+import Header from "../../../components/Shared/Header/Header";
+import Footer from "../../../components/Shared/Footer/Footer";
 
 const Product = () => {
 

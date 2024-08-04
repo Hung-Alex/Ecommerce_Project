@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from "react";
-import DashboardLayout from "../../../layout/DashboardLayout.jsx";
 import Table from "../comp/Table.jsx";
 import AddProductForm from "./AddProductForm"; // Assuming you have a similar form component for products
 import UpdateProductForm from "./UpdateProductForm";
@@ -30,7 +29,6 @@ const AdminProducts = () => {
   }, []);
 
   return (
-    <DashboardLayout>
       <div className='md:p-6'>
         <Table
           apiUrl="/products"
@@ -57,7 +55,6 @@ const AdminProducts = () => {
           />
         )}
       </div>
-    </DashboardLayout>
   );
 };
 

@@ -31,7 +31,6 @@ function SignUp() {
 
   return (
     <>
-      <Header />
       <section className="flex justify-center pt-12 mb-12">
         <div className="border p-4 rounded shadow-md">
           <div className="mb-8 my-4">
@@ -111,7 +110,6 @@ function SignUp() {
           </p>
         </div>
       </section>
-      <Footer />
     </>
   );
 }

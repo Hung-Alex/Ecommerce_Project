@@ -32,10 +32,8 @@ const News = () => {
 
   return (
     <div>
-      <Header />
       <NewsBanner newsData={newsData} />
       <NewsSection newsData={newsData} />
-      <Footer />
     </div>
   );
 };

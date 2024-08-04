@@ -1,4 +1,5 @@
 import PrivateRoute from "./PrivateRoute";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 // Import các trang của bạn
 import HomePage from "../pages/Home/Home";
 import AboutPage from "../pages/About/About";
@@ -24,40 +25,54 @@ import AdminSliders from "../pages/Admin/AdminSlider/AdminSliders";
 import AdminNews from "../pages/Admin/AdminNews/AdminNews";
 import AdminUsers from "../pages/Admin/AdminUser/AdminUser";
 
-// Định nghĩa các routes cho người dùng bình thường
-export const routes = [
-  { path: '/', element: <HomePage /> },
-  { path: '/about', element: <AboutPage /> },
-  { path: '/category/:name', element: <ShopPage /> },
-  { path: '/news', element: <News /> },
-  { path: '/news/:slug', element: <NewsDetail /> },
-  { path: '/products/:slug', element: <Product /> },
-  { path: '/our-team', element: <Team /> },
+import StandardLayout from "../layout/Layout";
+import DashboardLayout from "../layout/DashboardLayout";
+
+const routes = createBrowserRouter([
   {
-    path: '/checkout',
-    element: (
-      <PrivateRoute>
-        <Checkout />
-      </PrivateRoute>
-    ),
+    path: '',
+    element: <StandardLayout />,
+    errorElement: <Error />,  // Add errorElement for the StandardLayout
+    children: [
+      { path: '', element: <HomePage /> },
+      { path: '/about', element: <AboutPage /> },
+      { path: '/category/:name', element: <ShopPage /> },
+      { path: '/news', element: <News /> },
+      { path: '/news/:slug', element: <NewsDetail /> },
+      { path: '/products/:slug', element: <Product /> },
+      { path: '/our-team', element: <Team /> },
+      {
+        path: '/checkout',
+        element: (
+          <PrivateRoute>
+            <Checkout />
+          </PrivateRoute>
+        ),
+      },
+      { path: '/cart', element: <ShoppingCart /> },
+      { path: '/login', element: <Login /> },
+      { path: '/signup', element: <SignUp /> },
+      { path: '/user/profile', element: <PrivateRoute><Profile /></PrivateRoute> },
+      { path: '/user/profile/update', element: <PrivateRoute><UpdateProfile /></PrivateRoute> },
+    ],
   },
-  { path: '/cart', element: <ShoppingCart /> },
-  { path: '/login', element: <Login /> },
-  { path: '/signup', element: <SignUp /> },
-  { path: '/user/profile', element: <PrivateRoute><Profile /></PrivateRoute> },
-  { path: '/user/profile/update', element: <PrivateRoute><UpdateProfile /></PrivateRoute> },
-];
+  {
+    path: '/admin',
+    element: <DashboardLayout />,
+    errorElement: <Error />,  // Add errorElement for the AdminLayout
+    children: [
+      { path: '', element: <AdminProducts /> },
+      { path: 'products', element: <AdminProducts /> },
+      { path: 'brands', element: <AdminBrands /> },
+      { path: 'banner', element: <AdminBanners /> },
+      { path: 'category', element: <AdminCategories /> },
+      { path: 'roles', element: <AdminRoles /> },
+      { path: 'users', element: <AdminUsers /> },
+      { path: 'sliders', element: <AdminSliders /> },
+      { path: 'news', element: <AdminNews /> },
+    ],
+  },
+  { path: '*', element: <Error /> },  // Catch-all route for undefined paths
+]);
 
-
-// Định nghĩa các routes cho quản trị viên
-export const adminRoutes = [
-  { path: '/admin', element: <AdminProducts /> },
-  { path: '/admin/products', element: <AdminProducts /> },
-  { path: '/admin/brands', element: <AdminBrands /> },
-  { path: '/admin/banner', element: <AdminBanners /> },
-  { path: '/admin/category', element: <AdminCategories /> },
-  { path: '/admin/roles', element: <AdminRoles /> },
-  { path: '/admin/users', element: <AdminUsers /> },
-  { path: '/admin/sliders', element: <AdminSliders /> },
-  { path: '/admin/news', element: <AdminNews /> },
-];
+export default routes;

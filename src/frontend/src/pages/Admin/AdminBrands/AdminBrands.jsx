@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from "react";
-import DashboardLayout from "../../../layout/DashboardLayout.jsx";
 import Table from "../comp/Table";
 import AddBrandForm from "./AddBrands";
 import { deleteBrand } from "../../../api";
@@ -29,7 +28,6 @@ const AdminBrands = () => {
   }, []);
 
   return (
-    <DashboardLayout>
       <div className='p-6'>
         <Table
           apiUrl="/brands"
@@ -53,7 +51,6 @@ const AdminBrands = () => {
           />
         )}
       </div>
-    </DashboardLayout>
   );
 };
 

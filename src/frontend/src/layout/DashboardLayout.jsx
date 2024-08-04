@@ -1,15 +1,16 @@
 import React from "react";
 import SideNav from "../components/SideNav";
 import AdminNavbar from "../pages/Admin/comp/AdminNavbar";
+import { Outlet } from "react-router-dom";
 
-const DashboardLayout = ({ children }) => {
+const DashboardLayout = () => {
   return (
     <>
     <div className=" min-h-screen  bg-slate-100">
       <AdminNavbar />
       <div className="flex justify-center items-start w-full">
       <SideNav />
-      {children}
+      <Outlet />
       </div>
     </div>
     </>

@@ -1,16 +1,19 @@
-import { Outlet } from "react-router-dom";
-import HomePage from "../pages/Home/Home";
+// StandardLayout.js
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import Header from '../components/Shared/Header/Header';
+import Footer from '../components/Shared/Footer/Footer';
 
-const Layout = () => {
+const StandardLayout = () => {
   return (
     <>
-      <main className="flex-1">
-        <Outlet>
-          <HomePage />
-        </Outlet>
+      <Header />
+      <main>
+        <Outlet />
       </main>
+      <Footer />
     </>
   );
 };
 
-export default Layout;
+export default StandardLayout;
