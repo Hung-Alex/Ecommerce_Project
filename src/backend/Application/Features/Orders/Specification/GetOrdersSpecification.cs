@@ -21,6 +21,7 @@ namespace Application.Features.Orders.Specification
         protected override void Handler()
         {
             AddIncludeString("OrderItems.Product");
+            AddIncludeString("Payment.Status");
             AddInclude(x => x.ShipAddress);
             AddInclude(x => x.Status);
             ApplyPaging(_filter.PageSize, _filter.PageNumber);

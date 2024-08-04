@@ -16,8 +16,8 @@ namespace Application.Features.Payments.Commands
             var repoOrder = unitOfWork.GetRepository<Order>();
             var repoPayment = unitOfWork.GetRepository<Payment>();
             var repoStatus =  unitOfWork.GetRepository<Status>();
-            var statusCompleted = await repoStatus.FindOneAsync(new GetStatusByCodeSpecification("Completed"));
-            var statusFail = await repoStatus.FindOneAsync(new GetStatusByCodeSpecification("Failed"));        
+            var statusCompleted = await repoStatus.FindOneAsync(new GetStateByCodeSpecification("Completed"));
+            var statusFail = await repoStatus.FindOneAsync(new GetStateByCodeSpecification("Failed"));        
             var order= await repoOrder.GetByIdAsync(request.OrderId);
             if (order is null)
             {

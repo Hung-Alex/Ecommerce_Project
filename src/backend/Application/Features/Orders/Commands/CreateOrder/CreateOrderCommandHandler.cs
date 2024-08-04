@@ -34,7 +34,7 @@ namespace Application.Features.Orders.Commands.CreateOrder
             var repoOrder = unitOfWork.GetRepository<Order>();
             var repoPayment = unitOfWork.GetRepository<Payment>();
             var repoStatus = unitOfWork.GetRepository<Status>();
-            var statusPending = await repoStatus.FindOneAsync(new GetStatusByCodeSpecification("PENDING"));
+            var statusPending = await repoStatus.FindOneAsync(new GetStateByCodeSpecification("PENDING"));
             if (statusPending == null)
             {
                 return Result<PaymentsResultDTO>.ResultFailures(ErrorConstants.ProcessError.StatusPendingNotFound);
@@ -85,7 +85,6 @@ namespace Application.Features.Orders.Commands.CreateOrder
                     PaymentUrl = null
                 });
             }
-         
         }
     }
 }

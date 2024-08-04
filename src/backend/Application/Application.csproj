@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <Folder Include="Features\Brands\Queries\GetByUrlSlug\" />
+    <Folder Include="Features\State\Command\" />
   </ItemGroup>
 
 </Project>

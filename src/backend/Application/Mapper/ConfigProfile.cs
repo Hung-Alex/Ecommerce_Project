@@ -11,6 +11,7 @@ using Application.DTOs.Responses.Product.Shared.CategoryProduct;
 using Application.DTOs.Responses.Rattings;
 using Application.DTOs.Responses.Sections;
 using Application.DTOs.Responses.Slides;
+using Application.DTOs.Responses.State;
 using Application.DTOs.Responses.Users;
 using Application.Mapper.Resolve;
 using Application.Mapper.Resolvers;
@@ -42,6 +43,7 @@ namespace Application.Mapper
             CreateMap<Banner, BannerDTO>().ForMember(dest => dest.LogoImageUrl, opt => opt.MapFrom<UrlFromPublicIdResolver>()).ReverseMap();
             CreateMap<CategoryProductDTO, Categories>().ReverseMap();
             CreateMap<BrandProductDTO, Brand>().ReverseMap();
+            CreateMap<Status, StateDTO>().ReverseMap();
             CreateMap<ImageDTO, Image>().ReverseMap();
             CreateMap<CatetgorySection, Categories>().ReverseMap();
             CreateMap<Post, PostDetailDTO>()
