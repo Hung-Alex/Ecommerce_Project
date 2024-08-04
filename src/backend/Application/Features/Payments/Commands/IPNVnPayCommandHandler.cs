@@ -16,14 +16,15 @@ namespace Application.Features.Payments.Commands
             var repoOrder = unitOfWork.GetRepository<Order>();
             var repoPayment = unitOfWork.GetRepository<Payment>();
             var repoStatus =  unitOfWork.GetRepository<Status>();
-            var statusCompleted = await repoStatus.FindOneAsync(new GetStateByCodeSpecification("Completed"));
-            var statusFail = await repoStatus.FindOneAsync(new GetStateByCodeSpecification("Failed"));        
+            var statusCompleted = await repoStatus.FindOneAsync(new GetStateByTypeAndCodeSpecification(StateConstants.PaymentType, StateConstants.PaymentState.Completed));
+            var statusFail = await repoStatus.FindOneAsync(new GetStateByTypeAndCodeSpecification(StateConstants.PaymentType, StateConstants.PaymentState.Failed));        
             var order= await repoOrder.GetByIdAsync(request.OrderId);
             if (order is null)
             {
                 return Result<bool>.ResultFailures(ErrorConstants.NotFoundWithId(request.OrderId));
             }
             var payment=await repoPayment.GetByIdAsync(order.PaymentId);
+            // check code from vnpay, I just need to check with 00 to succeed, you can check with other code from vnpay for other use cases
             if (request.Code=="00")
             {
                 payment.TransactionId = request.TransactionId;
@@ -36,7 +37,7 @@ namespace Application.Features.Payments.Commands
                 payment.TransactionId = request.TransactionId;
                 payment.TransactionDate = DateTimeOffset.Now;
                 payment.StatusId = statusFail.Id;
-                order.StatusId = statusFail.Id;
+                order.StatusId = statusFail.Id;// if payment failed, order will be failed too => ^-^ order failed not payment failed <3 , ^-^ ^-^ ,above too
             }
             repoPayment.Update(payment);
             repoOrder.Update(order);
