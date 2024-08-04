@@ -9,5 +9,8 @@ namespace Application.DTOs.Responses.Orders
         public ShipAddress ShipAddress { get; init; }
         public string Note { get; init; }
         public IEnumerable<OrderItemsDTO> OrderItems { get; init; }
+        public string PaymentStatus { get; init; }
+        public string PaymentMethod { get; init; }
+        public decimal TotalAmount { get; init; }
     }
 }

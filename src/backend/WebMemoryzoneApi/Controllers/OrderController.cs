@@ -4,6 +4,7 @@ using Application.Features.Orders.Commands.CancelOrder;
 using Application.Features.Orders.Commands.ChangeStatusOrder;
 using Application.Features.Orders.Commands.CreateOrder;
 using Application.Features.Orders.Queries.GetOrders;
+using Application.Features.Orders.Queries.GetOrderUser;
 using Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -42,6 +43,17 @@ namespace WebMemoryzoneApi.Controllers
         public async Task<IActionResult> GetOrders([FromQuery] OrderFilter orderFilter)
         {
             var result = await _mediator.Send(new GetOrdersQuery(orderFilter));
+            if (result.IsSuccess is false)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+        [HttpGet("user")]
+        public async Task<IActionResult> GetOrders([FromQuery] UserOrderFilter orderFilter)
+        {
+            var claimUser = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimUser.UserId);
+            var result = await _mediator.Send(new GetOrderUserQuery(Guid.Parse(claimUser.Value), orderFilter));
             if (result.IsSuccess is false)
             {
                 return BadRequest(result);

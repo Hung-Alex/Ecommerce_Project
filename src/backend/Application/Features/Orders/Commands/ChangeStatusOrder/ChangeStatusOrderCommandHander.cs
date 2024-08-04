@@ -1,4 +1,5 @@
-﻿using Application.Common.Interface;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interface;
 using Domain.Constants;
 using Domain.Entities;
 using Domain.Entities.Orders;
@@ -13,13 +14,19 @@ namespace Application.Features.Orders.Commands.ChangeStatusOrder
         {
             var repoOrder = unitOfWork.GetRepository<Order>();
             var repoStatus = unitOfWork.GetRepository<Status>();
+
             var status = await repoStatus.GetByIdAsync(request.StatusId);
+            if (status is null || !(status.Type == StateConstants.OrderType))
+            {
+                throw new ValidationException("Invalid Status");
+            }
             var order = await repoOrder.GetByIdAsync(request.OrderId);
             if (order == null)
             {
                 return Result<bool>.ResultFailures(ErrorConstants.NotFoundWithId(request.OrderId));
             }
             order.StatusId = status.Id;
+            await unitOfWork.Commit();
             return Result<bool>.ResultSuccess(true);
         }
     }
