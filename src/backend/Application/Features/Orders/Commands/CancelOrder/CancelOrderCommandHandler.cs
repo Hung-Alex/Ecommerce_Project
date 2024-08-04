@@ -14,7 +14,7 @@ namespace Application.Features.Orders.Commands.CancelOrder
         {
             var repoOrder = unitOfWork.GetRepository<Order>();
             var repoStatus = unitOfWork.GetRepository<Status>();
-            var cancelStatus = await repoStatus.FindOneAsync(new GetStateByCodeSpecification("Cancel"));
+            var cancelStatus = await repoStatus.FindOneAsync(new GetStateByTypeAndCodeSpecification(StateConstants.OrderType, StateConstants.OrderState.Cancelled));
             var order = await repoOrder.GetByIdAsync(request.OrderId);
             if (order == null)
             {

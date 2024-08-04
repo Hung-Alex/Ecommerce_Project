@@ -5,14 +5,14 @@ using Domain.Entities.Orders;
 using Domain.Shared;
 using MediatR;
 
-namespace Application.Features.Orders.Queries.GetOrders
+namespace Application.Features.Orders.Queries.GetOrderUser
 {
-    public sealed class GetOrdersQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetOrdersQuery, Result<IEnumerable<OrderDTO>>>
+    public sealed class GetOrderUserQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetOrderUserQuery, Result<IEnumerable<OrderDTO>>>
     {
-        public async Task<Result<IEnumerable<OrderDTO>>> Handle(GetOrdersQuery request, CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<OrderDTO>>> Handle(GetOrderUserQuery request, CancellationToken cancellationToken)
         {
             var repo = unitOfWork.GetRepository<Order>();
-            var spec = new GetOrdersSpecification(request._filter);
+            var spec = new GetUserOrderSpecification(request.filter, request.UserId);
             var orders = await repo.GetAllAsync(spec);
             var data = orders.Select(x => new OrderDTO
             {
@@ -34,7 +34,7 @@ namespace Application.Features.Orders.Queries.GetOrders
                 }).ToList()
             });
             var totalItems = await repo.CountAsync(spec);
-            return new PagingResult<IEnumerable<OrderDTO>>(data, request._filter.PageNumber, request._filter.PageSize, totalItems);
+            return new PagingResult<IEnumerable<OrderDTO>>(data, request.filter.PageNumber, request.filter.PageSize, totalItems);
         }
     }
 }
