@@ -3,6 +3,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchNewsSlug } from "../../api";
 import { useEffect, useState } from 'react';
+import { DEFAULT_IMAGE_URLS } from '../../constants/imageUrls';
 
 const NewsDetail = () => {
     const [data, setData] = useState({});
@@ -12,7 +13,7 @@ const NewsDetail = () => {
         const fetchData = async () => {
             try {
                 const result = await fetchNewsSlug(slug);
-                setData(result);
+                setData(result.data);
             } catch (error) {
                 console.error("Error fetching news data:", error);
             }
@@ -32,19 +33,18 @@ const NewsDetail = () => {
         <div className="max-w-screen-xl mx-auto bg-white">
 
             {/* Main Content */}
-            <main className="mt-10">
-                <div className="mb-4 md:mb-0 w-full max-w-screen-xl mx-auto relative" style={{ height: '24em' }}>
+            <main className="">
+                <div className="w-full relative" style={{ height: '40em' }}>
                     <div className="absolute left-0 bottom-0 w-full h-full z-10"
                         style={{ backgroundImage: 'linear-gradient(180deg,transparent,rgba(0,0,0,.7))' }}></div>
                     <img src={data.imageUrl} className="absolute left-0 top-0 w-full h-full z-0 object-cover" />
                     <div className="p-4 absolute bottom-0 left-0 z-20">
-                        <a href="#"
-                            className="px-4 py-1 bg-black text-gray-200 inline-flex items-center justify-center mb-2"></a>
+
                         <h2 className="text-4xl font-semibold text-gray-100 leading-tight">
                             {data.title}
                         </h2>
                         <div className="flex mt-3">
-                            <img src={data.imageOfCreator}
+                            <img src={data.imageOfCreator !== DEFAULT_IMAGE_URLS.null ? data.imageOfCreator : DEFAULT_IMAGE_URLS.avatar} 
                                 className="h-10 w-10 rounded-full mr-2 object-cover" />
                             <div>
                                 <p className="font-semibold text-gray-200 text-sm"> {data.createdByName} </p>

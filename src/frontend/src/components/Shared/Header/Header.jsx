@@ -3,16 +3,28 @@ import { BiSearch } from "react-icons/bi";
 import logo from "../../../assets/Logo.png";
 import NavList from "./List/NavList";
 import { Link } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { CartContext } from "../../../context/CartContext";
 import { UserContext } from "../../../context/UserContext";
 import UserDropdown from "./UserDropdown";
+import { DEFAULT_IMAGE_URLS } from "../../../constants/imageUrls";
 
 const Header = () => {
   const { cart } = useContext(CartContext);
   const { user } = useContext(UserContext);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    // Cleanup event listener on component unmount
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
@@ -23,7 +35,7 @@ const Header = () => {
   };
 
   return (
-    <header className="flex flex-wrap items-center justify-between py-4 px-6 sm:px-12 sticky w-full top-0 bg-[#EFF6F1]  drop-shadow z-50">
+    <header className={`flex flex-wrap items-center justify-between py-4 px-6 sm:px-12 fixed w-full top-0 bg-[#EFF6F1] drop-shadow z-50 header ${isScrolled ? 'scrolled' : ''}`}>
       <div className="flex items-center justify-between w-full sm:w-auto">
           <button onClick={toggleMobileMenu} className="text-gray-600 sm:hidden">
             ☰
@@ -51,7 +63,7 @@ const Header = () => {
             <button onClick={toggleDropdown} className="border-4 shadow-lg rounded-full">
               <img
                 className="w-10 h-10 rounded-full"
-                src={user?.ImageUrl || "https://cdn-icons-png.flaticon.com/512/149/149071.png"}
+                src={user?.ImageUrl || DEFAULT_IMAGE_URLS.avatar} 
                 alt="User avatar"
               />
             </button>
