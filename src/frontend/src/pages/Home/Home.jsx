@@ -8,14 +8,10 @@ import Category from "./Category/Category";
 import News from "./News/News";
 import Subscribe from "./Subscribe/Subscribe";
 import Brands from "./Brands/Brands";
-import Header from "../../components/Shared/Header/Header";
-import Footer from "../../components/Shared/Footer/Footer";
-
 
 const HomePage = () => {
   return (
     <>
-    <Header />
       <HomeBanner />
       <Category />
       <div className="max-w-screen-xl mx-auto">
@@ -28,7 +24,6 @@ const HomePage = () => {
         <News />
         {/* <Subscribe /> */}
       </div>
-      <Footer />
     </>
   );
 };

@@ -9,13 +9,11 @@ import OurTeam from "./OurTeam/OurTeam";
 const AboutPage = () => {
   return (
     <div>
-      <Header />
       <AboutBanner />
       <AboutUs />
       <ChooseUs />
       <OurTeam />
       <AboutOffer />
-      <Footer />
     </div>
   );
 };

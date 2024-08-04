@@ -83,7 +83,7 @@ const AdminNavbar = () => {
 
       {/* Mobile Dropdown Menu */}
       {isMobileMenuOpen && (
-        <div className=" absolute bg-white md:hidden w-full max-w-[100vw] overflow-auto">
+        <div className=" absolute bg-white md:hidden w-full max-w-[100vw] overflow-auto z-10">
           <AdminNavList />
         </div>
       )}

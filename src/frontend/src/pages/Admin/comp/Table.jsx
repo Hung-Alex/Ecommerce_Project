@@ -141,7 +141,7 @@ const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam
           }
 
           return (
-            <td key={col.accessor} className={`p-2 ${colClass}`}>
+            <td key={col.accessor} className={`p-2 max-w-xs truncate ${colClass}`}>
               {content}
             </td>
           );
@@ -243,7 +243,7 @@ const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam
       <div className="flex justify-center mt-4 items-center">
         <button
           onClick={() => setPageIndex((prev) => Math.max(0, prev - 1))}
-          className={`px-4 py-2 border border-gray-300 -z-1 rounded-md mx-1 ${pageIndex === 0 ? 'cursor-not-allowed opacity-50' : 'bg-white'}`}
+          className={`px-4 py-2 border border-gray-300 z-0 rounded-md mx-1 ${pageIndex === 0 ? 'cursor-not-allowed opacity-50 -z-1' : 'bg-white'}`}
           disabled={pageIndex === 0}
         >
           Previous

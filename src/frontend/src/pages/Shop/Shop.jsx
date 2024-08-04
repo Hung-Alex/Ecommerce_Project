@@ -21,7 +21,6 @@ const ShopPage = () => {
 
   return (
     <>
-      <Header />
       <div className="sm:px-12">
         <ShopBanner name={name} />
         <div className="grid grid-cols-12 items-start">
@@ -59,7 +58,6 @@ const ShopPage = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

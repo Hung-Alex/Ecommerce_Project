@@ -1,8 +1,6 @@
 import React, { useState, useCallback } from "react";
-import DashboardLayout from "../../../layout/DashboardLayout.jsx";
 import Table from "../comp/Table.jsx";
 import AddNewsForm from "./AddNewsForm";
-import { toast } from "react-hot-toast";
 import { deleteNews } from "../../../api";
 
 const AdminNews = () => {
@@ -36,31 +34,30 @@ const AdminNews = () => {
   }, []);
 
   return (
-    <DashboardLayout>
-      <div className='p-6'>
-        <Table
-          apiUrl="/posts" // Specify the API URL directly in the Table component
-          columns={[
-            { header: 'ID', accessor: 'id' },
-            { header: 'Image', accessor: 'image' },
-            { header: 'Title', accessor: 'title' },
-            { header: 'URL Slug', accessor: 'urlSlug' },
-            { header: 'Short Description', accessor: 'shortDescription' },
-            { header: 'Published', accessor: 'published' }
-          ]}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          onAdd={handleAddPost}
-          refresh={refresh} // Pass refresh state to Table component if needed
+    <div className='p-6'>
+      <Table
+        apiUrl="/posts" // Specify the API URL directly in the Table component
+        columns={[
+          { header: 'ID', accessor: 'id' },
+          { header: 'Image', accessor: 'image' },
+          { header: 'Title', accessor: 'title' },
+          { header: 'URL Slug', accessor: 'urlSlug' },
+          { header: 'Short Description', accessor: 'shortDescription' },
+          { header: 'Published', accessor: 'published' }
+        ]}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+        onAdd={handleAddPost}
+        searchParam="Title"
+        refresh={refresh} // Pass refresh state to Table component if needed
+      />
+      {showForm && (
+        <AddNewsForm
+          postId={editingPost}
+          onClose={handleCloseForm}
         />
-        {showForm && (
-          <AddNewsForm
-            postId={editingPost}
-            onClose={handleCloseForm}
-          />
-        )}
-      </div>
-    </DashboardLayout>
+      )}
+    </div>
   );
 };
 

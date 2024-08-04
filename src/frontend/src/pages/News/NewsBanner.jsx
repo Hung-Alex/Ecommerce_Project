@@ -2,7 +2,8 @@ import React from 'react';
 import { formatDate } from '../../utils/formatDate';
 
 const NewsBanner = ({ newsData }) => {
-  const displayedNews = newsData.slice(0, 5);
+  // Ensure newsData is an array before slicing
+  const displayedNews = Array.isArray(newsData) ? newsData.slice(0, 5) : [];
 
   return (
     <div className="max-w-screen-xl p-5 mx-auto bg-white">

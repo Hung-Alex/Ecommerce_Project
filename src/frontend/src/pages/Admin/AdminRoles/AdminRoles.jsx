@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from "react";
-import DashboardLayout from "../../../layout/DashboardLayout.jsx";
 import Table from "../comp/Table.jsx";
 import AddRoleForm from "./AddRoleForm";
 import { deleteRole } from '../../../api/index'; // Import the API function to delete a role
@@ -32,8 +31,7 @@ const AdminRoles = () => {
   }, []);
 
   return (
-    <DashboardLayout>
-      <div className=''>
+      <div className='md:p-6'>
         <Table
           apiUrl="/roles" // Assuming you have an API endpoint for roles
           columns={[
@@ -53,7 +51,6 @@ const AdminRoles = () => {
           />
         )}
       </div>
-    </DashboardLayout>
   );
 };
 
