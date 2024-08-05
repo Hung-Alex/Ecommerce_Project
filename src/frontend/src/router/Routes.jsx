@@ -14,6 +14,7 @@ import UpdateProfile from "../pages/User/UpdateProfile";
 import Checkout from "../pages/Order/Checkout";
 import News from "../pages/News/News";
 import NewsDetail from "../pages/News/NewsDetail";
+import OrderSuccess from "../pages/Order/OrderSuccess";
 
 // Import các trang của bạn
 import AdminProducts from "../pages/Admin/AdminProducts/AdminProducts";
@@ -50,6 +51,7 @@ const routes = createBrowserRouter([
         ),
       },
       { path: '/cart', element: <ShoppingCart /> },
+      { path: '/order-success', element: <OrderSuccess /> },
       { path: '/login', element: <Login /> },
       { path: '/signup', element: <SignUp /> },
       { path: '/user/profile', element: <PrivateRoute><Profile /></PrivateRoute> },
