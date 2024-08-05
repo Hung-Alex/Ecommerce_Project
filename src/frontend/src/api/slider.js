@@ -11,6 +11,15 @@ export const fetchSlideDataById = async (SlideId) => {
 };
 
 /**
+ * Fetch active slide data.
+ * @returns {Promise<Object>} - A promise that resolves with the active slide data.
+ */
+export const fetchActiveSlideData = async () => {
+    return await get_api('/slides/is-actice');
+};
+
+
+/**
  * Create a new Slide.
  * @param {Object} formData - The Slide data to create.
  * @returns {Promise<Object>} - A promise that resolves with the created Slide data.

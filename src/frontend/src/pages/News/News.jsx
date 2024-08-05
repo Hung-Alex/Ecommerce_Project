@@ -3,8 +3,6 @@ import NewsSection from './NewsSection';
 import NewsBanner from './NewsBanner';
 
 import { fetchNewsPublished } from '../../api';
-import Header from '../../components/Shared/Header/Header';
-import Footer from '../../components/Shared/Footer/Footer';
 
 const News = () => {
   const [newsData, setNewsData] = useState([]);
@@ -19,12 +17,8 @@ const News = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await fetchNewsPublished(payload);
-        setNewsData(response);
-      } catch (error) {
-        console.error('Error fetching news:', error);
-      }
+      const response = await fetchNewsPublished(payload);
+      setNewsData(response.data);
     };
 
     fetchData();

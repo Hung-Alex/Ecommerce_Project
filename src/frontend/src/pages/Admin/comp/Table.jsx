@@ -3,6 +3,7 @@ import axios from '../../../utils/axios';
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
 import { AiOutlinePlus } from 'react-icons/ai';
+import { DEFAULT_IMAGE_URLS } from '../../../constants/imageUrls';
 
 const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam, refresh }) => {
   const [data, setData] = useState([]);
@@ -135,7 +136,7 @@ const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam
             if (Array.isArray(content) && content.length > 0) {
               content = content[0];
             }
-            content = <img src={content} alt="" className="w-14 h-14 object-cover rounded-full" />;
+            content = <img src={content !== DEFAULT_IMAGE_URLS.null ? content : DEFAULT_IMAGE_URLS.avatar}  alt="" className="w-14 h-14 object-cover rounded-full" />;
           } else if (booleanAccessorsSet.has(col.accessor)) {
             content = content ? 'Yes' : 'No';
           }
