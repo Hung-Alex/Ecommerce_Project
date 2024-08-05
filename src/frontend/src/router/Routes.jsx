@@ -29,6 +29,7 @@ import AdminUsers from "../pages/Admin/AdminUser/AdminUser";
 import StandardLayout from "../layout/Layout";
 import DashboardLayout from "../layout/DashboardLayout";
 import OrderStatus from "../pages/Order/OrderStatus";
+import AdminOrder from "../pages/Admin/AdminOrder/AdminOder";
 
 const routes = createBrowserRouter([
   {
@@ -74,6 +75,7 @@ const routes = createBrowserRouter([
       { path: 'users', element: <AdminUsers /> },
       { path: 'sliders', element: <AdminSliders /> },
       { path: 'news', element: <AdminNews /> },
+      { path: 'orders', element: <AdminOrder /> },
     ],
   },
   { path: '*', element: <Error /> },  // Catch-all route for undefined paths
