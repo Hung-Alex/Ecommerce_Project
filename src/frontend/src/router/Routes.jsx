@@ -28,6 +28,7 @@ import AdminUsers from "../pages/Admin/AdminUser/AdminUser";
 
 import StandardLayout from "../layout/Layout";
 import DashboardLayout from "../layout/DashboardLayout";
+import OrderStatus from "../pages/Order/OrderStatus";
 
 const routes = createBrowserRouter([
   {
@@ -50,8 +51,9 @@ const routes = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      { path: '/cart', element: <ShoppingCart /> },
       { path: '/order-success', element: <OrderSuccess /> },
+      { path: '/user/orders', element: <OrderStatus /> },
+      { path: '/cart', element: <ShoppingCart /> },
       { path: '/login', element: <Login /> },
       { path: '/signup', element: <SignUp /> },
       { path: '/user/profile', element: <PrivateRoute><Profile /></PrivateRoute> },

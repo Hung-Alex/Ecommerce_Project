@@ -85,13 +85,6 @@ input::-webkit-inner-spin-button {
   background-color: #EFF6F1; /* Màu nền mặc định */
 }
 
-.swiper-container{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
- }
-
 /* animations.css */
 .fade-up {
   opacity: 0;
