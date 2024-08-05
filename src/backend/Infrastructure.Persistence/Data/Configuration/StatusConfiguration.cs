@@ -10,8 +10,6 @@ namespace Infrastructure.Persistence.Data.Configuration
         {
             builder.HasKey(x => x.Id);
             builder.HasQueryFilter(x => !x.IsDeleted);
-            builder.HasIndex(r => r.Type).IsUnique()
-                     .HasFilter("IsDeleted = 0");
             builder.HasIndex(r => r.IsDeleted)
                      .HasFilter("IsDeleted = 0");
             builder.Property(c => c.IsDeleted).HasDefaultValue(false);
