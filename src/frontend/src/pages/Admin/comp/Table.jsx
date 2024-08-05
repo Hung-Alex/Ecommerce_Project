@@ -136,7 +136,7 @@ const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam
             if (Array.isArray(content) && content.length > 0) {
               content = content[0];
             }
-            content = <img src={content !== DEFAULT_IMAGE_URLS.null ? content : DEFAULT_IMAGE_URLS.avatar}  alt="" className="w-14 h-14 object-cover rounded-full" />;
+            content = <img src={content !== DEFAULT_IMAGE_URLS.null ? content : DEFAULT_IMAGE_URLS.avatar} alt="" className="w-14 h-14 object-cover rounded-full" />;
           } else if (booleanAccessorsSet.has(col.accessor)) {
             content = content ? 'Yes' : 'No';
           }
@@ -187,12 +187,18 @@ const PaginationTable = ({ apiUrl, columns, onEdit, onDelete, onAdd, searchParam
       <p className="text-xs text-gray-500">({totalItems} <n />Item)</p>
 
       <div className="m-4 md:flex flex-col md:flex-row md:items-center">
-        <button
-          onClick={handleAdd}
-          className="mr-4 p-2 bg-green-500 text-white w-9 rounded-3xl shadow-md hover:bg-green-600 transition-colors duration-200"
-        >
-          <AiOutlinePlus size={20} />
-        </button>
+        {onAdd && (
+          <button
+            onClick={() => {
+              if (onAdd) {
+                onAdd(); // Call the onAdd callback if provided
+              }
+            }}
+            className="mr-4 p-2 bg-green-500 text-white w-9 rounded-3xl shadow-md hover:bg-green-600 transition-colors duration-200"
+          >
+            <AiOutlinePlus size={20} />
+          </button>
+        )}
         <input
           type="text"
           onChange={(e) => debouncedSearch(e.target.value)}

@@ -2,11 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../../utils/axios';
 import CancelOrderPopup from './CancelOrderPopup';
+import { fetchOrdersData } from '../../api';
 
 const OrderList = ({ statusId }) => {
   const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
@@ -14,26 +14,20 @@ const OrderList = ({ statusId }) => {
   const [selectedOrderId, setSelectedOrderId] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
-    axios.get('/orders/user', {
-      params: {
-        Status: statusId,
-        PageSize: pageSize,
-        PageNumber: pageNumber,
-        SortColumn: 'createdAt',
-        SortBy: 'ASC'
-      }
-    })
+    const params = {
+      Status: statusId,
+      PageSize: pageSize,
+      PageNumber: pageNumber,
+      SortColumn: 'createdAt',
+      SortBy: 'ASC'
+    };
+  
+    fetchOrdersData(params)
       .then(response => {
-        setOrders(response.data.data);
+        setOrders(response.data);
         setTotalPages(response.data.totalPages);
-        setLoading(false);
       })
-      .catch(error => {
-        setError(error);
-        setLoading(false);
-      });
-  }, [statusId, pageNumber, pageSize]);
+  }, [statusId, pageNumber, pageSize, showCancelPopup]);
 
   const handlePreviousPage = () => {
     if (pageNumber > 1) {
@@ -61,9 +55,6 @@ const OrderList = ({ statusId }) => {
     setOrders(orders.filter(order => order.id !== selectedOrderId));
   };
 
-  if (loading) return <p className="text-center text-gray-500">Loading...</p>;
-  if (error) return <p className="text-center text-red-500">Error: {error.message}</p>;
-
   return (
     <div className="container mx-auto p-4">
       {orders.length === 0 ? (
@@ -74,7 +65,7 @@ const OrderList = ({ statusId }) => {
             <li key={order.id} className="bg-white p-4 rounded-lg shadow-md">
               <div className="flex justify-between items-center mb-4">
                 <div>
-                  <p className="font-semibold text-lg">Order ID: {order.id}</p>
+                  <p className="font-semibold text-lg">Status: {order.status}</p>
                   <p><strong>Ship Address:</strong> {order.shipAddress.address}</p>
                   <p><strong>Name:</strong> {order.shipAddress.name}</p>
                   <p><strong>Email:</strong> {order.shipAddress.email}</p>

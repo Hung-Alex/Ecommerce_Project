@@ -10,6 +10,7 @@ export * from './slider.js';
 export * from './roles.js';
 export * from './users.js';
 export * from './images.js';
+export * from './order.js';
 
 
 // export { default as axiosInstance } from './axiosInstance';

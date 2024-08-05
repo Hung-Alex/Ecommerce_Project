@@ -4,6 +4,10 @@ import { UserContext } from "../context/UserContext";
 import logo from '../assets/Logo.png'; // Đảm bảo bạn có đường dẫn đúng đến hình ảnh logo
 
 const navItems = [
+
+];
+
+const adminNavItems = [
   { label: "HomePage", path: "/" },
   { label: "Products", path: "/admin/products" },
   { label: "Category", path: "/admin/Category" },
@@ -12,14 +16,8 @@ const navItems = [
   { label: "Sliders", path: "/admin/Sliders" },
   { label: "Roles", path: "/admin/Roles" },
   { label: "Users", path: "/admin/users" },
-  { label: "News", path: "/admin/news" }
-];
-
-const adminNavItems = [
-  { label: "Products", path: "/admin/products" },
-  { label: "Category", path: "/admin/Category" },
-  { label: "Brand", path: "/admin/Brand" },
-  { label: "Banner", path: "/admin/banner" }
+  { label: "News", path: "/admin/news" },
+  { label: "Orders", path: "/admin/orders" }
 ];
 
 const SideNav = () => {
@@ -37,7 +35,7 @@ const SideNav = () => {
             {item.label}
           </Link>
         ))}
-        {user?.role === "admin" && (
+        {user && (
           <>
             {adminNavItems.map((item, index) => (
               <Link
