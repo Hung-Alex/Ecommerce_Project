@@ -94,8 +94,14 @@ const ProductImages = ({ images, mainImage, setMainImage }) => (
 
 const ProductDetails = ({ product, quantity, setQuantity, selectedVariant, setSelectedVariant, tooltip, setTooltip, onAddToCart }) => (
   <div className="w-full md:w-1/2 px-4">
-    <h2 className="text-3xl font-bold mb-2">{product?.name || "Product Name"}</h2>
+    <div className="flex">
+    <h2 className="text-3xl font-bold mr-4 mb-2">{product?.name || "Product Name"}</h2>
     {/* <p className="text-gray-600 mb-4">SKU: {product?.sku || "N/A"}</p> */}
+    <p className="bg-gray-600 inline p-1 rounded-lg text-white mb-4">
+      {product?.isStock ? 'In Stock' : 'Out of Stock'}
+    </p>
+    </div>
+
     <div className="mb-4">
       <span className="text-2xl font-bold mr-2">${product?.price || "0.00"}</span>
       <span className="text-gray-500 line-through">${product?.oldPrice || "0.00"}</span>
@@ -131,12 +137,12 @@ const ProductDetails = ({ product, quantity, setQuantity, selectedVariant, setSe
       </div>
     </div> */}
 
-      <QuantitySelector quantity={quantity} onDecrement={() => setQuantity(q => q - 1)} onIncrement={() => setQuantity(q => q + 1)} />
+    <QuantitySelector quantity={quantity} onDecrement={() => setQuantity(q => q - 1)} onIncrement={() => setQuantity(q => q + 1)} />
 
-      <div className="flex space-x-4 mb-6">
-        <ActionButtons onAddToCart={onAddToCart} />
-      </div>
+    <div className="flex space-x-4 mb-6">
+      <ActionButtons onAddToCart={onAddToCart} isInStock={product?.isStock}  />
     </div>
+  </div>
 );
 
 const QuantitySelector = ({ quantity, onDecrement, onIncrement }) => (
@@ -171,17 +177,19 @@ const QuantitySelector = ({ quantity, onDecrement, onIncrement }) => (
   </div>
 );
 
-const ActionButtons = ({ onAddToCart }) => (
+const ActionButtons = ({ onAddToCart, isInStock }) => (
   <>
-    <button
-      onClick={onAddToCart}
-      className="bg-[#4fb373] flex gap-2 items-center text-white px-6 py-2 rounded-md hover:bg-[#257a44] focus:outline-none focus:ring-2 focus:bg-[#4fb373] focus:ring-offset-2"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zm15.75-9.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zm-5.625-6h-5.25" />
-      </svg>
-      Add to Cart
-    </button>
+  <button
+    onClick={isInStock ? onAddToCart : null}
+    disabled={!isInStock}
+    className={`flex gap-2 items-center px-6 py-2 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 
+      ${isInStock ? 'bg-[#4fb373] hover:bg-[#257a44] focus:bg-[#4fb373]' : 'bg-gray-500 cursor-not-allowed'}`}
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zm15.75-9.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zm-5.625-6h-5.25" />
+    </svg>
+    Add to Cart
+  </button>
     {/* <button
       className="flex gap-2 items-center text-[#4fb373] border border-[#4fb373] px-6 py-2 rounded-md hover:bg-[#f0fff4] focus:outline-none focus:ring-2 focus:ring-offset-2"
     >
