@@ -30,7 +30,7 @@ namespace Application.Features.Carts.Commands.AddItem
             var repoProduct = unitOfWork.GetRepository<Product>();
             var product = await repoProduct.FindOneAsync(new GetProductWithVariantsSpecification(request.ProductId));
             if (product is null) { return Result<bool>.ResultFailures(ErrorConstants.CartError.CartNotFound); }
-            if (product.IsStock is true)
+            if (product.IsStock is false)
             {
                 return Result<bool>.ResultFailures(ErrorConstants.CartError.ProductOutOfStock);
             }
