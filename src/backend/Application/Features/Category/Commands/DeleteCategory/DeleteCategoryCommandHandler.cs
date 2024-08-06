@@ -26,7 +26,7 @@ namespace Application.Features.Category.Commands.DeleteCategory
                 return Result<bool>.ResultFailures(ErrorConstants.NotFoundWithId(request.Id));
             }
             await _categoryRepositoryExtension.SoftDeleteCategory(category.Id);
-            await _unitOfWork.Commit();
+            await _unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

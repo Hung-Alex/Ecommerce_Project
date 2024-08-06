@@ -66,7 +66,7 @@ namespace Application.Features.Users.Commands.UpdateUser
                             return Result<bool>.ResultFailures(isAssignRole.Errors);
                         }
                     }
-                    await unitOfWork.Commit();
+                    await unitOfWork.CommitAsync();
                     transactionScope.Complete();
                     return Result<bool>.ResultSuccess(true);
                 }

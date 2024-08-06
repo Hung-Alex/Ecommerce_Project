@@ -3,7 +3,6 @@ using Domain.Common;
 using Domain.Interface;
 using Domain.Shared;
 using Infrastructure.Persistence.Persistence.Data;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Persistence.Repositories.UnitOfWork
@@ -19,7 +18,7 @@ namespace Infrastructure.Persistence.Repositories.UnitOfWork
             _serviceProvider = serviceProvider;
             _currentUserService = currentUserService;
         }
-        public async Task Commit()
+        public async Task CommitAsync()
         {
             try
             {

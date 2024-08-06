@@ -37,7 +37,7 @@ namespace Application.Features.WishsList.Commands.CreateFavoriteProduct
                 return Result<bool>.ResultFailures(ErrorConstants.NotFoundWithId(request.ProductId));
             }
             repoWishList.Add(new WishList() { ProductId = request.ProductId, UserId = request.UserId });
-            await _unitOfWork.Commit();
+            await _unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

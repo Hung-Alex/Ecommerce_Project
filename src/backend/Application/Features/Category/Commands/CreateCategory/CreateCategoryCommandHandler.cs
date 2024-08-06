@@ -59,7 +59,7 @@ namespace Application.Features.Category.Commands.CreateCategory
                 throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
             }
             repoCategory.Add(new Categories() { Name = request.Name, Description = request.Description, UrlSlug = request.UrlSlug, Image = uploadResult.Data.PublicId, ParrentId = request.ParrentId });
-            await _unitOfWork.Commit();
+            await _unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

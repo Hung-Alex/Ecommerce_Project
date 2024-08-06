@@ -24,7 +24,7 @@ namespace Application.Features.WishsList.Commands.DeleteFavoriteProduct
                 return Result<bool>.ResultFailures(ErrorConstants.WishListError.ProductDontHaveInWishlistWithId(request.ProductId));
             }
             repo.Delete(hasProductInListWish);
-            await _unitOfWork.Commit();
+            await _unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

@@ -49,7 +49,7 @@ namespace Application.Features.Brands.Commands.CreateBrands
                 throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
             }
             repo.Add(new Brand() { Name = request.Name, Description = request.Description, UrlSlug = request.UrlSlug, Image = uploadResult.Data.PublicId });
-            await _unitOfWork.Commit();
+            await _unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

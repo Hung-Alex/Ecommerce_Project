@@ -22,7 +22,7 @@ namespace Application.Features.Slides.Commands.DeleteSlide
                 return Result<bool>.ResultFailures(ErrorConstants.NotFoundWithId(request.Id));
             }
             repoSlide.Delete(slide);
-            await _unitOfWork.Commit();
+            await _unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

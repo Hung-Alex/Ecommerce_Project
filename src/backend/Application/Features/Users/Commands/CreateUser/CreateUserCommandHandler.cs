@@ -67,7 +67,7 @@ namespace Application.Features.Users.Commands.CreateUser
                         transactionScope.Dispose();
                         return Result<bool>.ResultFailures(isAssignRole.Errors);
                     }
-                    await _unitOfWork.Commit();
+                    await _unitOfWork.CommitAsync();
                     transactionScope.Complete();
                     return Result<bool>.ResultSuccess(true);
                 }

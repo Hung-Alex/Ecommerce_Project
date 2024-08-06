@@ -19,7 +19,7 @@ namespace Application.Features.Images.Command
                 return Result<bool>.ResultFailures(isDelete.Errors);
             }
             repo.Delete(image);
-            await unitOfWork.Commit();
+            await unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

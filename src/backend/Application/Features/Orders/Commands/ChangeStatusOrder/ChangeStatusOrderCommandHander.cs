@@ -26,7 +26,7 @@ namespace Application.Features.Orders.Commands.ChangeStatusOrder
                 return Result<bool>.ResultFailures(ErrorConstants.NotFoundWithId(request.OrderId));
             }
             order.StatusId = status.Id;
-            await unitOfWork.Commit();
+            await unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

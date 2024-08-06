@@ -8,6 +8,6 @@ namespace Application.Common.Interface
     public interface IUnitOfWork : IDisposable
     {
         IRepository<T> GetRepository<T>() where T : BaseEntity, IAggregateRoot;
-        Task Commit();
+        Task CommitAsync();
     }
 }

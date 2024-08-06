@@ -22,7 +22,7 @@ namespace Application.Features.Rattings.Commands.DeleteRatting
                 return Result<bool>.ResultFailures(ErrorConstants.NotFoundWithId(request.Id));
             }
             repoRatting.Delete(ratting);
-            await _unitOfWork.Commit();
+            await _unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

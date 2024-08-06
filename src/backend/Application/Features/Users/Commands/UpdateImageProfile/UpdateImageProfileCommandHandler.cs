@@ -25,7 +25,7 @@ namespace Application.Features.Users.Commands.UpdateImageProfile
                 throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
             }
             user.AvatarImage = uploadResult.Data.PublicId;
-            await unitOfWork.Commit();
+            await unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

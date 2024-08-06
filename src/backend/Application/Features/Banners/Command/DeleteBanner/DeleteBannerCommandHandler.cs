@@ -22,7 +22,7 @@ namespace Application.Features.Banners.Commands.DeleteBanner
                 return Result<bool>.ResultFailures(ErrorConstants.NotFoundWithId(request.Id));
             }
             repoBanner.Delete(banner);
-            await _unitOfWork.Commit();
+            await _unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

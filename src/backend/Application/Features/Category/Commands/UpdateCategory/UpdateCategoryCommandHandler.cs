@@ -70,7 +70,7 @@ namespace Application.Features.Category.Commands.UpdateCategory
             category.UrlSlug = request.UrlSlug;
             category.Name = request.Name;
             category.Description = request.Description;
-            await _unitOfWork.Commit();
+            await _unitOfWork.CommitAsync();
             var CategoryDTO = _mapper.Map<CategoryDTO>(category);
             return Result<CategoryDTO>.ResultSuccess(CategoryDTO);
         }

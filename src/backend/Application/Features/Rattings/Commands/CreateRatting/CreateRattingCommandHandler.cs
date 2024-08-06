@@ -39,7 +39,7 @@ namespace Application.Features.Rattings.Commands.CreateRatting
                 ,
                 ProductId = request.ProductId
             });
-            await _unitOfWork.Commit();
+            await _unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

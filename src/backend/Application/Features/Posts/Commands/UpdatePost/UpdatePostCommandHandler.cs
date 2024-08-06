@@ -61,7 +61,7 @@ namespace Application.Features.Posts.Commands.UpdatePost
             post.Description = request.Description;
             post.Title = request.Title;
             post.Published = request.Published;
-            await _unitOfWork.Commit();
+            await _unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

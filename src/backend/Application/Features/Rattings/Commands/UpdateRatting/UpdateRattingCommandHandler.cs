@@ -34,7 +34,7 @@ namespace Application.Features.Rattings.Commands.UpdateRatting
             ratting.Rate = request.Rate;
             ratting.ProductId = request.ProductId;
             ratting.Description = request.Description;
-            await _unitOfWork.Commit();
+            await _unitOfWork.CommitAsync();
             var rattingDTO = _mapper.Map<RattingDTO>(ratting);
             return Result<RattingDTO>.ResultSuccess(rattingDTO);
         }

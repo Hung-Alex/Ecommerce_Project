@@ -55,7 +55,7 @@ namespace Application.Features.Products.Commands.AddProductImage
                     itemOrder++;
                 }
             }
-            await _unitOfWork.Commit();
+            await _unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

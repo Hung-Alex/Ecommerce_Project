@@ -91,7 +91,7 @@ namespace Application.Features.Products.Commands.CreateProduct
                 await Task.WhenAll(imageTasks);
             }
 
-            await unitOfWork.Commit();
+            await unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

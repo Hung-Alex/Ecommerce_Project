@@ -36,7 +36,7 @@ namespace Application.Features.Carts.Commands.AddItem
             }
             var item = cart.CreateCartItem(request.ProductId, request.Quantity);
             cart.AddItems(item);
-            await unitOfWork.Commit();
+            await unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

@@ -53,11 +53,11 @@ namespace Infrastructure.Services.GoogleAuthen
                         LastName = payload.FamilyName,
                     };
                     repoUserDomain.Add(newUserDomain);
-                    var newUserInfo = new ApplicationUser() { UserName="goole"+newUserDomain.Id.ToString(), Email = payload.Email, UserId = newUserDomain.Id };
+                    var newUserInfo = new ApplicationUser() { UserName="google"+newUserDomain.Id.ToString(), Email = payload.Email, UserId = newUserDomain.Id };
                     var newUserApplication = await _userManager.CreateAsync(newUserInfo);
                     var repoCart = _unitOfWork.GetRepository<Cart>();
                     repoCart.Add(new Cart() { UserId = newUserDomain.Id });
-                    await _unitOfWork.Commit();
+                    await _unitOfWork.CommitAsync();
                     transactionScope.Complete();
                     return Result<Guid>.ResultSuccess(newUserInfo.Id);
                 }

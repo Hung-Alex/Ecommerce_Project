@@ -47,7 +47,7 @@ namespace Application.Features.Products.Commands.UpdateProduct
                 product.Discount = request.Discount;
 
             }
-            await unitOfWork.Commit();
+            await unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

@@ -45,7 +45,7 @@ namespace Application.Features.Slides.Commands.UpdateSlide
             slide.Title = request.Title;
             slide.Description = request.Description;
             slide.IsActive = request.IsActive;
-            await _unitOfWork.Commit();
+            await _unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

@@ -29,7 +29,7 @@ namespace Application.Features.Comments.Commands
                 return Result<bool>.ResultFailures(ErrorConstants.NotFoundWithId(request.PostId));
             }
             repoComment.Add(new Comment { PostId = request.PostId, Content = request.Content });
-            await unitOfWork.Commit();
+            await unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }
