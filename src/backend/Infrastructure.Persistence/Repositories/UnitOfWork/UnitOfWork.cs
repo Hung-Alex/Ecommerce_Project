@@ -23,7 +23,6 @@ namespace Infrastructure.Persistence.Repositories.UnitOfWork
         {
             try
             {
-                ChangeModified();
                 await _dbContext.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -35,55 +34,7 @@ namespace Infrastructure.Persistence.Repositories.UnitOfWork
         {
             _dbContext?.Dispose();
         }
-        private void ChangeModified()
-        {
-            var user = _currentUserService.GetCurrentUser().Data?.Id;
-            var entries = _dbContext.ChangeTracker
-        .Entries()
-        .Where(e =>
-                (e.Entity is IDatedModification
-                || e.Entity is ICreatedAndUpdatedBy
-                || e.Entity is ISoftDelete)
-                &&
-                (e.State == EntityState.Added
-                || e.State == EntityState.Modified
-                || e.State == EntityState.Deleted
-                ));
-
-            foreach (var entityEntry in entries)
-            {
-                var datedEntity = entityEntry.Entity as IDatedModification;
-                var createdUpdatedEntity = entityEntry.Entity as ICreatedAndUpdatedBy;
-                var deleteEntity = entityEntry.Entity as ISoftDelete;
-                if (datedEntity != null)
-                {
-                    datedEntity.UpdatedAt = DateTimeOffset.Now;
-                    if (entityEntry.State == EntityState.Added)
-                    {
-                        datedEntity.CreatedAt = DateTimeOffset.Now;
-                    }
-                }
-                if (deleteEntity != null)
-                {
-
-                    if (entityEntry.State == EntityState.Deleted)
-                    {
-                        entityEntry.State = EntityState.Modified;
-                        deleteEntity.IsDeleted = true;
-                        deleteEntity.DeletedAt = DateTimeOffset.Now;
-                    }
-                }
-
-                if (createdUpdatedEntity != null)
-                {
-                    createdUpdatedEntity.UpdatedByUserId = user;
-                    if (entityEntry.State == EntityState.Added)
-                    {
-                        createdUpdatedEntity.CreatedByUserId = user;
-                    }
-                }
-            }
-        }
+        
         public IRepository<T> GetRepository<T>() where T : BaseEntity, IAggregateRoot
         {
             return _serviceProvider.GetService<IRepository<T>>() ?? throw new ArgumentNullException();
