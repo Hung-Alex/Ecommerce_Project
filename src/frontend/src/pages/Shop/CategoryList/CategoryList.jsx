@@ -14,7 +14,7 @@ const CategoryList = () => {
       <ul className="text-sm">
         {categories.map((category) => (
           <li key={category.urlSlug} className="border-b-2 py-1 pl-1">
-            <Link to={`/category/${category.urlSlug}`}>{category.urlSlug}</Link>
+            <Link to={`/category/${category.urlSlug}`}>{category.name}</Link>
           </li>
         ))}
       </ul>
