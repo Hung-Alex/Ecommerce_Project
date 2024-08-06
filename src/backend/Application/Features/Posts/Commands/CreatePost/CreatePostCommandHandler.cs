@@ -60,7 +60,7 @@ namespace Application.Features.Posts.Commands.CreatePost
                 Published = request.Published,
                 ViewCount = 0
             });
-            await _unitOfWork.Commit();
+            await _unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

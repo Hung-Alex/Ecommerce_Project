@@ -24,7 +24,7 @@ namespace Application.Features.Carts.Commands.DeleteItem
 
             }
             cart.RemoveItem(request.CarItemId);
-            await unitOfWork.Commit();
+            await unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

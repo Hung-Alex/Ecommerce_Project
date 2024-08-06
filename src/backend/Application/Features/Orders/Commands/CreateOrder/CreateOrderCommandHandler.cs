@@ -75,7 +75,7 @@ namespace Application.Features.Orders.Commands.CreateOrder
             cart.CartItems.Clear();
             cartRepository.Update(cart);
             // Commit transaction
-            await unitOfWork.Commit(); // Assuming CommitAsync is used
+            await unitOfWork.CommitAsync(); // Assuming CommitAsync is used
 
             // Handle payment method
             if (request.PaymentMethod == PaymentMethod.VnPay)

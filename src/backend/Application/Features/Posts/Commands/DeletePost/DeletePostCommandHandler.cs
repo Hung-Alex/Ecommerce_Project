@@ -22,7 +22,7 @@ namespace Application.Features.Posts.Commands.DeletePost
                 return Result<bool>.ResultFailures(ErrorConstants.NotFoundWithId(request.Id));
             }
             repo.Delete(post);
-            await _unitOfWork.Commit();
+            await _unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

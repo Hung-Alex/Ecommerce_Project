@@ -23,7 +23,7 @@ namespace Application.Features.Orders.Commands.CancelOrder
             order.StatusId = cancelStatus.Id;
             order.CancelReason = request.CancelReason;
             repoOrder.Update(order);
-            await unitOfWork.Commit();
+            await unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

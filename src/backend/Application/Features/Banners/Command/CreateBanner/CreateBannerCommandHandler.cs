@@ -37,7 +37,7 @@ namespace Application.Features.Banners.Commands.CreateBanner
                 throw new UploadImageException(uploadResult.Errors.Select(x => x.Description).ToList());
             }
             repoBanner.Add(new Banner() { Title = request.Title, Description = request.Description, LogoImageUrl = uploadResult.Data.PublicId ,IsVisible=request.Visible});
-            await _unitOfWork.Commit();
+            await _unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

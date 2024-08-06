@@ -29,7 +29,7 @@ namespace Application.Features.Authen.Commands.Register
                     repoUser.Add(userDomain);
                     var userId = await _identityService.CreateUserAsync(request.Email, request.Password, request.userName, userDomain.Id);
                     repoCart.Add(new Cart() { UserId = userDomain.Id });
-                    await _unitOfWork.Commit();
+                    await _unitOfWork.CommitAsync();
                     transactionScope.Complete();
                     return Result<Guid>.ResultSuccess(userId);
                 }

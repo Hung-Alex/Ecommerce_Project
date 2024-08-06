@@ -43,7 +43,7 @@ namespace Application.Features.Slides.Commands.CreateSlide
             slide.Image = uploadResult.Data.PublicId;
             #endregion
             repoSlide.Add(slide);
-            await _unitOfWork.Commit();
+            await _unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

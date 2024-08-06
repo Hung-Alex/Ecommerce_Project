@@ -22,7 +22,7 @@ namespace Application.Features.Brands.Commands.DeleteBrand
                 return Result<bool>.ResultFailures(ErrorConstants.NotFoundWithId(request.Id));
             }
             repo.Delete(brand);
-            await _unitOfWork.Commit();
+            await _unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

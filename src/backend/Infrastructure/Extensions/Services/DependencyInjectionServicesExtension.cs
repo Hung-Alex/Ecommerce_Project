@@ -103,7 +103,7 @@ namespace Infrastructure.Extensions.Services
             services.AddCors(options => options.AddPolicy("AllowAll",
                 policies
                 => policies
-                .WithOrigins("http://localhost:3000", "https://d5d4-2405-4802-a1f1-8c30-500c-ec57-ce2b-ba62.ngrok-free.app")
+                .WithOrigins("http://localhost:3000", "https://192.168.0.100:3000", "https://e253-2405-4802-a1d4-4680-d156-a0ff-5d1e-1134.ngrok-free.app")
                 .AllowCredentials()
                 .SetIsOriginAllowedToAllowWildcardSubdomains()
                 .AllowAnyHeader()

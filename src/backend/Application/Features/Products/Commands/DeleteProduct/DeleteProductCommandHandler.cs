@@ -22,7 +22,7 @@ namespace Application.Features.Products.Commands.DeleteProduct
                 return Result<bool>.ResultFailures(ErrorConstants.NotFoundWithId(request.Id));
             }
             repoProduct.Delete(product);
-            await _unitOfWork.Commit();
+            await _unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

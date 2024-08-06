@@ -41,7 +41,7 @@ namespace Application.Features.Payments.Commands
             }
             repoPayment.Update(payment);
             repoOrder.Update(order);
-            await unitOfWork.Commit();
+            await unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }

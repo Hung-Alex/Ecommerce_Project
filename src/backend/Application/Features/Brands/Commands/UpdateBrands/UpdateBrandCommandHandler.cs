@@ -60,7 +60,7 @@ namespace Application.Features.Brands.Commands.UpdateBrand
             brand.UrlSlug = request.UrlSlug;
             brand.Name = request.Name;
             brand.Description = request.Description;
-            await _unitOfWork.Commit();
+            await _unitOfWork.CommitAsync();
             var brandDTO = _mapper.Map<BrandDTO>(brand);
             return Result<BrandDTO>.ResultSuccess(brandDTO);
         }

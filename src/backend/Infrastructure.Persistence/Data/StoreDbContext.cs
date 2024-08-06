@@ -45,7 +45,6 @@ namespace Infrastructure.Persistence.Persistence.Data
         {
             base.OnModelCreating(builder);
             builder.ApplyConfigurationsFromAssembly(typeof(StoreDbContext).Assembly);
-
-        }
+        }      
     }
 }

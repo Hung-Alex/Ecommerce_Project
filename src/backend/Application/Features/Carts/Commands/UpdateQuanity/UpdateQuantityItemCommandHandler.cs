@@ -20,7 +20,7 @@ namespace Application.Features.Carts.Commands.UpdateQuanity
             }
             var repoProduct = unitOfWork.GetRepository<Product>();
             cart.UpdateQuantity(request.CartItemId, request.Quantity);
-            await unitOfWork.Commit();
+            await unitOfWork.CommitAsync();
             return Result<bool>.ResultSuccess(true);
         }
     }
