@@ -13,7 +13,7 @@ namespace Application.Features.Comments.Queries.GetCommentByPostId
         public async Task<Result<IEnumerable<CommentDTO>>> Handle(GetCommentByPostIdQuery request, CancellationToken cancellationToken)
         {
             var repo = unitOfWork.GetRepository<Comment>();
-            var specification = new GetCommentsByPostIdSpecification(request.Filter.ProductId);
+            var specification = new GetCommentsByPostIdSpecification(request.Filter);
             var comments =await repo.GetAllAsync(specification);
             var totalItems = await repo.CountAsync(specification);
             return new PagingResult<IEnumerable<CommentDTO>>(mapper.Map<IEnumerable<CommentDTO>>(comments), request.Filter.PageNumber, request.Filter.PageSize, totalItems);
