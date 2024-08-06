@@ -1,6 +1,5 @@
 ﻿using Application.Common.Interface;
 using Application.Features.Carts.Specification;
-using Application.Features.Products.Queries.GetById;
 using Application.Features.Products.Specification;
 using Domain.Constants;
 using Domain.Entities.Carts;
@@ -31,6 +30,10 @@ namespace Application.Features.Carts.Commands.AddItem
             var repoProduct = unitOfWork.GetRepository<Product>();
             var product = await repoProduct.FindOneAsync(new GetProductWithVariantsSpecification(request.ProductId));
             if (product is null) { return Result<bool>.ResultFailures(ErrorConstants.CartError.CartNotFound); }
+            if (product.IsStock is true)
+            {
+                return Result<bool>.ResultFailures(ErrorConstants.CartError.ProductOutOfStock);
+            }
             var item = cart.CreateCartItem(request.ProductId, request.Quantity);
             cart.AddItems(item);
             await unitOfWork.Commit();
