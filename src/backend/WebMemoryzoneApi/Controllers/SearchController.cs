@@ -14,7 +14,6 @@ namespace WebMemoryzoneApi.Controllers
         {
             _mediator = mediator;
         }
-
         [HttpGet]
         public async Task<IActionResult> Search([FromQuery] SearchFilter searchFilter)
         {

@@ -6,10 +6,13 @@ using Application.Features.Products.Commands.UpdateProduct;
 using Application.Features.Products.Queries.Get;
 using Application.Features.Products.Queries.GetById;
 using Application.Features.Products.Queries.GetByUrlSlug;
+using Domain.Constants;
+using Domain.Shared;
+using Infrastructure.Services.Auth.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using WebMemoryzoneApi.Filters;
 using static Domain.Enums.PermissionEnum;
 
 namespace WebMemoryzoneApi.Controllers
@@ -25,6 +28,7 @@ namespace WebMemoryzoneApi.Controllers
             _mediator = mediator;
         }
         [HttpGet("{id:Guid}")]
+        [HasPermission(PermissionOperator.Or, [Permission.ReadProduct, Permission.UpdateProduct])]
         public async Task<ActionResult> GetById(Guid id)
         {
             var result = await _mediator.Send(new GetProductByIdQuery(id));
@@ -32,25 +36,26 @@ namespace WebMemoryzoneApi.Controllers
             return Ok(result);
         }
         [HttpGet]
+        [HasPermission(Permission.ReadProduct)]
         public async Task<ActionResult> GetProducts([FromQuery] ProductFilter productFilter)
         {
             var result = await _mediator.Send(new GetListProductQuery(productFilter));
             return Ok(result);
         }
         [HttpPut("{id:Guid}")]
+        [HasPermission(Permission.UpdateProduct)]
         public async Task<ActionResult> UpadateProduct(Guid id, [FromBody] UpdateProductCommand command)
         {
             if (id != command.Id)
             {
-                return BadRequest();
+                return BadRequest(Result<UpdateProductCommand>.ResultFailures(ErrorConstants.InvalidId));
             }
             var result = await _mediator.Send(command);
             if (result.IsSuccess is false) return BadRequest(result);
             return Ok(result);
         }
-
-
         [HttpDelete("{id:Guid}")]
+        [HasPermission(Permission.DeleteProduct)]
         public async Task<ActionResult> DeleteProduct(Guid id)
         {
             var result = await _mediator.Send(new DeleteProductCommand(id));
@@ -65,9 +70,9 @@ namespace WebMemoryzoneApi.Controllers
             if (result.IsSuccess is false) return NotFound(result);
             return Ok(result);
         }
-
-        [Authorize]
         [HttpPost]
+        [FileValidatorFilter<CreateProductCommand>([".png", ".jpg"], 1920 * 1080)]
+        [HasPermission(Permission.CreateProduct)]
         public async Task<IActionResult> AddProduct([FromForm] CreateProductCommand command)
         {
             if (!ModelState.IsValid)
@@ -79,6 +84,8 @@ namespace WebMemoryzoneApi.Controllers
             return Ok(result);
         }
         [HttpPost("add-image")]
+        [FileValidatorFilter<AddProductImageCommand>([".png", ".jpg"], 1920 * 1080)]
+        [HasPermission(Permission.UploadProductImage)]
         public async Task<IActionResult> AddProductImage([FromForm] AddProductImageCommand command)
         {
             var result = await _mediator.Send(command);

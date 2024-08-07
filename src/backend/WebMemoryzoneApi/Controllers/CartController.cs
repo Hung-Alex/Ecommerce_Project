@@ -45,7 +45,7 @@ namespace WebMemoryzoneApi.Controllers
             return Ok(result);
         }
         [HttpPut]
-        public async Task<ActionResult> UpdateQuantiy([FromBody] UpdateQuantityItemRequest updateQuantity)
+        public async Task<ActionResult> UpdateQuantity([FromBody] UpdateQuantityItemRequest updateQuantity)
         {
             var claimUser = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimUser.UserId);
             var result = await _mediator.Send(new UpdateQuantityItemCommand(Guid.Parse(claimUser.Value), updateQuantity.CartItemId, updateQuantity.quantity));

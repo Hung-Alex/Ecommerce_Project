@@ -6,9 +6,11 @@ using Application.Features.Orders.Commands.CreateOrder;
 using Application.Features.Orders.Queries.GetOrders;
 using Application.Features.Orders.Queries.GetOrderUser;
 using Domain.Constants;
+using Infrastructure.Services.Auth.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Domain.Enums.PermissionEnum;
 
 namespace WebMemoryzoneApi.Controllers
 {
@@ -40,6 +42,7 @@ namespace WebMemoryzoneApi.Controllers
             return Ok(result);
         }
         [HttpGet]
+        [HasPermission(Permission.ReadOrder)]
         public async Task<IActionResult> GetOrders([FromQuery] OrderFilter orderFilter)
         {
             var result = await _mediator.Send(new GetOrdersQuery(orderFilter));
@@ -71,6 +74,7 @@ namespace WebMemoryzoneApi.Controllers
             return Ok(result);
         }
         [HttpPost("change-status-order")]
+        [HasPermission(Permission.ChangeOrderStatus)]
         public async Task<IActionResult> ChangeStatusOrder([FromBody] ChangeStatusOrderCommand command)
         {
             var result = await _mediator.Send(command);

@@ -36,6 +36,6 @@ namespace WebMemoryzoneApi.Controllers
                 return BadRequest(result);
             }
             return Ok(result);
-        }   
+        }
     }
 }

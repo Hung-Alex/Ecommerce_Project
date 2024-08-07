@@ -6,10 +6,14 @@ using Application.Features.Posts.Queries.Get;
 using Application.Features.Posts.Queries.GetById;
 using Application.Features.Posts.Queries.GetByUrlSlug;
 using Application.Features.Posts.Queries.GetPostPublished;
+using Domain.Constants;
+using Domain.Shared;
+using Infrastructure.Services.Auth.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebMemoryzoneApi.Filters;
+using static Domain.Enums.PermissionEnum;
 
 namespace WebMemoryzoneApi.Controllers
 {
@@ -24,14 +28,15 @@ namespace WebMemoryzoneApi.Controllers
             _mediator = mediator;
         }
         [HttpGet("{id:Guid}")]
+        [HasPermission(PermissionOperator.Or, [Permission.ReadPost, Permission.UpdatePost])]
         public async Task<ActionResult> GetById(Guid id)
         {
             var result = await _mediator.Send(new GetPostByIdQuery(id));
             if (!result.IsSuccess) return NotFound(result);
             return Ok(result);
         }
-        [AllowAnonymous]
         [HttpGet]
+        [HasPermission(Permission.ReadPost)]
         public async Task<ActionResult> GetPosts([FromQuery] PostFilter postFilter)
         {
             var result = await _mediator.Send(new GetListPostQuery(postFilter));
@@ -46,17 +51,19 @@ namespace WebMemoryzoneApi.Controllers
             return Ok(result);
         }
         [HttpPut("{id:Guid}")]
+        [HasPermission(Permission.UpdatePost)]
         public async Task<ActionResult> UpadatePost(Guid id, [FromForm] UpdatePostCommand command)
         {
             if (id != command.Id)
             {
-                return BadRequest();
+                return BadRequest(Result<UpdatePostCommand>.ResultFailures(ErrorConstants.InvalidId));
             }
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result);
             return Ok(result);
         }
         [HttpDelete("{id:Guid}")]
+        [HasPermission(Permission.DeletePost)]
         public async Task<ActionResult> DeletePost(Guid id)
         {
             var result = await _mediator.Send(new DeletePostCommand(id));
@@ -73,6 +80,7 @@ namespace WebMemoryzoneApi.Controllers
         }
         [HttpPost]
         [FileValidatorFilter<CreatePostCommand>([".png", ".jpg"], 1024 * 1024)]
+        [HasPermission(Permission.CreatePost)]
         public async Task<IActionResult> AddPost([FromForm] CreatePostCommand command)
         {
             var result = await _mediator.Send(command);

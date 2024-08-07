@@ -1,4 +1,5 @@
 ﻿using Application.DTOs.Filters.Users;
+using Application.Features.Category.Commands.UpdateCategory;
 using Application.Features.Users.Commands.ChangePassword;
 using Application.Features.Users.Commands.CreateUser;
 using Application.Features.Users.Commands.LockAccount;
@@ -6,9 +7,13 @@ using Application.Features.Users.Commands.UpdateImageProfile;
 using Application.Features.Users.Commands.UpdateUser;
 using Application.Features.Users.Queries.GetUserById;
 using Application.Features.Users.Queries.GetUsers;
+using Domain.Constants;
+using Domain.Shared;
+using Infrastructure.Services.Auth.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
+using static Domain.Enums.PermissionEnum;
 
 namespace WebMemoryzoneApi.Controllers
 {
@@ -22,6 +27,7 @@ namespace WebMemoryzoneApi.Controllers
             _mediator = mediator;
         }
         [HttpGet("{id:Guid}")]
+        [HasPermission(PermissionOperator.Or, [Permission.ReadUser, Permission.UpdateUser])]
         public async Task<IActionResult> GetById(Guid id)
         {
             var result = await _mediator.Send(new GetUserByIdQuery(id));
@@ -33,12 +39,14 @@ namespace WebMemoryzoneApi.Controllers
 
         }
         [HttpGet]
+        [HasPermission(Permission.ReadUser)]
         public async Task<IActionResult> GetUsers([FromQuery] UserFilter filter)
         {
             var result = await _mediator.Send(new GetUsersQuery(filter));
             return Ok(result);
         }
         [HttpPost]
+        [HasPermission(Permission.CreateUser)]
         public async Task<IActionResult> CreateUser([FromForm] CreateUserCommand command)
         {
             var result = await _mediator.Send(command);
@@ -53,7 +61,7 @@ namespace WebMemoryzoneApi.Controllers
         {
             if (id != command.UserId)
             {
-                return BadRequest();
+                return BadRequest(Result<UpdateImageProfileCommand>.ResultFailures(ErrorConstants.InvalidId));
             }
             var result = await _mediator.Send(command);
             if (result.IsSuccess is false)
@@ -77,7 +85,7 @@ namespace WebMemoryzoneApi.Controllers
         {
             if (id != command.UserId)
             {
-                return BadRequest();
+                return BadRequest(Result<UpdateUserCommand>.ResultFailures(ErrorConstants.InvalidId));
             }
             var result = await _mediator.Send(command);
             if (result.IsSuccess is false)
@@ -91,7 +99,7 @@ namespace WebMemoryzoneApi.Controllers
         {
             if (id != command.UserId)
             {
-                return BadRequest();
+                return BadRequest(Result<ChangePasswordCommand>.ResultFailures(ErrorConstants.InvalidId));
             }
             var result = await _mediator.Send(command);
             if (result.IsSuccess is false)

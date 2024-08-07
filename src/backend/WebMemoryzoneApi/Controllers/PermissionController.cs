@@ -1,6 +1,8 @@
 ﻿using Application.Features.Permissions.Queries.GetPermissions;
+using Infrastructure.Services.Auth.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using static Domain.Enums.PermissionEnum;
 
 namespace WebMemoryzoneApi.Controllers
 {
@@ -13,8 +15,8 @@ namespace WebMemoryzoneApi.Controllers
         {
             _mediator = mediator;
         }
-
         [HttpGet]
+        [HasPermission(Permission.ReadPermission)]
         public async Task<IActionResult> GetPermissions()
         {
             var result = await _mediator.Send(new GetPermissionsQuery());
