@@ -72,3 +72,37 @@ export const deleteNews = async (id) => {
 const toQueryString = (params) => {
     return new URLSearchParams(params).toString();
 };
+
+/**
+ * Fetch comments for a specific post.
+ * @param {number} postId - The ID of the post to fetch comments for.
+ * @param {number} page - The page number for pagination.
+ * @returns {Promise<Object>} - A promise that resolves to the response from the API.
+ */
+export const fetchComments = async (postId, page) => {
+    const payload = {
+        ProductId: postId,
+        PageSize: 5,
+        PageNumber: page,
+        SortColumn: 'createdAt',
+        SortBy: 'DESC'
+    };
+
+    const queryParams = new URLSearchParams(payload).toString();
+
+    return get_api(`/comments?${queryParams}`);
+};
+
+/**
+ * Post a new comment to a specific post.
+ * @param {number} postId - The ID of the post to add a comment to.
+ * @param {string} content - The content of the comment to be added.
+ * @returns {Promise<Object>} - A promise that resolves to the response from the API.
+ */
+export const postComment = async (postId, content) => {
+    return post_json(`/comments`, {
+        postId,
+        content
+    });
+};
+

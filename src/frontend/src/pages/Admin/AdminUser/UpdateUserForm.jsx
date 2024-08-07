@@ -79,11 +79,10 @@ const UpdateUserForm = ({ userId, updateUserData, onClose }) => {
             formData.append(`roles[${index}]`, roleId);
         });
 
-            const res = await updateUser(userId, formData);
-            if(res.isSuccess === true)
-            {
-                onClose();
-            }
+        const res = await updateUser(userId, formData);
+        if (res.isSuccess === true) {
+            onClose();
+        }
 
     };
 
@@ -104,8 +103,9 @@ const UpdateUserForm = ({ userId, updateUserData, onClose }) => {
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white border-t-2 border-[#7eb693] shadow-md rounded max-w-3xl w-full max-h-[85vh] overflow-auto">
-                <h3 className="text-xl p-3">Personal Information<br/>{userName}</h3>
-                    <UploadUserAvatar userId={userId} currentAvatar={currentAvatar} />
+                <div className='flex'>                <h3 className="text-xl p-3">Personal Information of</h3>
+                    <h3 className="text-xl py-3 font-semibold">{userName}</h3></div>
+                <UploadUserAvatar userId={userId} currentAvatar={currentAvatar} />
                 {/* User section */}
                 <form onSubmit={handleSubmit}>
                     <div className="p-3 grid grid-cols-1 md:grid-cols-3 gap-4">

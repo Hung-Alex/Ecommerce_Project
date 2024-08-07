@@ -52,7 +52,7 @@ const AddUserForm = ({ user, addUser, onClose }) => {
 
         const res = await createUser(formData);
         if (res?.isSuccess) {
-            // onClose();
+            onClose();
         }
     };
 

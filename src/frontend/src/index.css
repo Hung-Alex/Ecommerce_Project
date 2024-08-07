@@ -36,6 +36,16 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
 
+.ql-container {
+  height: 100% !important; /* Ensure the Quill editor takes full height */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.ql-editor {
+  height: 100% !important; /* Ensure the editor content area takes full height */
+  overflow-y: auto; /* Enable vertical scrolling within the editor */
+}
+
 /*
   color:#274C5B
   color:#7EB693

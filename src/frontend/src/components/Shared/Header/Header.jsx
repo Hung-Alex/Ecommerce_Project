@@ -37,7 +37,7 @@ const Header = () => {
   return (
     <header className={`flex flex-wrap items-center justify-between py-4 px-6 sm:px-12 fixed w-full top-0 bg-[#EFF6F1] drop-shadow z-50 header ${isScrolled ? 'scrolled' : ''}`}>
       <div className="flex items-center justify-between w-full sm:w-auto">
-          <button onClick={toggleMobileMenu} className="text-gray-600 sm:hidden">
+          <button onClick={toggleMobileMenu} className="text-gray-600 md:hidden p-4">
             ☰
           </button>
         <Link
@@ -77,7 +77,7 @@ const Header = () => {
         </div>
       </div>
 
-      <nav className={`hidden sm:flex items-center gap-12`}>
+      <nav className={`hidden md:flex items-center gap-12`}>
         <NavList />
       </nav>
 
@@ -114,7 +114,7 @@ const Header = () => {
 
       {/* Mobile Dropdown Menu */}
       {isMobileMenuOpen && (
-        <div className="2xl:hidden w-full mt-4">
+        <div className="md:hidden w-full mt-4">
           <NavList />
         </div>
       )}
