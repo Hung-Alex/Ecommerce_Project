@@ -93,5 +93,6 @@ namespace Domain.Constants
         public static Error NotFound(string url) => new Error("NotFound", $"Url slug is existed {url}");
         public static Error NotFoundWithId(Guid id) => new Error("NotFound", $"Not Found With Id {id}");
         public static Error UrlSlugInvalid => new Error("Url Slug Invalid", "Url slug is invalid");
+        public static Error InvalidId => new Error("Invalid Id", "Id is invalid");
     }
 }

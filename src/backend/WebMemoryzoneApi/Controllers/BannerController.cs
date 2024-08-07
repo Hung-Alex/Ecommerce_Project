@@ -5,15 +5,17 @@ using Application.Features.Banners.Commands.UpdateBanner;
 using Application.Features.Banners.Queries.Get;
 using Application.Features.Banners.Queries.GetBannerIsVisiable;
 using Application.Features.Banners.Queries.GetById;
+using Domain.Constants;
+using Domain.Shared;
 using Infrastructure.Services.Auth.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebMemoryzoneApi.Filters;
+using static Domain.Enums.PermissionEnum;
 
 namespace WebMemoryzoneApi.Controllers
 {
-
     [Authorize]
     [ApiController]
     [Route("api/banners")]
@@ -25,21 +27,22 @@ namespace WebMemoryzoneApi.Controllers
             _mediator = mediator;
         }
         [HttpGet("{id:Guid}")]
-        [HasPermission(Domain.Enums.PermissionEnum.Permission.CreateBanner)]
+        [HasPermission(PermissionOperator.Or, [Permission.UpdateBanner, Permission.ReadBanner])]
         public async Task<ActionResult> GetById(Guid id)
         {
             var result = await _mediator.Send(new GetBannerByIdQuery(id));
             if (!result.IsSuccess) return NotFound(result);
             return Ok(result);
-        }      
+        }
         [HttpGet]
+        [HasPermission(Permission.ReadBanner)]
         public async Task<ActionResult> GetBanners([FromQuery] BannerFilter bannerFilter)
         {
             var result = await _mediator.Send(new GetListBannerQuery(bannerFilter));
             return Ok(result);
         }
         [AllowAnonymous]
-        [HttpGet("isvisable")]
+        [HttpGet("is-visable")]
         public async Task<IActionResult> GetBannerIsVisiable()
         {
             var result = await _mediator.Send(new GetBannerIsVisiableQuery());
@@ -47,17 +50,19 @@ namespace WebMemoryzoneApi.Controllers
         }
         [HttpPut("{id:Guid}")]
         [FileValidatorFilter<UpdateBannerCommand>([".png", ".jpg"], 1024 * 1024)]
+        [HasPermission(Permission.UpdateBanner)]
         public async Task<ActionResult> UpadateBanner(Guid id, [FromForm] UpdateBannerCommand command)
         {
             if (id != command.Id)
             {
-                return BadRequest();
+                return BadRequest(Result<UpdateBannerCommand>.ResultFailures(ErrorConstants.InvalidId));
             }
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result);
             return Ok(result);
         }
         [HttpDelete("{id:Guid}")]
+        [HasPermission(Permission.DeleteBanner)]
         public async Task<ActionResult> DeleteBanner(Guid id)
         {
             var result = await _mediator.Send(new DeleteBannerCommand(id));
@@ -66,6 +71,7 @@ namespace WebMemoryzoneApi.Controllers
         }
         [HttpPost]
         [FileValidatorFilter<CreateBannerCommand>([".png", ".jpg"], 1024 * 1024)]
+        [HasPermission(Permission.CreateBanner)]
         public async Task<IActionResult> AddBanner([FromForm] CreateBannerCommand command)
         {
             var result = await _mediator.Send(command);
