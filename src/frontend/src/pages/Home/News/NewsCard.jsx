@@ -3,7 +3,7 @@ import Button from "../../../components/UI/Buttons/Button";
 import { Link } from "react-router-dom";
 
 const NewsCard = ({ newsData }) => {
-  const { image, title, createdAt, author, urlSlug, shortDescription } = newsData;
+  const { image, title, createdAt, createdByName, urlSlug, shortDescription } = newsData;
   console.log(newsData);
 
   const formattedDate = new Date(createdAt).toLocaleDateString('en-US', {
@@ -16,7 +16,7 @@ const NewsCard = ({ newsData }) => {
   const month = formattedDate[0];
 
   return (
-    <div className="relative rounded-xl w-full max-w-md bg-white pb-12  duration-200 md:max-w-lg lg:max-w-xl">
+    <div className="relative rounded-xl mx-auto p-2  w-full max-w-md bg-white pb-12  duration-200 md:max-w-lg lg:max-w-xl">
       <div className="overflow-hidden rounded-xl">
         <Link to={`/news/${urlSlug}`}>
           <figure className="relative">
@@ -29,7 +29,7 @@ const NewsCard = ({ newsData }) => {
         </Link>
       </div>
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white w-11/12 rounded-xl p-4 shadow-lg">
-        <p className="text-xs text-gray-500">By {author}</p>
+        <p className="text-xs text-gray-500">By {createdByName}</p>
         <h3 className="font-semibold text-md my-1 text-gray-800">{title}</h3>
         <p className="text-sm text-gray-600 mb-3 h-[80px] line-clamp-3">{shortDescription}</p>
         <Link to={`/news/${urlSlug}`}>

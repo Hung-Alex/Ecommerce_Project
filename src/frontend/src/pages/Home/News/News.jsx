@@ -54,10 +54,10 @@ const News = () => {
 
   return (
     <div className="my-24 flex flex-col">
-      <div className="flex justify-between items-center mx-[150px]">
+      <div className="flex justify-between items-center mx-2 md:mx-[150px]">
         <div>
           <p className="font-[Yellowtail] text-[#68A47F] text-2xl">News</p>
-          <h2 className="text-[#274c5b] text-4xl font-bold my-1">
+          <h2 className="text-[#274c5b] text-xl md:text-4xl font-bold my-1">
             Discover weekly content about <br /> organic food, & more
           </h2>
         </div>
