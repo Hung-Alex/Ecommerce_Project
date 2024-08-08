@@ -3,6 +3,7 @@ import NewsSection from './NewsSection';
 import NewsBanner from './NewsBanner';
 
 import { fetchNewsPublished } from '../../api';
+import Banner from './Banner';
 
 const News = () => {
   const [newsData, setNewsData] = useState([]);
@@ -26,6 +27,7 @@ const News = () => {
 
   return (
     <div>
+      <Banner />
       <NewsBanner newsData={newsData} />
       <NewsSection newsData={newsData} />
     </div>
