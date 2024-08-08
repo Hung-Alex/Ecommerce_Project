@@ -2,9 +2,25 @@ import { BsArrowRightShort } from "react-icons/bs";
 import Button from "../../../components/UI/Buttons/Button";
 import { Link } from "react-router-dom";
 
+/**
+ * NewsCard Component
+ *
+ * This component displays a news card with an image, date, title, short description, and a link to view more news.
+ * It uses the `newsData` prop to populate the card with relevant information.
+ *
+ * @param {Object} props - Component props.
+ * @param {Object} props.newsData - Data object containing news details.
+ * @param {string} props.newsData.image - URL of the news image.
+ * @param {string} props.newsData.title - Title of the news article.
+ * @param {string} props.newsData.createdAt - Date the news article was created.
+ * @param {string} props.newsData.createdByName - Name of the author of the news article.
+ * @param {string} props.newsData.urlSlug - URL slug for routing to the full news article.
+ * @param {string} props.newsData.shortDescription - Short description of the news article.
+ *
+ * @returns {JSX.Element} The rendered news card component.
+ */
 const NewsCard = ({ newsData }) => {
   const { image, title, createdAt, createdByName, urlSlug, shortDescription } = newsData;
-  console.log(newsData);
 
   const formattedDate = new Date(createdAt).toLocaleDateString('en-US', {
     day: '2-digit',
