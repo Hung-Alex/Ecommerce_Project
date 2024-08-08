@@ -1,4 +1,5 @@
 import { post_json, post_form, put_json, put_form, get_api, delete_api } from './methods.js';
+import { toQueryString } from '../utils/queryStringUtils.js';
 
 /**
  * Fetch all news data.
@@ -62,15 +63,6 @@ export const createNews = async (formData) => {
  */
 export const deleteNews = async (id) => {
     return delete_api(`/posts/${id}`);
-};
-
-/**
- * Convert an object to a query string.
- * @param {Object} params - The object to convert.
- * @returns {string} - The query string.
- */
-const toQueryString = (params) => {
-    return new URLSearchParams(params).toString();
 };
 
 /**

@@ -15,6 +15,7 @@ import Checkout from "../pages/Order/Checkout";
 import News from "../pages/News/News";
 import NewsDetail from "../pages/News/NewsDetail";
 import OrderSuccess from "../pages/Order/OrderSuccess";
+import Error from "../pages/Error/Error";
 
 // Import các trang của bạn
 import AdminProducts from "../pages/Admin/AdminProducts/AdminProducts";
@@ -39,7 +40,8 @@ const routes = createBrowserRouter([
     children: [
       { path: '', element: <HomePage /> },
       { path: '/about', element: <AboutPage /> },
-      { path: '/category/:name', element: <ShopPage /> },
+      { path: '/category/:slug', element: <ShopPage /> },
+      { path: '/category/:slug/:name', element: <ShopPage /> },
       { path: '/news', element: <News /> },
       { path: '/news/:slug', element: <NewsDetail /> },
       { path: '/products/:slug', element: <Product /> },

@@ -20,9 +20,11 @@ const Card = ({ item }) => {
         <div className="mt-2 flex justify-between">
           <p>
             <span>
-              <strike className="text-[#B8B8B8] text-base font-normal">
-                $20.00
-              </strike>
+              {item?.oldPrice && (
+                <strike className="text-[#B8B8B8] text-base font-normal">
+                  ${item.oldPrice}
+                </strike>
+              )}
             </span>{" "}
             ${item?.price}
           </p>

@@ -14,6 +14,7 @@ const RelatedProducts = ({ slug }) => {
       delay: 1000, // 1 second delay
       disableOnInteraction: false,
     },
+    className: "pb-100",
     breakpoints: {
       // when window width is >= 640px
       250: {
@@ -39,11 +40,11 @@ const RelatedProducts = ({ slug }) => {
   return (
     <div className="my-24 mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
       <h3 className="text-2xl text-gray-600">Related Products</h3>
-        <ReusableSwiper options={swiperOptions}>
-          {product.map((item) => (
-            <Card key={item?.id} item={item} />
-          ))}
-        </ReusableSwiper>
+      <ReusableSwiper className="w-full max-w-7xl pb-[110px]" options={swiperOptions}>
+        {product.map((item) => (
+          <Card key={item?.id} item={item} />
+        ))}
+      </ReusableSwiper>
     </div>
   );
 };

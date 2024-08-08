@@ -2,6 +2,14 @@ import { post_json, post_form, put_json, put_form, get_api, delete_api } from '.
 
 /**
  * Fetch banner data by ID.
+ * @returns {Promise<Object>} - A promise that resolves with the banner data.
+ */
+export const fetchBannerData = async () => {
+    const data = await get_api(`/banners/is-visable`);
+    return data.data;
+};
+/**
+ * Fetch banner data by ID.
  * @param {string} bannerId - The ID of the banner to fetch.
  * @returns {Promise<Object>} - A promise that resolves with the banner data.
  */
