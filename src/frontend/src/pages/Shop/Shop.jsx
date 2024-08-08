@@ -6,7 +6,7 @@ import Card from "../../components/UI/Card/Card";
 import { fetchData } from "../../api";
 
 const ShopPage = () => {
-  const { slug , name } = useParams();
+  const { slug, name } = useParams();
   const [type, setType] = useState("default");
   const [sort, setSort] = useState("default");
   const [page, setPage] = useState(1);
@@ -31,8 +31,8 @@ const ShopPage = () => {
       try {
         const data = await fetchData(params);
         setProducts(data.data); // Assuming data.data.products contains the product list
-        setTotalProducts(data.data.total); // Assuming data.data.total contains the total number of products
-        setTotalPages(Math.ceil(data.data.total / pageSize)); // Calculate total pages
+        setTotalProducts(data.totalItems); // Assuming data.data.total contains the total number of products
+        setTotalPages(Math.ceil(data.totalPages / pageSize)); // Calculate total pages
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -62,9 +62,10 @@ const ShopPage = () => {
       <div className="sm:px-12">
         <ShopBanner name={slug} />
         <div className="grid grid-cols-12 items-start">
-          <div className="col-span-3 lg:col-span-2 hidden lg:block">
+          <div className="hidden lg:block lg:col-span-2 col-span-3">
             <CategoryList />
           </div>
+
           <div className="col-span-12 lg:col-span-10">
             <div className="flex justify-between items-center flex-wrap my-8">
               <div className="text-sm breadcrumbs mb-1 md:mb-0">
@@ -76,8 +77,9 @@ const ShopPage = () => {
                 </ul>
               </div>
               <div className="flex gap-6 items-center">
+                <p className="text-gray-500 text-sm mt-2">({totalProducts} item)</p>
                 <select
-                  className="outline-none border-b-2 pb-1"
+                  className="outline-none border-b-2 pb-1 rounded-lg p-2"
                   name="sort"
                   id="sort"
                   onChange={handleSortChange}
@@ -105,7 +107,7 @@ const ShopPage = () => {
                     >
                       Previous
                     </button>
-                    <span className="mx-4">Page {page} of {totalPages}</span>
+                    <span className="mx-4 mt-3">Page {page} of {totalPages}</span>
                     <button
                       className="btn"
                       onClick={() => handlePageChange(page + 1)}
