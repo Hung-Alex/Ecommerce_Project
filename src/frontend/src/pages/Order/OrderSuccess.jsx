@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import errorMessages from '../../config/errorMessages';
 
 const OrderSuccess = () => {
     const navigate = useNavigate();
@@ -24,9 +25,14 @@ const OrderSuccess = () => {
     };
 
     const paymentDetails = getQueryParams();
+    const responseCode = paymentDetails.responseCode;
 
-    // Check if VNPay or other bank-related parameters are present
-    const isVNPay = paymentDetails.transactionNo && paymentDetails.bankCode;
+    // Determine success and error message based on responseCode
+    const getErrorMessage = (code) => {
+        return errorMessages[code] || 'Unable to determine the transaction result.';
+    };
+
+    const isSuccess = responseCode === '00'; // '00' indicates success
 
     const handleBackToHome = () => {
         navigate('/'); // Navigate to the home page
@@ -35,31 +41,28 @@ const OrderSuccess = () => {
     return (
         <div className="min-h-screen bg-gray-100 p-6 flex items-center justify-center">
             <div className="max-w-md bg-white shadow-md rounded-lg p-6 text-center">
-                {isVNPay ? (
-                    <>
-                        <h1 className="text-2xl font-bold mb-4">Payment Successful!</h1>
-                        <p className="text-gray-700 mb-4">Thank you for your payment. Here are your transaction details:</p>
-                        <ul className="text-left">
-                            <li><strong>Amount:</strong> {paymentDetails.amount} VND</li>
-                            <li><strong>Bank Code:</strong> {paymentDetails.bankCode}</li>
-                            <li><strong>Bank Transaction No:</strong> {paymentDetails.bankTranNo}</li>
-                            <li><strong>Card Type:</strong> {paymentDetails.cardType}</li>
-                            <li><strong>Order Info:</strong> {paymentDetails.orderInfo}</li>
-                            <li><strong>Payment Date:</strong> {paymentDetails.payDate}</li>
-                            <li><strong>Transaction No:</strong> {paymentDetails.transactionNo}</li>
-                        </ul>
-                    </>
-                ) : (
-                    <>
-                        <h1 className="text-2xl font-bold mb-4">Order Successful!</h1>
-                        <p className="text-gray-700 mb-4">
-                            Thank you for your order. Your order has been confirmed and is being processed.
-                        </p>
-                    </>
+                <h1 className="text-2xl font-bold mb-4">
+                    {isSuccess ? 'Payment Successful!' : 'Payment Failed'}
+                </h1>
+                <p className="text-gray-700 mb-4">
+                    {isSuccess ?
+                        'Thank you for your payment. Here are your transaction details:' :
+                        `Unfortunately, your payment could not be processed. ${getErrorMessage(responseCode)}`}
+                </p>
+                {isSuccess && (
+                    <ul className="text-left">
+                        <li><strong>Amount:</strong> {paymentDetails.amount} VND</li>
+                        <li><strong>Bank Code:</strong> {paymentDetails.bankCode}</li>
+                        <li><strong>Bank Transaction No:</strong> {paymentDetails.bankTranNo}</li>
+                        <li><strong>Card Type:</strong> {paymentDetails.cardType}</li>
+                        <li><strong>Order Info:</strong> {paymentDetails.orderInfo}</li>
+                        <li><strong>Payment Date:</strong> {paymentDetails.payDate}</li>
+                        <li><strong>Transaction No:</strong> {paymentDetails.transactionNo}</li>
+                    </ul>
                 )}
                 <button
                     onClick={handleBackToHome}
-                    className="mt-4 w-full py-2 px-4 text-black font-semibold rounded-lg"
+                    className="mt-4 w-full py-2 px-4 text-black font-semibold rounded-lg border border-gray-300 bg-gray-200 hover:bg-gray-300"
                 >
                     Back to Home
                 </button>
