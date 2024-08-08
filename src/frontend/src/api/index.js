@@ -11,6 +11,7 @@ export * from './roles.js';
 export * from './users.js';
 export * from './images.js';
 export * from './order.js';
+export * from './getData.js';
 
 
 // export { default as axiosInstance } from './axiosInstance';
