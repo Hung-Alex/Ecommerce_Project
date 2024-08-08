@@ -5,9 +5,9 @@ using Infrastructure.ModelBinding;
 using Infrastructure.PaymentService.Extension;
 using Infrastructure.Persistence.Persistence.Data.Seed;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
 var configuration = builder.Configuration;
 builder.Services.AddControllers(options =>
@@ -22,17 +22,34 @@ builder.Services.AddVnpayExtension();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API", Version = "v1" });
-    // Register the operation filter
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Store API",
+        Version = "v1",
+        Description = "Oganic-Store",
+        TermsOfService = new Uri("https://example.com/terms"),
+        Contact = new OpenApiContact
+        {
+            Name = "ALex",
+            Email = "alexanderpham59@gmail.com",
+            Url = new Uri("https://twitter.com/jwalkner"),
+        },
+        License = new OpenApiLicense
+        {
+            Name = "Oganic API LICX",
+            Url = new Uri("https://example.com/license"),
+        }
+    });
+    // Set the comments path for the Swagger JSON and UI.
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
 });
 builder.Services.AddScoped<ISeed, SeedData>();
-
-
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
 var app = builder.Build();
-
 using (var scope = app.Services.CreateScope())
 {
     var seed = scope.ServiceProvider.GetService<ISeed>();
@@ -41,8 +58,16 @@ using (var scope = app.Services.CreateScope())
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwagger(u =>
+    {
+        u.RouteTemplate = "swagger/{documentName}/swagger.json";
+    });
+
+    app.UseSwaggerUI(c =>
+    {
+        c.RoutePrefix = "swagger";
+        c.SwaggerEndpoint(url: "/swagger/v1/swagger.json", name: "Your API Title or Version");
+    });
 }
 app.UseExceptionHandler();
 app.UseHttpsRedirection();

@@ -19,6 +19,11 @@ namespace WebMemoryzoneApi.Controllers
         {
             _mediator = mediator;
         }
+        /// <summary>
+        /// Deletes a favorite product from the wish list
+        /// </summary>
+        /// <param name="productId">The ID of the product to delete</param>
+        /// <returns>A 200 result if successful, otherwise a 404 result</returns>
         [HttpDelete("{productId:Guid}")]
         public async Task<ActionResult> DeleteFavouriteProduct(Guid productId)
         {
@@ -27,6 +32,11 @@ namespace WebMemoryzoneApi.Controllers
             if (!result.IsSuccess) return NotFound(result);
             return Ok();
         }
+        /// <summary>
+        /// Adds a product to the wish list
+        /// </summary>
+        /// <param name="productId">The ID of the product to add</param>
+        /// <returns>A 200 result if successful, otherwise a 400 result</returns>
         [HttpPost]
         public async Task<IActionResult> AddFavouriteProduct(Guid productId)
         {
@@ -35,6 +45,11 @@ namespace WebMemoryzoneApi.Controllers
             if (!result.IsSuccess) return BadRequest(result);
             return Ok(result);
         }
+        /// <summary>
+        /// Retrieves the wish list for the current user
+        /// </summary>
+        /// <param name="filter">The filter parameters for the wish list</param>
+        /// <returns>The wish list for the current user</returns>
         [HttpGet]
         public async Task<ActionResult> GetWishList([FromQuery] WishListFilter filter)
         {
