@@ -20,7 +20,7 @@ const ShopPage = () => {
     const fetchProducts = async () => {
       const params = {
         ProductName: name || "", // Include search query
-        UrlSlugCategory: slug === 'category' ? '' : name, // Check if slug is 'category'
+        UrlSlugCategory: slug === 'category' ? '' : slug, // Check if slug is 'category'
         UrlSlugBrand: '',
         PageSize: pageSize,
         PageNumber: page,
