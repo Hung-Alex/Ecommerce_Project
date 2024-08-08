@@ -15,6 +15,10 @@ namespace WebMemoryzoneApi.Controllers
         {
             _mediator = mediator;
         }
+        /// <summary>
+        /// Gets a list of permissions
+        /// </summary>
+        /// <returns>A list of permissions</returns>
         [HttpGet]
         [HasPermission(Permission.ReadPermission)]
         public async Task<IActionResult> GetPermissions()

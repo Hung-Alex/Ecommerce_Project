@@ -13,6 +13,11 @@ namespace WebMemoryzoneApi.Controllers
         {
             _mediator = mediator;
         }
+        /// <summary>
+        /// Retrieves a list of sections
+        /// </summary>
+        /// <param name="query">The query parameters for filtering sections</param>
+        /// <returns>A list of sections if successful, otherwise a 400 result</returns>
         [HttpGet]
         public async Task<ActionResult> GetSections([FromQuery] GetSectionsQuery query)
         {

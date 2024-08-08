@@ -27,6 +27,11 @@ namespace WebMemoryzoneApi.Controllers
         {
             _mediator = mediator;
         }
+        /// <summary>
+        /// Gets a product by its ID
+        /// </summary>
+        /// <param name="id">The ID of the product</param>
+        /// <returns>The product if found, otherwise a 404 result</returns>
         [HttpGet("{id:Guid}")]
         [HasPermission(PermissionOperator.Or, [Permission.ReadProduct, Permission.UpdateProduct])]
         public async Task<ActionResult> GetById(Guid id)
@@ -35,6 +40,11 @@ namespace WebMemoryzoneApi.Controllers
             if (result.IsSuccess is false) return NotFound(result);
             return Ok(result);
         }
+        /// <summary>
+        /// Gets a list of products
+        /// </summary>
+        /// <param name="productFilter">The filter to apply to the products</param>
+        /// <returns>A list of products</returns>
         [HttpGet]
         [HasPermission(Permission.ReadProduct)]
         public async Task<ActionResult> GetProducts([FromQuery] ProductFilter productFilter)
@@ -42,6 +52,12 @@ namespace WebMemoryzoneApi.Controllers
             var result = await _mediator.Send(new GetListProductQuery(productFilter));
             return Ok(result);
         }
+        /// <summary>
+        /// Updates a product
+        /// </summary>
+        /// <param name="id">The ID of the product to update</param>
+        /// <param name="command">The update command</param>
+        /// <returns>The updated product if successful, otherwise a 400 result</returns>
         [HttpPut("{id:Guid}")]
         [HasPermission(Permission.UpdateProduct)]
         public async Task<ActionResult> UpadateProduct(Guid id, [FromBody] UpdateProductCommand command)
@@ -54,6 +70,11 @@ namespace WebMemoryzoneApi.Controllers
             if (result.IsSuccess is false) return BadRequest(result);
             return Ok(result);
         }
+        /// <summary>
+        /// Deletes a product
+        /// </summary>
+        /// <param name="id">The ID of the product to delete</param>
+        /// <returns>A 200 result if successful, otherwise a 404 result</returns>
         [HttpDelete("{id:Guid}")]
         [HasPermission(Permission.DeleteProduct)]
         public async Task<ActionResult> DeleteProduct(Guid id)
@@ -62,6 +83,11 @@ namespace WebMemoryzoneApi.Controllers
             if (result.IsSuccess is false) return NotFound(result);
             return Ok(result);
         }
+        /// <summary>
+        /// Gets a product by its URL slug
+        /// </summary>
+        /// <param name="slug">The URL slug of the product</param>
+        /// <returns>The product if found, otherwise a 404 result</returns>
         [AllowAnonymous]
         [HttpGet("{slug}")]
         public async Task<ActionResult> GetCategoryByUrlSlug(string slug)
@@ -70,6 +96,11 @@ namespace WebMemoryzoneApi.Controllers
             if (result.IsSuccess is false) return NotFound(result);
             return Ok(result);
         }
+        /// <summary>
+        /// Creates a new product
+        /// </summary>
+        /// <param name="command">The create command</param>
+        /// <returns>The created product if successful, otherwise a 400 result</returns>
         [HttpPost]
         [FileValidatorFilter<CreateProductCommand>([".png", ".jpg"], 1920 * 1080)]
         [HasPermission(Permission.CreateProduct)]
@@ -83,6 +114,11 @@ namespace WebMemoryzoneApi.Controllers
             if (!result.IsSuccess) return BadRequest(result);
             return Ok(result);
         }
+        /// <summary>
+        /// Adds an image to a product
+        /// </summary>
+        /// <param name="command">The add image command</param>
+        /// <returns>The result of the operation</returns>
         [HttpPost("add-image")]
         [FileValidatorFilter<AddProductImageCommand>([".png", ".jpg"], 1920 * 1080)]
         [HasPermission(Permission.UploadProductImage)]

@@ -47,6 +47,7 @@ namespace Domain.Constants
         }
         public static class AuthenticationError
         {
+            public static readonly Error AuthCookiesNotFound = new Error("Authencation.CookiesNotFound", "Cookies Not Found");
             public static readonly Error AuthUsernamePasswordInvalid = new Error("Authencation.UsernamePasswordInvalid", "Username and Password Invalid");
             public static readonly Error AuthAccessTokenInvalid = new Error("Authencation.AccessTokenInvalid", "AccessToken invalid");
             public static readonly Error AuthRefreshTokenDoesNotMatchOrExpired

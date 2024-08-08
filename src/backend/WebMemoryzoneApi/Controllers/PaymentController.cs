@@ -22,6 +22,11 @@ namespace WebMemoryzoneApi.Controllers
             _configuration = configuration;
             _vnPaySetting = _configuration.GetSection("vnPay").Get<VnPaySetting>();
         }
+        /// <summary>
+        /// Handles IPN (Instant Payment Notification) from VnPay
+        /// </summary>
+        /// <param name="vnpayResponse">The VnPay response</param>
+        /// <returns>An empty result indicating success</returns>
         [HttpGet("ipn-url-vnpay")]
         public async Task<IActionResult> IPNVnPay([FromQuery] VnpayResponse vnpayResponse)
         {

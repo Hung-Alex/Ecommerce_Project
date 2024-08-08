@@ -15,6 +15,11 @@ namespace WebMemoryzoneApi.Controllers
         {
             _mediator = mediator;
         }
+        /// <summary>
+        /// Deletes an image
+        /// </summary>
+        /// <param name="id">The image ID</param>
+        /// <returns>The result of deleting the image</returns>
         [HttpDelete("{id:Guid}")]
         [HasPermission(Permission.DeleteImage)]
         public async Task<ActionResult> DeleteImage(Guid id)

@@ -24,6 +24,11 @@ namespace WebMemoryzoneApi.Controllers
         {
             _mediator = mediator;
         }
+        /// <summary>
+        /// Creates a new order
+        /// </summary>
+        /// <param name="infoOrderRequest">The order information</param>
+        /// <returns>The result of creating the order</returns>
         [HttpPost]
         public async Task<IActionResult> CreateOrder([FromBody] InfoOrderRequest infoOrderRequest)
         {
@@ -41,6 +46,11 @@ namespace WebMemoryzoneApi.Controllers
             }
             return Ok(result);
         }
+        /// <summary>
+        /// Gets a list of orders
+        /// </summary>
+        /// <param name="orderFilter">The order filter</param>
+        /// <returns>A list of orders</returns>
         [HttpGet]
         [HasPermission(Permission.ReadOrder)]
         public async Task<IActionResult> GetOrders([FromQuery] OrderFilter orderFilter)
@@ -52,6 +62,11 @@ namespace WebMemoryzoneApi.Controllers
             }
             return Ok(result);
         }
+        /// <summary>
+        /// Gets a list of orders for the current user
+        /// </summary>
+        /// <param name="orderFilter">The order filter</param>
+        /// <returns>A list of orders for the current user</returns>
         [HttpGet("user")]
         public async Task<IActionResult> GetOrders([FromQuery] UserOrderFilter orderFilter)
         {
@@ -63,6 +78,11 @@ namespace WebMemoryzoneApi.Controllers
             }
             return Ok(result);
         }
+        /// <summary>
+        /// Cancels an order
+        /// </summary>
+        /// <param name="cancelOrderCommand">The cancel order command</param>
+        /// <returns>The result of canceling the order</returns>
         [HttpPost("cancel-order")]
         public async Task<IActionResult> CancelOrder([FromBody] CancelOrderCommand cancelOrderCommand)
         {
@@ -73,6 +93,11 @@ namespace WebMemoryzoneApi.Controllers
             }
             return Ok(result);
         }
+        /// <summary>
+        /// Changes the status of an order
+        /// </summary>
+        /// <param name="command">The change status order command</param>
+        /// <returns>The result of changing the order status</returns>
         [HttpPost("change-status-order")]
         [HasPermission(Permission.ChangeOrderStatus)]
         public async Task<IActionResult> ChangeStatusOrder([FromBody] ChangeStatusOrderCommand command)

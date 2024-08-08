@@ -26,6 +26,11 @@ namespace WebMemoryzoneApi.Controllers
         {
             _mediator = mediator;
         }
+        /// <summary>
+        /// Retrieves a slide by ID
+        /// </summary>
+        /// <param name="id">The ID of the slide</param>
+        /// <returns>The slide if found, otherwise a 404 result</returns>
         [HttpGet("{id:Guid}")]
         [HasPermission(PermissionOperator.Or, [Permission.ReadSlide, Permission.UpdateSlide])]
         public async Task<ActionResult> GetById(Guid id)
@@ -34,6 +39,10 @@ namespace WebMemoryzoneApi.Controllers
             if (!result.IsSuccess) return NotFound(result);
             return Ok(result);
         }
+        /// <summary>
+        /// get slides is active
+        /// </summary>
+        /// <returns>A boolean indicating whether the slide is active</returns>
         [AllowAnonymous]
         [HttpGet("is-actice")]
         public async Task<ActionResult> GetSlideIsActive()
@@ -42,6 +51,11 @@ namespace WebMemoryzoneApi.Controllers
             if (!result.IsSuccess) return NotFound(result);
             return Ok(result);
         }
+        /// <summary>
+        /// Retrieves a list of slides
+        /// </summary>
+        /// <param name="slideFilter">The filter parameters for the slides</param>
+        /// <returns>A list of slides</returns>
         [HttpGet]
         [HasPermission(Permission.ReadSlide)]
         public async Task<ActionResult> GetSlides([FromQuery] SlideFilter slideFilter)
@@ -49,6 +63,12 @@ namespace WebMemoryzoneApi.Controllers
             var result = await _mediator.Send(new GetListSlideQuery(slideFilter));
             return Ok(result);
         }
+        /// <summary>
+        /// Updates a slide
+        /// </summary>
+        /// <param name="id">The ID of the slide</param>
+        /// <param name="command">The update command</param>
+        /// <returns>The updated slide if successful, otherwise a 400 result</returns>
         [HttpPut("{id:Guid}")]
         [HasPermission(Permission.UpdateSlide)]
         public async Task<ActionResult> UpadateSlide(Guid id, [FromForm] UpdateSlideCommand command)
@@ -61,6 +81,11 @@ namespace WebMemoryzoneApi.Controllers
             if (!result.IsSuccess) return BadRequest(result);
             return Ok(result);
         }
+        /// <summary>
+        /// Deletes a slide
+        /// </summary>
+        /// <param name="id">The ID of the slide</param>
+        /// <returns>A 200 result if successful, otherwise a 404 result</returns>
         [HttpDelete("{id:Guid}")]
         [HasPermission(Permission.DeleteSlide)]
         public async Task<ActionResult> DeleteSlide(Guid id)
@@ -69,6 +94,11 @@ namespace WebMemoryzoneApi.Controllers
             if (!result.IsSuccess) return NotFound(result);
             return Ok(result);
         }
+        /// <summary>
+        /// Creates a new slide
+        /// </summary>
+        /// <param name="command">The create slide command</param>
+        /// <returns>A 200 result if successful, otherwise a 400 result</returns>
         [HttpPost]
         [FileValidatorFilter<CreateSlideCommand>([".png", ".jpg"], 1920 * 1080)]
         [HasPermission(Permission.CreateSlide)]

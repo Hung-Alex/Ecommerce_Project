@@ -14,6 +14,11 @@ namespace WebMemoryzoneApi.Controllers
         {
             _mediator = mediator;
         }
+        /// <summary>
+        /// Searches for items based on the provided filter
+        /// </summary>
+        /// <param name="searchFilter">The search filter</param>
+        /// <returns>A list of search results if successful, otherwise a 400 result</returns>
         [HttpGet]
         public async Task<IActionResult> Search([FromQuery] SearchFilter searchFilter)
         {

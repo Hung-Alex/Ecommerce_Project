@@ -14,6 +14,11 @@ namespace WebMemoryzoneApi.Controllers
         {
             _mediator = mediator;
         }
+        /// <summary>
+        /// Retrieves a list of states
+        /// </summary>
+        /// <param name="filter">The filter parameters for the states</param>
+        /// <returns>A list of states</returns>
         [HttpGet]
         public async Task<IActionResult> GetStates([FromQuery] StateFilter filter)
         {

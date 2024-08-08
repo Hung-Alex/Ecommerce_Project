@@ -25,6 +25,11 @@ namespace WebMemoryzoneApi.Controllers
         {
             _mediator = mediator;
         }
+        /// <summary>
+        /// Gets a category by ID
+        /// </summary>
+        /// <param name="id">The category ID</param>
+        /// <returns>The category details</returns>
         [HttpGet("{id:Guid}")]
         [HasPermission(PermissionOperator.Or, [Permission.ReadCategory, Permission.UpdateCategory])]
         public async Task<ActionResult> GetById(Guid id)
@@ -33,6 +38,11 @@ namespace WebMemoryzoneApi.Controllers
             if (!result.IsSuccess) return NotFound(result);
             return Ok(result);
         }
+        /// <summary>
+        /// Gets a list of categories
+        /// </summary>
+        /// <param name="categoryFilter">The category filter</param>
+        /// <returns>A list of categories</returns>
         [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> GetCategories([FromQuery] CategoryFilter categoryFilter)
@@ -40,6 +50,12 @@ namespace WebMemoryzoneApi.Controllers
             var result = await _mediator.Send(new GetListCategoriesQuery(categoryFilter));
             return Ok(result);
         }
+        /// <summary>
+        /// Updates a category
+        /// </summary>
+        /// <param name="id">The category ID</param>
+        /// <param name="command">The update category command</param>
+        /// <returns>The updated category details</returns>
         [HttpPut("{id:Guid}")]
         [FileValidatorFilter<UpdateCategoryCommand>([".png", ".jpg"], 1920 * 1080)]
         [HasPermission(Permission.UpdateCategory)]
@@ -53,6 +69,11 @@ namespace WebMemoryzoneApi.Controllers
             if (!result.IsSuccess) return BadRequest(result);
             return Ok(result);
         }
+        /// <summary>
+        /// Deletes a category
+        /// </summary>
+        /// <param name="id">The category ID</param>
+        /// <returns>The deletion result</returns>
         [HttpDelete("{id:Guid}")]
         [HasPermission(Permission.DeleteCategory)]
         public async Task<ActionResult> DeleteCategory(Guid id)
@@ -61,6 +82,11 @@ namespace WebMemoryzoneApi.Controllers
             if (!result.IsSuccess) return NotFound(result);
             return Ok(result);
         }
+        /// <summary>
+        /// Creates a new category
+        /// </summary>
+        /// <param name="command">The create category command</param>
+        /// <returns>The created category details</returns>
         [HttpPost]
         [FileValidatorFilter<CreateCategoryCommand>([".png", ".jpg"], 1920 * 1080)]
         [HasPermission(Permission.CreateCategory)]
