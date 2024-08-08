@@ -16,9 +16,7 @@ const NewsCard = ({ img, title }) => {
       <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-white w-[80%] rounded-xl p-4 shadow-lg">
         <p className="text-xs">By Rachi Card</p>
         <h3 className="font-semibold my-1">{title}</h3>
-        <p className="text-sm -mb-3">
-          Simply dummy text of the printing and typesetting industry.
-        </p>
+        <p className="text-sm -mb-3">Simply dummy text of the printing and typesetting industry.</p>
         <Button className="w-[140px] mt-8 bg-[#EFD372] text-[#274c5b] text-sm hover:bg-[#D4B948] hover:text-white transition-colors duration-200">
           More News{" "}
           <BsArrowRightShort className="bg-[#335B6B] text-white rounded-full ml-1" />
