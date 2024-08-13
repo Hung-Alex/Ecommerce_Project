@@ -2,7 +2,7 @@ import axios from "axios";
 import { handleUnauthorized } from "../service/authService.js"; // Adjust the path
 
 const axiosInstance = axios.create({
-  baseURL: "https://localhost:7113/api",
+  baseURL: process.env.REACT_APP_API_URL,
   headers: {
     'ngrok-skip-browser-warning': true,
     "Content-Type": "application/json",

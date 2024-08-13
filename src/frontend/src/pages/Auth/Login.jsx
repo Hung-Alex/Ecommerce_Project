@@ -37,7 +37,7 @@ function Login() {
   };
 
   return (
-    <GoogleOAuthProvider clientId="57958274400-e0226k4bdrb3b5bp3hrq4fp1p9rebeo6.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
       <section className="flex justify-center pt-12 mb-12">
         <div className="border p-4 rounded shadow-md">
           <div className="mb-8 my-4">
