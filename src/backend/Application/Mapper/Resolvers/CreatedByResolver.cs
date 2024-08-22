@@ -19,7 +19,7 @@ namespace Application.Mapper.Resolvers
             {
                 return "Unknow";
             }
-            return source.CreatedByUser.LastName + source.CreatedByUser.FirstName;
+            return source.CreatedByUser?.LastName + source.CreatedByUser?.FirstName;
         }
     }
 }
