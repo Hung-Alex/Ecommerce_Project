@@ -18,7 +18,7 @@ namespace Application.Mapper.Resolvers
             {
                 return null;
             }
-            return _media.GetUrl(source.CreatedByUser.AvatarImage);
+            return _media.GetUrl(source.CreatedByUser?.AvatarImage);
         }
     }
 }
