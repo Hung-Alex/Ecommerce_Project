@@ -1,11 +1,5 @@
-﻿using Application.Common.Interface;
-using AutoMapper;
+﻿using AutoMapper;
 using Domain.Common;
-using Domain.Entities.Banners;
-using Domain.Entities.Brands;
-using Domain.Entities.Category;
-using Domain.Entities.Posts;
-
 namespace Application.Mapper.Resolvers
 {
     public class CreatedByResolver : IValueResolver<ICreatedAndUpdatedBy, ICreatedByDTO, string>
