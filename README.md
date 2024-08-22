@@ -14,7 +14,6 @@ This project was developed by a dedicated team of web developers:
 
 - **[Phạm Ngọc Hưng]** - Backend Developer  
   [GitHub Profile](https://github.com/Hung-Alex)  
-  [LinkedIn Profile](linkedin.com/in/alexanderpham22)  
 - **[Hồ Trương Huệ Nhật]** - Frontend Developer  
   [GitHub Profile](https://github.com/hotruonghuenhat)  
 ## Team Size
