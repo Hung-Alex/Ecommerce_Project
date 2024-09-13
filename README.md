@@ -35,7 +35,10 @@ For any questions or inquiries, please contact .
 - **Management** of users, orders, categories, slides, banners, and products.
 - **File Upload with Cloudinary** for efficient and scalable media handling.
 - **User Account Locking** to prevent access when necessary.
+- Cart
+- Track your order after purchase
 ## Technologies
+ - [React JS](https://react.dev/)
  - [.NET 8](https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-8)
  - [EntityFramework](https://learn.microsoft.com/en-us/ef/)
  - [Microsoft Dependency Injection (DI)](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection)
@@ -47,6 +50,8 @@ For any questions or inquiries, please contact .
  - [Identity](https://www.nuget.org/packages/Microsoft.AspNetCore.Identity.EntityFrameworkCore)
  - [VnPay](https://sandbox.vnpayment.vn/apis/docs/thanh-toan-pay/pay.html) => Vnpay Sanbox
  - [Cloudinary](https://cloudinary.com/documentation/dotnet_integration#landingpage)
+ - [TailWind CSS](https://tailwindcss.com/)
+   
 ## Patterns
  - Repository
  - Generic Repository
@@ -54,7 +59,7 @@ For any questions or inquiries, please contact .
  - Specification
  - CQRS (Command and Query Responsibility Segregation)
 ## Architechture
-  -clean architecture
+  -Clean Architecture
   
 ## Getting Started
 
